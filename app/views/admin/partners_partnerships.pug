@@ -88,8 +88,8 @@ block content
           th(data-field="is_active" data-visible="false")="is_active"
           th(data-field="is_event" data-visible="false")="is_event"
           th(data-field="is_selecta" data-visible="false")="is_selecta"
-          th=global.__("Contacts")
-          th=global.__("Members")
+          th=global.__("Partnerships")
+          th=global.__("Links")
       tbody
           each item, index in data.partners
             tr(id=item._id)
@@ -130,56 +130,20 @@ block content
               td=item.is_event ? "true" : "false"
               td=item.is_selecta ? "true" : "false"
               td
-                h5
-                  !="Contacts"
-                  !=" "
-                  // Button trigger modal
-                  button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename)="ADD"
-                .contacts
-                  if item.partner && item.partner.organizationData.contacts
-                    each contact, index in item.partner.organizationData.contacts
+                .partnerships
+                  if item.partner && item.partner.partnerships
+                    each partnership, index in item.partner.partnerships
                       div
-                        a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename, data-item.partner=JSON.stringify(contact), data-index=index)
-                          span(data-toggle="tooltip", data-placement="top", title="Edit")
-                            i.icon-edit
-                        !=" "
-                        a.text-danger.deleteContact(href="#" data-id=item.partner._id, data-stagename=item.partner.stagename, data-index=index)
-                          span(data-toggle="tooltip", data-placement="top", title="Delete")
-                            i.icon-trash
-                        !=" | "
-                        if contact.lang
-                          !=contact.lang
-                        else
-                          .badge.badge-danger!="MISSING"
-                        !=" | "
-                        a(href="mailto:"+contact.email, target="_blank")
-                          !=contact.name+" "+contact.surname
-                          =" <"+contact.email+">"
+                        a(href="/events/"+partnership.slug target="_blank")=partnership.title
               td
-                if item.partner.members && item.partner.members.length
-                  h5="Members"
-                  ol
-                    each contact in item.partner.members
-                      li
-                        if contact.emails
-                            each email in contact.emails
-                              div
-                                a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename, data-item.partner=JSON.stringify({title: contact.gender=="M" ? "Mr" : "Miss", name: contact.name, surname:contact.surname, lang:contact.lang, email:email.email }))
-                                  span(data-toggle="tooltip", data-placement="top", title="Copy to contacts")
-                                    i.icon-arrow-alt-circle-left
-                                !=" | "
-                                a(href="/"+contact.slug, target="_blank", title=global.__("View"))
-                                  span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
-                                    i.icon-eye
-                                !=" | "
-                                a(href="mailto:"+contact.email, target="_blank")
-                                  !=contact.name+" "+contact.surname
-                                  =" <"+email.email+">"
-                                !=" "
-                        else 
-                          !=contact.stagename
-                          !=" "
-                          .badge.badge-danger!="MISSING"
+                if item.partner.web
+                  each web in item.partner.web
+                    div
+                      a(href=web.url, target="_blank")!=web.url
+                if item.partner.social
+                  each web in item.partner.social
+                    div
+                      a(href=web.url, target="_blank")!=web.url
 
 
   // Modal Add Partner

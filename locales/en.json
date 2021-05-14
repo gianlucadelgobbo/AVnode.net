@@ -667,5 +667,10 @@
 	"NOT ACTIVE": "NOT ACTIVE",
 	"Status short": "Status short",
 	"delete": "delete",
-	"Selecta": "Selecta"
+	"Selecta": "Selecta",
+	"Partners message": "Partners message",
+	"EVENT": "EVENT",
+	"NOT EVENT": "NOT EVENT",
+	"SELECTA": "SELECTA",
+	"NOT SELECTA": "NOT SELECTA"
 }

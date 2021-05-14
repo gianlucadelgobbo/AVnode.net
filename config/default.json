@@ -866,7 +866,7 @@
       }
     },
     "partners": {
-      "title": "artners",
+      "title": "Partners",
       "limit": 1,
       "basepath": "partners",
       "model": "User",
@@ -936,7 +936,7 @@
             "is_public": 1,
             "imageFormats": 1
           },
-          "populate": [{ "path": "partners.partner", "select": "stagename organizationData.contacts", "model": "User", "populate": [{ "path": "members", "select": "stagename name surname emails", "model": "User"}]}]
+          "populate": [{ "path": "partners.partner", "select": "stagename slug organizationData.contacts", "model": "User", "populate": [{ "path": "members", "select": "stagename name surname emails", "model": "User"}]}]
         },
         "channels": {
           "title": "Channels",
@@ -950,51 +950,24 @@
             "is_public": 1,
             "imageFormats": 1
           },
-          "populate": [{"path": "partners.partner", "select": "stagename web social members", "model": "User"}]
-        }
-      },
-      "list": {
-        "model": "User",
-        "select": {
-          "stagename": 1,
-          "slug": 1,
-          "image": 1,
-          "imageFormats": 1
+          "populate": [{"path": "partners.partner", "select": "stagename slug web social members", "model": "User"}]
         },
-        "selectaddon": {
-          "createdAt": 1,
-          "updatedAt": 1,
-          "stats": 1,
-          "activity_as_organization": 1,
-          "partner_owner": 1,
-          "is_public": 1
-        },
-        "populate": [{ "path": "crews" , "select": "stagename"}],
-        "orders": [
-          "mostrecent",
-          "mostactive"
-        ],
-        "ordersQueries": {
-          "mostrecent": {
-            "createdAt": -1
+        "partnerships": {
+          "title": "Partnerships",
+          "components": {},
+          "select": {
+            "slug": 1,
+            "stagename": 1,
+            "partners": 1
           },
-          "mostactive": {
-            "activity": -1
-          }
+          "selectaddon": {
+            "is_public": 1,
+            "imageFormats": 1
+          },
+          "populate": [{"path": "partners.partner", "select": "stagename slug web social members", "model": "User", "populate": [{"path": "partnerships", "select": "title slug", "model": "Event"}]}]
         },
-        "labels": {
-          "mostrecent":"Most recent",
-          "mostactive":"Most active"
-        }
-      }
-    },
-    "partner": {
-      "title": "Partner",
-      "limit": 1,
-      "basepath": "partner",
-      "model": "User",
-      "forms": {
-        "new": {
+        "message": {
+          "title": "Message",
           "components": {
             "slug": {
               "comp": "simpletext",
@@ -1021,22 +994,44 @@
                 },
                 "Unique": "admin/api..."
               }
+            },
+            "abouts": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "About crew",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            },
+            "web": {
+              "schema": "shared/Link",
+              "comp": "multilink",
+              "label": "Websites",
+              "validators": {
+                "Url": {}
+              }
+            },
+            "social": {
+              "comp": "multilink",
+              "label": "Websites",
+              "validators": {
+                "Url": {}
+              }
             }
           },
           "select": {
-            "stagename": 1,
             "slug": 1,
-            "is_partner": 1,
-            "is_public": 1,
-            "organizationData": 1,
-            "partner_owner": 1,
-            "social": 1,
-            "web": 1
+            "stagename": 1,
+            "partners": 1
           },
           "selectaddon": {
-            "is_crew": true
+            "is_public": 1,
+            "imageFormats": 1
           },
-          "populate": []
+          "populate": [{ "path": "partners.partner", "select": "stagename slug organizationData.contacts", "model": "User", "populate": [{ "path": "members", "select": "stagename name surname emails", "model": "User"}]}]
         }
       },
       "list": {
@@ -1048,10 +1043,14 @@
           "imageFormats": 1
         },
         "selectaddon": {
-          "is_public": 1,
-          "createdAt": 1
+          "createdAt": 1,
+          "updatedAt": 1,
+          "stats": 1,
+          "activity_as_organization": 1,
+          "partner_owner": 1,
+          "is_public": 1
         },
-        "populate": [{ "path": "members" , "select": "stagename"}],
+        "populate": [{ "path": "crews" , "select": "stagename"}],
         "orders": [
           "mostrecent",
           "mostactive"
@@ -1380,7 +1379,51 @@
             "is_public": 1,
             "title": 1
           },
-          "populate": [{ "path": "partners.users", "select": "stagename image organizationData.logo", "model": "User"},{ "path": "partners.category", "select": "name", "model": "Category"}]
+          "populate": [{ "path": "partners.users", "select": "stagename image slug organizationData.logo", "model": "User"},{ "path": "partners.category", "select": "name", "model": "Category"}]
+        },
+        "partners-message": {
+          "title": "Partners message",
+          "components": {
+            "partners": {
+              "comp": "list_and_add_to_category",
+              "rel_obj": "User",
+              "list_fields": [
+                "Stage name",
+                "partnership_category",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "remove",
+                "edit_partnership_category",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Stage name",
+                "set_partnership_category"
+              ],
+              "view_sort_modes": [
+                "Stage name",
+                "custom_order",
+                "partnership_category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Event Production and partners",
+              "validators": {
+                "Confirm": {}
+              }
+            }
+          },
+          "select": {
+            "partners": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "is_public": 1,
+            "title": 1
+          },
+          "populate": [{ "path": "partners.users", "select": "stagename image slug organizationData.contacts", "model": "User"},{ "path": "partners.category", "select": "name", "model": "Category"}]
         },
         "program": {
           "title": "Program",
@@ -1517,7 +1560,7 @@
             "is_public": 1,
             "title": 1
           },
-          "populate": [{ "path": "program.performance", "select": "title image imageFormats", "model": "Performance"},{ "path": "program.schedule.categories", "select": "name"}]
+          "populate": [{ "path": "program.performance", "select": "title image slug imageFormats", "model": "Performance"},{ "path": "program.schedule.categories", "select": "name"}]
         },
         "galleries": {
           "title": "Galleries",

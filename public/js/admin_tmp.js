@@ -152,8 +152,10 @@ $(function () {
 			clone.find('button').each(function() {
 				$(this).removeAttr('disabled');
 			});
+			console.log(clone.find('input').attr('name'));
+			console.log($(list).children().length);
 			clone.find('input').each(function() {
-				this.name= this.name.replace('[0]', '['+(list.length+1)+']');
+				this.name= this.name.replace('[0]', '['+($(list).children().length+1)+']');
 				this.value = "";
 			});
 			list.append(clone);

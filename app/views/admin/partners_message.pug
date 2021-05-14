@@ -1,9 +1,13 @@
-extends ../../layout_admin
-block topmenu
-  include topmenu
+extends ../layout_admin
 block content
-  .border-bottom.mb-3
-    include submenu
+  div(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h1.h2=data.stagename
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        .mr-2.mb-3
+          button.btn.btn-primary.mr-3(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD FROM AVNODE"
+          button.btn.btn-primary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD NEW"
+  include partials/menuobj
   form(method="post").form-horizontal#myform
     .well
       // store the userId on the client side in a hidden input field //
@@ -50,21 +54,21 @@ block content
             textarea(rows="20",name="message_en")#message_en.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_en : 'Ciao [name],\n\n\n[slug]\n\n\n[signature]')
       h3="Exclude"
       ol
-        each item in data
+        each item, index in data.partners
           li
             .form-check
-              input.form-check-input(type='checkbox', name='exclude', id=item._id.toString(), value=item._id.toString(), checked=body.exclude!=undefined && (item._id.toString()==body.exclude || body.exclude.indexOf(item._id.toString())!=-1) ? 'checked' : undefined)
-              label.form-check-label(for=item._id.toString())=item.stagename 
+              input.form-check-input(type='checkbox', name='exclude', id=item.partner._id.toString(), value=item.partner._id.toString(), checked=body && body.exclude!=undefined && (item.partner._id.toString()==body.exclude || body.exclude.indexOf(item.partner._id.toString())!=-1) ? 'checked' : undefined)
+              label.form-check-label(for=item.partner._id.toString())=item.partner.stagename 
       .text-center
         button(type='submit').btn.btn-success="Compose"
-    if body.from_name
+    if body && body.from_name
       input(type="hidden",value=0, name='send')#send
       ol
-        each item, index in data
+        each item, index in data.partners
           - item.to_html = ""
           - item.cc_html = []
-          if item.organizationData && item.organizationData.contacts && item.organizationData.contacts[0] && item.organizationData.contacts[0].email && body.exclude.indexOf(item._id.toString())===-1
-            each contact, cindex in item.organizationData.contacts
+          if item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && body && body.exclude.indexOf(item.partner._id.toString())===-1
+            each contact, cindex in item.partner.organizationData.contacts
               - if (cindex===0)
                 - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
                 - item.text = body["message_"+(contact.lang=="it" ? "it" : "en")]

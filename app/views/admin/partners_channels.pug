@@ -74,16 +74,22 @@ block content
   else 
     #toolbar
       .btn-group.mr-2.mb-3
-        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {status: ['true','false']})")!=__("ALL")
-        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {status: ['true']})")!=__("ACTIVE")
-        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {status: ['false']})")!=__("NOT ACTIVE")
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {})")!=__("ALL")
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_active: ['true']})")!=__("ACTIVE")
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_active: ['false']})")!=__("NOT ACTIVE")
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_event: ['true']})")!=__("EVENT")
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_event: ['false']})")!=__("NOT EVENT")
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_selecta: ['true']})")!=__("SELECTA")
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_selecta: ['false']})")!=__("NOT SELECTA")
     table(data-toggle="table", data-show-columns="true", data-search="true", data-toolbar="#toolbar")
       thead
         tr
           th.table-firstcolumn-ID="ID"
           th=global.__("Brand")
           th=global.__("Status")
-          th(data-field="status" data-visible="false")=global.__("Status short")
+          th(data-field="is_active" data-visible="false")="is_active"
+          th(data-field="is_event" data-visible="false")="is_event"
+          th(data-field="is_selecta" data-visible="false")="is_selecta"
           th=global.__("Web Channels")
           th=global.__("Social Channels")
       tbody
@@ -111,18 +117,20 @@ block content
               td
                 .text-nowrap
                   .form-check
-                    input.edit_partners_partner.form-check-input(type="checkbox" id="is_active"+item.partner._id value="true" checked=item.is_active ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_active")
+                    input.edit_partners_partner.form-check-input.is_active(type="checkbox" id="is_active"+item.partner._id value="true" checked=item.is_active ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_active")
                     label.form-check-label(for="is_active"+item.partner._id)
                       b=__("Active")
                   .form-check
-                    input.edit_partners_partner.form-check-input(type="checkbox" id="is_event"+item.partner._id value="true" checked=item.is_event ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_event")
+                    input.edit_partners_partner.form-check-input.is_event(type="checkbox" id="is_event"+item.partner._id value="true" checked=item.is_event ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_event")
                     label.form-check-label(for="is_event"+item.partner._id)
                       b=__("Event")
                   .form-check
-                    input.edit_partners_partner.form-check-input(type="checkbox" id="is_selecta"+item.partner._id value="true" checked=item.is_selecta ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_selecta")
+                    input.edit_partners_partner.form-check-input.is_selecta(type="checkbox" id="is_selecta"+item.partner._id value="true" checked=item.is_selecta ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_selecta")
                     label.form-check-label(for="is_selecta"+item.partner._id)
                       b=__("Selecta")
               td=item.is_active ? "true" : "false"
+              td=item.is_event ? "true" : "false"
+              td=item.is_selecta ? "true" : "false"
               td
                 if item.partner.web
                   each web in item.partner.web

@@ -170,6 +170,7 @@ router.putData = (req, res, view) => {
                           res.render(view, {
                             title: view,
                             scripts: [],
+                            body: req.body,
                             currentUrl: req.originalUrl,
                             countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
                             languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,

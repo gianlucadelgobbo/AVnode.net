@@ -555,7 +555,6 @@ router.getData = (req, res, view) => {
     const id = req.params.id;
     const select = req.query.pure ? config.cpanel[req.params.sez].forms[req.params.form].select : Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].forms[req.params.form].populate;
-
     Models[config.cpanel[req.params.sez].model]
     .findById(id)
     .select(select)
@@ -2268,11 +2267,14 @@ router.getPartners = (req, res) => {
     //exec((err, events) => {
     exec((err, event) => {
       var populate = [
+        { "path": "partners.partner", "select": "stagename", "model": "User"}
+      /* 
         {path: "members", select: {stagename:1, gender:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, lang:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
         {path: "partnerships", select: {title:1, slug:1}, model:"EventShow"},
         {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
-      ];
-      const query = {"partner_owner": {$in: event.users.map(item =>{return item._id})}};
+      */];
+      //const query = {"partner_owner.owner": {$in: event.users.map(item =>{return item._id})}};
+      const query = {"_id": {$in: event.users.map(item =>{return item._id})}};
       Models.User.
       find(query).
       lean().
@@ -2280,6 +2282,10 @@ router.getPartners = (req, res) => {
       //select({stagename: 1, createdAt: 1, crews:1}).
       populate(populate).
       exec((err, data) => {
+        var partners = []
+        for (var item in data) {
+          partners = partners.concat(data[item].partners);
+        }   
         /* Models.Event.
         find({"users": req.params.id}).
         select({title: 1}).
@@ -2291,18 +2297,22 @@ router.getPartners = (req, res) => {
           } else {
     
             var partnerships = event.partners.slice(0);
-              logger.debug(existingCat);
+              //logger.debug(existingCat);
               var notassigned = [];
               var notassignedID = [];
               var partnersID = [];
 
               for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
-              for (var item in data) {
-                if (partnersID.indexOf(data[item]._id.toString())===-1) {
-                  if (notassignedID.indexOf(data[item]._id.toString())===-1) {
-                    notassignedID.push(data[item]._id.toString());
-                    notassigned.push(data[item]);
+              for (var item in partners) {
+                if (partners[item]) {
+                  if (partnersID.indexOf(partners[item].partner._id.toString())===-1) {
+                    if (notassignedID.indexOf(partners[item].partner._id.toString())===-1) {
+                      notassignedID.push(partners[item].partner._id.toString());
+                      notassigned.push(partners[item].partner);
+                    }
                   }
+                } else {
+                  logger.debug(partners[item]);
                 }
               }
               var existingCat = partnerships.map(item => {return item.category._id.toString()});
