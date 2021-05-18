@@ -89,6 +89,7 @@ const compress_js_video = () => {
 const compress_js_admin = () => {
   return gulp.src([
     './gulp/js/admin.js',
+    './gulp/js/includes_admin/bsMultiSelect.min.js',
     './gulp/js/includes_admin/jquery-ui.js',
     './gulp/js/includes_admin/moment-with-locales.min.js',
     './gulp/js/includes_admin/jquery.serializejson.min.js',
