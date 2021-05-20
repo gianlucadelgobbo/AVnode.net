@@ -758,6 +758,7 @@ router.getMembers = (req, res) => {
     { name : { "$regex": req.params.q, "$options": "i" } },
     { surname : { "$regex": req.params.q, "$options": "i" } }
   ],is_crew: false})
+  .lean()
   .select({'stagename':1})
   //.select({'_id':1, 'stagename':1, 'name':1, 'surname':1, 'email': 1})
   //.collation({locale: "en" })
@@ -767,8 +768,7 @@ router.getMembers = (req, res) => {
     //res.json(users.map(item => {delete item.imageFormats; return item;}));
     let result = [];
     logger.debug(users);
-    if (users && users.length) result = users.map(item => {return {_id:item._id, stagename:item.stagename}});
-    res.json(result);
+    res.json(users);
   });
 }
 
@@ -779,7 +779,11 @@ router.getAuthors = (req, res) => {
     { stagename : { "$regex": req.params.q, "$options": "i" } },
     { name : { "$regex": req.params.q, "$options": "i" } },
     { surname : { "$regex": req.params.q, "$options": "i" } }
-  ]},'_id, stagename', (err, users) => {
+  ]})
+  .lean()
+  .select({'stagename':1})
+  .sort({'stagename': 1})
+  .exec((err, users) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
     res.json(users);
   });
