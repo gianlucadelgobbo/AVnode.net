@@ -21,7 +21,7 @@ block content
                   ul.pl-2.list-inline
                     each address in data.addressesFormatted
                       li.list-inline-item.mb-3!=address
-                if data.organizationData
+                if data.organizationData && (data.organizationData.foundation_year || data.organizationData.type || data.organizationData.phone || data.organizationData.public_email)
                   .pb-2
                     b="Organization Data"
                   ul.pl-2.list-unstyled
@@ -47,9 +47,9 @@ block content
                     b="Web sites"
                   ul.pl-2.list-unstyled
                     li.mb-3
-                      a(href="https://avnode.net/"+data.slug)
+                      a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug)
                         i.icon-link.mr-2
-                        !="https://avnode.net/"+data.slug
+                        !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug
                     each item in data.web
                       li.mb-3
                         a(href=item.url)
@@ -119,9 +119,9 @@ block content
                         if !get.hideLinks
                           ul.list-unstyled.pt-3
                             li.mb-3
-                              a(href="https://avnode.net/"+item.slug)
+                              a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug)
                                 i.icon-link.mr-2
-                                !="https://avnode.net/"+item.slug
+                                !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug
                             each web in item.web
                               li.mb-3
                                 a(href=web.url)
@@ -225,10 +225,10 @@ block content
                         if !get.hideLinks
                           ul.list-unstyled.pt-3
                             li.mb-3
-                              a(href="https://avnode.net/performances/"+item.slug)
+                              a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug)
                                 i.icon-link.mr-2
-                                !="https://avnode.net/performances/"+item.slug
-                        if !get.hideBookings && item.bookings
+                                !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug
+                        if !get.hideBookings && item.bookings && item.bookings.length
                           u.mb-2.mt-3!='Bookings'
                           - item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
                           if get.hideImages
@@ -277,9 +277,9 @@ block content
                         if !get.hideLinks
                           ul.list-unstyled.pt-3
                             li.mb-3
-                              a(href="https://avnode.net/events/"+item.slug)
+                              a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug)
                                 i.icon-link.mr-2
-                                !="https://avnode.net/events/"+item.slug
+                                !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug
                             each web in item.web
                               li.mb-3
                                 a(href=web.url)
@@ -349,9 +349,9 @@ block content
                         if !get.hideLinks
                           ul.list-unstyled.pt-3
                             li.mb-3
-                              a(href="https://avnode.net/news/"+item.slug)
+                              a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug)
                                 i.icon-link.mr-2
-                                !="https://avnode.net/news/"+item.slug
+                                !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug
                             
             //if data.footage && data.footage.length
               h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  

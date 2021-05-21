@@ -1074,6 +1074,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
               editable: helpers.editable(req, data, data._id),
               get: req.query,
               data: data,
+              host: req.get('host'),
               scripts: scripts,
               type: type,
               pages: data.pages,

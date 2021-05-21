@@ -92,94 +92,96 @@ block content
           th=global.__("Members")
       tbody
           each item, index in data.partners
-            tr(id=item._id)
-              td=index+1
-              td
-                a(href="/admin/crews/"+item.partner._id+"/public", target="_blank", title=global.__("edit"))
-                  span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                    i.icon-edit
-                !=" | "
-                a.unlink(href="#", data-owner=owner, data-partner=item.partner._id, title=global.__("Unlink"))
-                  span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
-                    i.icon-unlink
-                if item.partner.members && item.partner.members.length
+            if item.partner
+              tr(id=item.partner._id)
+                td=index+1
+                - console.log(item)
+                td
+                  a(href="/admin/crews/"+item.partner._id+"/public", target="_blank", title=global.__("edit"))
+                    span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                      i.icon-edit
                   !=" | "
-                  a(href="/"+item.partner.slug, target="_blank", title=global.__("View"))
-                    span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
-                      i.icon-eye
-                !=" | "
-                b!=item.partner.stagename
-                if !item.partner.members || !item.partner.members.length
-                  !=" "
-                  .badge.badge-danger!="EXTERNAL"
-              td
-                .text-nowrap
-                  .form-check
-                    input.edit_partners_partner.form-check-input.is_active(type="checkbox" id="is_active"+item.partner._id value="true" checked=item.is_active ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_active")
-                    label.form-check-label(for="is_active"+item.partner._id)
-                      b=__("Active")
-                  .form-check
-                    input.edit_partners_partner.form-check-input.is_event(type="checkbox" id="is_event"+item.partner._id value="true" checked=item.is_event ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_event")
-                    label.form-check-label(for="is_event"+item.partner._id)
-                      b=__("Event")
-                  .form-check
-                    input.edit_partners_partner.form-check-input.is_selecta(type="checkbox" id="is_selecta"+item.partner._id value="true" checked=item.is_selecta ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_selecta")
-                    label.form-check-label(for="is_selecta"+item.partner._id)
-                      b=__("Selecta")
-              td=item.is_active ? "true" : "false"
-              td=item.is_event ? "true" : "false"
-              td=item.is_selecta ? "true" : "false"
-              td
-                h5
-                  !="Contacts"
-                  !=" "
-                  // Button trigger modal
-                  button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename)="ADD"
-                .contacts
-                  if item.partner && item.partner.organizationData.contacts
-                    each contact, index in item.partner.organizationData.contacts
-                      div
-                        a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename, data-item.partner=JSON.stringify(contact), data-index=index)
-                          span(data-toggle="tooltip", data-placement="top", title="Edit")
-                            i.icon-edit
-                        !=" "
-                        a.text-danger.deleteContact(href="#" data-id=item.partner._id, data-stagename=item.partner.stagename, data-index=index)
-                          span(data-toggle="tooltip", data-placement="top", title="Delete")
-                            i.icon-trash
-                        !=" | "
-                        if contact.lang
-                          !=contact.lang
-                        else
-                          .badge.badge-danger!="MISSING"
-                        !=" | "
-                        a(href="mailto:"+contact.email, target="_blank")
-                          !=contact.name+" "+contact.surname
-                          =" <"+contact.email+">"
-              td
-                if item.partner.members && item.partner.members.length
-                  h5="Members"
-                  ol
-                    each contact in item.partner.members
-                      li
-                        if contact.emails
-                            each email in contact.emails
-                              div
-                                a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename, data-item.partner=JSON.stringify({title: contact.gender=="M" ? "Mr" : "Miss", name: contact.name, surname:contact.surname, lang:contact.lang, email:email.email }))
-                                  span(data-toggle="tooltip", data-placement="top", title="Copy to contacts")
-                                    i.icon-arrow-alt-circle-left
-                                !=" | "
-                                a(href="/"+contact.slug, target="_blank", title=global.__("View"))
-                                  span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
-                                    i.icon-eye
-                                !=" | "
-                                a(href="mailto:"+contact.email, target="_blank")
-                                  !=contact.name+" "+contact.surname
-                                  =" <"+email.email+">"
-                                !=" "
-                        else 
-                          !=contact.stagename
+                  a.unlink(href="#", data-owner=owner, data-partner=item.partner._id, title=global.__("Unlink"))
+                    span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
+                      i.icon-unlink
+                  if item.partner.members && item.partner.members.length
+                    !=" | "
+                    a(href="/"+item.partner.slug, target="_blank", title=global.__("View"))
+                      span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                        i.icon-eye
+                  !=" | "
+                  b!=item.partner.stagename
+                  if !item.partner.members || !item.partner.members.length
+                    !=" "
+                    .badge.badge-danger!="EXTERNAL"
+                td
+                  .text-nowrap
+                    .form-check
+                      input.edit_partners_partner.form-check-input.is_active(type="checkbox" id="is_active"+item.partner._id value="true" checked=item.is_active ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_active")
+                      label.form-check-label(for="is_active"+item.partner._id)
+                        b=__("Active")
+                    .form-check
+                      input.edit_partners_partner.form-check-input.is_event(type="checkbox" id="is_event"+item.partner._id value="true" checked=item.is_event ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_event")
+                      label.form-check-label(for="is_event"+item.partner._id)
+                        b=__("Event")
+                    .form-check
+                      input.edit_partners_partner.form-check-input.is_selecta(type="checkbox" id="is_selecta"+item.partner._id value="true" checked=item.is_selecta ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_selecta")
+                      label.form-check-label(for="is_selecta"+item.partner._id)
+                        b=__("Selecta")
+                td=item.is_active ? "true" : "false"
+                td=item.is_event ? "true" : "false"
+                td=item.is_selecta ? "true" : "false"
+                td
+                  h5
+                    !="Contacts"
+                    !=" "
+                    // Button trigger modal
+                    button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename)="ADD"
+                  .contacts
+                    if item.partner && item.partner.organizationData.contacts
+                      each contact, index in item.partner.organizationData.contacts
+                        div
+                          a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename, data-item.partner=JSON.stringify(contact), data-index=index)
+                            span(data-toggle="tooltip", data-placement="top", title="Edit")
+                              i.icon-edit
                           !=" "
-                          .badge.badge-danger!="MISSING"
+                          a.text-danger.deleteContact(href="#" data-id=item.partner._id, data-stagename=item.partner.stagename, data-index=index)
+                            span(data-toggle="tooltip", data-placement="top", title="Delete")
+                              i.icon-trash
+                          !=" | "
+                          if contact.lang
+                            !=contact.lang
+                          else
+                            .badge.badge-danger!="MISSING"
+                          !=" | "
+                          a(href="mailto:"+contact.email, target="_blank")
+                            !=contact.name+" "+contact.surname
+                            =" <"+contact.email+">"
+                td
+                  if item.partner.members && item.partner.members.length
+                    h5="Members"
+                    ol
+                      each contact in item.partner.members
+                        li
+                          if contact.emails
+                              each email in contact.emails
+                                div
+                                  a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename, data-item.partner=JSON.stringify({title: contact.gender=="M" ? "Mr" : "Miss", name: contact.name, surname:contact.surname, lang:contact.lang, email:email.email }))
+                                    span(data-toggle="tooltip", data-placement="top", title="Copy to contacts")
+                                      i.icon-arrow-alt-circle-left
+                                  !=" | "
+                                  a(href="/"+contact.slug, target="_blank", title=global.__("View"))
+                                    span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                                      i.icon-eye
+                                  !=" | "
+                                  a(href="mailto:"+contact.email, target="_blank")
+                                    !=contact.name+" "+contact.surname
+                                    =" <"+email.email+">"
+                                  !=" "
+                          else 
+                            !=contact.stagename
+                            !=" "
+                            .badge.badge-danger!="MISSING"
 
 
   // Modal Add Partner

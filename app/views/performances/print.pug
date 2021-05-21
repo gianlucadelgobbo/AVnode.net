@@ -73,9 +73,9 @@ block content
                         if !get.hideLinks
                           ul.list-unstyled.pt-3
                             li.mb-3
-                              a(href="https://avnode.net/events/"+item.slug)
+                              a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug)
                                 i.icon-link.mr-2
-                                !="https://avnode.net/events/"+item.slug
+                                !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug
                             if item.web && item.web.length
                               each web in item.web
                                 li.mb-3
