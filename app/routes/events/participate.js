@@ -382,7 +382,7 @@ router.post('/', (req, res) => {
                       template: 'participate',
                       message: {
                         to: req.user.stagename+" <"+req.user.email+">",
-                        cc: data.organizationsettings.call.calls[req.session.call.index].title+" <"+data.organizationsettings.call.calls[req.session.call.index].email+">",
+                        cc: [data.organizationsettings.call.calls[req.session.call.index].title+" <"+data.organizationsettings.call.calls[req.session.call.index].email+">"],
                         from: data.organizationsettings.call.calls[req.session.call.index].title+" <"+data.organizationsettings.call.calls[req.session.call.index].email+">"
                       },
                       email_content: {
