@@ -813,3 +813,29 @@ textarea.form-control {
   height: calc(1.5em + .9rem + 2px);
 	width: 135px;
 }
+
+.modal-dialog-full-width {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width:none !important;
+  color:#FFF;
+}
+.modal-dialog-full-width .close {
+  color:#FFF;
+}
+.modal-content-full-width  {
+  height: auto !important;
+  min-height: 100% !important;
+  border-radius: 0 !important;
+  background-color: #000 !important 
+}
+
+.modal-header-full-width  {
+  border-bottom: 1px solid #9ea2a2 !important;
+}
+
+.modal-footer-full-width  {
+  border-top: 1px solid #000 !important;
+}

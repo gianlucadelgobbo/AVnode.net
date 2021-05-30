@@ -5,7 +5,7 @@ block teaser
 block title
   if data.title
     .container
-      .row.performer_title
+      .row.main_title_cnt
         .col-lg-9
           h1.main_title=data.title
             if editable
@@ -136,7 +136,7 @@ block content
         polygon(fill='#282828' points='1300,170 0,170 0,0 649.2,170 1300,0 ')
   if data.galleries.length  
     .gallery_event_wrapper_bkg
-      section.event_galleries_wrapper
+      section.galleries_wrapper
         .content_wrapper
           .container
             .row

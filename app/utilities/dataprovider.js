@@ -1036,11 +1036,12 @@ dataprovider.show = (req, res, section, subsection, model) => {
         } */
         if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
           //logger.debug("fetchShow END");
-          if (process.env.DEBUG) {
+          res.json(data);
+          /* if (process.env.DEBUG) {
             res.render('json', {data: data});
           } else {
             res.json(data);
-          }
+          } */
           //res.send(JSON.stringify(data, null, '\t'));
         } else if (req.query.xml) {
           res.render(section + '/fpData', {
@@ -1149,6 +1150,12 @@ dataprovider.list = (req, res, section, model) => {
           let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
           let link = '/' + section + '/' + filter + '/' + sorting + '/';
           let pages = helper.getPagination(link, skip, config.sections[section].limit, total, (req.query.country ? "?country="+req.query.country : ""));
+          var scripts = [];
+          if (data && data.media && data.media[0] && data.media[0].file) scripts.push("video");
+          if (section === "videos") scripts.push("video");
+          console.log("stocazzo")
+          console.log(section)
+
           res.render(config.sections[section].view_list, {
             title: title,
             section: section,
@@ -1157,6 +1164,7 @@ dataprovider.list = (req, res, section, model) => {
             sort: sorting,
             total: total,
             pages: pages,
+            scripts: scripts,
             selected_country: req.query.country,
             countries: countries,
             filter: filter,

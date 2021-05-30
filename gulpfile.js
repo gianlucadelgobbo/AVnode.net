@@ -126,7 +126,8 @@ const compress_js_vjtv = () => {
 }
 
 
-gulp.task('default', gulp.series(compress_css, compress_css_admin, compress_js, compress_js_video, compress_js_maps, compress_js_vjtv, compress_js_admin,compress_css_oembed,compress_js_oembed));
+//gulp.task('default', gulp.series(compress_css, compress_css_admin, compress_js, compress_js_video, compress_js_maps, compress_js_vjtv, compress_js_admin,compress_css_oembed,compress_js_oembed));
 //gulp.task('default', gulp.series(compress_js, compress_js_fotonica,css_fotonica_bs));
 //gulp.task('default', gulp.series(compress_js, compress_js_pac,css_pac_bs));
 //gulp.task('default', gulp.series(compress_js, compress_js_lcf,css_lcf_bs));
+gulp.task('default', gulp.series(compress_js));

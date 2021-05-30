@@ -49,6 +49,7 @@
     "i18n": "^0.13.2",
     "image-size": "^0.9.3",
     "jsonfile": "^6.1.0",
+    "lightgallery": "^2.1.0",
     "mime": "^2.5.0",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
@@ -57,7 +58,6 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "nodemailer": "^6.6.0",
-    "nodemon": "^2.0.7",
     "oembed-parser": "^1.4.5",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
@@ -69,6 +69,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "nodemon": "^2.0.7",
     "@popperjs/core": "^2.6.0",
     "bootstrap": "^4.6.0",
     "gulp": "^4.0.2",

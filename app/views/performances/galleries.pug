@@ -40,7 +40,7 @@ block content
     if data.galleries[0].medias
       if data.galleries[0].title
         .container
-          .row.performer_title
+          .row.main_title_cnt
             .col-lg-9
               h1.main_title=data.galleries[0].img && data.galleries[0].img.title ? data.galleries[0].title+": "+data.galleries[0].img.title : data.galleries[0].title
                 if editable
@@ -188,7 +188,7 @@ block content
                 include ../partials/boxImage
     else  
       .gallery_event_wrapper_bkg
-        section.event_galleries_wrapper
+        section.galleries_wrapper
           .content_wrapper
             .container
               .row

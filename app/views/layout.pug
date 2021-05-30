@@ -48,6 +48,7 @@ html.no-js(lang=session.current_lang)
       )
 
     link(rel='stylesheet', type='text/css', href='/css/main.min.css', media="screen")
+    link(rel='stylesheet', type='text/css', href='/lightgallery/css/lightgallery-bundle.min.css')
     if scripts && scripts.indexOf("video")!==-1
       link(rel='stylesheet', type='text/css', href='/css/video-js.min.css')
     script(type="application/ld+json")
@@ -83,7 +84,7 @@ html.no-js(lang=session.current_lang)
                 p.lead.mb-0=subtitle
       include partials/flash
       block content
-
+    #lightGallery
     include partials/footer
     include partials/modals/modalGeneral
     include partials/modals/modalNewContent
@@ -106,9 +107,14 @@ html.no-js(lang=session.current_lang)
       //-script(defer src='/gulp/js/includes_video/videojs.js')
       //-script(defer src='/gulp/js/includes_video/videojs-logo.min.js')
       //-script(defer src='/gulp/js/video.js')
+    script(src='/lightgallery/lightgallery.min.js')
+    script(src='/lightgallery/plugins/video/lg-video.min.js')
+    script(src='/lightgallery/plugins/thumbnail/lg-thumbnail.min.js')
+    script(src='/lightgallery/plugins/zoom/lg-zoom.min.js')
+    script(src='/lightgallery/plugins/video/lg-video.min.js')
+    script(src='/lightgallery/plugins/autoplay/lg-autoplay.min.js')
+    script(src='/lightgallery/plugins/fullscreen/lg-fullscreen.min.js')
     if scripts && scripts.indexOf("signup")!==-1
-      script(src='/lightgallery/js/lightgallery.min.js')
-      script(src='/lightgallery/js/lg-video.min.js')
       script(src='/datetimeentry/jquery.plugin.js')
       script(src='/datetimeentry/jquery.datetimeentry.js')
       script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places")
@@ -120,24 +126,3 @@ html.no-js(lang=session.current_lang)
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'UA-124799696-1');
-
-    // Messenger Chat Plugin Code -->
-    #fb-root
-    script.
-      window.fbAsyncInit = function() {
-        FB.init({
-          xfbml            : true,
-          version          : 'v10.0'
-        });
-      };
-
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-
-    // Your Chat Plugin code
-    .fb-customerchat(attribution="setup_tool" page_id="176966905687876")

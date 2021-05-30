@@ -443,4 +443,109 @@ $(document).ready(function(){
 
 });  
 
+/* $('.video_item_wrappera a').click(function( event ) {
+  event.preventDefault();
+  $('#modalFull').modal('show');
+  console.log($(this).attr("href"))
+  $.ajax({
+    url: $(this).attr("href"),
+    method: "get"
+  })
+  .done(function(data) {
+    $("#modalFull .loading").addClass("d-none");
+    if ($(data).find(".container.content .main_title").html()) {
+      $("#modalFull .title").html($(data).find(".container.content .main_title").html());
+    } else {
+      
+    }
+    $("#modalFull .cnt").append($(data).find(".container.content"));
+    videojs(document.querySelector('.video-js'));
+    //console.log($(data).find(".container.content").html())
+  })
+  .fail(function(err) {
+    $("#modalFull .cnt").html("LOADING ERROR");
+  });
+});  */ 
+var LG;
+$('.video_item_wrapper a').click(function( event ) {
+  event.preventDefault();
+  if (LG) LG.destroy();
+  $.ajax({
+    url: $(this).attr("href")+"?api=1",
+    method: "get"
+  })
+  .done(function(data) {
+    const list = data.videos && data.videos[0] ? data.videos[0] : data;
+    const $dynamicGallery = document.getElementById('lightGallery');
+    if (list.media.iframe) {
+      const dynamicEl = [{
+        src:list.media.iframe,
+        subHtml: '<h4>'+list.title+'</h4>',
+      }];
+      const conf = {
+        iframe: true,
+        dynamic: true,
+        download: false,
+        plugins: [
+          lgVideo
+        ],
+        dynamicEl: dynamicEl
+      };
+    } else {
+      var dynamicEl = [{
+        video:{"source": [{"src": "https://avnode.net"+list.media.file, "type":"video/mp4"}], "attributes": {"preload": false, "controls": true}},
+        poster: list.imageFormats.large,
+        subHtml: '<h4>'+list.title+'</h4>',
+      }];
+      const conf = {
+        dynamic: true,
+        download: false,
+        plugins: [
+          lgVideo
+        ],
+        dynamicEl: dynamicEl
+      };
+    }
+    LG = lightGallery($dynamicGallery, conf);
+    LG.openGallery(0);
+  })
+  .fail(function(err) {
+    console.log("LOADING ERROR");
+  });
+});  
+
+$('.gallery_item_wrapper a').click(function( event ) {
+  event.preventDefault();
+  $.ajax({
+    url: $(this).attr("href")+"?api=1",
+    method: "get"
+  })
+  .done(function(data) {
+    console.log(data)
+    const list = data.galleries && data.galleries[0] ? data.galleries[0] : data;
+    const $dynamicGallery = document.getElementById('lightGallery');
+    var dynamicEl = [];
+    for(var item in list.medias) {
+      dynamicEl.push({
+        src: list.medias[item].imageFormats.large,
+        thumb: list.medias[item].imageFormats.small,
+        subHtml: '<h4>'+list.medias[item].title+'</h4>',
+      });
+    }
+    console.log(dynamicEl)
+    const dynamicGallery = lightGallery($dynamicGallery, {
+        dynamic: true,
+        download: false,
+        plugins: [
+          lgZoom,
+          lgThumbnail
+        ],
+        dynamicEl: dynamicEl
+    });
+    dynamicGallery.openGallery(0);
+  })
+  .fail(function(err) {
+    console.log("LOADING ERROR");
+  });
+});  
 

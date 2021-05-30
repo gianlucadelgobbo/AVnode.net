@@ -5,7 +5,7 @@ block teaser
 block title
   if data.title
     .container
-      .row.performer_title
+      .row.main_title_cnt
         .col-lg-9
           h1.main_title=data.title
             if editable
@@ -26,9 +26,9 @@ block title
           include ../partials/share_like
 
 block content
-  .container
+  .container.content
     .row
-      .col-md-8
+      .col-lg-8
         .embed-responsive(class=(data.media.width/data.media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
           if data.media && data.media.file
             .toclone
@@ -55,19 +55,7 @@ block content
                               img(src="/images/icon_embed.svg")        
                           .label_like_button_wrapper
                               span.label_like_button="embed"
-                      //li
-                        a(href="javascript:window.open('https://www.addtoany.com/share_save?linkurl='+encodeURIComponent(document.URL), 'Share Dialog', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=650,height=450,top='+(screen.height/2-450/2)+',left='+(screen.width/2-650/2));")
-                          .share_button
-                              img(src="/images/share_icon.svg")        
-                          .label_like_button_wrapper
-                              span.label_like_button="share"
                       - var payload = data.img ? "{\"section\":\""+section+"\",\"id\":\""+data._id+"\",\"img_index\":\""+data.img.index+"\",\"img_slug\":\""+data.img.slug+"\"}" : "{\"section\":\""+section+"\",\"id\":\""+data._id+"\"}" 
-                      //li
-                        button#liker.button_share_like(type="button" data-endpoint="/likes/" data-method="GET" data-payload=payload style=data.liked ? "opacity: .65;" : undefined)
-                          .share_button
-                              img(src=data.liked ? "/images/like_full_icon.svg" : "/images/like_icon.svg")
-                          .label_like_button_wrapper
-                              span.label_like_button=data.liked ? "Unlike" : "Like"        
             video#my-video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=data.media.width/data.media.height<1.4 ? "480" : "264", poster=data.imageFormats.large, data-setup='{"aspectRatio":"'+(data.media.width/data.media.height<1.4 ? "4:3" : "16:9")+'", "fluid": true}')
               source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
               //-source(src='MY_VIDEO.webm', type='video/webm')
@@ -76,8 +64,12 @@ block content
                 a(href='http://videojs.com/html5-video-support/', target='_blank')=!"HTML5 video"
           if data.media && data.media.iframe
             !=data.media.iframe
+        if data.about
+          .data_footage_video_wrapper.d-none.d-lg-block
+            h3=__("About")
+            .pt-2.pb-2!=data.about
 
-      .col-md-4.data_footage_video
+      .col-lg-4.data_footage_video
         .data_footage_video_wrapper
           h3=__("Data")
           if data.media
@@ -134,7 +126,7 @@ block content
               each tag in data.tags
                 li.list-inline-item=tag.tag
         if data.about
-          .data_footage_video_wrapper
+          .data_footage_video_wrapper.d-none.d-md-block.d-lg-none
             h3=__("About")
             .pt-2.pb-2!=data.about
         .data_footage_video_wrapper
@@ -151,7 +143,7 @@ block content
                     p.users_performance_item_country!=user.addressesFormatted.join(", ")
 
 
-      
+  .container      
     if data.events && data.events.length 
       h2.mt-5.main_title.indented_title.color1=__("Events")
       .row.mb-5

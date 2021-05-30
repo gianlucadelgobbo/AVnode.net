@@ -7,7 +7,7 @@ ul.list-inline.share_like_list
                 span.label_like_button="share"
     - var payload = data.img ? "{\"section\":\""+section+"\",\"id\":\""+data._id+"\",\"img_index\":\""+data.img.index+"\",\"img_slug\":\""+data.img.slug+"\"}" : "{\"section\":\""+section+"\",\"id\":\""+data._id+"\"}" 
     li.list-inline-item
-        button#liker.btn.btn-primary.button_share_like(type="button" data-endpoint="/likes/" data-method="GET" data-payload=payload style=data.liked ? "opacity: .65;" : undefined)
+        button.btn.btn-primary.button_share_like.button_like(type="button" data-endpoint="/likes/" data-method="GET" data-payload=payload style=data.liked ? "opacity: .65;" : undefined)
             span.share_button
                 img(src=data.liked ? "/images/icon_like_full.svg" : "/images/icon_like.svg" alt=__("Like icon"))
             span.label_like_button_wrapper

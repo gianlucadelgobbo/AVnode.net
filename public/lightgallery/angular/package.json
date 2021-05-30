@@ -1,0 +1,22 @@
+{
+  "name": "lightgallery/angular",
+  "version": "0.0.1",
+  "private": true,
+  "peerDependencies": {
+    "@angular/common": "^11.2.11",
+    "@angular/core": "^11.2.11"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "main": "bundles/lightgallery-angular.umd.js",
+  "module": "fesm2015/lightgallery-angular.js",
+  "es2015": "fesm2015/lightgallery-angular.js",
+  "esm2015": "esm2015/lightgallery-angular.js",
+  "fesm2015": "fesm2015/lightgallery-angular.js",
+  "typings": "lightgallery-angular.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\nPlease delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n')\" && exit 1"
+  }
+}

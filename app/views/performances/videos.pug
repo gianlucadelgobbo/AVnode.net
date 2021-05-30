@@ -44,8 +44,8 @@ block title
 block content
   if data.videos && data.videos[0] && data.videos[0].events
     if data.videos[0].title
-      .container
-        .row.performer_title
+      .container.content
+        .row.main_title_cnt
           .col-lg-9
             h1.main_title=data.videos[0].title
               if editable
@@ -70,7 +70,7 @@ block content
               if data.videos[0].media && data.videos[0].media.file
                 video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=(data.videos[0].media.width/data.videos[0].media.height<1.4 ? "480" : "264"), poster=data.videos[0].imageFormats.large, data-setup='{"aspectRatio":"'+(data.videos[0].media.width/data.videos[0].media.height<1.4 ? "4:3" : "16:9")+'", "fluid": true}')
                   source(src=process.env.WAREHOUSE+data.videos[0].media.file, type='video/mp4')
-                  //source(src='MY_VIDEO.webm', type='video/webm')
+                  //-source(src='MY_VIDEO.webm', type='video/webm')
                   p.vjs-no-js
                     !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
                     a(href='http://videojs.com/html5-video-support/', target='_blank')=!"HTML5 video"
@@ -113,13 +113,15 @@ block content
 
 
           
-        if data.videos[0].events && data.videos[0].events.length 
+      if data.videos[0].events && data.videos[0].events.length 
+        .container
           h2.mt-5.main_title.indented_title.color1=__("Events")
           .row.mb-5
             each item in data.videos[0].events
               .col-md-4
                 include ../partials/boxEvent
-        if data.videos[0].performances && data.videos[0].performances.length 
+      if data.videos[0].performances && data.videos[0].performances.length 
+        .container
           h2.mt-5.main_title.indented_title.color1=__("Performances")
           .row.mb-5
             each item in data.videos[0].performances

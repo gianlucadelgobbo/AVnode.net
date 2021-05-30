@@ -47,16 +47,17 @@ $(".cancel-sub").on('click', function(ev) {
   } 
 });
 
-$("#liker").on('click', function(ev) {
+$(".button_like").on('click', function(ev) {
   ///likes/?section=performances&id=5a9c32c3606624000000bccb
   ev.preventDefault();
-  liker()
+  liker($(this))
 });
-var liker = () => {
-  const $el = $("#liker");
-  const $label = $("#liker .label_like_button");
-  const $icon = $("#liker img");
-  const $likes_count = $(".likes_count");
+var liker = (button) => {
+  const $el = button;
+  const $label = button.find(".label_like_button");
+  console.log(button.find(".label_like_button"))
+  const $icon = button.find("img");
+  const $likes_count = button.parent().parent().parent().parent().find(".likes_count");
   const url = $el.attr('data-endpoint');
   const method = $el.attr('data-method');
   let payload = $el.attr('data-payload');

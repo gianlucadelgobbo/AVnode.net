@@ -1092,12 +1092,12 @@ function checkCookie() {
   }
 }
 
-$("#liker").on('click', function(ev) {
+$(".button_share_like").on('click', function(ev) {
   ///likes/?section=performances&id=5a9c32c3606624000000bccb
   ev.preventDefault();
-  const $el = $("#liker");
-  const $label = $("#liker .label_like_button");
-  const $icon = $("#liker img");
+  const $el = $(".button_share_like");
+  const $label = $(".button_share_like .label_like_button");
+  const $icon = $(".button_share_like img");
   const $likes_count = $(".likes_count");
   const url = $el.attr('data-endpoint');
   const method = $el.attr('data-method');
