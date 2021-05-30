@@ -24,7 +24,7 @@ html(lang=session.current_lang)
     link(rel='stylesheet', type='text/css', href='/css/admin.min.css')
     if scripts && scripts.indexOf("video")!==-1
       link(rel='stylesheet', type='text/css', href='/css/video-js.min.css')
-    link(rel='stylesheet', href='/lightgallery/css/lightgallery.min.css')
+    link(rel='stylesheet', type='text/css', href='/lightgallery/css/lightgallery-bundle.min.css')
     //-link(rel='stylesheet', href='/datetimeentry/jquery.datetimeentry.css')
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous")
     //- link(rel="stylesheet", href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
@@ -73,24 +73,34 @@ html(lang=session.current_lang)
       .text-muted.text-right="AVnode.net"
     include partials/modals/modalGeneral
     include partials/modals/modalNewContent
+    #lightGallery
+
     script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places")
 
     script(src='/js/combo.min.js')
+
+    //- script(src="/js/owl.carousel.min.js")
+    //- script(src="/js/main.js")
+    //- script(src="/js/ajax.js")
+    //- script(src="/js/cookielawinfo.min.js")
+
+    //-if data && data.media && data.media.file
     if scripts && scripts.indexOf("video")!==-1
       script.
         var logo_url = "!{canonical}"
-      script(src='/js/combo_video.min.js')
+      script(defer src='/js/combo_video.min.js')
     script(src='/js/combo_admin.min.js')
-    //- script(src="/js/adminpro.js")
-    //- script(src="/js/BsMultiSelect.min.js")
-    //- script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
-    //- script(src="/js/moment-with-locales.min.js")
-    //- script(src="/js/jquery.serializejson.min.js")
-    //- script(src='/js/video.min.js')
+    //-script(defer src='/gulp/js/includes_video/swfobject.js')
+    //-script(defer src='/gulp/js/includes_video/videojs.js')
+    //-script(defer src='/gulp/js/includes_video/videojs-logo.min.js')
+    //-script(defer src='/gulp/js/video.js')
     script(src='/lightgallery/lightgallery.min.js')
     script(src='/lightgallery/plugins/video/lg-video.min.js')
     script(src='/lightgallery/plugins/thumbnail/lg-thumbnail.min.js')
     script(src='/lightgallery/plugins/zoom/lg-zoom.min.js')
+    script(src='/lightgallery/plugins/video/lg-video.min.js')
+    script(src='/lightgallery/plugins/autoplay/lg-autoplay.min.js')
+    script(src='/lightgallery/plugins/fullscreen/lg-fullscreen.min.js')
     script(src='/datetimeentry/jquery.plugin.js')
     script(src='/datetimeentry/jquery.datetimeentry.js')
     if get

@@ -1,11 +1,11 @@
-#sidebar-container.sidebar-expanded.d-none.d-md-block
+#sidebar-container.sidebar-expanded.d-none.d-lg-block
   // !=currentUrl +(currentUrl.indexOf("/adminpro/supertools/files")===0)
   // d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu'
   // Bootstrap List Group
   .list-group
     // Separator with title
     .list-group-item.sidebar-separator-title.d-flex
-      small.menu-collapsed=__("Control panel")
+      small.menu-collapsed=__("Control Panel")
     - var exclude = ["/admin/footage", "/admin/playlists", "/admin/subscriptions", "/admin/partners"]
     each menuitem in config.adminMenu
       if user.is_admin || exclude.indexOf(menuitem.href) === -1

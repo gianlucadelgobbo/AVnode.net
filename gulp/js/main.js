@@ -443,29 +443,6 @@ $(document).ready(function(){
 
 });  
 
-/* $('.video_item_wrappera a').click(function( event ) {
-  event.preventDefault();
-  $('#modalFull').modal('show');
-  console.log($(this).attr("href"))
-  $.ajax({
-    url: $(this).attr("href"),
-    method: "get"
-  })
-  .done(function(data) {
-    $("#modalFull .loading").addClass("d-none");
-    if ($(data).find(".container.content .main_title").html()) {
-      $("#modalFull .title").html($(data).find(".container.content .main_title").html());
-    } else {
-      
-    }
-    $("#modalFull .cnt").append($(data).find(".container.content"));
-    videojs(document.querySelector('.video-js'));
-    //console.log($(data).find(".container.content").html())
-  })
-  .fail(function(err) {
-    $("#modalFull .cnt").html("LOADING ERROR");
-  });
-});  */ 
 var LG;
 $('.video_item_wrapper a').click(function( event ) {
   event.preventDefault();
@@ -482,7 +459,7 @@ $('.video_item_wrapper a').click(function( event ) {
         src:list.media.iframe,
         subHtml: '<h4>'+list.title+'</h4>',
       }];
-      const conf = {
+      LG = lightGallery($dynamicGallery, {
         iframe: true,
         dynamic: true,
         download: false,
@@ -490,23 +467,22 @@ $('.video_item_wrapper a').click(function( event ) {
           lgVideo
         ],
         dynamicEl: dynamicEl
-      };
+      });
     } else {
       var dynamicEl = [{
         video:{"source": [{"src": "https://avnode.net"+list.media.file, "type":"video/mp4"}], "attributes": {"preload": false, "controls": true}},
         poster: list.imageFormats.large,
         subHtml: '<h4>'+list.title+'</h4>',
       }];
-      const conf = {
+      LG = lightGallery($dynamicGallery, {
         dynamic: true,
         download: false,
         plugins: [
           lgVideo
         ],
         dynamicEl: dynamicEl
-      };
+      });
     }
-    LG = lightGallery($dynamicGallery, conf);
     LG.openGallery(0);
   })
   .fail(function(err) {

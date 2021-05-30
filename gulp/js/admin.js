@@ -38,10 +38,7 @@ $(function() {
       window.print();
     });
   }
-  $(".lightgallery").lightGallery(); 
-  $(".lightvideos").lightGallery({
-    videojs: true
-  }); 
+
   $(window).scroll(function() {    
     var scroll = $(window).scrollTop();
 

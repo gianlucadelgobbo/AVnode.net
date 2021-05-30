@@ -192,17 +192,18 @@ block content
               if item.performance.videos && item.performance.videos.length
                 .mt-2
                   b VIDEOS
-                  ul.lightvideos
+                  ul.lightvideos.list-unstyled
                     each video in item.performance.videos
                       if video.media && video.media.file
-                        li(data-html="#"+video._id, data-poster=video.imageFormats.large, data-sub-html=video.title )
-                          //!=video.title
-                          img(src=video.imageFormats.small)
+                        li.video_item_wrapper
+                          a(href="https://avnode.net/videos/"+video.slug)
+                            img.img-fluid(src=video.imageFormats.small)
                       else
-                        !=" "
-                        .badge.badge-danger MISSING MEDIAS
-                        //- del.push("db.videos.remove(_id:ObjectId('"+video._id+"')\n")
-                  each video in item.performance.videos
+                        li
+                          !=" "
+                          .badge.badge-danger MISSING MEDIAS
+                          //- del.push("db.videos.remove(_id:ObjectId('"+video._id+"')\n")
+                  //-each video in item.performance.videos
                     if video.media && video.media.file
                       div(style='display:none;', id=video._id)
                         video.lg-video-object.lg-html5.video-js.vjs-big-play-centered.vjs-default-skin(controls='', preload='none')
@@ -214,10 +215,10 @@ block content
                   b GALLERIES
                   ul
                     each gallery in item.performance.galleries
-                      li
-                        !=gallery.title
+                      li.gallery_item_wrapper
                         if gallery.medias.length
-                          .lightgallery
+                          a(href="/galleries/"+gallery.slug)=gallery.title
+                          //-.lightgallery
                             each media in gallery.medias
                               a.media(href=media.imageFormats.large)
                         else
