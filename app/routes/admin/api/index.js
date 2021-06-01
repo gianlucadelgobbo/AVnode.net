@@ -250,6 +250,10 @@ router.post('/partners/status/', (req, res) => {
   post.setStatus(req, res);
 });
 
+router.post('/partners/categories/', (req, res) => {
+  post.setCategories(req, res);
+});
+
 router.post('/partners/contacts/add/', (req, res) => {
   post.addContacts(req, res);
 });

@@ -1031,7 +1031,7 @@
             "is_public": 1,
             "imageFormats": 1
           },
-          "populate": [{ "path": "partners.partner", "select": "stagename slug organizationData.contacts", "model": "User", "populate": [{ "path": "members", "select": "stagename name surname emails", "model": "User"}]}]
+          "populate": [{ "path": "partners.partner", "select": "stagename slug organizationData", "model": "User", "populate": [{ "path": "members", "select": "stagename name surname emails", "model": "User"}]}]
         }
       },
       "list": {
@@ -1416,7 +1416,8 @@
             }
           },
           "select": {
-            "partners": 1
+            "partners": 1,
+            "users": 1
           },
           "selectaddon": {
             "slug": 1,

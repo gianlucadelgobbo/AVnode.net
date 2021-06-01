@@ -37,6 +37,7 @@ const userSchema = new Schema({
   partners: [{
     "partner": { type: Schema.ObjectId, ref: 'User' },
     "delegate": String,
+    "categories": [{ type: Schema.ObjectId, ref: 'Category' }],
     "is_selecta": Boolean,
     "is_satellite": Boolean,
     "is_event": Boolean,

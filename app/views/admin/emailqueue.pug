@@ -1,7 +1,12 @@
-extends ../../layout_admin
-block topmenu
-  include topmenu
+extends ../layout_admin
 block content
+  div(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3
+      h1.h2=__("Mailer")
+      //.btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        .mr-2.mb-3
+          button.btn.btn-primary.mr-3(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD FROM AVNODE"
+          button.btn.btn-primary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD NEW"
   form(method="post").form-horizontal#myform
     table.table.table-fixed
       thead

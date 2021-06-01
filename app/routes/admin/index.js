@@ -44,9 +44,17 @@ router.post('/:sez/:id/:form/', (req, res) => {
     });
   } else if (req.params.sez == "events" && req.params.form == "partners") {
     get.getPartners(req, res);
+  } else if (req.params.sez == "partners" && req.params.form == "message") {
+    get.getData(req, res, "admin/"+req.params.sez+"_"+req.params.form);
+  } else if (req.params.sez == "events" && req.params.form == "partners-message") {
+    get.getData(req, res, "admin/"+req.params.sez+"_"+req.params.form);
   } else {
     put.putData(req, res, "admin/"+req.params.sez+"_"+req.params.form);
   }
+});
+
+router.get('/mailer', (req, res) => {
+  get.getEmailqueue(req, res, "admin/mailer");
 });
 
 router.get('/:sez', (req, res) => {

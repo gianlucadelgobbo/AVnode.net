@@ -13,4 +13,4 @@ block content
     ol
       each item, index in data.crews
         li
-          a(href="/admin/partners/"+item._id+"/contacts")!=item.stagename
+          a(href="/admin/partners/"+item._id+"/contacts?is_active=1&anykind=1")!=item.stagename

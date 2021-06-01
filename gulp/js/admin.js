@@ -725,18 +725,30 @@ $( ".lock-schedule" ).click(function( event ) {
         $("#"+post.crew+" .contacts").append($(str).prepend(str2));
       }
       $( ".deleteContact" ).on('click', function( event ) {
-        deleteContact( $(this), event );
+        console.log("stocazzo2")
+        event.preventDefault();
+        var result = confirm("Want to delete this contact?");
+        if (result) {
+          deleteContact( $(this), event );
+        }
       });    
       $('#modalAddContact').modal('hide');
     });
   });
+
+
+  $('#table').on('post-body.bs.table', function (e) {
+    console.log(e)
+    $( ".deleteContact" ).on('click', function( event ) {
+      console.log("stocazzo2")
+      event.preventDefault();
+      var result = confirm("Want to delete this contact?");
+      if (result) {
+        deleteContact( $(this), event );
+      }
+    });
+  })
   
-  $( ".deleteContact" ).on('click', function( event ) {
-    var result = confirm("Want to delete this contact?");
-    if (result) {
-      deleteContact( $(this), event );
-    }
-  });
   
   deleteContact = (button, event ) => {
     console.log("deleteContact");

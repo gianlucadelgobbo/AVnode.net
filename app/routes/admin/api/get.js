@@ -15,10 +15,57 @@ const Models = {
   'Video': mongoose.model('Video'),
   'VenueDB': mongoose.model('VenueDB'),
   'AddressDB': mongoose.model('AddressDB'),
-  'Program': mongoose.model('Program')
+  'Program': mongoose.model('Program'),
+  'Emailqueue': mongoose.model('Emailqueue')
 }
 const logger = require('../../../utilities/logger');
 const { __ } = require('i18n');
+const partners_categories = [
+  {
+    "_id" : ("5be8708afc396100000001e8"),
+    "name" : "CO-ORGANIZER"
+  },
+  {
+    "_id" : ("5be8708afc396100000000fe"),
+    "name" : "SUPPORTED BY"
+  },
+  {
+    "_id" : ("5be8708afc3961000000026c"),
+    "name" : "IN COLLABORATION"
+  },
+  {
+    "_id" : ("5be8708afc3961000000005e"),
+    "name" : "FRIENDS / CONTENTS"
+  },
+  {
+    "_id" : ("5be8708afc3961000000007a"),
+    "name" : "TECHNICAL PARTNERS"
+  },
+  {
+    "_id" : ("5be8708afc3961000000007b"),
+    "name" : "LPM NETWORK"
+  },
+  {
+    "_id" : ("5be8708afc396100000000e0"),
+    "name" : "TOP MEDIA PARTNERS"
+  },
+  {
+    "_id" : ("5be8708afc39610000000165"),
+    "name" : "MEDIA PARTNERS"
+  },
+  {
+    "_id" : ("5be8708afc396100000000e1"),
+    "name" : "APPROVED BY"
+  },
+  {
+    "_id" : ("5be8708afc39610000000164"),
+    "name" : "ISTITUZIONI"
+  },
+  {
+    "_id" : ("5be8708afc396100000000e2"),
+    "name" : "NETWORK EVENTS"
+  }
+];
 
 router.getDuplicate = (req, res) => {
   logger.debug("getDuplicate");
@@ -580,16 +627,57 @@ router.getData = (req, res, view) => {
             if (view == "json") {
               res.json(send);
             } else {
-              res.render(view, {
-                title: view,
-                scripts: [],
-                currentUrl: req.originalUrl,
-                get: req.params,
-                countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
-                languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
-                msg_tmp: { }, 
-                data: send
-              });
+              logger.debug("body")
+              logger.debug(req.body)
+              if (req.params.sez == "partners" && req.body.subject && req.body.submit=="send") {
+                router.addPartnersToQueque(req, res, data, () => {
+                  req.flash('success', { msg: __('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+__("CHECK THE CUE")+'</b></a>' });
+                  res.render(view, {
+                    title: view,
+                    scripts: [],
+                    currentUrl: req.originalUrl,
+                    get: req.params,
+                    query: req.query,
+                    body: req.body,
+                    countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                    languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                    msg_tmp: { }, 
+                    data: send,
+                    partners_categories: partners_categories
+                  });
+                });
+              } else if (req.params.sez == "events" && req.body.subject && req.body.submit=="send") {
+                router.addPartnersEventToQueque(req, res, data, () => {
+                  req.flash('success', { msg: __('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+__("CHECK THE CUE")+'</b></a>' });
+                  res.render(view, {
+                    title: view,
+                    scripts: [],
+                    currentUrl: req.originalUrl,
+                    get: req.params,
+                    query: req.query,
+                    body: req.body,
+                    countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                    languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                    msg_tmp: { }, 
+                    data: send,
+                    partners_categories: partners_categories
+                  });
+                });
+              } else {
+                res.render(view, {
+                  title: view,
+                  scripts: [],
+                  currentUrl: req.originalUrl,
+                  get: req.params,
+                  query: req.query,
+                  body: req.body,
+                  countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                  languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                  msg_tmp: { }, 
+                  data: send,
+                  partners_categories: partners_categories
+                });
+              }
             }  
           } else {
             if (view == "json") {
@@ -608,6 +696,182 @@ router.getData = (req, res, view) => {
       res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
     }  
   }
+}
+
+router.addPartnersToQueque = (req, res, data, cb) => {
+  var tosave = {};
+  tosave.organization = req.params.id;
+  if (req.params.event) tosave.event = req.params.event;
+  tosave.user = req.user._id;
+  tosave.subject = req.body.subject;
+  tosave.messages_tosend = [];
+  tosave.messages_sent = [];
+  data.partners = data.partners.filter(partner => partner.is_active == req.query.is_active=="1");
+  data.partners = data.partners.filter(partner => partner.is_event == req.query.is_event=="1");
+  data.partners = data.partners.filter(partner => partner.is_selecta == req.query.is_selecta=="1");
+  //-each q in req.query.categories
+  if (req.query.categories) 
+    data.partners = data.partners.filter(partner => req.query.categories.some(r => partner.categories.map(item => {return item._id.toString()}).includes(r) ));
+  if (req.query.nokind) 
+    data.partners = data.partners.filter(partner => !partner.categories.length);
+
+  data.partners.forEach((item, index) => {
+    var message = {};
+    if (item.partner && item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && req.body.exclude.indexOf(item.partner._id.toString())===-1) {
+      message.to_html = "";
+      message.cc_html = [];
+
+      message.from_name = req.body.from_name;
+      message.from_email = req.body.from_email;
+      message.user_email = req.body.user_email;
+      message.user_password = req.body.user_password;
+      message.subject = req.body.subject.split("[org_name]").join(item.partner.stagename);
+
+      item.partner.organizationData.contacts.forEach((contact, cindex) => {
+        if (contact.email && message.to_html == "") {
+          message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
+          message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+          message.text = message.text.split("[name]").join(contact.name);
+          message.text = message.text.split("[slug]").join(item.partner.slug);
+        } else if (contact.email && message.to_html != "") {
+          message.cc_html.push((contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">")
+        }
+      });
+
+      if (message.to_html != "") tosave.messages_tosend.push(message)
+    } else {
+      //logger.debug(item.partner.stagename);
+    }
+  });
+  Models.Emailqueue.create(tosave, function (err) {
+    logger.debug("Emailqueue.create")
+    cb(err)
+  });
+}
+
+
+router.addPartnersEventToQueque = (req, res, data, cb) => {
+  var tosave = {};
+  tosave.organization = data.users[0];
+  if (req.params.event) tosave.event = req.params.id;
+  tosave.user = req.user._id;
+  tosave.subject = req.body.subject;
+  tosave.messages_tosend = [];
+  tosave.messages_sent = [];
+
+  var dest = [];
+  data.partners.forEach((group, index) => {
+    group.users.forEach((item, index) => {
+      logger.debug(item);
+      if (!req.body.exclude || res.body.exclude.indexOf(item._id.toString())) dest.push(item._id.toString());
+    });
+  });
+
+  var populate = [{ "path": "partners.partner", "select": "stagename slug organizationData", "model": "User"}];
+  //const query = {"partner_owner.owner": {$in: event.users.map(item =>{return item._id})}};
+  const query = {"_id": {$in: data.users}};
+  Models.User.
+  find(query).
+  lean().
+  sort({stagename: 1}).
+  //select({stagename: 1, createdAt: 1, crews:1}).
+  populate(populate).
+  exec((err, data) => {
+    var partners = []
+    for (var item in data) {
+      partners = partners.concat(data[item].partners);
+    }   
+    logger.debug("partners");
+    logger.debug(partners);
+    partners.forEach((item, index) => {
+      var message = {};
+      logger.debug("req.body.exclude.indexOf(item._id.toString())===-1");
+      if (item && item.partner && item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && dest.indexOf(item.partner._id.toString())!==-1) {
+        message.to_html = "";
+        message.cc_html = [];
+  
+        message.from_name = req.body.from_name;
+        message.from_email = req.body.from_email;
+        message.user_email = req.body.user_email;
+        message.user_password = req.body.user_password;
+        message.subject = req.body.subject.split("[org_name]").join(item.partner.stagename);
+  
+        item.partner.organizationData.contacts.forEach((contact, cindex) => {
+          if (contact.email && message.to_html == "") {
+            message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
+            message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+            message.text = message.text.split("[name]").join(contact.name);
+            message.text = message.text.split("[slug]").join(item.partner.slug);
+          } else if (contact.email && message.to_html != "") {
+            message.cc_html.push((contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">")
+          }
+        });
+  
+        if (message.to_html != "") tosave.messages_tosend.push(message)
+      } else {
+        //logger.debug(item.partner.stagename);
+      }
+    });
+    logger.debug("tosavetosavetosavetosavetosavetosave");
+    //logger.debug(tosave);
+    Models.Emailqueue.create(tosave, function (err) {
+      logger.debug("Emailqueue.create")
+      cb(err)
+    });
+  });
+}
+
+
+
+
+
+
+
+
+
+router.getEmailqueue = (req, res) => {
+  logger.debug('/mailer/'+req.params.id);
+  logger.debug("req.body");
+  var ids = req.user.crews.map(item => {return item._id});
+  logger.debug(ids);
+  logger.debug(req.body);
+  logger.debug("req.params");
+  logger.debug(req.params);
+
+  var query = {$or:[{organization: {$in: ids}}, {user: req.user._id}]};
+  if (req.params.event) query.event = req.params.event;
+  var populate = [
+    {path: "organization", select: {stagename:1, slug:1}, model:"UserShow"},
+    {path: "user", select: {stagename:1, slug:1}, model:"UserShow"},
+    {path: "event", select: {title:1, slug:1}, model:"EventShow"}
+  ];
+  Models.Emailqueue.
+  find(query).
+  //sort({stagename: 1}).
+  //select({stagename: 1, createdAt: 1, crews:1}).
+  populate(populate).
+  exec((err, data) => {
+    logger.debug("data");
+    logger.debug(data);
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(data);
+    } else {
+      res.render('admin/emailqueue', {
+        title: 'Email queue',
+        currentUrl: req.originalUrl,
+        map: req.query.map,
+        csv: req.query.csv,
+        body: req.body,
+        event: req.params.event,
+        get: req.params,
+        owner: req.params.id,
+        //events: events,
+        user: req.user,
+        data: data,
+        script: false
+      });
+    }
+  });
 }
 
 router.getOwnresIds = (req, res,cb) => {

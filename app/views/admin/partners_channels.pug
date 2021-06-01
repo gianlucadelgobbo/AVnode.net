@@ -73,74 +73,104 @@ block content
 
   else 
     #toolbar
-      .btn-group.mr-2.mb-3
-        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {})")!=__("ALL")
-        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_active: ['true']})")!=__("ACTIVE")
-        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_active: ['false']})")!=__("NOT ACTIVE")
-        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_event: ['true']})")!=__("EVENT")
-        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_event: ['false']})")!=__("NOT EVENT")
-        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_selecta: ['true']})")!=__("SELECTA")
-        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {is_selecta: ['false']})")!=__("NOT SELECTA")
+      form
+        .form-inline.mb-2
+          .form-check.mb-1.mr-3
+            input#is_active.form-check-input(type='checkbox' value="1" name="is_active" checked=query.is_active ? "checked" : undefined)
+            label.form-check-label.small(for='is_active')=__("ACTIVE")
+          .form-check.mb-1.mr-3
+            input#is_selecta.form-check-input(type='checkbox' value="1" name="is_selecta" checked=query.is_selecta ? "checked" : undefined)
+            label.form-check-label.small(for='is_selecta')=__("SELECTA")
+          .form-check.mb-1.mr-3
+            input#is_event.form-check-input(type='checkbox' value="1" name="is_event" checked=query.is_event ? "checked" : undefined)
+            label.form-check-label.small(for='is_event')=__("EVENT")
+          //- if (!query.categories) query.categories = partners_categories.map(c => {return c._id})
+        .form-inline.mb-2
+          .form-check.mb-1.mr-3
+            input.anykind.form-check-input(type="checkbox" name="anykind" id="anykind" value="1" checked=query.anykind && !query.categories ? "checked" : undefined)
+            label.form-check-label.small(for="anykind")
+              b=__("ANY KIND")
+          .form-check.mb-1.mr-3
+            input.nokind.form-check-input(type="checkbox" name="nokind" id="nokind" value="1" checked=query.nokind && !query.categories ? "checked" : undefined)
+            label.form-check-label.small(for="nokind")
+              b=__("NO KIND")
+          each category in partners_categories
+            .form-check.mb-1.mr-3
+              input.categories_filter.form-check-input(type="checkbox" name="categories[]" id="category"+category._id value=category._id checked=query.categories && query.categories.indexOf(category._id)!==-1 ? "checked" : undefined)
+              label.form-check-label.small(for="category"+category._id)=category.name
+        .form-inline.mb-2
+          button.mb-2.btn.btn-primary.btn-sm(type="submit")=__("FILTER")
     table(data-toggle="table", data-show-columns="true", data-search="true", data-toolbar="#toolbar")
       thead
         tr
           th.table-firstcolumn-ID="ID"
           th=global.__("Brand")
           th=global.__("Status")
-          th(data-field="is_active" data-visible="false")="is_active"
-          th(data-field="is_event" data-visible="false")="is_event"
-          th(data-field="is_selecta" data-visible="false")="is_selecta"
+          th=global.__("Types")
           th=global.__("Web Channels")
           th=global.__("Social Channels")
       tbody
-          each item, index in data.partners
+        - data.partners = data.partners.filter(partner => partner.is_active == query.is_active=="1");
+        - data.partners = data.partners.filter(partner => partner.is_event == query.is_event=="1");
+        - data.partners = data.partners.filter(partner => partner.is_selecta == query.is_selecta=="1");
+        //-each q in query.categories
+        - if (query.categories) 
+          - data.partners = data.partners.filter(partner => query.categories.some(r => partner.categories.map(item => {return item._id.toString()}).includes(r) ));
+        - if (query.nokind) 
+          - data.partners = data.partners.filter(partner => !partner.categories.length);
+        each item, index in data.partners
+          if item.partner
             tr
-              td.table-firstcolumn-ID=index+1
-              td
-                a(href="/admin/crews/"+item.partner._id+"/public", target="_blank", title=global.__("edit"))
-                  span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                    i.icon-edit
-                !=" | "
-                a.unlink(href="#", data-owner=owner, data-partner=item.partner._id, title=global.__("Unlink"))
-                  span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
-                    i.icon-unlink
-                if item.partner.members && item.partner.members.length
+                td=index+1
+                td
+                  a(href="/admin/crews/"+item.partner._id+"/public", target="_blank", title=global.__("edit"))
+                    span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                      i.icon-edit
                   !=" | "
-                  a(href="/"+item.partner.slug, target="_blank", title=global.__("View"))
-                    span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
-                      i.icon-eye
-                !=" | "
-                b!=item.partner.stagename
-                if !item.partner.members || !item.partner.members.length
-                  !=" "
-                  .badge.badge-danger!="EXTERNAL"
-              td
-                .text-nowrap
-                  .form-check
-                    input.edit_partners_partner.form-check-input.is_active(type="checkbox" id="is_active"+item.partner._id value="true" checked=item.is_active ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_active")
-                    label.form-check-label(for="is_active"+item.partner._id)
-                      b=__("Active")
-                  .form-check
-                    input.edit_partners_partner.form-check-input.is_event(type="checkbox" id="is_event"+item.partner._id value="true" checked=item.is_event ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_event")
-                    label.form-check-label(for="is_event"+item.partner._id)
-                      b=__("Event")
-                  .form-check
-                    input.edit_partners_partner.form-check-input.is_selecta(type="checkbox" id="is_selecta"+item.partner._id value="true" checked=item.is_selecta ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_selecta")
-                    label.form-check-label(for="is_selecta"+item.partner._id)
-                      b=__("Selecta")
-              td=item.is_active ? "true" : "false"
-              td=item.is_event ? "true" : "false"
-              td=item.is_selecta ? "true" : "false"
-              td
-                if item.partner.web
-                  each web in item.partner.web
-                    div
-                      a(href=web.url, target="_blank")!=web.url
-              td
-                if item.partner.social
-                  each web in item.partner.social
-                    div
-                      a(href=web.url, target="_blank")!=web.url
+                  a.unlink(href="#", data-owner=owner, data-partner=item.partner._id, title=global.__("Unlink"))
+                    span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
+                      i.icon-unlink
+                  if item.partner.members && item.partner.members.length
+                    !=" | "
+                    a(href="/"+item.partner.slug, target="_blank", title=global.__("View"))
+                      span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                        i.icon-eye
+                  !=" | "
+                  b!=item.partner.stagename
+                  if !item.partner.members || !item.partner.members.length
+                    !=" "
+                    .badge.badge-danger!="EXTERNAL"
+                td
+                  .text-nowrap
+                    .form-check
+                      input.edit_partners_partner.form-check-input.is_active(type="checkbox" id="is_active"+item.partner._id value="true" checked=item.is_active ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_active")
+                      label.form-check-label(for="is_active"+item.partner._id)
+                        b=__("Active")
+                    .form-check
+                      input.edit_partners_partner.form-check-input.is_event(type="checkbox" id="is_event"+item.partner._id value="true" checked=item.is_event ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_event")
+                      label.form-check-label(for="is_event"+item.partner._id)
+                        b=__("Event")
+                    .form-check
+                      input.edit_partners_partner.form-check-input.is_selecta(type="checkbox" id="is_selecta"+item.partner._id value="true" checked=item.is_selecta ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_selecta")
+                      label.form-check-label(for="is_selecta"+item.partner._id)
+                        b=__("Selecta")
+                td
+                  each category in partners_categories
+                    .text-nowrap
+                      .form-check
+                        input.edit_partners_categories.form-check-input(type="checkbox" id="category"+category._id+item.partner._id value="true" checked=item.categories && item.categories.map(cats => {return cats._id.toString()}).indexOf(category._id)!==-1 ? "checked" : undefined data-category=category._id data-partner=item.partner._id data-owner=data._id)
+                        label.form-check-label(for="category"+category._id+item.partner._id)
+                          small=category.name
+                td
+                  if item.partner.web
+                    each web in item.partner.web
+                      div
+                        a(href=web.url, target="_blank")!=web.url
+                td
+                  if item.partner.social
+                    each web in item.partner.social
+                      div
+                        a(href=web.url, target="_blank")!=web.url
 
   // Modal Add Partner
   #modalAddPartner.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')

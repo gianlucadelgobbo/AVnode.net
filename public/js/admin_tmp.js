@@ -13,6 +13,41 @@ $(function () {
 		});
   });
 
+  $( ".edit_partners_categories" ).click(function( event ) {
+		const owner = $(this).data("owner");
+		const partner = $(this).data("partner");
+		const category = $(this).data('category');
+		const value = $(this).prop('checked');
+		$.ajax({
+			url: "/admin/api/partners/categories/",
+			method: "post",
+			data: {id:partner, owner:owner, category:category, value:value}
+		}).done(function(data) {
+			alert("Done!!!");
+		});
+  });
+
+  $( ".categories_filter" ).click(function( event ) {
+		if ($( ".categories_filter" ).prop('checked')) {
+			$( ".anykind" ).prop('checked',false);
+			$( ".nokind" ).prop('checked',false);
+		}
+  });
+
+  $( ".nokind" ).click(function( event ) {
+		if ($( ".nokind" ).prop('checked')) {
+			$( ".anykind" ).prop('checked',false);
+			$( ".categories_filter" ).prop('checked',false);
+		}
+  });
+
+  $( ".anykind" ).click(function( event ) {
+		if ($( ".anykind" ).prop('checked')) {
+			$( ".categories_filter" ).prop('checked',false);
+			$( ".nokind" ).prop('checked',false);
+		}
+  });
+
 
 	$('.delete').click(function (event) {
     event.preventDefault();

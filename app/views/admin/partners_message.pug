@@ -8,6 +8,34 @@ block content
           button.btn.btn-primary.mr-3(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD FROM AVNODE"
           button.btn.btn-primary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD NEW"
   include partials/menuobj
+  #toolbar
+    form
+      .form-inline.mb-2
+        .form-check.mb-1.mr-3
+          input#is_active.form-check-input(type='checkbox' value="1" name="is_active" checked=query.is_active ? "checked" : undefined)
+          label.form-check-label.small(for='is_active')=__("ACTIVE")
+        .form-check.mb-1.mr-3
+          input#is_selecta.form-check-input(type='checkbox' value="1" name="is_selecta" checked=query.is_selecta ? "checked" : undefined)
+          label.form-check-label.small(for='is_selecta')=__("SELECTA")
+        .form-check.mb-1.mr-3
+          input#is_event.form-check-input(type='checkbox' value="1" name="is_event" checked=query.is_event ? "checked" : undefined)
+          label.form-check-label.small(for='is_event')=__("EVENT")
+        //- if (!query.categories) query.categories = partners_categories.map(c => {return c._id})
+      .form-inline.mb-2
+        .form-check.mb-1.mr-3
+          input.anykind.form-check-input(type="checkbox" name="anykind" id="anykind" value="1" checked=query.anykind && !query.categories ? "checked" : undefined)
+          label.form-check-label.small(for="anykind")
+            b=__("ANY KIND")
+        .form-check.mb-1.mr-3
+          input.nokind.form-check-input(type="checkbox" name="nokind" id="nokind" value="1" checked=query.nokind && !query.categories ? "checked" : undefined)
+          label.form-check-label.small(for="nokind")
+            b=__("NO KIND")
+        each category in partners_categories
+          .form-check.mb-1.mr-3
+            input.categories_filter.form-check-input(type="checkbox" name="categories[]" id="category"+category._id value=category._id checked=query.categories && query.categories.indexOf(category._id)!==-1 ? "checked" : undefined)
+            label.form-check-label.small(for="category"+category._id)=category.name
+      .form-inline.mb-2
+        button.mb-2.btn.btn-primary.btn-sm(type="submit")=__("FILTER")
   form(method="post").form-horizontal#myform
     .well
       // store the userId on the client side in a hidden input field //
@@ -52,43 +80,47 @@ block content
           p
             label(for='message_en')="Message EN"
             textarea(rows="20",name="message_en")#message_en.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_en : 'Ciao [name],\n\n\n[slug]\n\n\n[signature]')
+      - data.partners = data.partners.filter(partner => partner.is_active == query.is_active=="1");
+      - data.partners = data.partners.filter(partner => partner.is_event == query.is_event=="1");
+      - data.partners = data.partners.filter(partner => partner.is_selecta == query.is_selecta=="1");
+      //-each q in query.categories
+      - if (query.categories) 
+        - data.partners = data.partners.filter(partner => query.categories.some(r => partner.categories.map(item => {return item._id.toString()}).includes(r) ));
+      - if (query.nokind) 
+        - data.partners = data.partners.filter(partner => !partner.categories.length);
       h3="Exclude"
       ol
         each item, index in data.partners
-          li
-            .form-check
-              input.form-check-input(type='checkbox', name='exclude', id=item.partner._id.toString(), value=item.partner._id.toString(), checked=body && body.exclude!=undefined && (item.partner._id.toString()==body.exclude || body.exclude.indexOf(item.partner._id.toString())!=-1) ? 'checked' : undefined)
-              label.form-check-label(for=item.partner._id.toString())=item.partner.stagename 
+          if item.partner
+            li
+              .form-check
+                input.form-check-input(type='checkbox', name='exclude', id=item.partner._id.toString(), value=item.partner._id.toString(), checked=body && body.exclude!=undefined && (item.partner._id.toString()==body.exclude || body.exclude.indexOf(item.partner._id.toString())!=-1) ? 'checked' : undefined)
+                label.form-check-label(for=item.partner._id.toString())=item.partner.stagename 
       .text-center
-        button(type='submit').btn.btn-success="Compose"
+        button(type='submit' name='submit' value='compose').btn.btn-success="Compose"
     if body && body.from_name
       input(type="hidden",value=0, name='send')#send
       ol
         each item, index in data.partners
-          - item.to_html = ""
-          - item.cc_html = []
-          if item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && body && body.exclude.indexOf(item.partner._id.toString())===-1
-            each contact, cindex in item.partner.organizationData.contacts
-              - if (cindex===0)
-                - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
-                - item.text = body["message_"+(contact.lang=="it" ? "it" : "en")]
-                - item.text = item.text.split("[name]").join(contact.name);
-                - item.text = item.text.split("[slug]").join(item.slug);
-              - else
-                - item.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt")
-            li
-              p!="From: <b>"+body.from_name+" &lt"+body.from_email+"&gt</b>"
-              p!="To: <b>"+item.to_html+"</b>"
-              - if (item.cc_html)
-                p!="CC: <b>"+item.cc_html.join("</b>, <b>")+"</b>"
-              p!="Subject: <b>"+body.subject.split("[org_name]").join(item.stagename)+"</b>"
-              p="Message:"
-                pre=item.text
-      .row.mb-3
-        .col-sm-6
-          .pull-right
-            select(name="realsend")#status.form-control
-              option(selected=body.realsend == 0, value=0)='Test send'
-              option(selected=body.realsend == 1, value=1)='Real send'
-        .col-sm-6
-          button(type='submit', onclick='$( "#myform" ).attr("action","/adminpro/partners/'+owner+'/'+(event ? "event/"+event+"/" : "")+'send");jQuery( "#myform" ).submit();').btn.btn-success="Send"
+          if item.partner
+            - item.to_html = ""
+            - item.cc_html = []
+            if item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && body && (body.exclude ? body.exclude.indexOf(item.partner._id.toString())===-1 : true)
+              each contact, cindex in item.partner.organizationData.contacts
+                - if (cindex===0)
+                  - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
+                  - item.text = body["message_"+(contact.lang=="it" ? "it" : "en")]
+                  - item.text = item.text.split("[name]").join(contact.name);
+                  - item.text = item.text.split("[slug]").join(item.slug);
+                - else
+                  - item.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt")
+              li
+                p!="From: <b>"+body.from_name+" &lt"+body.from_email+"&gt</b>"
+                p!="To: <b>"+item.to_html+"</b>"
+                - if (item.cc_html)
+                  p!="CC: <b>"+item.cc_html.join("</b>, <b>")+"</b>"
+                p!="Subject: <b>"+body.subject.split("[org_name]").join(item.stagename)+"</b>"
+                p="Message:"
+                  pre=item.text
+      .text-center
+        button.btn.btn-success(type='submit' name='submit' value='send')="Send"

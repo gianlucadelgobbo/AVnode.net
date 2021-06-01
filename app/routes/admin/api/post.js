@@ -465,6 +465,49 @@ router.setStatus = (req, res) => {
   }
 }
 
+router.setCategories = (req, res) => {
+  logger.debug('/partners/categories/');
+  logger.debug(req.body);
+  if (!req.body || !req.body.owner || !req.body.id || !req.body.category || req.body.value === undefined) {
+    res.status(400).send("NO DATA");
+  } else {
+    Models.User.
+    findOne({_id: req.body.owner})
+    .select({partners:1})
+    .exec((err, user) => {
+      if (err || !user) {
+        logger.debug('user err');
+        logger.debug(err);
+        res.status(400).send(err);
+      } else {
+        for (var a=0;a<user.partners.length;a++) {
+          if (user.partners[a].partner._id.toString() === req.body.id) {
+            if (req.body.value==="true") {
+              user.partners[a].categories.push(req.body.category)
+            } else {
+              user.partners[a].categories.splice(user.partners[a].categories.map(item => {return item.str}).indexOf(req.body.category))
+            }
+            logger.debug(user.partners[a]);
+          }
+        }
+        user.save((err) => {
+          logger.debug(err);
+          if (err) {
+            logger.debug('save user err');
+            logger.debug(err);
+            res.status(400).send(err);
+          } else {
+            logger.debug("save user success");
+            logger.debug(req.body);
+            res.json(req.body);                    
+          }
+        });
+      }
+    });
+
+  }
+}
+
 router.addContacts = (req, res) => {
   logger.debug('/partners/contacts/add/');
   logger.debug(req.body);

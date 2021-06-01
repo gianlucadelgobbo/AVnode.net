@@ -696,5 +696,12 @@
 	"Submission UPDATES": "Submission UPDATES",
 	"Multiple authors": "Multiple authors",
 	"Loading Data": "Loading Data",
-	"Advanced Tools": "Advanced Tools"
+	"Advanced Tools": "Advanced Tools",
+	"FILTER": "FILTER",
+	"Types": "Types",
+	"ANY KIND": "ANY KIND",
+	"NO KIND": "NO KIND",
+	"Messagess added to the cue.": "Messagess added to the cue.",
+	"CHECK THE CUE": "CHECK THE CUE",
+	"Mailer": "Mailer"
 }

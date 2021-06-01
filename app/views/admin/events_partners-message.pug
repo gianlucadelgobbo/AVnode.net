@@ -66,16 +66,15 @@ block content
                     input.form-check-input(type='checkbox', name='exclude', id=item._id.toString(), value=item._id.toString(), checked=body && body.exclude!=undefined && (item._id.toString()==body.exclude || body && body.exclude.indexOf(item._id.toString())!=-1) ? 'checked' : undefined)
                     label.form-check-label(for=item._id.toString())=item.stagename 
         .text-center
-          button(type='submit').btn.btn-success="Compose"
+          button(type='submit' name='submit' value='compose').btn.btn-success="Compose"
       if body && body.from_name
-        input(type="hidden",value=0, name='send')#send
         ol
           each group in data.partners
             each item, index in group.users
               if item
                 - item.to_html = ""
                 - item.cc_html = []
-                if item.organizationData && item.organizationData.contacts && item.organizationData.contacts[0] && item.organizationData.contacts[0].email && body && body.exclude.indexOf(item._id.toString())===-1
+                if item.organizationData && item.organizationData.contacts && item.organizationData.contacts[0] && item.organizationData.contacts[0].email && body && (body.exclude ? body.exclude.indexOf(item.partner._id.toString())===-1 : true)
                   each contact, cindex in item.organizationData.contacts
                     - if (cindex===0)
                       - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
@@ -92,11 +91,5 @@ block content
                     p!="Subject: <b>"+body.subject.split("[org_name]").join(item.stagename)+"</b>"
                     p="Message:"
                       pre=item.text
-        .row.mb-3
-          .col-sm-6
-            .pull-right
-              select(name="realsend")#status.form-control
-                option(selected=body.realsend == 0, value=0)='Test send'
-                option(selected=body.realsend == 1, value=1)='Real send'
-          .col-sm-6
-            button(type='submit', onclick='$( "#myform" ).attr("action","/adminpro/partners/'+owner+'/'+(event ? "event/"+event+"/" : "")+'send");jQuery( "#myform" ).submit();').btn.btn-success="Send"
+        .text-center
+          button.btn.btn-success(type='submit' name='submit' value='send')=__("SEND")
