@@ -117,9 +117,11 @@ block content
           th=global.__("Contacts")
           th=global.__("Members")
       tbody
-          - data.partners = data.partners.filter(partner => partner.is_active == query.is_active=="1");
-          - data.partners = data.partners.filter(partner => partner.is_event == query.is_event=="1");
-          - data.partners = data.partners.filter(partner => partner.is_selecta == query.is_selecta=="1");
+          - console.log(query.is_active=="1")
+          - console.log(query.is_event=="1")
+          - data.partners = data.partners.filter(partner => partner.is_active == (query.is_active=="1"));
+          - data.partners = data.partners.filter(partner => partner.is_event == (query.is_event=="1"));
+          - data.partners = data.partners.filter(partner => partner.is_selecta == (query.is_selecta=="1"));
           //-each q in query.categories
           - if (query.categories) 
             - data.partners = data.partners.filter(partner => query.categories.some(r => partner.categories.map(item => {return item._id.toString()}).includes(r) ));

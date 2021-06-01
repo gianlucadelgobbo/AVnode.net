@@ -38,10 +38,10 @@ const userSchema = new Schema({
     "partner": { type: Schema.ObjectId, ref: 'User' },
     "delegate": String,
     "categories": [{ type: Schema.ObjectId, ref: 'Category' }],
-    "is_selecta": Boolean,
-    "is_satellite": Boolean,
-    "is_event": Boolean,
-    "is_active": Boolean
+    "is_selecta": {type: Boolean, default: false},
+    "is_satellite": {type: Boolean, default: false},
+    "is_event": {type: Boolean, default: false},
+    "is_active": {type: Boolean, default: false}
   }],
   /* partner_owner: [{ type: Schema.ObjectId, ref: 'User' }],
   partners: [{ type: Schema.ObjectId, ref: 'User' }], */
