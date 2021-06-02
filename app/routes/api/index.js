@@ -174,17 +174,12 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
           logger.debug(imageUtil);
           logger.debug(imageUtil.resizer);
 
-          imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (resizeerr, info) => {
-            logger.debug("resizeerr || info");
-            logger.debug(resizeerr || info);
-            if (resizeerr || !info) {
-              if (resizeerr) {
-                logger.debug(`Image resize ERROR: ${resizeerr}`);
-                res.json({error: `Image resize ERROR: ${resizeerr}`});
-              } else if (!info) {
-                logger.debug("Image resize ERROR: info undefined");
-                res.json({error: `Image resize ERROR: ${resizeerr}`});
-              }
+          imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (files_resized) => {
+            logger.debug("files_resized");
+            logger.debug(files_resized);
+            if (files_resized.map(item => {return item.err ? true : false}).indexOf(true)!==-1) {
+              logger.debug("Image resize ERROR: info undefined");
+              res.json(files_resized);
             } else {
               data.media.encoded = req.params.encoding;
               data.media.rencoded = req.params.encoding;

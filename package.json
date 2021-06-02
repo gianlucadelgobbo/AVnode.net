@@ -42,6 +42,8 @@
     "express": "^4.17.1",
     "express-flash": "0.0.2",
     "express-session": "^1.17.1",
+    "ffprobe": "^1.1.2",
+    "ffprobe-static": "^3.0.0",
     "file-type": "^16.2.0",
     "getconfig": "^4.5.0",
     "glob": "^7.1.6",
@@ -69,7 +71,6 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7",
     "@popperjs/core": "^2.6.0",
     "bootstrap": "^4.6.0",
     "gulp": "^4.0.2",
@@ -78,6 +79,7 @@
     "gulp-terser": "^2.0.1",
     "i": "^0.3.6",
     "jquery": "^3.5.1",
+    "nodemon": "^2.0.7",
     "npm": "^7.5.2",
     "popper.js": "^1.16.1"
   }

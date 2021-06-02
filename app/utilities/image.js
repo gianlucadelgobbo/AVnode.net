@@ -9,7 +9,7 @@ const sizeOf = require("image-size");
 const image = {};
 
 image.resizer = (files, options, done) => {
-  logger.debug('resizer');
+  logger.debug('resizerresizerresizerresizerresizerresizerresizerresizerresizer');
   let sizesA = [];
   for (let item in options.sizes) sizesA.push(options.sizes[item]);
   var promises = [];
@@ -19,7 +19,7 @@ image.resizer = (files, options, done) => {
   Promise.all(
     promises
   ).then( (resultsPromise) => {
-    logger.debug('resultsPromise');
+    logger.debug('resultsPromiseaaaaaaaa');
     logger.debug(resultsPromise);
     done(resultsPromise);
   })
