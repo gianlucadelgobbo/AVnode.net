@@ -524,12 +524,14 @@ router.addContacts = (req, res) => {
       if (req.body.index) {
         user.organizationData.contacts.splice(req.body.index, 1, req.body);
       } else {
+        logger.debug(user);
+        logger.debug("useruseruseruseruseruseruseruseruseruseruseruser");
+        delete req.body.index;
+        delete req.body.stagename;
         if (!user.organizationData) user.organizationData = {};
-        if (!user.organizationData.contacts) user.organizationData.contacts = [];
-        user.organizationData.contacts.push(req.body);
-
-      }
-      delete req.body.index;
+        if (!user.organizationData.contacts || !user.organizationData.contacts.length) user.organizationData.contacts = [req.body];
+      };
+      logger.debug(user.organizationData.contacts[0]);
       user.save((err) => {
         logger.debug(err);
         if (err) {
