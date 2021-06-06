@@ -529,7 +529,11 @@ router.addContacts = (req, res) => {
         delete req.body.index;
         delete req.body.stagename;
         if (!user.organizationData) user.organizationData = {};
-        if (!user.organizationData.contacts || !user.organizationData.contacts.length) user.organizationData.contacts = [req.body];
+        if (!user.organizationData.contacts || !user.organizationData.contacts.length) {
+          user.organizationData.contacts = [req.body];
+        } else {
+          user.organizationData.contacts.push(req.body);
+        }
       };
       logger.debug(user.organizationData.contacts[0]);
       user.save((err) => {
@@ -562,8 +566,9 @@ router.deleteContacts = (req, res) => {
       logger.debug(err);
       res.status(400).send(err);
     } else {
+      logger.debug(req.body.index);
       user.organizationData.contacts.splice(req.body.index, 1);
-      
+      logger.debug(user.organizationData.contacts);   
       user.save((err) => {
         logger.debug(err);
         if (err) {

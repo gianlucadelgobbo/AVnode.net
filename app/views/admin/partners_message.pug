@@ -119,7 +119,7 @@ block content
                 p!="To: <b>"+item.to_html+"</b>"
                 - if (item.cc_html)
                   p!="CC: <b>"+item.cc_html.join("</b>, <b>")+"</b>"
-                p!="Subject: <b>"+body.subject.split("[org_name]").join(item.stagename)+"</b>"
+                p!="Subject: <b>"+body.subject.split("[org_name]").join(item.partner.stagename)+"</b>"
                 p="Message:"
                   pre=item.text
       .text-center

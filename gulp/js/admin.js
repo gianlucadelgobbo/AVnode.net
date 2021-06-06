@@ -674,6 +674,7 @@ $( ".lock-schedule" ).click(function( event ) {
     var stagename = button.data('stagename') // Extract info from data-* attributes
     var item = button.data('item') // Extract info from data-* attributes
     var index = button.data('index') // Extract info from data-* attributes
+    console.log("Edit?");
     console.log(item);
     for (i in item) {
       console.log(i+": "+item[i]);
@@ -716,33 +717,37 @@ $( ".lock-schedule" ).click(function( event ) {
       } else {
         var index = $("#"+post.crew+" .contacts").children().length;
       }
-      var str = $('<div><a href="#" data-toggle="modal" data-target="#modalAddContact" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-item="'+JSON.stringify(post)+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></span></a> <a class="text-danger deleteContact" href="#" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></span></a> | '+(post.lang ? post.lang : '<i class="badge badge-danger">MISSING</i>')+' | <a href="mailto:'+post.stagename+'" target="_blank">'+post.name+' '+post.surname+' &lt;'+post.email+'&gt;</a></div>');
-      var str2 = $(str.find("a")[0]).attr("data-item", JSON.stringify(post));
+      var str = $('<div><a href="#" data-toggle="modal" data-target="#modalAddContact" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-item="'+JSON.stringify(post)+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Edit"><i class="icon-edit"></i></span></a> <a class="text-danger deleteContact" href="#" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Delete"><i class="icon-trash"></i></span></a> | '+(post.lang ? post.lang : '<i class="badge badge-danger">MISSING</i>')+' | <a href="mailto:'+post.stagename+'" target="_blank">'+post.name+' '+post.surname+' &lt;'+post.email+'&gt;</a></div>');
+      //var str2 = $(str.find("a")[0]).attr("data-item", JSON.stringify(post));
+      $(str).find(".deleteContact").on('click', function( event ) {
+        event.preventDefault();
+        var result = confirm("Do you want to delete this contact?");
+        if (result) {
+          deleteContact( $(this), event );
+        }
+      })
       if (post.index!="") {
-        $($("#"+post.crew+" .contacts").children()[post.index]).html($(str).prepend(str2))
+        $($("#"+post.crew+" .contacts").children()[post.index]).html($(str))
       } else {
-        var index = $("#"+post.crew+" .contacts").children().length;
-        $("#"+post.crew+" .contacts").append($(str).prepend(str2));
+        //var index = $("#"+post.crew+" .contacts").children().length;
+        $("#"+post.crew+" .contacts").append($(str));
       }
-      $( ".deleteContact" ).on('click', function( event ) {
-        console.log("stocazzo2")
+/*       $($("#"+post.crew+" .contacts").children()[$("#"+post.crew+" .contacts").children().length-1]).on('click', function( event ) {
         event.preventDefault();
         var result = confirm("Want to delete this contact?");
         if (result) {
           deleteContact( $(this), event );
         }
       });    
-      $('#modalAddContact').modal('hide');
+ */      $('#modalAddContact').modal('hide');
     });
   });
 
 
   $('#table').on('post-body.bs.table', function (e) {
-    console.log(e)
     $( ".deleteContact" ).on('click', function( event ) {
-      console.log("stocazzo2")
       event.preventDefault();
-      var result = confirm("Want to delete this contact?");
+      var result = confirm("Do you want to delete this contact?");
       if (result) {
         deleteContact( $(this), event );
       }
@@ -751,26 +756,23 @@ $( ".lock-schedule" ).click(function( event ) {
   
   
   deleteContact = (button, event ) => {
-    console.log("deleteContact");
     event.preventDefault();
     var post = {};
     post.id = button.data('id') // Extract info from data-* attributes
     post.index = button.data('index') // Extract info from data-* attributes
     post.stagename = button.data('stagename') // Extract info from data-* attributes
     var ul = button.parent().parent();
-
     $.ajax({
       url: "/admin/api/partners/contacts/delete/",
       method: "post",
       data: post
     })
     .done(function(data) {
-      console.log(data);
       if (data.message) {
         alert(data.message);
       } else {
         button.parent().remove();
-        ul.find("li").each((index, item) => {
+        ul.children().each((index, item) => {
           $(item).find("a").each((i, a) => {
             $(a).attr("data-index", index);
           });
@@ -778,8 +780,7 @@ $( ".lock-schedule" ).click(function( event ) {
       }
     })
     .fail(function(data) {
-      console.log(data);
-      alert(data.message+"stocazzo");
+      alert(data.message || "Some errors occurred");
     });
   }
   
