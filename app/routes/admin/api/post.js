@@ -393,19 +393,57 @@ router.linkPartner = (req, res) => {
   logger.debug(req.body);
   Models.User
   .findOne({_id: req.body.id, is_crew: true},'_id partner_owner', (err, partner) => {
+    logger.debug("eq.body");
+    logger.debug(err || partner);
     if (partner) {
       if (!partner.partner_owner || partner.partner_owner.map(item => {return item.owner;}).indexOf(req.body.partner_owner)===-1) {
         if (!partner.partner_owner) partner.partner_owner = [];
         partner.partner_owner.push({owner: req.body.partner_owner, delegate: req.body.delegate});
-        logger.debug(partner);
         partner.save(err => {
-          res.json({err: err});
+          Models.User
+          .findOne({_id: req.body.partner_owner, is_crew: true},'_id partners', (err, owner) => {
+            if (owner) {
+              if (!owner.partners || owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)===-1) {
+                if (!owner.partners) owner.partners = [];
+                owner.partners.push({partner: req.body.id, delegate: req.body.delegate, "is_active":true, "is_selecta":true});
+                logger.debug("owner.partners");
+                logger.debug(owner.partners);
+                owner.save(err => {
+                  res.json({err: err});
+                });
+              } else {
+                res.status(400).json({err: "Partner already in"});
+              }
+            } else {
+              res.status(404).json({err: "Owner not found"});
+            }
+          });
         });
       } else {
-        res.json({err: "Partner already in"});
+        Models.User
+        .findOne({_id: req.body.partner_owner, is_crew: true},'_id partners', (err, owner) => {
+          if (owner) {
+            logger.debug("owner");
+            if (!owner.partners || owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)===-1) {
+              if (!owner.partners) owner.partners = [];
+              owner.partners.push({partner: req.body.id, delegate: req.body.delegate, "is_active":true, "is_selecta":true});
+              logger.debug("owner.partners");
+              logger.debug(owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id));
+              owner.save(err => {
+                res.json({err: err});
+              });
+            } else {
+              logger.debug({err: "Partner already in"});
+              logger.debug(owner.partners[owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)]);
+              res.status(400).json({err: "Partner already in"});
+            }
+          } else {
+            res.status(404).json({err: "Owner not found"});
+          }
+        });
       }
     } else {
-      res.json({err: "Partner not found"});
+      res.status(404).json({err: "Partner not found"});
     }
   });
 }

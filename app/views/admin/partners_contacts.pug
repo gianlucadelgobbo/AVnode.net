@@ -230,7 +230,7 @@ block content
     .modal-dialog(role='document')
       .modal-content
         form
-          input(type='hidden', name="partner_owner", value=owner)
+          input(type='text', name="partner_owner", value=data._id)
           //input(type='hidden', name="delegate", value=user.name)
           .modal-header
             h5#modalAddPartnerLabel.modal-title=global.__("Add partner")
@@ -261,8 +261,8 @@ block content
     .modal-dialog(role='document')
       .modal-content
         form
-          input(type='hidden', name="partner_owner", value=owner)
-          //input(type='hidden', name="delegate", value=user.name)
+          input(type='hidden', name="partner_owner", value=data._id)
+          input(type='hidden', name="delegate", value=user.name)
           input(type='hidden', name="id")
           .modal-header
             h5#modalAddPartnerLabel.modal-title=global.__("Add partner")

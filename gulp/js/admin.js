@@ -871,12 +871,13 @@ $( ".lock-schedule" ).click(function( event ) {
       $.ajax( {
         url: "/admin/api/getauthors/"+request.term,
         success: function( data ) {
-          var dd = data.map(item=>{return {value:item.stagename, id: item.id}}) ;
+          var dd = data.map(item=>{return {value:item.stagename, id: item._id}}) ;
           response(dd );
         }
       } );
     },
     select: function( event, ui ) {
+      console.log(ui.item);
       $("input[name='id']").val(ui.item.id);
     }
   });
@@ -929,10 +930,10 @@ $( "#modalLinkPartner form" ).submit(function( event ) {
     data: post
   })
   .done(function(data) {
-    $( this ).find(".alert").html("SAVED!!!").removeClass("d-none").removeClass("alert-danger").addClass("alert-success");
+    $( "#modalLinkPartner form" ).find(".alert").html("SAVED!!!").removeClass("d-none").removeClass("alert-danger").addClass("alert-success");
   })
   .fail(function(err) {
-    $( "#modalLinkPartner form" ).find(".alert").html(err.responseJSON.message).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
+    $( "#modalLinkPartner form" ).find(".alert").html(err.responseJSON.err).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
   });
 });
 
