@@ -7,9 +7,9 @@ const Address = new Schema({
   formatted_address: String,
   locality: String,
   country: String,
-  geometry: { 
+  geometry: {/*  
     lat: Number,
-    lng: Number
+    lng: Number */
   }
 },{ 
   _id : false

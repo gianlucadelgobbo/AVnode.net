@@ -4,10 +4,9 @@ const Schema = mongoose.Schema;
 //const indexPlugin = require('../utilities/elasticsearch/Performance');
 const helper = require('../utilities/helper');
 
-const About = require('./shared/About').schema;
+const About = require('./shared/About');
 const MediaImage = require('./shared/MediaImage');
-const Booking = require('./shared/Booking').schema;
-
+const Booking = require('./shared/Booking');
 const moment = require('moment');
 const uniqueValidator = require('mongoose-unique-validator');
 
@@ -31,8 +30,8 @@ const performanceSchema = new Schema({
     }, 'PERFORMANCE_URL_IS_NOT_VALID']
   },
   is_public: { type: Boolean, default: false },
-  image: { type : Schema.ObjectId, ref : 'MediaImage' },
-  abouts: [{ type : Schema.ObjectId, ref : 'About' }],
+  image: MediaImage,
+  abouts: [About],
   stats: {
     visits: { type: Number, default: 0 },
     likes: { type: Number, default: 0 }
@@ -40,9 +39,9 @@ const performanceSchema = new Schema({
   price: String,
   paypal: String,
   duration: String,
-  tech_arts: [{ type : Schema.ObjectId, ref : 'About' }], // what the artist brings
-  tech_reqs: [{ type : Schema.ObjectId, ref : 'About' }], // what the artist need
-  bookings: [{ type : Schema.ObjectId, ref : 'Booking' }],
+  tech_arts: [About], // what the artist brings
+  tech_reqs: [About], // what the artist need
+  bookings:[Booking],
 
   users: [{ type : Schema.ObjectId, ref : 'User' }],
   galleries: [{ type : Schema.ObjectId, ref : 'Gallery' }],

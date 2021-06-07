@@ -26,7 +26,7 @@ const videoSchema = new Schema({
   media: Media,
   // teaserImage: MediaImage,
   //  file: {file: String},
-  abouts: [{ type : Schema.ObjectId, ref : 'About' }],
+  abouts: [About],
   stats: {
     visits: { type: Number, default: 0 },
     likes: { type: Number, default: 0 }
