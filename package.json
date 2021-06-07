@@ -71,8 +71,8 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@popperjs/core": "^2.6.0",
     "bootstrap": "^4.6.0",
+    "@popperjs/core": "^2.6.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-sass": "^4.1.0",
