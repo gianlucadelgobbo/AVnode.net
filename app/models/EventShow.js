@@ -113,15 +113,15 @@ const eventSchema = new Schema({
       return re.test(slug)
     }, 'URL_IS_NOT_VALID']
   },
-  subtitles: [About],
+  subtitles: [{ type : Schema.ObjectId, ref : 'About' }],
   image: MediaImage,
   //teaserImage: MediaImage,
   //file: { file: String },
-  abouts: [About], // BL multilang
-  web: [Link],
-  social: [Link],
-  emails: [Link],
-  phones: [Link],
+  abouts: [{ type : Schema.ObjectId, ref : 'About' }], // BL multilang
+  web: [{ type : Schema.ObjectId, ref : 'Link' }],
+  social: [{ type : Schema.ObjectId, ref : 'Link' }],
+  emails: [{ type : Schema.ObjectId, ref : 'Link' }],
+  phones: [{ type : Schema.ObjectId, ref : 'Link' }],
   is_public: { type: Boolean, default: false },
   gallery_is_public: { type: Boolean, default: false },
   is_freezed: { type: Boolean, default: false },
@@ -130,9 +130,9 @@ const eventSchema = new Schema({
     visits: { type: Number, default: 0 },
     likes: { type: Number, default: 0 }
   },
-  schedule: [datevenueSchema],
-  partners: [partnershipSchema],
-  program: [programSchema],
+  schedule: [{ type : Schema.ObjectId, ref : 'datevenueSchema' }],
+  partners: [{ type : Schema.ObjectId, ref : 'partnershipSchema' }],
+  program: [{ type : Schema.ObjectId, ref : 'programSchema' }],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   type: { type: Schema.ObjectId, ref: 'Category' },
   partnership_type: { type: Schema.ObjectId, ref: 'Category' },
@@ -154,7 +154,7 @@ const eventSchema = new Schema({
       subBkg: String,
       colBkg: String,
       permissions: {},
-      calls: [callSchema]
+      calls: [{ type : Schema.ObjectId, ref : 'callSchema' }]
     }
   }
 }, {

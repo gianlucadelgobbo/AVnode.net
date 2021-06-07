@@ -97,9 +97,9 @@ const userSchema = new Schema({
     }, 'PROFILE_URL_IS_NOT_VALID']
   },
   addresses: [Address],
-  abouts: [About],
-  web: [Link],
-  social: [Link],
+  abouts: [{ type : Schema.ObjectId, ref : 'About' }],
+  web: [{ type : Schema.ObjectId, ref : 'Link' }],
+  social: [{ type : Schema.ObjectId, ref : 'Link' }],
 
   image: MediaImage,
 
@@ -113,9 +113,9 @@ const userSchema = new Schema({
   birthday: { type: Date, required: function() { return !this.is_crew; }},
   citizenship: [Citizenship],
   addresses_private: [AddressPrivate],
-  phone: [Link],
-  mobile: [Link],
-  skype: [Link],
+  phone: [{ type : Schema.ObjectId, ref : 'Link' }],
+  mobile: [{ type : Schema.ObjectId, ref : 'Link' }],
+  skype: [{ type : Schema.ObjectId, ref : 'Link' }],
 
   email: { type: String, trim: true, index: true, unique: true, sparse: true, required: function() { return this.is_crew === false ? "EMAIL_IS_REQUIRED" : false; } },
   emails: {

@@ -28,13 +28,13 @@ const newsSchema = new Schema({
   is_public: { type: Boolean, default: false },
   image: MediaImage,
   media: Media,
-  abouts: [About],
+  abouts: [{ type : Schema.ObjectId, ref : 'About' }],
   stats: {
     visits: { type: Number, default: 0 },
     likes: { type: Number, default: 0 }
   },
-  web: [Link],
-  social: [Link],
+  web: [{ type : Schema.ObjectId, ref : 'Link' }],
+  social: [{ type : Schema.ObjectId, ref : 'Link' }],
 
   users: [{ type : Schema.ObjectId, ref : 'User' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }]

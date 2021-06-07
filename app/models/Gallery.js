@@ -24,7 +24,7 @@ const gallerySchema = new Schema({
   image: MediaImage,
   //teaserImage: MediaImage,
   //  file: {file: String},
-  abouts: [About],
+  abouts: [{ type : Schema.ObjectId, ref : 'About' }],
   stats: {
     visits: { type: Number, default: 0 },
     likes: { type: Number, default: 0 },

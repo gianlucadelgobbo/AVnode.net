@@ -23,7 +23,7 @@ const playlistSchema = new Schema({
   },
   is_public: { type: Boolean, default: false },
   //image: MediaImage,
-  abouts: [About],
+  abouts: [{ type : Schema.ObjectId, ref : 'About' }],
   stats: {
     visits: { type: Number, default: 0 },
     likes: { type: Number, default: 0 }
