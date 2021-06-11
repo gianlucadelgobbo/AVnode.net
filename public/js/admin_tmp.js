@@ -224,7 +224,7 @@ $(function () {
 		var dropzone = $("#formupload").dropzone({ 
 			url: "/admin/api/"+get.sez+"/"+get.id+"/image",
 			paramName: "image", // The name that will be used to transfer the file
-			maxFilesize: 2, // MB
+			maxFilesize: 10, // MB
 			acceptedFiles: "image/*",
 			autoProcessQueue: true,
 			addRemoveLinks: false,
@@ -359,7 +359,7 @@ $(function () {
 		var dropzone = $("#formmultiupload").dropzone({ 
 			url: "/admin/api/galleries/"+get.id+"/medias",
 			paramName: paramNameForSend, // The name that will be used to transfer the file
-			maxFilesize: 2, // MB
+			maxFilesize: 10, // MB
 			acceptedFiles: "image/*",
 			autoProcessQueue: true,
 			addRemoveLinks: false,

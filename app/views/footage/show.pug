@@ -33,7 +33,7 @@ block content
         if data.media && data.media.file
           .embed-responsive(class=(data.media.width/data.media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
             - var ext = data.media.file.substring(data.media.file.lastIndexOf(".")+1)
-            if ext==="swf"
+            if ext==="swf" || ext==="flv"
               #swfcontainer.embed-responsive-item
                 #noflash
                   img.img-fluid(src=data.imageFormats.large alt=data.title)

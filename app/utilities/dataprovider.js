@@ -1153,8 +1153,6 @@ dataprovider.list = (req, res, section, model) => {
           var scripts = [];
           if (data && data.media && data.media[0] && data.media[0].file) scripts.push("video");
           if (section === "videos") scripts.push("video");
-          console.log("stocazzo")
-          console.log(section)
 
           res.render(config.sections[section].view_list, {
             title: title,
