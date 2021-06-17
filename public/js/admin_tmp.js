@@ -224,12 +224,12 @@ $(function () {
 		var dropzone = $("#formupload").dropzone({ 
 			url: "/admin/api/"+get.sez+"/"+get.id+"/image",
 			paramName: "image", // The name that will be used to transfer the file
-			maxFilesize: 10, // MB
+			maxFilesize: 2, // MB
 			acceptedFiles: "image/*",
 			autoProcessQueue: true,
 			addRemoveLinks: false,
 			maxFiles: 1,
-	    timeout: 0,
+	    	timeout: 0,
 			thumbnailWidth: 400,
 			thumbnailHeight:400,
 			previewTemplate: tpl,
@@ -301,7 +301,7 @@ $(function () {
 			autoProcessQueue: true,
 			addRemoveLinks: false,
 			maxFiles: 1,
-	    timeout: 0,
+	    	timeout: 0,
 			thumbnailWidth: 225,
 			thumbnailHeight:400,
 			previewTemplate: tpl,
@@ -359,12 +359,12 @@ $(function () {
 		var dropzone = $("#formmultiupload").dropzone({ 
 			url: "/admin/api/galleries/"+get.id+"/medias",
 			paramName: paramNameForSend, // The name that will be used to transfer the file
-			maxFilesize: 10, // MB
+			maxFilesize: 2, // MB
 			acceptedFiles: "image/*",
 			autoProcessQueue: true,
 			addRemoveLinks: false,
 			maxFiles: 200,
-	    timeout: 0,
+	    	timeout: 0,
 			thumbnailWidth: 320,
 			thumbnailHeight:180,
 			previewTemplate: tpl,
@@ -379,9 +379,11 @@ $(function () {
 					console.log(data2)
 					if (Array.isArray(data2) && data2.length && data2[0].xhr)
 						data2 = JSON.parse(data2[0].xhr.response)
-					console.log(data2)
 					for (var i=0; i<data2.length; i++) {
-						if (data2[i].err) {
+						console.log("errrrr?")
+						console.log(data2[i])
+						if (data2[i].err || data2[i].status == "error") {
+							if (!data2[i].err && data2[i].size/1024 > 2 ) data2[i].err = "Max file size is 2 MB"
 							$($(".dz-error-message span")[i]).html(''+data2[i].err+'');
 							$($(".progress-bar")[i]).css('width', '0');
 							$($(".dz-error-message")[i]).removeClass("d-none");
