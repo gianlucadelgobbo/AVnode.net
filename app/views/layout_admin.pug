@@ -32,6 +32,8 @@ html(lang=session.current_lang)
     //- link(rel='stylesheet', href='https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css')    
     //- link(rel='stylesheet', href='/css/admin.css')
     //- link(rel='stylesheet', href='/css/adminpro.css')
+    if scripts && scripts.indexOf("paypal")!==-1
+      script(src="https://www.paypal.com/sdk/js?client-id="+process.env.PAYPAL_CLIENT_ID+"&currency=EUR")
   body
     #top
     a#to_top.d-print-none(href="#top", title=global.__('Back to the top'))

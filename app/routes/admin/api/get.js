@@ -519,16 +519,16 @@ router.getSubscriptions = (req, res) => {
     populate.push({ "path": "event", "select": "title slug schedule organizationsettings", "model": "Event", "populate":[{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]});
     //const ids = [req.params.id].concat(req.user.crews);
     const query = {"reference" :  req.params.id};
-    logger.debug(query);
+    /* logger.debug(query);
     logger.debug(select);
-    logger.debug(populate);
+    logger.debug(populate); */
     Models["Program"]
     .find(query)
     .select(select)
     .populate(populate)
     .sort({createdAt:-1})
     .exec((err, data) => {
-      logger.debug(data);
+      //logger.debug(data);
       if (err) {
         res.status(500).send({ message: `${JSON.stringify(err)}` });
       } else {

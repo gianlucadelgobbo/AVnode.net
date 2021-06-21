@@ -21,7 +21,7 @@ block content
             .row.pb-3(id='heading'+index)
               .col-md-5
                 span.mr-2!=(index+1)
-                button.mr-2.btn.btn-primary.btn-sm.btn-inline(type='button', data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapse'+index)=global.__('MORE')
+                button.mr-2.btn.btn-primary.btn-sm.btn-inline(type='button', data-toggle='collapse', data-target='#collapse'+index, aria-expanded='false', aria-controls='collapse'+index)=global.__('MORE')
                 span
                   if item.call && item.event.organizationsettings.call.calls && item.event.organizationsettings.call.calls[item.call]
                     !=item.event.organizationsettings.call.calls[item.call].title
