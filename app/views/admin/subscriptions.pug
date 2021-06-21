@@ -242,7 +242,7 @@ block content
                                         "description": "#{itemdescriptions[index]}",
                                         "amount": {
                                           "currency": "EURO",
-                                          "value": "#{total}"
+                                          "value": "1"
                                         }
                                       }
                                     ]
@@ -250,7 +250,7 @@ block content
                                 },
                                 onApprove: function(data, actions) {
                                   return actions.order.capture().then(function(details) {
-                                    alert('Transaction completed by ' + details.payer.name.given_name);
+                                    
                                     return fetch('/admin/api/subscriptionupdate', {
                                       method: 'post',
                                       headers: {
@@ -261,7 +261,9 @@ block content
                                         id: "#{item._id}",
                                         status: "5be8708afc39610000000013"
                                       })
-                                    });
+                                    })
+                                    .then(alert('Transaction completed by ' + details.payer.name.given_name))
+                                    .then(location.reload());
                                   });
                                 }
                               }).render('#paybutton#{index}');
