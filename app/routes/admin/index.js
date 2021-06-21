@@ -21,7 +21,7 @@ router.get('/:sez/:id/:form/', (req, res) => {
         get.getData(req, res, "admin/"+req.params.sez+"_"+req.params.form);
       });
     });
-  } else if (req.params.sez == "profile" && req.params.form == "subscriptions") {
+  } else if (req.params.sez == "subscriptions" && req.params.form == "private") {
     get.getSubscriptions(req, res);
   } else if (req.params.sez == "events" && req.params.form == "partners") {
     get.getPartners(req, res);
@@ -61,7 +61,7 @@ router.get('/:sez', (req, res) => {
   if (req.params.sez == "profile") {
     res.redirect("/admin/profile/"+req.user.id+"/public")
   } else if (req.params.sez == "subscriptions") {
-    res.redirect("/admin/subscriptions/"+req.user.id+"/public")
+    res.redirect("/admin/subscriptions/"+req.user.id+"/private")
   } else {
     req.params.id = req.user.id;
     get.getList(req, res, "admin/"+req.params.sez);
@@ -72,7 +72,7 @@ router.post('/:sez', (req, res) => {
   if (req.params.sez == "profile") {
     res.redirect("/admin/profile/"+req.user.id+"/public")
   } else if (req.params.sez == "subscriptions") {
-    res.redirect("/admin/subscriptions/"+req.user.id+"/public")
+    res.redirect("/admin/subscriptions/"+req.user.id+"/private")
   } else {
     req.params.id = req.user.id;
     get.getList(req, res, "admin/"+req.params.sez);
