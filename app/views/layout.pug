@@ -53,8 +53,8 @@ html.no-js(lang=session.current_lang)
       link(rel='stylesheet', type='text/css', href='/css/video-js.min.css')
     script(type="application/ld+json")
       !=JSON.stringify(jsonld)
-    - console.log("scripts")
-    - console.log(scripts)
+    //- console.log("scripts")
+    //- console.log(scripts)
     if scripts && scripts.indexOf("paypal")!==-1
       script(src="https://www.paypal.com/sdk/js?client-id="+process.env.PAYPAL_CLIENT_ID+"&currency=EUR")
 
