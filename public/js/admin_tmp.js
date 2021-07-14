@@ -519,6 +519,7 @@ $(function () {
 	}
 
 	if ($(".autocomplete_members") && $(".autocomplete_members").length) {
+		var memberToAdd;
 		$('.autocomplete_members input').autoComplete({
 			resolverSettings: {
 					url: "/admin/api/getmembers/"+$(this).val()
@@ -557,11 +558,11 @@ $(function () {
 				});
 			}
 		}
-		addMember = (elem, evt, item) => {
-			console.log('select', item);
-			$(elem).parent().find("button").removeClass("disabled");
-			$(elem).parent().find("button").on("click", function () {
-				var crewid = $(this).data("crewid");
+		addMember = (elem, evt, crewid, item) => {
+			console.log('addMember', item);
+			//$(elem).parent().find("button").on("click", function () {
+				console.log("append");
+				console.log('<div class="mb-3 saving"><a href="#" data-crewid="'+crewid+'"><i class="icon-spinner animate-spin"></i></a> | '+item.text+'</div>')
 				$("#members").append('<div class="mb-3 saving"><a href="#" data-crewid="'+crewid+'"><i class="icon-spinner animate-spin"></i></a> | '+item.text+'</div>')
 				$.ajax({
 					url: "/admin/api/crews/"+ crewid +"/members/add/"+item.value,
@@ -576,13 +577,19 @@ $(function () {
 						removeMember(this, event)
 					});
 				});
-			});
+			//});
 		}
 		$("#members a").on("click", function (event) {
 			removeMember(this, event)
 		});
 		$('.autocomplete_members input').on('autocomplete.select', function (evt, item) {
-			addMember(this, evt, item);
+			console.log('select', item);
+			memberToAdd = item;
+			$('.autocomplete_members button').removeClass("disabled");
+		});
+		$('.autocomplete_members button').on('click', function (evt, item) {
+			var crewid = $('.autocomplete_members button').data("crewid");
+			addMember(this, evt, crewid, memberToAdd);
 		});
 	}
 

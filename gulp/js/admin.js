@@ -64,41 +64,6 @@ $(function() {
     return [true, ''];
   }
 
-  // PARTNERS
-  $('.sorter').click(function() {
-    const id = $(this).data("target");
-    sortUnorderedList(id);
-  });
-  sortUnorderedList = (ul, sortDescending) => {
-    if(typeof ul == "string")
-      ul = document.getElementById(ul);
-  
-    // Idiot-proof, remove if you want
-    if(!ul) {
-      alert("The UL object is null!");
-      return;
-    }
-  
-    // Get the list items and setup an array for sorting
-    var lis = ul.getElementsByTagName("li");
-    var vals = [];
-  
-    // Populate the array
-    for(var i = 0, l = lis.length; i < l; i++)
-      vals.push(lis[i].innerHTML);
-  
-    // Sort it
-    vals.sort();
-  
-    // Sometimes you gotta DESC
-    if(sortDescending)
-      vals.reverse();
-  
-    // Change the list on the page
-    for(var i = 0, l = lis.length; i < l; i++)
-      lis[i].innerHTML = vals[i];
-  }
-  
   // EVENTS - ACTS
   $('#table-acts').on('post-body.bs.table', function (e) {
     $(".edit-availability").on('click', function(ev) {
@@ -630,7 +595,41 @@ $( ".lock-schedule" ).click(function( event ) {
   programSortableUpdate();
 });
 
-// PARTNERS
+  // PARTNERS
+  $('.sorter').click(function() {
+    const id = $(this).data("target");
+    sortUnorderedList(id);
+  });
+  sortUnorderedList = (ul, sortDescending) => {
+    if(typeof ul == "string")
+      ul = document.getElementById(ul);
+  
+    // Idiot-proof, remove if you want
+    if(!ul) {
+      alert("The UL object is null!");
+      return;
+    }
+  
+    // Get the list items and setup an array for sorting
+    var lis = ul.getElementsByTagName("li");
+    var vals = [];
+  
+    // Populate the array
+    for(var i = 0, l = lis.length; i < l; i++)
+      vals.push(lis[i].innerHTML);
+  
+    // Sort it
+    vals.sort();
+  
+    // Sometimes you gotta DESC
+    if(sortDescending)
+      vals.reverse();
+  
+    // Change the list on the page
+    for(var i = 0, l = lis.length; i < l; i++)
+      lis[i].innerHTML = vals[i];
+  }
+  
   $( ".partners .connectedSortable" ).sortable({
     remove: function( e, ui ) {
       var partnerships = [];
