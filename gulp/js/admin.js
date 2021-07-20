@@ -901,7 +901,7 @@ $( ".lock-schedule" ).click(function( event ) {
     delete post.delegate;
     post.slug = slugify(post.stagename);
     $.ajax({
-      url: "/admin/api/partner/new/",
+      url: "/admin/api/partners/new/",
       method: "post",
       data: post
     })

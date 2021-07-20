@@ -871,6 +871,45 @@
       "basepath": "partners",
       "model": "User",
       "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Crew url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "stagename": {
+              "comp": "simpletext",
+              "label": "Crew name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "stagename": 1,
+            "partner_owner": 1
+          },
+          "selectaddon": {
+            "is_crew": true
+          },
+          "populate": []
+        },
         "contacts": {
           "title": "Contacts",
           "components": {

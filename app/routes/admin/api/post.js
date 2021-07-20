@@ -54,6 +54,7 @@ router.postData = (req, res) => {
         }
         if (req.params.sez == "crews") {
           post.members = [req.user.id];
+        } else if (req.params.sez == "partners") {
         } else {
           post.users = [req.user.id];
         }
@@ -68,68 +69,77 @@ router.postData = (req, res) => {
           if (!err) {
             logger.debug('create success');
             logger.debug(data);
-            const id = req.user.id;
+            var id;
+            if (req.params.sez==="partners") {
+              id = post.partner_owner[0].owner;
+            } else {
+              id = req.user.id;
+            }
             Models['User']
             .findById(id, req.params.sez, (err, user) => {
               logger.debug('findById user');
               logger.debug(user);
               if (!err) {
                 if (user) {
-                  if (req.params.sez==="partner") {
-                    res.json(data);                    
+                  if (req.params.sez==="partners") {
+                    user[req.params.sez].push({
+                      is_selecta: true,
+                      is_active: true,
+                      partner: data._id
+                    });                
                   } else {
                     user[req.params.sez].push(data._id);
                     logger.debug('save user');
                     logger.debug(user);
-                    user.save((err) => {
-                      if (err) {
-                        logger.debug('save user err');
-                        logger.debug(err);
-                        res.status(400).send(err);
-                      } else {
-                        logger.debug('save user success');
-                        if (req.params.ancestor && req.params.id) {
-                          Models[config.cpanel[req.params.ancestor].model]
-                          .findById(req.params.id)
-                          .exec((err, ancestor) => {
-                            ancestor[req.params.sez].push(data._id);
-                            ancestor.save((err) => {
-                              if (err) {
-                                logger.debug('save ancestor err');
-                                logger.debug(err);
-                                res.status(400).send(err);
-                              } else {
-                                logger.debug("save ancestor success");
-                                logger.debug(data);
-                                logger.debug(data);
-                                res.json(data);                    
-                              }
-                            });
-                          });
-                        } else {
-                          res.json(data);                    
-                        }
-                        /* select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
-                        const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
-                          
-                        Models[config.cpanel[req.params.sez].list.model]
-                        .findById(id)
-                        .select(select)
-                        .populate(populate)
-                        .exec((err, data) => {
-                          if (err) {
-                            res.status(500).send({ message: `${JSON.stringify(err)}` });
-                          } else {
-                            let send = {_id: data._id};
-                            for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
-                            logger.debug('sendsendsendsendsendsendsend');
-                            logger.debug(send);
-                            res.json(send);
-                          }
-                        }); */
-                      }
-                    });  
                   }
+                  user.save((err) => {
+                    if (err) {
+                      logger.debug('save user err');
+                      logger.debug(err);
+                      res.status(400).send(err);
+                    } else {
+                      logger.debug('save user success');
+                      if (req.params.ancestor && req.params.id) {
+                        Models[config.cpanel[req.params.ancestor].model]
+                        .findById(req.params.id)
+                        .exec((err, ancestor) => {
+                          ancestor[req.params.sez].push(data._id);
+                          ancestor.save((err) => {
+                            if (err) {
+                              logger.debug('save ancestor err');
+                              logger.debug(err);
+                              res.status(400).send(err);
+                            } else {
+                              logger.debug("save ancestor success");
+                              logger.debug(data);
+                              logger.debug(data);
+                              res.json(data);                    
+                            }
+                          });
+                        });
+                      } else {
+                        res.json(data);                    
+                      }
+                      /* select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
+                      const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
+                        
+                      Models[config.cpanel[req.params.sez].list.model]
+                      .findById(id)
+                      .select(select)
+                      .populate(populate)
+                      .exec((err, data) => {
+                        if (err) {
+                          res.status(500).send({ message: `${JSON.stringify(err)}` });
+                        } else {
+                          let send = {_id: data._id};
+                          for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
+                          logger.debug('sendsendsendsendsendsendsend');
+                          logger.debug(send);
+                          res.json(send);
+                        }
+                      }); */
+                    }
+                  });  
                 } else {
                   res.status(404).send({ message: `DOC_NOT_FOUND` });
                 }
