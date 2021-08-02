@@ -203,7 +203,7 @@ userSchema.virtual('addressesFormatted').get(function () {
       }
     });
     for(let country in addresses) {
-      addressesFormatted.push(" <b>"+country+"</b> "+addresses[country].join(", "));
+      addressesFormatted.push(" <b itemprop='addressCountry'>"+country+"</b> <span itemprop='addressLocality'>"+addresses[country].join(", ")+"</span>");
     }
     return addressesFormatted/* .join(", ") */;
   }
