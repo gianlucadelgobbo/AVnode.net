@@ -154,7 +154,7 @@ const eventSchema = new Schema({
       subBkg: String,
       colBkg: String,
       permissions: {},
-      calls: [{ type : Schema.ObjectId, ref : 'callSchema' }]
+      calls: [callSchema]
     }
   }
 }, {
