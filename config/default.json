@@ -6083,8 +6083,7 @@
               "is_public": 1,
               "organizationData.logo": 1,
               "members": 1,
-              "addresses.country": 1,
-              "addresses.locality": 1,
+              "addresses": 1,
               "stats": 1,
               "stagename": 1
             },
