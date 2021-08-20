@@ -142,13 +142,11 @@ block content
                           br
                           !=subscription.subscription.days.length
                           br
-                          - packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name].count+=subscription.subscription.days.length
-                          - packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=subscription.subscription.days.length
+                          - packagespackages[subscription.subscription.wepay ? "wepay" : subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=subscription.subscription.days.length
                           !=subscription.subscription.days.length*pack.price
                           - tot+= subscription.subscription.days.length*pack.price
                         else
-                          - packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name].count+=1
-                          - packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=1
+                          - packagespackages[subscription.subscription.wepay ? "wepay" : subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=1
                           - tot+= pack.price
                   tr
                     td(style="white-space: nowrap;")
@@ -182,6 +180,9 @@ block content
           
           table(style="width:100%;")
             - var tot = 0
+            tr
+              td(colspan="4")
+                b="WE PAY"
             each pack in packagespackages["wepay"]
               tr
                 td(style="white-space: nowrap;")
@@ -193,6 +194,15 @@ block content
                 td.text-right
                   - tot+=pack.count*pack.price
                   !=(pack.count*pack.price)+" €"
+            tr
+              td.text-right(colspan=3 style="white-space: nowrap;")
+                b!="Total WE PAY"
+              td.text-right
+                !=tot+" €"
+            - var tot = 0
+            tr
+              td(colspan="4")
+                b="CASH"
             each pack in packagespackages["cash"]
               tr
                 td(style="white-space: nowrap;")
@@ -205,11 +215,14 @@ block content
                   - tot+=pack.count*pack.price
                   !=(pack.count*pack.price)+" €"
             tr
-              td(style="white-space: nowrap;")
-                b!="Total"
-              td(colspan=3).text-right
+              td.text-right(colspan=3 style="white-space: nowrap;")
+                b!="Total CASH"
+              td.text-right
                 !=tot+" €"
             - var tot = 0
+            tr
+              td(colspan="4")
+                b="STANDARD"
             each pack in packagespackages["standard"]
               tr
                 td(style="white-space: nowrap;")
@@ -222,9 +235,9 @@ block content
                   - tot+=pack.count*pack.price
                   !=(pack.count*pack.price)+" €"
             tr
-              td(style="white-space: nowrap;")
-                b!="Total"
-              td(colspan=3).text-right
+              td.text-right(colspan=3 style="white-space: nowrap;")
+                b!="Total STANDARD"
+              td.text-right
                 !=tot+" €"
             each pack,name in packagespackages["options"]
               tr
