@@ -25,7 +25,7 @@ block content
       - var conta = 0
       each subscription, index in data.subscriptions
           //pre=JSON.stringify(subscription, null, 2)
-          if subscription && subscription.reference
+          if !subscription.reference
             - subscription.reference = {
             -   _id: '61237ecad8c2eb2d2f8ff017',                                                                                               
             -   mobile: [],
