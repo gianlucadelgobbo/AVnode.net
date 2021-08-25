@@ -25,7 +25,7 @@ block content
       - var conta = 0
       each subscription, index in data.subscriptions
         //pre=JSON.stringify(subscription, null, 2)
-        if subscription
+        if subscription && subscription.reference
           if (!get["subscriptions.packages.name"] || get["subscriptions.packages.name"]=="0" || (get.notaccommodation==1 && subscription.subscription.packages.map(subscription => {return subscription.name}).indexOf(get["subscriptions.packages.name"])==-1) || (!get.notaccommodation && subscription.subscription.packages.map(subscription => {return subscription.name}).indexOf(get["subscriptions.packages.name"])!=-1))
             - conta++
 
