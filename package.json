@@ -29,8 +29,8 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
     "aws-sdk": "^2.839.0",
-    "axios": "^0.21.1",
-    "bcrypt": "^5.0.0",
+    "axios": "^0.21.4",
+    "bcrypt": "^5.0.1",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
@@ -71,15 +71,15 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "bootstrap": "^4.6.0",
     "@popperjs/core": "^2.6.0",
+    "bootstrap": "^4.6.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-sass": "^4.1.0",
     "gulp-terser": "^2.0.1",
     "i": "^0.3.6",
     "jquery": "^3.5.1",
-    "nodemon": "^2.0.7",
+    "nodemon": "^2.0.13",
     "npm": "^7.5.2",
     "popper.js": "^1.16.1"
   }
