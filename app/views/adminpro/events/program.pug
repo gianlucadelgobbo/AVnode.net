@@ -2,7 +2,23 @@ extends ../../layout_admin
 block topmenu
   include topmenu
 block content
-  include ./_filters
+  //include ./_filters
+  .actsfilters.mt-2.mb-3.pt-3.pl-3.pr-3.d-print-none
+    .actsfilters-header Rooms
+    form.form-inline(method='get')
+      if data.rooms && data.rooms.length
+        select.form-control.mb-3.mr-sm-2.multiple-select(multiple="multiple",  style="display: none;", name='bookings.schedule.venue.room')
+          each room in data.rooms
+            - var selected = undefined
+            - if (get['bookings.schedule.venue.room'] && Array.isArray(get['bookings.schedule.venue.room']) && get['bookings.schedule.venue.room'].indexOf(room)>-1) { selected = "selected" }
+            - else if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'] ==room) { selected = "selected" }
+            option(value=room, selected=selected)=room
+      else
+        .mb-3
+          !="Please add at least a room in event schedule"
+          !=" "
+          b
+            a(href="/admin/events/"+data.event._id+"/public/#scheduleS")=__("ADD ROOM")
   table.table.table-fixed.program
     //thead
       tr

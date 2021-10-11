@@ -88,7 +88,87 @@ $(function () {
 		});
 	});
   
-  $('.s').click(function (event) {
+	$('.deletedett').click(function (event) {
+    //event.preventDefault();
+    var sez = $(this).data('sez'); // Extract info from data-* attributes
+    var id = $(this).data('id'); // Extract info from data-* attributes
+		$('#msg_modal').modal('show');
+		$('#msg_modal	.modal-confirm').removeClass('btn-primary');
+		$('#msg_modal	.modal-confirm').addClass('btn-danger');
+		$('#msg_modal	.modal-confirm').html('DELETE');
+		$('#msg_modal	.modal-confirm').removeAttr("disabled");
+		$('#msg_modal	.modal-confirm').attr('data-id', id);
+		$('#msg_modal	.modal-confirm').attr('data-sez', sez); 
+		$('#msg_modal	.modal-confirm').removeAttr('data-dismiss');
+		$('#msg_modal	.modal-body').html('Are you sure you want to delete it?');
+		$('#msg_modal	.modal-confirm').click(function (event) {
+			$('#msg_modal	.modal-body').html('<div class="text-center h1"><i class="icon-spinner animate-spin"></i></div>')
+			//console.log(sez);
+			//console.log(id);
+			//console.log("/admin/api/"+(sez=="crews" ? "profile" : sez)+"/"+id+"/delete");
+			$('#msg_modal	.modal-confirm').attr("disabled", true);
+			$.ajax({
+				url: "/admin/api/"+(sez=="crews" ? "profile" : sez)+"/"+id+"/delete",
+				method: "get",
+				data: {delete: 1}
+			})
+			.done(function(data) {
+				if (data && data.length && data[0].error) {
+					$('#msg_modal	.modal-body').html('<div class="alert alert-danger">'+data[0].error+'</div>');
+				} else {
+					$('.formcontainer').html('<div class="alert alert-success mt-3">'+Object.keys(data)[0] + " Deleted with success <b><a href=\"/admin/"+sez+"\">BACK TO LIST</a></b>"+'</div>');
+					$('#msg_modal').modal('hide');
+				}
+			})
+			.fail(function(data) {
+				console.log("error");
+				console.log(data);
+			});
+		});
+	});
+  
+	$('.unlink').click(function (event) {
+    event.preventDefault();
+    var sez = $(this).data('sez'); // Extract info from data-* attributes
+    var id = $(this).data('id'); // Extract info from data-* attributes
+    var child = $(this).data('child'); // Extract info from data-* attributes
+    var childtype = $(this).data('childtype'); // Extract info from data-* attributes
+		$('#msg_modal').modal('show');
+		$('#msg_modal	.modal-confirm').removeClass('btn-primary');
+		$('#msg_modal	.modal-confirm').addClass('btn-danger');
+		$('#msg_modal	.modal-confirm').html('UNLINK');
+		$('#msg_modal	.modal-confirm').removeAttr("disabled");
+		$('#msg_modal	.modal-confirm').attr('data-id', id);
+		$('#msg_modal	.modal-confirm').attr('data-sez', sez); 
+		$('#msg_modal	.modal-confirm').removeAttr('data-dismiss');
+		$('#msg_modal	.modal-body').html('Are you sure you want to unlink it?');
+		$('#msg_modal	.modal-confirm').click(function (event) {
+			$('#msg_modal	.modal-body').html('<div class="text-center h1"><i class="icon-spinner animate-spin"></i></div>')
+			//console.log(sez);
+			//console.log(id);
+			//console.log("/admin/api/"+(sez=="crews" ? "profile" : sez)+"/"+id+"/unlink");
+			$('#msg_modal	.modal-confirm').attr("disabled", true);
+			$.ajax({
+				url: "/admin/api/"+sez+"/"+id+"/"+childtype+"/"+child+"/unlink",
+				method: "get",
+				data: {delete: 1}
+			})
+			.done(function(data) {
+				if (data && data.length && data[0].error) {
+					$('#msg_modal	.modal-body').html('<div class="alert alert-danger">'+data[0].error+'</div>');
+				} else {
+					$("#"+id).html('<td colspan="'+$("#"+id).children().length+'"><div class="alert alert-success mb-0">'+Object.keys(data)[0] + " Deleted with success"+'</div></td>');
+					$('#msg_modal').modal('hide');
+				}
+			})
+			.fail(function(data) {
+				console.log("error");
+				console.log(data);
+			});
+		});
+	});
+  
+/*   $('.s').click(function (event) {
     event.preventDefault();
     var sez = $(this).data('sez'); // Extract info from data-* attributes
     var id = $(this).data('id'); // Extract info from data-* attributes
@@ -126,7 +206,7 @@ $(function () {
 		});
 	});
   
-
+ */
 	if ($("#birthday") && $("#birthday").length) {
 		$('#birthday').datetimeEntry({datetimeFormat: 'D/O/Y', spinnerBigImage: '/datetimeentry/spinnerDefaultBig.png'});
 	}
@@ -518,6 +598,48 @@ $(function () {
 		});
 	}
 
+	if ($(".autocomplete_performance") && $(".autocomplete_performance").length) {
+		$('.autocomplete_performance input').autoComplete({
+			resolverSettings: {
+					url: "/admin/api/getperformances/"+$(this).val()
+			},
+			bootstrapVersion: "4",
+			minLength: 3,
+			events: {
+				search: addPerformanceAutocomplete/* ,
+				formatResult: addperformanceAutocompleteSelect */
+			},
+			noResultsText: "NO performance found, think about to invite him to join AVnode"
+		});
+		addperformance = (elem, evt, item) => {
+			console.log('select', item);
+			$(elem).parent().find("button").removeClass("disabled");
+			$(elem).parent().find("button").on("click", function () {
+				var objid = $(this).data("objid");
+				var obj = $(this).data("obj");
+				$("#performances").append('<div class="mb-3 saving"><a href="#" data-objid="'+objid+'" data-obj="'+obj+'"><i class="icon-spinner animate-spin"></i></a> | '+item.text+'</div>')
+				$.ajax({
+					url: "/admin/api/"+ obj +"/"+ objid +"/performance/add/"+item.value,
+					method: "get"
+				})
+				.done(function(data) {
+					console.log(data);
+					location.reload();
+				})
+				.fail(function(err) {
+						$(".autocomplete_performance_err").html(err.responseJSON.message);
+						$(".autocomplete_performance_err").removeClass("d-none");	
+				})
+			});
+		}
+		$('.autocomplete_performance input').on('autocomplete.select', function (evt, item) {
+			addperformance(this, evt, item);
+		});
+	}
+  $(".cancel-sub").on('click', function(ev) {
+    cancel_sub(ev, this)
+  });
+
 	if ($(".autocomplete_members") && $(".autocomplete_members").length) {
 		var memberToAdd;
 		$('.autocomplete_members input').autoComplete({
@@ -832,6 +954,34 @@ addUserAutocomplete = function (qry, callback, origJQElement) {
 					res.push({
 						value: data[item]._id,
 						text:data[item].stagename
+					})
+				}
+				callback(res)
+			});
+		}
+	//});
+}
+
+addPerformanceAutocomplete = function (qry, callback, origJQElement) {
+	$(".autocomplete_performance_err").addClass("d-none")					
+	/* 	$('.autocomplete_users input').on( "blur", function () {
+		var inputinput = $(this);
+	});
+	$('.autocomplete_users input').on( "keyup", function () {
+		var inputinput = $(this);
+		console.log(this)
+		inputinput.parent().find(".dropdown-menu").addClass("show") */
+		if (qry.length>2) {
+			$.ajax({
+				url: "/admin/api/getperformances/"+qry,
+				method: "get",
+				dataType: "json"
+			}).done((data) => {
+				var res = []
+				for(var item in data) {
+					res.push({
+						value: data[item]._id,
+						text:data[item].title
 					})
 				}
 				callback(res)

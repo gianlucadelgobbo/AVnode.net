@@ -16,68 +16,13 @@
       #submenuEvent.collapse.sidebar-submenu(class=currentUrl.indexOf("/adminpro/events")===0 ? " show" : "")
         .list-group-item.sidebar-separator-title.d-flex
           small.menu-collapsed=data.event.title
-        - var obj = {link:'/adminpro/events/'+data.event._id+'/acts/', title:global.__('Acts')}
-        a.list-group-item(href=obj.link, class=currentUrl.indexOf(obj.link)==0 ? "active secondary" : "bg-dark")
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-theater-masks.fa-fw.mr-3
-            span.menu-collapsed=obj.title
-        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/peoples/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-users.fa-fw.mr-3
-            span.menu-collapsed=global.__('Peoples')
-        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/program/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-calendar-alt.fa-fw.mr-3
-            span.menu-collapsed=global.__('Program')
-        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/orders/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-money-check-alt.fa-fw.mr-3
-            span.menu-collapsed=global.__('Orders')
-        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/technical-riders/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-tasks.fa-fw.mr-3
-            span.menu-collapsed=global.__('Technical Riders')
-        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/program-social/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-rss-square.fa-fw.mr-3
-            span.menu-collapsed=global.__('Program Social')
-        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/program-print/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-print.fa-fw.mr-3
-            span.menu-collapsed=global.__('Program Prints')
-        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/pass/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-print.fa-fw.mr-3
-            span.menu-collapsed=global.__('Pass Prints')
-        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/pass-sheet/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-print.fa-fw.mr-3
-            span.menu-collapsed=global.__('Pass sheet Prints')
-        //a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/countries/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-sitemap.fa-fw.mr-3
-            span.menu-collapsed=global.__('Countries')
-          li.nav-item
-          a.nav-link(href='/adminpro/events/'+data.event._id+'/tweets/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-sitemap.fa-fw.mr-3
-            span.menu-collapsed=global.__('TWEETS')
-          a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/partners/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-sitemap.fa-fw.mr-3
-            span.menu-collapsed=global.__('Partners')
-          a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/numbers/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-sitemap.fa-fw.mr-3
-            span.menu-collapsed=global.__('Numbers')
-          a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/guestlist/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-sitemap.fa-fw.mr-3
-            span.menu-collapsed=global.__('Guestlist')
-          a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/cachecreator/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.icon-sitemap.fa-fw.mr-3
-            span.menu-collapsed=global.__('Cache Creator')
+        - var menuEvent = [ {link:'/adminpro/events/'+data.event._id+'/acts/', icon: "icon-theater-masks", title:global.__('Acts')}, {link:'/adminpro/events/'+data.event._id+'/peoples/', icon: "icon-users", title:global.__('Peoples')}, {link:'/adminpro/events/'+data.event._id+'/program/', icon: "icon-calendar", title:global.__('Program')}, {link:'/adminpro/events/'+data.event._id+'/technical-riders/', icon: "icon-tasks", title:global.__('Technical Riders')}, {link:'/adminpro/events/'+data.event._id+'/orders/', icon: "icon-money-check-alt", title:global.__('Orders')}, {link:'/adminpro/events/'+data.event._id+'/program-social/', icon: "icon-rss-square", title:global.__('Program Social')}, {link:'/adminpro/events/'+data.event._id+'/program-print-print', icon: "icon-print", title:global.__('Program Prints')}, {link:'/adminpro/events/'+data.event._id+'/pass/', icon: "icon-print", title:global.__('Pass Prints')}, {link:'/adminpro/events/'+data.event._id+'/pass-sheet/', icon: "icon-print", title:global.__('Pass sheet Prints')}]
+        each menu in menuEvent
+          a.list-group-item(href=menu.link, class=currentUrl.indexOf(menu.link)==0 ? "active" : "")
+            .d-flex.w-100.justify-content-start.align-items-center
+              span(class=menu.icon).fa-fw.mr-3
+              span.menu-collapsed=menu.title
+
     a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/organizations/')
       .d-flex.w-100.justify-content-start.align-items-center
         span.icon-sitemap.fa-fw.mr-3

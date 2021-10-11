@@ -1,0 +1,101 @@
+extends ../layout_admin
+block content
+	.d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+		h1.h2=data.title
+		.btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+			a.btn.btn-primary(href=data.is_public ? '/events/'+data.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")=__("SHOW")
+	include partials/menuobj
+	.row.mt-3
+		.col-md-7
+			h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+		.col-md-5
+			.input-group.autocomplete_performance
+				input.form-control(type='text' autocomplete='off' placeholder=__("Performance / Learning Title") value='')
+				.input-group-append
+					button.mb-2.btn.btn-success.disabled(type='button' data-objid=data._id data-obj=get.sez)
+						i.icon-plus
+						!=" "
+						b=__("Add Performance / Learning")
+			.alert.alert-danger.autocomplete_performance_err.d-none(role="alert")
+			if user.is_admin
+				.text-right
+					a.btn.btn-primary(href="/adminpro/events/"+data._id+"/program/")=__("SCHEDULE")
+	hr
+	.row
+		.col-md-12
+			table(data-toggle="table", data-show-columns="true", data-search="true")
+				thead
+					tr
+						th=__("Image")
+						th(data-sortable="true")=__("Title")
+						th(data-sortable="true")=__("Productions")
+						th(data-sortable="true")=__("Schedule")
+				tbody
+					each program in data.program
+						if program.performance && program.performance.id
+							tr(id="sub"+program.subscription_id)
+								td
+									a(href='/admin/performances/'+program.performance.id+'/public')
+										img.img-fluid(src=program.performance.imageFormats.small)
+								td
+									b
+										if user.is_admin && program.subscription_id
+											a.text-danger.cancel-sub(href='#' data-id=program.subscription_id)
+												i.icon-unlink
+											!=" | "  
+										a(href='/admin/performances/'+program.performance._id+'/public')
+											i.icon-edit
+										!=" | "  
+										a(href=program.performance.is_public ? '/performances/'+program.performance.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
+											i.icon-eye
+										!=" | "  
+										!=program.performance.title 
+										div
+											i.icon-circle(class=program.performance.is_public ? "text-success" : "text-danger")
+											!=" "  
+											!=__("Public")
+										div
+											i.icon-eye
+											!=" "  
+											!=program.performance.stats.visits
+											!=" | "  
+											i.icon-heart
+											!=" "  
+											!=program.performance.stats.likes
+								td
+									ul
+										each member in program.performance.users
+											li=member.stagename
+								td
+									if program.schedule && program.schedule.length
+										ul
+											each schedule, index in program.schedule
+												li
+													!=schedule.boxDateFull
+													if schedule.venue
+														b
+															br
+															!=schedule.venue.name
+															if schedule.venue.room
+																!=" // "+schedule.venue.room
+													if schedule.price
+														br
+														b="Price: "
+														!=schedule.price
+													if schedule.paypal
+														br
+														b="Paypal: "
+														!=schedule.paypal
+													if schedule.alleventschedulewithoneprice
+														br
+														!="Ticket includes all item schedule"
+													if schedule.priceincludesothershows
+														br
+														!="Ticket includes other shows"
+
+									else
+										!="NO SCHEDULE"
+						else 
+							tr 
+								td(colspan="4")
+									!="PROGRAM ERROR"+program.subscription_id

@@ -1600,7 +1600,7 @@
             "is_public": 1,
             "title": 1
           },
-          "populate": [{ "path": "program.performance", "select": "title image slug imageFormats", "model": "Performance"},{ "path": "program.schedule.categories", "select": "name"}]
+          "populate": [{ "path": "program.performance", "select": "id title image slug imageFormats users is_public stats", "model": "Performance",  "populate": [{ "path": "users", "select": "stagename", "model": "User"}]},{ "path": "program.schedule.categories", "select": "name"}]
         },
         "galleries": {
           "title": "Galleries",

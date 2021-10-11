@@ -36,6 +36,10 @@ router.get('/getauthors/:q', (req, res)=>{
   get.getAuthors(req, res);
 });
 
+router.get('/getperformances/:q', (req, res)=>{
+  get.getPerformances(req, res);
+});
+
 router.get('/setstatsandactivity/:id', (req, res)=>{
   get.setStatsAndActivity(req, res);
 });

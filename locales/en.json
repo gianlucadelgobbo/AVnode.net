@@ -703,5 +703,14 @@
 	"NO KIND": "NO KIND",
 	"Messagess added to the cue.": "Messagess added to the cue.",
 	"CHECK THE CUE": "CHECK THE CUE",
-	"Mailer": "Mailer"
+	"Mailer": "Mailer",
+	"Add Performance / Learning": "Add Performance / Learning",
+	"Performance / Learning Title": "Performance / Learning Title",
+	"Performace is booked and can not be deleted": "Performace is booked and can not be deleted",
+	"Performace own galleries and can not be deleted": "Performace own galleries and can not be deleted",
+	"ADD ROOM": "ADD ROOM",
+	"": "",
+	"Event have a program and can not be deleted": "Event have a program and can not be deleted",
+	"Event own galleries and can not be deleted": "Event own galleries and can not be deleted",
+	"Event own videos and can not be deleted": "Event own videos and can not be deleted"
 }

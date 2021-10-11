@@ -5,9 +5,220 @@ nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-t
     span.sr-only=__("Open menu")
     i.icon-menu.toggle_icon
   .collapse.navbar-collapse(id="navbar-collapse_performer_template")
-    include menuHeaderEvents
+    // !=currentUrl +(currentUrl.indexOf("/adminpro/supertools/files")===0)
+    // d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu'
+    // Bootstrap List Group
+    .mr-auto
+      ul.navbar-nav.d-none.d-xs-block.d-block.d-lg-none
+        // Separator with title
+        li.nav-item
+          small ADVANCED TOOLS
+        // /END Separator
+        // Menu with submenu
+        li.nav-item
+          a.nav-link(href='/adminpro/events/')
+            span.icon-calendar.fa-fw.mr-3
+            span.menu-collapsed="Events"
+          if data && data.event && data.event._id
+            ul.pl-3#submenuEvent.collapse.navbar-nav(class=currentUrl.indexOf("/adminpro/events")===0 ? " show" : "")
+              li.nav-item
+                small.menu-collapsed=data.event.title
+              - var menuEvent = [ {link:'/adminpro/events/'+data.event._id+'/acts/', icon: "icon-theater-masks", title:global.__('Acts')}, {link:'/adminpro/events/'+data.event._id+'/peoples/', icon: "icon-users", title:global.__('Peoples')}, {link:'/adminpro/events/'+data.event._id+'/program/', icon: "icon-calendar", title:global.__('Program')}, {link:'/adminpro/events/'+data.event._id+'/technical-riders/', icon: "icon-tasks", title:global.__('Technical Riders')}, {link:'/adminpro/events/'+data.event._id+'/orders/', icon: "icon-money-check-alt", title:global.__('Orders')}, {link:'/adminpro/events/'+data.event._id+'/program-social/', icon: "icon-rss-square", title:global.__('Program Social')}, {link:'/adminpro/events/'+data.event._id+'/program-print-print', icon: "icon-print", title:global.__('Program Prints')}, {link:'/adminpro/events/'+data.event._id+'/pass/', icon: "icon-print", title:global.__('Pass Prints')}, {link:'/adminpro/events/'+data.event._id+'/pass-sheet/', icon: "icon-print", title:global.__('Pass sheet Prints')}]
+              each menu in menuEvent
+                li.nav-item(class=currentUrl.indexOf(menu.link)==0 ? "active" : "")
+                  a.nav-link(href=menu.link)
+                    span(class=menu.icon).fa-fw.mr-3
+                    span.menu-collapsed=menu.title
 
-    ul.user_navbar.navbar-nav.d-none.d-sm-block
+        li.nav-item
+          a.nav-link(href='/adminpro/organizations/')
+            .d-flex.w-100.justify-content-start.align-items-center
+              span.icon-sitemap.fa-fw.mr-3
+              span.menu-collapsed="Organizations"
+        li.nav-item
+          a.nav-link(href='/adminpro/partners/')
+            .d-flex.w-100.justify-content-start.align-items-center
+              span.icon-handshake.fa-fw.mr-3
+              span.menu-collapsed="Partners"
+        li.nav-item
+          a.nav-link(href='/adminpro/emailqueue/')
+            .d-flex.w-100.justify-content-start.align-items-center
+              span.icon-mail-bulk.fa-fw.mr-3
+              span.menu-collapsed="Emails Queue"
+        li.nav-item
+          a.nav-link(href='/adminpro/vjtv/')
+            .d-flex.w-100.justify-content-start.align-items-center
+              span.icon-tv.fa-fw.mr-3
+              span.menu-collapsed="VJ Television"
+        li.nav-item
+          a.nav-link(href='/adminpro/facebook/')
+            .d-flex.w-100.justify-content-start.align-items-center
+              span.icon-facebook-square.fa-fw.mr-3
+              span.menu-collapsed="Facebook"
+          if user.is_admin
+            a.nav-link(href='#submenuSuper', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? "true" : "false")
+              .d-flex.w-100.justify-content-start.align-items-center
+                span.icon-wrench.fa-fw.mr-3
+                span.menu-collapsed="SUPER Tools"
+            #submenuSuper.collapse.sidebar-submenu(class=currentUrl.indexOf("/adminpro/supertools")===0 ? " show" : "")
+              a.nav-link(href='#subsubmenuSuper1', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? "true" : "false")
+                .d-flex.w-100.justify-content-start.align-items-center
+                  span.icon-envelope.fa-fw.mr-3
+                  span.menu-collapsed Emails
+              // Submenu content
+              #subsubmenuSuper1.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? " show" : "")
+                - var obj = {link:"/emails", title:"Emails"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/emails/updateSendy", title:"Update Sendy"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+              a.nav-link(href='#subsubmenuSuper2', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/addresses")===0 ? "true" : "false")
+                .d-flex.w-100.justify-content-start.align-items-center
+                  span.icon-map-marker.fa-fw.mr-3
+                  span.menu-collapsed Addresses 
+              // Submenu content
+              #subsubmenuSuper2.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/addresses")===0 ? " show" : "")
+                - var obj = {link:"/addresses/venuesdbcheck", title:"Venues DB Check"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/addresses/venuesdbimport", title:"Venues DB Import"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/addresses/venuesgetgeometry", title:"Venues Get Geom"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/addresses/venuessetgeometry", title:"Venues Set Geom"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/addresses/usersdbcheck", title:"Users DB Check"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/addresses/showall", title:"Show All"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/addresses/updatedb", title:"Update DB"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/addresses/getgeometry", title:"Get Geom"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/addresses/setgeometry", title:"Get Geom"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+              a.nav-link(href='#subsubmenuSuper4', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/files")===0 ? "true" : "false")
+                .d-flex.w-100.justify-content-start.align-items-center
+                  span.icon-archive.fa-fw.mr-3
+                  span.menu-collapsed Files
+              // Submenu content
+              #subsubmenuSuper4.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/files")===0 ? " show" : "")
+                - var obj = {link:"/files/userimages", title:"User Images"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/userformatsgenerator", title:"User Formats Generator"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/userfilestodelete_formats?api=1", title:"User Images Formats to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/usersfilestodelete_images?api=1", title:"User Images to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+
+                - var obj = {link:"/files/performanceimages", title:"Performance Images"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/performanceformatsgenerator", title:"Performance Formats Generator"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/performancefilestodelete_formats?api=1", title:"Performance Images Formats to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/performancefilestodelete_images?api=1", title:"Performance Images to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+
+                - var obj = {link:"/files/eventimages", title:"Event Images"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/eventformatsgenerator", title:"Event Formats Generator"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/eventfilestodelete_formats?api=1", title:"Event Images Formats to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/eventfilestodelete_images?api=1", title:"Event Images to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+
+                - var obj = {link:"/files/newsimages", title:"News Images"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/newsformatsgenerator", title:"news Formats Generator"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/newsfilestodelete_formats?api=1", title:"news Images Formats to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/newsfilestodelete_images?api=1", title:"news Images to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+
+                - var obj = {link:"/files/videofiles", title:"Video Files"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/videoformatsgenerator", title:"Video Formats Generator"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/videofilestodelete_videos?api=1", title:"Video Files to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/videofilestodelete_formats?api=1", title:"Video Formats to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/videofilestodelete_previews?api=1", title:"Video Previews to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/videofilestodelete_originals?api=1", title:"Video Originals to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/videocleaner", title:"Video Files Cleaner"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+
+                - var obj = {link:"/files/galleryimages", title:"Gallery Images"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/gallerygenerator", title:"Gallery Generator"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/galleryimagestodelete", title:"Gallery Images to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+
+                - var obj = {link:"/files/footagefiles", title:"Footage Files"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/footagerenamer", title:"Footage Renamer"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/footageformatsgenerator", title:"Footage Formats Generator"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/footagefilestodelete_videos?api=1", title:"Footage Files to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/footagefilestodelete_formats?api=1", title:"Footage Formats to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/footagefilestodelete_previews?api=1", title:"Footage Previews to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/files/footagefilestodelete_originals?api=1", title:"Footage Originals to delete"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+              a.nav-link(href='#subsubmenuSuper5', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/wpimport")===0 ? "true" : "false")
+                .d-flex.w-100.justify-content-start.align-items-center
+                  span.icon-download.fa-fw.mr-3
+                  span.menu-collapsed WP Import
+              // Submenu content
+              #subsubmenuSuper5.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/wpimport")===0 ? " show" : "")
+                - var obj = {link:"/wpimport/news", title:"News"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/wpimport/events", title:"Events"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+                - var obj = {link:"/wpimport/organizations", title:"Organizations"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+              
+              a.nav-link(href='#subsubmenuSuper6', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? "true" : "false")
+                .d-flex.w-100.justify-content-start.align-items-center
+                  span.icon-tags.fa-fw.mr-3
+                  span.menu-collapsed Categories
+              // Submenu content
+              #subsubmenuSuper6.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? " show" : "")
+                - var obj = {link:"/categories/dbcheck", title:"Categories DB Check"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+
+              // Menu content
+              a.nav-link(href='#subsubmenuSuper7', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? "true" : "false")
+                .d-flex.w-100.justify-content-start.align-items-center
+                  span.icon-tags.fa-fw.mr-3
+                  span.menu-collapsed Statistics
+              // Submenu content
+              #subsubmenuSuper7.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? " show" : "")
+                - var obj = {link:"/stats/usersstatsupdate", title:"Users Update"}
+                a-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+              
+              // Menu content
+              a.nav-link(href='/adminpro/supertools/localesgen', class=currentUrl.indexOf("/adminpro/supertools/localesgen")==0 ? "bg-secondary" : "bg-dark")
+                .d-flex.w-100.justify-content-start.align-items-center
+                  span.icon-flag.fa-fw.mr-3
+                  span.menu-collapsed Locales
+
+          a.nav-link(href='/admin/profile/'+user._id+'/public')
+            .d-flex.w-100.justify-content-start.align-items-center
+              span.icon-cog.mr-3
+              span.menu-collapsed="Control Panel"
+
+                
+
+    ul.user_navbar.navbar-nav
       if user
         //li.nav-item.dropdown.user_menu.user_menu_logged                  
         li.nav-item.dropdown.user_menu.user_menu_logged

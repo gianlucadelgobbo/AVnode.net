@@ -313,7 +313,7 @@ router.getDelete = (req, res) => {
                 break;
                 case "events" :
                   logger.debug("getDelete events");
-                  if ((!data.schedule || !data.schedule.length) && (!data.galleries || !data.galleries.length) && (!data.videos || !data.videos.length)) {
+                  if ((!data.program || !data.program.length) && (!data.galleries || !data.galleries.length) && (!data.videos || !data.videos.length)) {
                     results.Event = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
                     results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {performances: [data._id] } });
                     var promises = [];
@@ -1053,6 +1053,21 @@ router.getAuthors = (req, res) => {
   });
 }
 
+router.getPerformances = (req, res) => {
+  Models.Performance
+  .find({$or:[
+    { slug : { "$regex": req.params.q, "$options": "i" } },
+    { title : { "$regex": req.params.q, "$options": "i" } }
+  ]})
+  .lean()
+  .select({'title':1})
+  .sort({'title': 1})
+  .exec((err, performances) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    res.json(performances);
+  });
+}
+
 router.removeAddress = (req, res) => {
   if (req.query.db === "users") {
     logger.debug(req.query);
@@ -1688,7 +1703,7 @@ router.removeUser = (req, res) => {
     }
   });
 }
-
+/*
 router.eventAddPerformance = (req, res) => {
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
@@ -1784,6 +1799,125 @@ router.eventAddPerformance = (req, res) => {
                 });
               }
             });
+          });
+        }
+      });
+    }
+  });
+}
+*/
+router.eventAddPerformance = (req, res) => {
+  //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
+
+  var query = {_id: req.params.id};
+  Models['Event']
+  .findOne(query)
+  .select({_id:1, title:1, stats:1, program:1})
+  //.populate({ "path": "users", "select": "stagename", "model": "User"})
+  .exec((err, event) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).send({ message: err });
+    } else if (!event) {
+      res.status(404).send({
+        "message": "PERFORMANCE_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"PERFORMANCE_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else if (event.program.map((item)=>{return item.performance.toString()}).indexOf(req.params.performance)!==-1) {
+      res.status(404).send({
+        "message": "PERFORMANCE_IS_ALREADY_IN",
+        "name": "MongoError",
+        "stringValue":"\"PERFORMANCE_IS_ALREADY_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"PERFORMANCE_IS_ALREADY_IN",
+          "name":"MongoError",
+          "stringValue":"\"PERFORMANCE_IS_ALREADY_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      query = {performance: req.params.performance, event: req.params.id};
+      Models["Program"]
+      .findOne(query)
+      .exec((err, program) => {
+        if (!program) {
+          program = {};
+          program.performance = req.params.performance;
+          program.reference = req.user._id;
+          program.event = req.params.id;
+          program.status = "5be8708afc39610000000013";
+          Models["Program"]
+          .create(program, function (err, program) {
+            if (err) {
+              logger.debug(`${JSON.stringify(err)}`);
+              res.status(404).send({ message: err });
+            } else {
+              Models["Program"]
+              .findOne(query)
+              .exec((err, program) => {
+                event.program.push({performance:req.params.performance, subscription_id:program._id});
+                event.save(function(err){
+                  if (err) {
+                    logger.debug(`${JSON.stringify(err)}`);
+                    res.status(404).send({ message: err });
+                  } else {
+                    var query = {_id: req.params.performance};
+                    var select = {_id:1, bookings:1}
+                    Models["Performance"]
+                    .findOne(query)
+                    .select(select)
+                    //.populate({ "path": "members", "select": "addresses", "model": "User"})
+                    .exec((err, performance) => {
+                      performance.bookings.push({event:req.params.id});
+                      performance.save(function(err){
+                        if (err) {
+                          logger.debug(`${JSON.stringify(err)}`);
+                          res.status(404).send({ message: err });
+                        } else {
+                          req.params.sez = 'events';
+                          req.params.form = 'program';
+                          router.getData(req, res, "json");
+                        }
+                      });
+                    });
+                  }
+                });
+              });
+            }
+          });
+        } else {
+          res.status(404).send({
+            "message": "PERFORMANCE_IS_ALREADY_IN",
+            "name": "MongoError",
+            "stringValue":"\"PERFORMANCE_IS_ALREADY_IN\"",
+            "kind":"Date",
+            "value":null,
+            "path":"id",
+            "reason":{
+              "message":"PERFORMANCE_IS_ALREADY_IN",
+              "name":"MongoError",
+              "stringValue":"\"PERFORMANCE_IS_ALREADY_IN\"",
+              "kind":"string",
+              "value":null,
+              "path":"id"
+            }
           });
         }
       });
