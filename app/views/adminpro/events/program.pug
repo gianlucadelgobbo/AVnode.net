@@ -13,6 +13,7 @@ block content
             - if (get['bookings.schedule.venue.room'] && Array.isArray(get['bookings.schedule.venue.room']) && get['bookings.schedule.venue.room'].indexOf(room)>-1) { selected = "selected" }
             - else if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'] ==room) { selected = "selected" }
             option(value=room, selected=selected)=room
+        input.btn.btn-primary.mb-3(type='submit', name='submit_search', value='FILTER')
       else
         .mb-3
           !="Please add at least a room in event schedule"

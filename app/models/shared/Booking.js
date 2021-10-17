@@ -4,6 +4,7 @@ const moment = require('moment');
 
 const Booking = new Schema({
   schedule: [Schedule],
+  subscription_id: { type: Schema.ObjectId, ref: 'Program' },
   event: { type: Schema.ObjectId, ref: 'EventShow' }
 },{
   _id : false,

@@ -112,6 +112,10 @@ router.get('/playlists/:id/footageremove/:footage', (req, res)=>{
   get.removeFootage(req, res);
 });
 
+router.get('/events/:id/getfreezed', (req, res)=>{
+  get.eventGetFreezed(req, res);
+});
+
 router.get('/events/:id/performance/add/:performance', (req, res)=>{
   get.eventAddPerformance(req, res);
 });

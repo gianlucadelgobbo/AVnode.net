@@ -187,9 +187,9 @@ $(function() {
     } 
   }
 
-  $(".cancel-sub").on('click', function(ev) {
+  /* $(".cancel-sub").on('click', function(ev) {
     cancel_sub(ev, this)
-  });
+  }); */
   cancel_sub = (ev, obj) => {
     var result = confirm("Want to delete?");
     if (result) {

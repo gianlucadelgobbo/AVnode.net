@@ -712,5 +712,8 @@
 	"": "",
 	"Event have a program and can not be deleted": "Event have a program and can not be deleted",
 	"Event own galleries and can not be deleted": "Event own galleries and can not be deleted",
-	"Event own videos and can not be deleted": "Event own videos and can not be deleted"
+	"Event own videos and can not be deleted": "Event own videos and can not be deleted",
+	"Is freezed": "Is freezed",
+	"RENEW FREEZED DATA": "RENEW FREEZED DATA",
+	"FREEZING SUCCESS": "FREEZING SUCCESS"
 }

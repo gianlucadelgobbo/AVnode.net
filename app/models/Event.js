@@ -134,6 +134,7 @@ const eventSchema = new Schema({
   schedule: [datevenueSchema],
   partners: [partnershipSchema],
   program: [programSchema],
+  program_freezed: {},
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   type: { type: Schema.ObjectId, ref: 'Category' },
   users:  [{ type: Schema.ObjectId, ref: 'UserShow' }],

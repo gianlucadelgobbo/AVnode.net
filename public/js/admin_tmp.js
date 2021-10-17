@@ -636,7 +636,7 @@ $(function () {
 			addperformance(this, evt, item);
 		});
 	}
-  $(".cancel-sub").on('click', function(ev) {
+  $(".cancel-sub-admin").on('click', function(ev) {
     cancel_sub(ev, this)
   });
 

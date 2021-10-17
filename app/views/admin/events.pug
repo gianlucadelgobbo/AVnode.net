@@ -36,6 +36,9 @@ block content
 												a.text-danger.delete(href='#' data-id=event._id data-sez=get.sez)
 													i.icon-trash
 												!=" | "  
+												a.text-success.duplicate(href='#' data-id=event._id data-sez=get.sez)
+													i.icon-clone
+												!=" | "  
 											a(href='/admin/events/'+event._id+'/public')
 												i.icon-edit
 											!=" | "  

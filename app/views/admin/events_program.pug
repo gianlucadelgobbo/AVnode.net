@@ -40,7 +40,7 @@ block content
 								td
 									b
 										if user.is_admin && program.subscription_id
-											a.text-danger.cancel-sub(href='#' data-id=program.subscription_id)
+											a.text-danger.cancel-sub-admin(href='#' data-id=program.subscription_id)
 												i.icon-unlink
 											!=" | "  
 										a(href='/admin/performances/'+program.performance._id+'/public')

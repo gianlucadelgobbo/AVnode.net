@@ -8,6 +8,7 @@ const Models = {
   'User': mongoose.model('User'),
   'Performance': mongoose.model('Performance'),
   'Event': mongoose.model('Event'),
+  'EventShow': mongoose.model('EventShow'),
   'Footage': mongoose.model('Footage'),
   'Gallery': mongoose.model('Gallery'),
   'News': mongoose.model('News'),
@@ -1856,15 +1857,15 @@ router.eventAddPerformance = (req, res) => {
       query = {performance: req.params.performance, event: req.params.id};
       Models["Program"]
       .findOne(query)
-      .exec((err, program) => {
-        if (!program) {
-          program = {};
-          program.performance = req.params.performance;
-          program.reference = req.user._id;
-          program.event = req.params.id;
-          program.status = "5be8708afc39610000000013";
+      .exec((err, pp) => {
+        if (!pp) {
+          var programnew = {};
+          programnew.performance = req.params.performance;
+          programnew.reference = req.user._id;
+          programnew.event = req.params.id;
+          programnew.status = "5be8708afc39610000000013";
           Models["Program"]
-          .create(program, function (err, program) {
+          .create(programnew, function (err, program) {
             if (err) {
               logger.debug(`${JSON.stringify(err)}`);
               res.status(404).send({ message: err });
@@ -1885,7 +1886,7 @@ router.eventAddPerformance = (req, res) => {
                     .select(select)
                     //.populate({ "path": "members", "select": "addresses", "model": "User"})
                     .exec((err, performance) => {
-                      performance.bookings.push({event:req.params.id});
+                      performance.bookings.push({event:req.params.id, subscription_id:program._id});
                       performance.save(function(err){
                         if (err) {
                           logger.debug(`${JSON.stringify(err)}`);
@@ -2641,6 +2642,69 @@ router.removeVideo = (req, res) => {
             });
           });
         }
+      });
+    }
+  });
+}
+
+router.eventGetFreezed = (req, res) => {
+  console.log("eventGetFreezed")
+  var populate = [
+    { 
+      "path": "program.performance", "select": "id title image slug duration price paypal users is_public stats abouts galleries videos", "model": "Performance",  "populate": [
+        { "path": "users", "select": "stagename slug stats addresses members organizationData gender image abouts web social performances", "model": "UserShow", "populate": [
+          { "path": "performances", "select": "title slug image users", "model": "Performance", "populate": [
+            { "path": "users", "select": "stagename slug stats addresses members organizationData gender image abouts web social performances", "model": "UserShow"},
+            { "path": "bookings.performance", "select": "title slug image users", "model": "Performance"}
+          ]}
+        ]},
+        { "path": "bookings.performance", "select": "title slug image users", "model": "Performance"},
+        { "path": "galleries", "select": "title slug image medias", "model": "Gallery"},
+        { "path": "videos", "select": "title slug image media", "model": "Video"},
+        { "path": "type", "select": "name slug", "model": "Category"},
+        { "path": "tecnique", "select": "name slug", "model": "Category"},
+        { "path": "genre", "select": "name slug", "model": "Category"}
+      ]},
+    { "path": "program.schedule.categories", "select": "name"}
+  ];
+  //console.log()
+  Models.EventShow.findOneAndUpdate({_id: req.params.id}, {is_freezed: false}, {upsert: true}, function(err, doc) {
+    if (err) {
+      res.status(404).send({ message: err });
+    } else {
+      Models.EventShow.
+      //find({"users": req.params.id}).
+      findOne({_id: req.params.id}).
+      populate(populate).
+      select({title: 1, slug: 1, program: 1, is_freezed: 1, program_freezed: 1}).
+      //sort({title: 1}).
+      //select({stagename: 1, createdAt: 1, crews:1}).
+      //exec((err, events) => {
+      exec((err, event) => {
+        console.log("program_freezed")
+        console.log(event.is_freezed)
+        console.log(event.advanced.performers)
+        //event.is_freezed = true;
+        event.program_freezed = JSON.parse(JSON.stringify(event.advanced));
+        /* event.program_freezed.programmenotscheduled.forEach(function (item) {
+          item.id = item._id;
+          delete item._id;
+        }); */
+
+        event.save(function (err) {
+          if (err) {
+            res.status(404).send({ message: err });
+          } else {
+            Models.EventShow.findOneAndUpdate({_id: req.params.id}, {is_freezed: true}, {upsert: true}, function(err, doc) {
+              if (err) {
+                res.status(404).send({ message: err });
+              } else {
+                res.send({ message: __("FREEZING SUCCESS") });
+              }
+            });
+          }
+          // saved!
+        });
       });
     }
   });

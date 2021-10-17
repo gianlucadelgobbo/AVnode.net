@@ -90,9 +90,9 @@ block content
   if data.performer
     .text-center.d-md-none
       img.mb-3.img-fluid(
-        class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
-        src=data.imageFormats.large
-        alt=data.stagename
+        class=data.performer.imageFormats.large.substring(data.performer.imageFormats.large.lastIndexOf(".")+1)
+        src=data.performer.imageFormats.large
+        alt=data.performer.stagename
       )
     .container
       .row
@@ -196,9 +196,9 @@ block content
 
         .col-lg-4
           img.img-fluid.d-none.d-md-block(
-            class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
-            src=data.imageFormats.large
-            alt=data.stagename
+            class=data.performer.imageFormats.large.substring(data.performer.imageFormats.large.lastIndexOf(".")+1)
+            src=data.performer.imageFormats.large
+            alt=data.performer.stagename
           )
 
 

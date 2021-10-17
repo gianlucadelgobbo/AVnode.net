@@ -33,7 +33,7 @@ function checkCookie() {
   }
 }
 
-$(".cancel-sub").on('click', function(ev) {
+/* $(".cancel-sub").on('click', function(ev) {
   var result = confirm("Want to delete?");
   if (result) {
     const id = $(this).data("id");
@@ -45,7 +45,7 @@ $(".cancel-sub").on('click', function(ev) {
       $("#sub"+id).remove();
     });
   } 
-});
+}); */
 
 $(".button_like").on('click', function(ev) {
   ///likes/?section=performances&id=5a9c32c3606624000000bccb

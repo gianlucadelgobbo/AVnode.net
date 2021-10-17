@@ -164,25 +164,68 @@ router.postData = (req, res) => {
 
 router.cancelSubscription = (req, res) => {
   logger.debug(req.body);
+  var err = [];
   Models.Program
-  .findOne({_id: req.body.id/* , members:req.user.id */},'_id, event', (err, sub) => {
-    logger.debug(sub.event);
-    Models.Event
-    .findOne({_id: sub.event},'_id, program', (err, event) => {
-      logger.debug(event);
-      event.program.forEach((program, index) => {
-        if (program.subscription_id == req.body.id) {
-          event.program.splice(index, 1);
-        }
+  .findOne({_id: req.body.id/* , members:req.user.id */},'_id, event performance', (err, sub) => {
+    if (err) {
+      err.push(err);
+      res.json(err);
+    } else {
+      logger.debug("sub.event");
+      logger.debug(sub.event);
+      logger.debug("sub.performance");
+      logger.debug(sub.performance);
+      Models.Event
+      .findOne({_id: sub.event, "program.subscription_id": req.body.id},'_id, program', (err, event) => {
+        if (err) {
+          err.push(err);
+          res.json(err);
+        } else {
+          logger.debug("event.program");
+          logger.debug(event.program.length);
+          event.program.forEach((program, index) => {
+            console.log("program.subscription_id")
+            console.log(program.subscription_id)
+            console.log(req.body.id)
+            if (program.subscription_id == req.body.id) {
+              event.program.splice(index, 1);
+            }
+          });
+          logger.debug(event.program.length);
+          Models.Performance
+          .findOne({_id: sub.performance},'_id, bookings', (err, performance) => {
+            if (err) {
+              err.push(err);
+              res.json(err);
+            } else {
+              console.log({_id: sub.performance, "bookings.subscription_id": req.body.id});
+              logger.debug("performance.bookings.length");
+              logger.debug(performance.bookings);
+              performance.bookings.forEach((booking, index) => {
+                console.log("booking.subscription_id")
+                console.log(booking.subscription_id)
+                console.log(req.body.id)
+                if (booking.subscription_id == req.body.id) {
+                  performance.bookings.splice(index, 1);
+                }
+              });
+              logger.debug(performance.bookings.length);
+              event.save(function(err){
+                performance.save(function(err){
+                  sub.remove(function(err){
+                    logger.debug("SUCCESSO!!!");
+                    res.json(true);
+                  });
+                });  
+              });
+            }
+          });
+        } 
       });
-      event.save(function(err){
-        sub.remove(function(err){
-          res.json(true);
-        });
-      });  
-    });
+    }
   });
 }
+
 router.editSubscriptionSave = (req, res) => {
   logger.debug("req.body");
   logger.debug(req.body);
