@@ -1326,6 +1326,56 @@
           },
           "populate": [{ "path": "type" , "select": "name" },{ "path": "users" , "select": "stagename image organizationData.logo" }]
         },
+        "image": {
+          "components": {
+            "image": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
+                "storage": "/glacier/events_originals/",
+                "maxsize": 20971520,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "uploader",
+              "label": "Event Image",
+              "validators": {
+                "Mime": {},
+                "Weight": {},
+                "Size": {}
+              }
+            }
+          },
+          "select": {
+            "image": 1,
+            "users": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "is_public": 1,
+            "title": 1,
+            "imageFormats": 1
+          },
+          "populate": []
+        },
         "partners": {
           "title": "Partners",
           "components": {
