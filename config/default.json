@@ -1326,56 +1326,6 @@
           },
           "populate": [{ "path": "type" , "select": "name" },{ "path": "users" , "select": "stagename image organizationData.logo" }]
         },
-        "image": {
-          "components": {
-            "image": {
-              "config":{
-                "fields": {
-                  "name": "image",
-                  "maxCount": 1
-                },
-                "fileext": ["jpg","jpeg","png","gif","svg"],
-                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
-                "storage": "/glacier/events_originals/",
-                "maxsize": 20971520,
-                "minwidth": 1280,
-                "minheight": 720,
-                "sizes": {
-                  "small": {
-                    "w": 400,
-                    "h": 225,
-                    "folder": "400x225",
-                    "default": "/images/default-item.svg"
-                  },
-                  "large": {
-                    "w": 1140,
-                    "h": 641,
-                    "folder": "1140x641",
-                    "default": "/images/default-item.svg"
-                  }
-                }
-              },
-              "comp": "uploader",
-              "label": "Event Image",
-              "validators": {
-                "Mime": {},
-                "Weight": {},
-                "Size": {}
-              }
-            }
-          },
-          "select": {
-            "image": 1,
-            "users": 1
-          },
-          "selectaddon": {
-            "slug": 1,
-            "is_public": 1,
-            "title": 1,
-            "imageFormats": 1
-          },
-          "populate": []
-        },
         "partners": {
           "title": "Partners",
           "components": {
@@ -1600,7 +1550,7 @@
             "is_public": 1,
             "title": 1
           },
-          "populate": [{ "path": "program.performance", "select": "id title image slug imageFormats users is_public stats", "model": "Performance",  "populate": [{ "path": "users", "select": "stagename", "model": "User"}]},{ "path": "program.schedule.categories", "select": "name"}]
+          "populate": [{ "path": "program.performance", "select": "id title image slug duration price paypal users is_public stats abouts galleries videos", "model": "Performance",  "populate": [{ "path": "users", "select": "stagename slug stats addresses members organizationData gender image abouts web social", "model": "User"},{ "path": "galleries", "select": "title slug image medias", "model": "Gallery"},{ "path": "videos", "select": "title slug image media", "model": "Video"},{ "path": "type", "select": "name slug", "model": "Category"},{ "path": "tecnique", "select": "name slug", "model": "Category"},{ "path": "genre", "select": "name slug", "model": "Category"}]},{ "path": "program.schedule.categories", "select": "name"}]
         },
         "galleries": {
           "title": "Galleries",
@@ -2077,7 +2027,7 @@
             }
           },
           "select": {
-            "users": 1,
+            "is_freezed": 1,
             "settings": 1,
             "organizationsettings": 1
           },
@@ -6017,6 +5967,8 @@
           "subtitles": 1,
           "abouts": 1,
           "slug": 1,
+          "is_freezed": 1,
+          "program_freezed": 1,
           "createdAt": 1,
           "updatedAt": 1,
           "stats": 1,
@@ -6039,6 +5991,8 @@
           "social": 1,
           "emails": 1,
           "slug": 1,
+          "is_freezed": 1,
+          "program_freezed": 1,
           "type": 1,
           "subtitle": 1,
           "imageFormats": 1,
@@ -6175,6 +6129,8 @@
           "subtitles": 1,
           "abouts": 1,
           "slug": 1,
+          "is_freezed": 1,
+          "program_freezed": 1,
           "stats": 1,
           "web": 1,
           "social": 1,
@@ -6193,6 +6149,8 @@
           "title": 1,
           "description": 1,
           "stats": 1,
+          "is_freezed": 1,
+          "program_freezed": 1,
           "web": 1,
           "social": 1,
           "emails": 1,
@@ -6262,6 +6220,8 @@
           "subtitles": 1,
           "abouts": 1,
           "slug": 1,
+          "is_freezed": 1,
+          "program_freezed": 1,
           "stats": 1,
           "web": 1,
           "social": 1,
@@ -6284,6 +6244,8 @@
           "social": 1,
           "emails": 1,
           "slug": 1,
+          "is_freezed": 1,
+          "program_freezed": 1,
           "type": 1,
           "subtitle": 1,
           "imageFormats": 1,
