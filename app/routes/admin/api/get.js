@@ -2668,7 +2668,7 @@ router.eventGetFreezed = (req, res) => {
     { "path": "program.schedule.categories", "select": "name"}
   ];
   //console.log()
-  Models.EventShow.findOneAndUpdate({_id: req.params.id}, {is_freezed: false}, {upsert: true}, function(err, doc) {
+  Models.EventShow.findOneAndUpdate({_id: req.params.id}, {is_freezed: false}, {upsert: true, useFindAndModify: false}, function(err, doc) {
     if (err) {
       res.status(404).send({ message: err });
     } else {
@@ -2681,21 +2681,21 @@ router.eventGetFreezed = (req, res) => {
       //select({stagename: 1, createdAt: 1, crews:1}).
       //exec((err, events) => {
       exec((err, event) => {
-        console.log("program_freezed")
+       /*  console.log("program_freezed")
         console.log(event.is_freezed)
-        console.log(event.advanced.performers)
+        console.log(event.advanced.performers) */
         //event.is_freezed = true;
-        event.program_freezed = JSON.parse(JSON.stringify(event.advanced));
+        //2event.program_freezed = JSON.parse(JSON.stringify(event.advanced));
         /* event.program_freezed.programmenotscheduled.forEach(function (item) {
           item.id = item._id;
           delete item._id;
         }); */
 
-        event.save(function (err) {
+        Models.EventShow.findOneAndUpdate({_id: req.params.id}, {program_freezed: JSON.parse(JSON.stringify(event.advanced))}, {upsert: true, useFindAndModify: false}, function(err, doc) {
           if (err) {
             res.status(404).send({ message: err });
           } else {
-            Models.EventShow.findOneAndUpdate({_id: req.params.id}, {is_freezed: true}, {upsert: true}, function(err, doc) {
+            Models.EventShow.findOneAndUpdate({_id: req.params.id}, {is_freezed: true}, {upsert: true, useFindAndModify: false}, function(err, doc) {
               if (err) {
                 res.status(404).send({ message: err });
               } else {
