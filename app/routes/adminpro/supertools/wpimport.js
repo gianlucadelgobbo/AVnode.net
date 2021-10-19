@@ -174,7 +174,7 @@ router.get('/events_import', (req, res) => {
             }
             logger.debug(event);
             Event.
-            findOneAndUpdate({slug: event.slug}, event, { upsert: true, new: true, setDefaultsOnInsert: true }, (err) => {
+            findOneAndUpdate({slug: event.slug}, event, {upsert: true, useFindAndModify: false, new: true, setDefaultsOnInsert: true }, (err) => {
               let result;
               if (err) {
                 logger.debug('error '+err);

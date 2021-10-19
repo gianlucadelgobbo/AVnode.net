@@ -312,7 +312,7 @@ router.editSubscriptionSave = (req, res) => {
                     }
                   }
                 }
-                promises.push(Models.Program.findOneAndUpdate({_id: programs[item]._id}, programs[item]));
+                promises.push(Models.Program.findOneAndUpdate({_id: programs[item]._id}, programs[item]), {upsert: true, useFindAndModify: false});
               }
               Promise.all(
                 promises
@@ -764,6 +764,7 @@ router.updateProgram = (req, res) => {
   }  
   for (var a=0;a<req.body.data.length;a++) {
     var index = programIDS.indexOf(req.body.data[a]._id);
+    logger.debug(req.body.data[a]);
     if (index===-1) {
       programIDS.push(req.body.data[a]._id);
       program.push(req.body.data[a]);
@@ -774,7 +775,7 @@ router.updateProgram = (req, res) => {
   }  
   for (var a=0;a<program.length;a++) {
     eventProgram.push({performance:program[a].performance,schedule: program[a].schedule});
-    promises.push(Models.Program.findOneAndUpdate({_id: program[a]._id}, { $set: { schedule: program[a].schedule }}));
+    promises.push(Models.Program.findOneAndUpdate({_id: program[a]._id}, { $set: { schedule: program[a].schedule }}, {upsert: true, useFindAndModify: false}));
   }
   Promise.all(
     promises
@@ -809,7 +810,7 @@ router.updateProgram = (req, res) => {
       ).then( (resultsPromisePerfSave) => {
         const acceptedonly = false;
         if (acceptedonly) {
-          Models.Event.findOneAndUpdate({_id:program[0].event}, {$set: {program: eventProgram}}).exec((err, result) => {
+          Models.Event.findOneAndUpdate({_id:program[0].event}, {$set: {program: eventProgram}}, {upsert: true, useFindAndModify: false}).exec((err, result) => {
             res.json(err || result);
           });
         } else {

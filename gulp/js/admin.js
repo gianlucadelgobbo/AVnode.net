@@ -433,7 +433,7 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   event.preventDefault();
   var formdata = getFormData($( this ));
   var currentObj = JSON.parse(current.val());
-  console.log(currentObj);
+  console.log("#modalEditSchedule form");
   currentObj.schedule.starttime = new Date(Date.UTC(
     parseFloat(formdata.startday.split("-")[0]),
     parseFloat(formdata.startday.split("-")[1])-1,
@@ -448,7 +448,8 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
     parseFloat(formdata.endtime_hours),
     parseFloat(formdata.endtime_minutes)
   ));
-/*   currentObj.schedule.starttime = new Date(currentObj.schedule.starttime);
+  /*
+  currentObj.schedule.starttime = new Date(currentObj.schedule.starttime);
   currentObj.schedule.starttime.setUTCYear(formdata.startday.split("-")[0]);
   currentObj.schedule.starttime.setUTCMonth(parseFloat(formdata.startday.split("-")[1])-1);
   currentObj.schedule.starttime.setUTCDate(parseFloat(formdata.startday.split("-")[2]));
@@ -460,7 +461,8 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   currentObj.schedule.endtime.setUTCDate(parseFloat(formdata.endday.split("-")[2]));
   currentObj.schedule.endtime.setUTCHours(formdata.endtime_hours);
   currentObj.schedule.endtime.setUTCMinutes(formdata.endtime_minutes);
- */  var timestr = "";
+ */
+  var timestr = "";
   timestr+= ("0"+formdata.starttime_hours).substr(-2)+":"+("0"+formdata.starttime_minutes).substr(-2);
   timestr+= " - ";
   timestr+= ("0"+formdata.endtime_hours).substr(-2)+":"+("0"+formdata.endtime_minutes).substr(-2);
@@ -472,11 +474,10 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   //console.log(new Date(currentObj.schedule.starttime).getUTCMinutes());
   //console.log(new Date(currentObj.schedule.endtime).getUTCHours());
   //console.log(new Date(currentObj.schedule.endtime).getUTCMinutes());
-  //console.log((current.val()));
+
   current.val(JSON.stringify(currentObj));
-  $(current.parent().parent().find(".timing")).html(timestr);
+  $(current.parent().parent().parent().find(".timing")).html(timestr);
   $(current.parent().parent()).addClass("disabled");
-  console.log($(current.parent().parent()));
   programSortableUpdate();
   //const id = $(this).data("program");
   /*$('#modalEditSchedule .starttime-hours').val(new Date(schedule.starttime).getUTCHours())
@@ -528,15 +529,17 @@ function programSortableUpdate() {
           console.log(day.program[b].schedule)
           var st = new Date(room_starttime);
           var startNew = new Date(day.program[b].schedule.starttime);
+          console.log("room_starttime")
           console.log(st)
-          console.log(startNew)
           console.log(st.getUTCFullYear()+"-"+st.getUTCMonth()+"-"+st.getUTCDate())
-          console.log(startNew.getUTCFullYear()+"-"+startNew.getUTCMonth()+"-"+startNew.getUTCDate())
           console.log(st.getUTCHours())
+          console.log("startNew")
+          console.log(startNew)
+          console.log(startNew.getUTCFullYear()+"-"+startNew.getUTCMonth()+"-"+startNew.getUTCDate())
           console.log(startNew.getUTCHours())
 
 
-          if (startNew.getUTCFullYear()+startNew.getUTCMonth()+startNew.getUTCDate() === st.getUTCFullYear()+st.getUTCMonth()+st.getUTCDate()){
+          //if (startNew.getUTCFullYear()+startNew.getUTCMonth()+startNew.getUTCDate() === st.getUTCFullYear()+st.getUTCMonth()+st.getUTCDate()){
             console.log("salvo disabled")
             console.log(start.toISOString())
             console.log(day.program[b].schedule.starttime)
@@ -545,7 +548,7 @@ function programSortableUpdate() {
             day.program[b].schedule = [day.program[b].schedule]
             //console.log("disabled");
             data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
-          }
+          //}
         }
         //console.log(day.program[b]);
       }
