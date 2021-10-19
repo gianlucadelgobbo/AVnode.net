@@ -50,12 +50,12 @@ Schedule.virtual('boxDateFull').get(function () {
   if (this.starttime) {
     const lang = global.getLocale();
     const start = new Date(this.starttime).getTime()
-    console.log(start);
     const end = new Date(this.endtime).getTime()
     const days = Math.ceil((end-start)/(24*60*60*1000))
+    if (this.price == 120) console.log(days);
     if (days > 1) {
       let boxDateA = []
-      for(let a=0;a<=days;a++) {
+      for(let a=0;a<=days-1;a++) {
         let boxDateTMP = "";
         boxDateTMP = moment.utc((new Date(this.starttime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
         boxDateTMP+= " | "+moment.utc(this.starttime).format('HH:mm');
