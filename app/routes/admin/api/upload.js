@@ -379,7 +379,7 @@ upload.setVideo = (req, res) => {
       logger.debug(put);
       const id = req.params.id;
       Models[config.cpanel[req.params.sez].model]
-      .findOneAndUpdate({_id:id}, put, {upsert: false}, function(err, doc) {
+      .findOneAndUpdate({_id:id}, put, {upsert: false, useFindAndModify: false}, function(err, doc) {
         if (err) {
           res.status(500).send({ message: `${JSON.stringify(err)}` });
         } else {
