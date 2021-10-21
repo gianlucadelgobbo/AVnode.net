@@ -228,6 +228,12 @@ block content
                       a.performance_event_title(href="/events/"+booking.event.slug)=booking.event.title
                       br
                       !=booking.boxDate
+                      if booking.schedule && booking.schedule.length && booking.schedule[0].price && booking.schedule[0].alleventschedulewithoneprice && new Date(booking.event.schedule[0].starttime)>=new Date()
+                        if booking.schedule[0].paypal.indexOf("https")!==-1
+                          br
+                          a.btn.btn-primary(href=booking.schedule[0].paypal target="_blank")
+                            b=booking.schedule[0].price+",00 € | "+ global.__('BUY NOW')
+
                       //each schedule in booking.schedule
                         !=schedule.boxDate
                         !=" | "

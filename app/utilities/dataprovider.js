@@ -128,7 +128,7 @@ var countries = [
 ];
 
 dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
-  logger.debug("populate");
+  /* logger.debug("populate");
   logger.debug(populate);
   logger.debug("req.query");
   logger.debug(req.query);
@@ -137,7 +137,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
   logger.debug("slug");
   logger.debug(req.params.slug);
   logger.debug("model");
-  logger.debug(model);
+  logger.debug(model); */
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
     if (req.query.crews) {
       select.crews = 1;
@@ -229,6 +229,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
               "select": {
                 "title": 1,
                 "image": 1,
+                "schedule": 1,
                 "slug": 1
               },
               "model": "EventShow"
@@ -514,13 +515,13 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         res.advanced.programmenotscheduled = undefined;
       }
       if (res && res.advanced && res.advanced.performers && res.advanced.performers.performers && req.params.performer) {
-        logger.debug("BINGOOOOO");
+        //logger.debug("BINGOOOOO");
         for(let a=0; a<res.advanced.performers.performers.length;a++) {
           if (res.advanced.performers.performers[a].slug===req.params.performer) {
             res.performer = res.advanced.performers.performers[a];
           }
         }
-        logger.debug(res.performer);
+        //logger.debug(res.performer);
         if (res.performer) {
           let a=0;
           while(a<res.performer.performances.length) {
@@ -546,7 +547,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         delete res.partnerships;
         //logger.debug(res.partnerships);
       }
-      logger.debug("fetchShow END");
+      //logger.debug("fetchShow END");
       cb(err, res);
       //cb(err, data);
     });
