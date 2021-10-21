@@ -76,6 +76,7 @@ app.use(
     parameterLimit: 50000
   })
 );
+
 app.use(cookieParser());
 app.use(flash());
 
@@ -87,6 +88,7 @@ app.use(function(req, res, next) {
     next();
   }
 });
+
 app.use(function(req, res, next) {
   // ADD VARS TO JADE
   res.locals.current_url = req.url;
@@ -98,6 +100,7 @@ app.use(function(req, res, next) {
   }
   next();
 });
+
 app.use(
   session({
     resave: true,
@@ -111,6 +114,7 @@ app.use(
     })
   })
 );
+
 app.use(function(req, res, next) {
   res.locals.session = req.session;
   next();
@@ -135,6 +139,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
+
 app.use((req, res, next) => {
   req.session.current_lang = config.defaultLocale;
   global.setLocale(req.session.current_lang);
@@ -165,12 +170,12 @@ var corsOptions = {
 app.use(cors()); */
 app.use(routes);
 
-/* app.use(function(err, req, res, next) {
+app.use(function(err, req, res, next) {
   console.error("URL: " + req.headers.host + req.url); // URL of req made
   console.error(err.message); // Log error message in our server's console
   if (!err.statusCode) err.statusCode = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
   next(err);
   //res.status(err.statusCode).send("Internal server error"); // All HTTP requests must have a response, so let's send back an error with its status code and message
-}); */
+});
 
 module.exports = app;
