@@ -3,7 +3,7 @@ let config = require('getconfig');
 let helpers = require('./helpers');
 
 const mongoose = require('mongoose');
-const request = require('request');
+const request = require('axios');
 
 const Models = {
   'User': mongoose.model('User'),

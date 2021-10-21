@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const path = require("path");
 const morgan = require('morgan');
-const MongoStore = require("connect-mongo")(session);
+const MongoStore = require("connect-mongo");
 const flash = require("express-flash");
 //const expressStatusMonitor = require('express-status-monitor');
 const moment = require("moment");
@@ -104,10 +104,10 @@ app.use(
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
     cookie: { maxAge: 24 * 60 * 60 * 1000 },
-    store: new MongoStore({
-      url: process.env.MONGODB_URI,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
       autoReconnect: true,
-      clear_interval: 3600
+      touchAfter: 24 * 3600 // time period in seconds
     })
   })
 );
