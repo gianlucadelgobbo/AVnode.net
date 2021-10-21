@@ -449,7 +449,6 @@ router.get('/newsimages', (req, res) => {
 });
 
 router.get('/newsformatsgenerator', (req, res) => {
-  console.log('/adminpro/supertools/files/newsimages')
   logger.debug('/adminpro/supertools/files/newsimages');
   var limit = 50;
   var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
@@ -472,9 +471,6 @@ router.get('/newsformatsgenerator', (req, res) => {
       newss[news].image.imageFormatsExists = {};
       logger.debug(newss[news]);
       //logger.debug(config.cpanel[adminsez].config.sizes.image);
-      console.log('newss[news].image.exists')
-      console.log(newss[news].title)
-      console.log(newss[news].image.exists)
       if (newss[news].image.exists) {
         const file = newss[news].image.file;
         const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
@@ -498,7 +494,6 @@ router.get('/newsformatsgenerator', (req, res) => {
                 .resize(config.cpanel[adminsez].forms.public.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.image.config.sizes[format].h)
                 .webp()
                 .toFile(global.appRoot+newss[news].image.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
-                  console.log(err || info)
                   logger.debug(err);
                   logger.debug(info);
                 });

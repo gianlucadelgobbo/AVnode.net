@@ -184,9 +184,6 @@ router.cancelSubscription = (req, res) => {
           logger.debug("event.program");
           logger.debug(event.program.length);
           event.program.forEach((program, index) => {
-            console.log("program.subscription_id")
-            console.log(program.subscription_id)
-            console.log(req.body.id)
             if (program.subscription_id == req.body.id) {
               event.program.splice(index, 1);
             }
@@ -198,13 +195,9 @@ router.cancelSubscription = (req, res) => {
               err.push(err);
               res.json(err);
             } else {
-              console.log({_id: sub.performance, "bookings.subscription_id": req.body.id});
               logger.debug("performance.bookings.length");
               logger.debug(performance.bookings);
               performance.bookings.forEach((booking, index) => {
-                console.log("booking.subscription_id")
-                console.log(booking.subscription_id)
-                console.log(req.body.id)
                 if (booking.subscription_id == req.body.id) {
                   performance.bookings.splice(index, 1);
                 }

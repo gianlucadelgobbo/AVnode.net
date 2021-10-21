@@ -278,7 +278,6 @@ const getgeometry = (req, res, cb) => {
               }
             }
           }
-          console.log(response);
         }, (error) => {
           logger.debug(error);
         });

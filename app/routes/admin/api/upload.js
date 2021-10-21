@@ -519,13 +519,8 @@ upload.galleryAddImages = (req, res) => {
                               .findById(id, "medias image", (err, data) => {
                                 var result = []
                                 for (var e=0; e<files_resized.length; e++) {
-                                  console.log(files_resized[e])
-                                  console.log(files_resized[e].path.replace(global.appRoot, ""))
                                   for (var d=0; d<data.medias.length; d++) {
-                                    console.log("data[d].file")
-                                    console.log(data.medias[d].file)
                                     if (files_resized[e].path && data.medias[d].file == files_resized[e].path.replace(global.appRoot, "")) {
-                                      console.log("trovato")
                                       files_resized[e] = data.medias[d];
                                     }
                                   }

@@ -34,7 +34,6 @@ router.post('/', (req, res) => {
   let promises = [];
   let msg = [];
   for(item in locale){
-    console.log(item);
     //console.log(JSON.stringify(locale[item], null, 2));
     locale[item]["------------------NEW ADD------------------"] = "------------------NEW ADD------------------";
 
@@ -62,9 +61,7 @@ router.writeData =(file, data) =>{
     jsonfile.writeFile(file,data, { spaces: 2 },(err)=>{
       if(err) {
         reject("JSON "+file.replace(appRoot, "") + " error: "+JSON.stringify(err));
-        console.log("JSON "+file.replace(appRoot, "") + " error: "+JSON.stringify(err));
       } else {
-        console.log("JSON "+file.replace(appRoot, "") + " saved");
         resolve("JSON "+file.replace(appRoot, "") + " saved");
       }
     });

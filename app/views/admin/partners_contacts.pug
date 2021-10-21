@@ -79,7 +79,6 @@ block content
         button.btn.btn-outline-secondary(type="button" onclick="$('#table').bootstrapTable('filterBy', {is_event: ['false']})")!=__("NOT EVENT")
         button.btn.btn-outline-secondary(type="button" onclick="$('#table').bootstrapTable('filterBy', {is_selecta: ['true']})")!=__("SELECTA")
         button.btn.btn-outline-secondary(type="button" onclick="$('#table').bootstrapTable('filterBy', {is_selecta: ['false']})")!=__("NOT SELECTA")
-      - console.log(query)
       form
         .form-inline.mb-2
           .form-check.mb-1.mr-3
@@ -120,8 +119,6 @@ block content
           th=global.__("Contacts")
           th=global.__("Members")
       tbody
-          - console.log(query.is_active=="1")
-          - console.log(query.is_event=="1")
           - if (query.all!="1") {
             - data.partners = data.partners.filter(partner => partner.is_active == (query.is_active=="1"));
             - data.partners = data.partners.filter(partner => partner.is_event == (query.is_event=="1"));

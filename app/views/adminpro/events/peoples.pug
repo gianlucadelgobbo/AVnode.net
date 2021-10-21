@@ -24,8 +24,6 @@ block content
     tbody
       - var conta = 0
       if data.subscriptions.length
-        - console.log(data.subscriptions)
-        - console.log(data.subscriptions.length)
         each subscription, index in data.subscriptions
             //pre=JSON.stringify(subscription, null, 2)
             if !subscription.reference
