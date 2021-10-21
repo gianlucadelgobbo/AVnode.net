@@ -578,7 +578,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
   let jsonld = {
     "@context": "http://schema.org",
   }
-  if (data.stagename) {
+  if (data && data.stagename) {
     if (subsection != "show") {
       jsonld["@type"] = "ItemList";
       jsonld.itemListElement = [];
@@ -652,7 +652,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
         }  
       }
     }
-  } else if (data.title) {
+  } else if (data && data.title) {
     if (subsection != "show") {
       jsonld["@type"] = "ItemList";
       jsonld.itemListElement = [];
@@ -748,7 +748,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
         jsonld.video_height = data.media.height;
       }
     }
-  } else if (data.length) {
+  } else if (data && data.length) {
     jsonld["@type"] = "ItemList";
     jsonld.itemListElement = [];
     jsonld.name = title;
