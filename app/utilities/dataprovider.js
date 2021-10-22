@@ -406,10 +406,11 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }
       }
     }
-    //logger.debug("BINGOOOOO");
-    //logger.debug(select);
-    //logger.debug({slug: req.params.sub ? req.params.sub : req.params.slug});
-
+    logger.debug("BINGOOOOO");
+    logger.debug(select);
+    logger.debug({slug: req.params.sub ? req.params.sub : req.params.slug});
+    logger.debug("model");
+    logger.debug(model);
     model.
     findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
     // lean({ virtuals: true }).
@@ -417,6 +418,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     populate(populate).
     select(select).
     exec((err, ddd) => {
+      logger.debug(err);
       let data;
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};

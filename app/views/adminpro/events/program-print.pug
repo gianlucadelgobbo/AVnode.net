@@ -43,171 +43,58 @@ block content
     pre=data.performnce_missing
   - var people = []
   table.table.table-fixed#table-acts(data-toggle="table", data-classes=" ", data-show-columns="true", data-search="true")
-    thead
+    //thead
       tr
-        th.table-firstcolumn-ID="ID"
+        th="ID"
         th="SCHEDULE"
-        th="ACT"
-        th="AUTHORS"
     tbody
       each item, index in data.program
-        tr(id='sub'+item._id) 
-          td.table-firstcolumn-ID!=(index+1)
-          td
-                if item.schedule && item.schedule.length && item.schedule[0].boxDate
-                  each schedule, index in item.schedule
-                    if schedule.boxDate
-                      div=schedule.venue.room
-                      div=schedule.boxDate
-                      if schedule.price && !item.schedule[0].alleventschedulewithoneprice
-                        p.price
-                          !="Price: <b>"+schedule.price+",00 €</b>"
+        if item.schedule && item.schedule.length && item.schedule[0].boxDate
+          each schedule in item.schedule
+              tr
+                td(colspan="2")
+                  b="APPUNTAMENTO "+(index+1)
+              tr
+                td="TITOLO"
+                td=item.performance.title
+              tr
+                td="DATA e ORARIO"
+                td=schedule.boxDate
+              tr
+                td="LUOGO/INDIRIZZO/MUNICIPIO"
+                - console.log(schedule.venue)
+                td=schedule.venue.name+" / "+schedule.venue.location.formatted_address+" / "
+              tr
+                td="TIPOLOGIA APPUNTAMENTO"
+                td
+                  if item.performance.type
+                    !=item.performance.type.name
+              tr
+                td="AMBITO TEMATICO"
+                td
+                  if item.performance.type
+                    !=item.performance.type.name
 
-                  if item.schedule[0].price && item.schedule[0].alleventschedulewithoneprice
-                    p.price
-                      !="Price: <b>"+item.schedule[0].price+",00 €</b>"
-                  else if !item.schedule[0].price
-                    p.price
-                      !="Price: "
-                      span.badge.badge-info=global.__('FREE ENTRY')
-                else
-                  .badge.badge-danger=global.__('TO BE SCHEDULED')
-                //div
-                  b="Costs"
-                  br
-                  if item.fee || item.accommodation_cost || item.transfer_cost
-                    !="Fee: <b>"+(item.fee ? item.fee : "0")+" €</b>"
-                    br
-                    !="Technical cost: <b>"+(item.technical_cost ? item.technical_cost : "0")+" €</b>"
-                    br
-                    !="Accommodation cost: <b>"+(item.accommodation_cost ? item.accommodation_cost : "0")+" €</b>"
-                    br
-                    !="Transfer cost: <b>"+(item.transfer_cost ? item.transfer_cost : "0")+" €</b>"
-                    br
-                    !="Total: <b>"+((item.accommodation_cost ? item.accommodation_cost : 0)+(item.technical_cost ? item.technical_cost : 0)+(item.transfer_cost ? item.transfer_cost : 0)+(item.transfer_cost ? item.transfer_cost : 0))+" €</b>"
+              tr
+                td="BREVE DESCRIZIONE DELL'EVENTO"
+                td!=item.performance.about
+              tr
+                td="CAST ARTISTICO/RELATORI INCONTRI/OSPITI/CURATORI/DOCENTI"
+                td
+                  each useruser in item.performance.users
+                    p!=useruser.stagename
+              tr
+                td="PUBBLICO DI RIFERIMENTO"
+                td="TUTTI"
+              tr
+                td="MODALITÀ DI ACCESSO"
+                td
+                  if schedule.price && !item.schedule[0].alleventschedulewithoneprice
+                    !="A PAGAMENTO"
                   else 
-                    .badge.badge-info=global.__('NO COSTS')
-          td(style="max-width:35vw;overflow: hidden;")
-            if index>0 && get.sortby=="sortby_perf_name" && item.performance._id == data.program[index-1].performance._id && item.call == data.program[index-1].call
-              span.badge.badge-danger="DUPLICATE"+item.call+" "+data.program[index-1].call
-            h2.mb-0(style="overflow:hidden;max-width: 500px;")!=item.performance.title
-            .mb-2
-              !="TYPE: "
-              if item.performance.type
-                b=item.performance.type.name
-              else 
-                span.badge.badge-danger="UNDEFINED"
-              if get.fullinfo
-                .mb-2
-                  img.img-fluid(src=item.performance.imageFormats.small)
-              .mb-2(class=get.fullinfo ? "col-md-6" : "col-md-12")
-                p
-                  !="DURATION: "
-                  b=item.performance.duration
-                    if item.performance.duration != parseFloat(item.performance.duration)
-                      !=" "
-                      span.badge.badge-danger="WRONG DURATION"
-                  br
-                  if item.performance.tecnique
-                    !="STYLE: "
-                    b=item.performance.tecnique.name
-                    br
-                  if item.performance.genre
-                    !="GENRE: "
-                    b=item.performance.genre.name
-                    br
-                  //!="CALL: "
-                    if (item.call>=0 && data.event.organizationsettings.call && data.event.organizationsettings.call.calls && data.event.organizationsettings.call.calls[item.call] && data.event.organizationsettings.call.calls[item.call].title)
-                      b!=data.event.organizationsettings.call.calls[item.call].title
-                    else 
-                      .badge.badge-danger MISSING CALL
-                    br
-                    !="TOPICS: "
-                    if item.topics
-                      b!=item.topics.join(", ")
-                    else
-                      .badge.badge-danger MISSING
-                    br
-            if get.fullinfo
-              .mt-2
-                if item.performance.about
-                  !=item.performance.about
-                else
-                  .badge.badge-danger MISSING
-              //if item.performance.videos && item.performance.videos.length
-                .mt-2
-                  b VIDEOS
-                  ul.lightvideos
-                    each video in item.performance.videos
-                      if video.media && video.media.file
-                        li(data-html="#"+video._id, data-poster=video.imageFormats.large, data-sub-html=video.title )
-                          //!=video.title
-                          img(src=video.imageFormats.small)
-                      else
-                        !=" "
-                        .badge.badge-danger MISSING MEDIAS
-                        //- del.push("db.videos.remove(_id:ObjectId('"+video._id+"')\n")
-                  each video in item.performance.videos
-                    if video.media && video.media.file
-                      div(style='display:none;', id=video._id)
-                        video.lg-video-object.lg-html5.video-js.vjs-big-play-centered.vjs-default-skin(controls='', preload='none')
-                          source(src="https://avnode.net"+video.media.file, type='video/mp4')
-                          !="Your browser does not support HTML5 video."
-    
-              //if item.performance.galleries && item.performance.galleries.length
-                .mt-2
-                  b GALLERIES
-                  ul
-                    each gallery in item.performance.galleries
-                      li
-                        !=gallery.title
-                        if gallery.medias.length
-                          .lightgallery
-                            each media in gallery.medias
-                              a.media(href=media.imageFormats.large)
-                        else
-                          !=" "
-                          .badge.badge-danger MISSING MEDIAS
-                          //- del.push("db.galleries.remove(_id:ObjectId('"+gallery._id+"')\n")
-          td(style="max-width: 23vw;overflow: hidden;")
-            each useruser in item.performance.users
-              //
-                if useruser.imageFormats.small=="https://avnode.net/images/default-user.svg" || item.performance.imageFormats.small=="https://avnode.net/images/default-item.svg"
-                  - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
-                  - if (emails_noimage.indexOf(str)==-1) emails_noimage.push(str)
-                if !useruser.about || !item.performance.about
-                  - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
-                  - if (emails_notext.indexOf(str)==-1) emails_notext.push(str)
-              if get.fullinfo
-                .mb-2
-                  img.img-fluid(class=useruser.imageFormats.small.substring(useruser.imageFormats.small.lastIndexOf(".")+1), src=useruser.imageFormats.small, alt=useruser.stagename)
-                h3.mb-2
-                  !=useruser.stagename
-                  if useruser.is_crew
-                    !=" "
-                    .badge.badge-info CREW
-                .mb-2
-                  if useruser.addressesFormatted && useruser.addressesFormatted.length
-                    !=useruser.addressesFormatted.join(", ")
-                  else
-                    .badge.badge-danger MISSING ADDRESS
+                    !="GRATUITO CONTINGENTATO"
 
-                .mb-2!=useruser.aboutFull ? useruser.aboutFull : useruser.about
-                if useruser.web.length
-                  .mt-3
-                    b!="WEB"
-                  ul
-                    each web in useruser.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
-                      li!=web
-                if useruser.social.length
-                  .mt-3
-                    b!="SOCIAL"
-                  ul
-                    each social in useruser.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
-                      li!=social
-              
-              //td!=item.performance.users.map((item) => {return item.addressesFormatted}).join("<br />")
-                - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
-                - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
-                p!=addressesaddresses.sort().join(", ")
+              tr
+                td="FRUIBILE ANCHE ONLINE"
+                td="https://fotonicafestival.com"
 
