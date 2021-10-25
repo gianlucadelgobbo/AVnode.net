@@ -61,6 +61,9 @@ block content
                 td="TITOLO"
                 td=item.performance.title
               tr
+                td="DATA e ORARIO"
+                td=schedule.boxDate
+              tr
                 td="TIPOLOGIA APPUNTAMENTO"
                 td
                   if item.performance.type
@@ -70,4 +73,3 @@ block content
                 td
                   each useruser in item.performance.users
                     p!=useruser.stagename
-
