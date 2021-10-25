@@ -50,51 +50,15 @@ block content
     tbody
       each item, index in data.program
         if item.schedule && item.schedule.length && item.schedule[0].boxDate
-          each schedule in item.schedule
+          each schedule, index2 in item.schedule
               tr
                 td(colspan="2")
-                  b="APPUNTAMENTO "+(index+1)
+                  b="APPUNTAMENTO "+(index+1 +index2)
               tr
                 td="TITOLO"
                 td=item.performance.title
-              tr
-                td="DATA e ORARIO"
-                td=schedule.boxDate
-              tr
-                td="LUOGO/INDIRIZZO/MUNICIPIO"
-                - console.log(schedule.venue)
-                td=schedule.venue.name+" / "+schedule.venue.location.formatted_address+" / "
-              tr
-                td="TIPOLOGIA APPUNTAMENTO"
-                td
-                  if item.performance.type
-                    !=item.performance.type.name
-              tr
-                td="AMBITO TEMATICO"
-                td
-                  if item.performance.type
-                    !=item.performance.type.name
-
-              tr
-                td="BREVE DESCRIZIONE DELL'EVENTO"
-                td!=item.performance.about
               tr
                 td="CAST ARTISTICO/RELATORI INCONTRI/OSPITI/CURATORI/DOCENTI"
                 td
                   each useruser in item.performance.users
                     p!=useruser.stagename
-              tr
-                td="PUBBLICO DI RIFERIMENTO"
-                td="TUTTI"
-              tr
-                td="MODALITÀ DI ACCESSO"
-                td
-                  if schedule.price && !item.schedule[0].alleventschedulewithoneprice
-                    !="A PAGAMENTO"
-                  else 
-                    !="GRATUITO CONTINGENTATO"
-
-              tr
-                td="FRUIBILE ANCHE ONLINE"
-                td="https://fotonicafestival.com"
-

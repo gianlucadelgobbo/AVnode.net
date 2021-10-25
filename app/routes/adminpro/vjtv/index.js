@@ -233,6 +233,9 @@ router.get('/', (req, res) => {
             /* logger.debug(query);
             logger.debug(results);
             logger.debug(month.length); */
+            logger.debug(query);
+            logger.debug("month[0]");
+            logger.debug(month[1]);
             Vjtv
             .create(month, function (err, created) {
               //logger.debug("createok");
@@ -248,6 +251,8 @@ router.get('/', (req, res) => {
               .sort({programming: 1})
               .populate([{path: "video", model: "Video", select: {title: 1, slug: 1, createdAt: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
               .exec((err, data) => {
+                logger.debug("data[0]");
+                logger.debug(data[0]);
                 //logger.debug("adminpro");
                 if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
                   res.json(data);
