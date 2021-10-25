@@ -48,17 +48,25 @@ block content
         th="ID"
         th="SCHEDULE"
     tbody
+      - var app_count = 0
       each item, index in data.program
         if item.schedule && item.schedule.length && item.schedule[0].boxDate
           each schedule, index2 in item.schedule
+              - app_count++
               tr
                 td(colspan="2")
-                  b="APPUNTAMENTO "+(index+1 +index2)
+                  b="APPUNTAMENTO "+app_count
               tr
                 td="TITOLO"
                 td=item.performance.title
+              tr
+                td="TIPOLOGIA APPUNTAMENTO"
+                td
+                  if item.performance.type
+                    !=item.performance.type.name
               tr
                 td="CAST ARTISTICO/RELATORI INCONTRI/OSPITI/CURATORI/DOCENTI"
                 td
                   each useruser in item.performance.users
                     p!=useruser.stagename
+
