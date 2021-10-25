@@ -52,7 +52,7 @@ block content
       each item, index in data.program
         if item.schedule && item.schedule.length && item.schedule[0].boxDate
           each schedule, index2 in item.schedule
-            if item.performance.type == "AV Performance"
+              //if item.performance.type == "AV Performance"
               - app_count++
               tr
                 td(colspan="2")
