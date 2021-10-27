@@ -994,7 +994,7 @@ router.forceEmailChange = (req, res) => {
           // form data
           var postData = querystring.stringify(formData);
           
-          // request option
+          /* // request option
           var options = {
             host: 'ml.avnode.net',
             port: 443,
@@ -1038,14 +1038,20 @@ router.forceEmailChange = (req, res) => {
           
           //send request witht the postData form
           req.write(postData);
-          req.end();
+          req.end(); */
       
-          /* axios.post('https://ml.avnode.net/subscribe', formData)
-          .then((response) => {
-              logger.debug("Newsletter");
-              logger.debug(response);
+          axios.post('https://ml.avnode.net/subscribe', postData)
+          .then(
+            (response) => {
+              console.log("Newsletter User is saved");
+              console.log(response);
               res.json({message:"User is saved"});
-          }); */
+            },
+            (error) => {
+              console.log("Newsletter User is NOT saved");
+              console.log(error);
+              res.json({error:{message:"User is NOT saved"}});
+          });
         });
       }
      /*  if (!is_banned) {
