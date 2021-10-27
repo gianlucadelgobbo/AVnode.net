@@ -968,26 +968,26 @@ router.forceEmailChange = (req, res) => {
         if (user.email == req.body.oldemail) {
           user.emails[emailindex].email = newemail;
         }
+        let formData = {
+          list: 'AXRGq2Ftn2Fiab3skb5E892g',
+          email: newemail,
+          Topics: sendytopics,
+          avnode_id: user._id.toString(),
+          avnode_slug: user.slug,
+          avnode_email: newemail,
+          boolean: true
+        };
+        if (user.name) formData.Name = user.name;
+        if (user.surname) formData.Surname = user.surname;
+        if (user.stagename) formData.Stagename = user.stagename;
+        if (user.addresses && user.addresses[0] && user.addresses[0].locality) formData.Location = req.user.addresses[0].locality;
+        if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = req.user.addresses[0].country;
+        if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
+        if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
         user.save(err => {
-          let formData = {
-            list: 'AXRGq2Ftn2Fiab3skb5E892g',
-            email: newemail,
-            Topics: sendytopics,
-            avnode_id: user._id.toString(),
-            avnode_slug: user.slug,
-            avnode_email: newemail,
-            boolean: true
-          };
-          if (user.name) formData.Name = user.name;
-          if (user.surname) formData.Surname = user.surname;
-          if (user.stagename) formData.Stagename = user.stagename;
-          if (user.addresses && user.addresses[0] && user.addresses[0].locality) formData.Location = req.user.addresses[0].locality;
-          if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = req.user.addresses[0].country;
-          if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
-          if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
           logger.debug("formData");
           logger.debug(formData);
-        /* 
+        
           var https = require('https');
           var querystring = require('querystring');
           
@@ -1008,45 +1008,44 @@ router.forceEmailChange = (req, res) => {
           
           // request object
           var req = https.request(options, function (resres) {
+            console.log('statusCode:', resres.statusCode);
+            console.log('headers:', resres.headers);
             var result = '';
             resres.on('data', function (chunk) {
+              process.stdout.write(chunk);
+              logger.debug("on chunk");
+              logger.debug(chunk);
               result += chunk;
             });
             resres.on('end', function (error) {
-              logger.debug("Newsletter");
+              logger.debug("on end");
               logger.debug(error);
               res.json(error);
             });
-            resres.on('error', function (err) {
-              logger.debug("Newsletter err");
+            resres.on('error', function (error) {
+              logger.debug("on error");
               logger.debug(error);
-              res.json(err);
+              res.json(error);
             })
           });
           
           // req error
           req.on('error', function (err) {
-            logger.debug(err);
+            logger.debug("on req error");
+            logger.debug(error);
+            res.json(error);
           });
           
           //send request witht the postData form
           req.write(postData);
-          req.end(); */
-          var querystring = require('querystring');
-          var postData = querystring.stringify(formData);
+          req.end();
       
-          axios.post('https://ml.avnode.net/subscribe', postData)
-          .then(
-            (response) => {
+          /* axios.post('https://ml.avnode.net/subscribe', formData)
+          .then((response) => {
               logger.debug("Newsletter");
               logger.debug(response);
               res.json({message:"User is saved"});
-            },
-            (error) => {
-              logger.debug(error);
-              res.json({errors:error});
-            }
-          );
+          }); */
         });
       }
      /*  if (!is_banned) {

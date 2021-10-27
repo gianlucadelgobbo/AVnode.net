@@ -58,7 +58,7 @@
           - var obj = {link:"/emails/allemails", title:"Emails"}
           a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
           - var obj = {link:"/emails/mailinator", title:"Mailinator"}
-          a.list-group-item.list-group-item-action.text-white(href='/adminpro/mailinator'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
           - var obj = {link:"/emails/updateSendy", title:"Update Sendy"}
           a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
         a.bg-dark.list-group-item(href='#subsubmenuSuper2', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/addresses")===0 ? "true" : "false")
