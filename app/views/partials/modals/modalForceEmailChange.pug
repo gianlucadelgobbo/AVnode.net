@@ -1,0 +1,23 @@
+.modal.fade#modalForceEmailChange(role='dialog', tabindex='-1', aria-labelledby='modalForceEmailChange', aria-hidden='true')
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        h4.modal-title="Force Email Change"
+        button.close(type='button' data-dismiss="modal" aria-label="Close")
+          span(aria-hidden='true') ×
+      .modal-body
+        .alert.d-none
+        .row
+          .col-md-12
+            form
+              dl.row
+                dt.col-sm-2
+                  .labelfield New email
+                dd.col-sm-10.mb-4
+                  div
+                    .input-group
+                      input.form-control.input(type='text', name='email', placeholder='New email', value='')
+                      input.id(type='hidden', name='_id')
+                      input.oldemail(type='hidden', name='oldemail')
+              hr
+              button.btn.btn-primary.btn-large.btn-block(type='submit') Save

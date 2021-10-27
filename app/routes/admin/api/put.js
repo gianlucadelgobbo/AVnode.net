@@ -27,9 +27,9 @@ router.putData = (req, res, view) => {
       } else {
         req.body.medias[0] = JSON.parse(req.body.mediastr)
       }
+      logger.debug(req.body);
       delete req.body.mediastr;
     }
-    logger.debug(req.body);
     const id = req.params.id;
     Models[config.cpanel[req.params.sez].model]
     .findById(id, config.cpanel[req.params.sez].forms[req.params.form].select, (err, data) => {
@@ -72,12 +72,12 @@ router.putData = (req, res, view) => {
               if (item && item.imageFormats) delete item.imageFormats
             });
           }
-          if (data.emails){
+          /* if (data.emails){
             if (req.user.name) data.name = req.user.name;
             if (req.user.surname) data.surname = req.user.surname;
             if (req.user.stagename) data.stagename = req.user.stagename;
             if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].locality) data.addresses = req.user.addresses;
-          }
+          } */
           logger.debug('putDataputDataputDataputDataputDataputData');
           logger.debug(data);
           if (helpers.editable(req, data, id)) {

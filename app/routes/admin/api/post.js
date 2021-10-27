@@ -4,6 +4,8 @@ const moment = require('moment');
 const helpers = require('./helpers');
 
 const mongoose = require('mongoose');
+const axios = require('axios');
+
 const Models = {
   'User': mongoose.model('User'),
   'Performance': mongoose.model('Performance'),
@@ -372,6 +374,7 @@ router.setVideoExclude = (req, res) => {
     }
   });
 }
+
 router.editSubscription = (req, res) => {
   logger.debug(req.body);
   let populate = [
@@ -411,6 +414,7 @@ router.editSubscription = (req, res) => {
     });
   });
 }
+
 router.editSubscriptionPrice = (req, res) => {
   logger.debug(req.body);
   Models.Program
@@ -831,6 +835,7 @@ details: details,
 data: data
 */
 router.contact = (req, res) => {
+  logger.debug("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body");
   logger.debug(req.body);
   if (req.body.user) {
     let message = {};
@@ -925,6 +930,207 @@ router.contact = (req, res) => {
       } else {
         res.json({message:"User is banned"});
       }
+    });
+  } else {
+    res.json({message:"User do not exists"});
+  }
+}
+
+router.forceEmailChange = (req, res) => {
+  logger.debug("forceEmailChange");
+  logger.debug(req.body);
+  if (req.body._id) {
+    let message = {};
+
+    Models.User
+    .findOne({_id: req.body._id})
+    .select({stagename: 1, slug:1, name:1, surname:1, email: 1, emails:1})
+    .exec((err, user) => {
+      logger.debug(user);
+      logger.debug(user.emails.map((item)=>{return item.email}).indexOf(req.body.oldemail));
+      const newemail = req.body.email
+      const emailindex = user.emails.map((item)=>{return item.email}).indexOf(req.body.oldemail)
+      const deaultmailinglists = { flxer: false, flyer: false, livevisuals: true, updates: true };
+      var keys = Object.keys(deaultmailinglists);
+
+      var sendytopics = keys.filter(function(key) {
+          return deaultmailinglists[key]
+      });
+      logger.debug(sendytopics);
+      if (emailindex == -1 && user.email != req.body.oldemail) {
+        res.json({errors:{message:"Email not Found"}});
+      } else {
+        if (emailindex != -1) {
+          logger.debug(user.emails[emailindex].mailinglists);
+          user.emails[emailindex].email = newemail;
+          user.emails[emailindex].mailinglists = deaultmailinglists;
+        }
+        if (user.email == req.body.oldemail) {
+          user.emails[emailindex].email = newemail;
+        }
+        user.save(err => {
+          let formData = {
+            list: 'AXRGq2Ftn2Fiab3skb5E892g',
+            email: newemail,
+            Topics: sendytopics,
+            avnode_id: user._id.toString(),
+            avnode_slug: user.slug,
+            avnode_email: newemail,
+            boolean: true
+          };
+          if (user.name) formData.Name = user.name;
+          if (user.surname) formData.Surname = user.surname;
+          if (user.stagename) formData.Stagename = user.stagename;
+          if (user.addresses && user.addresses[0] && user.addresses[0].locality) formData.Location = req.user.addresses[0].locality;
+          if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = req.user.addresses[0].country;
+          if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
+          if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
+          logger.debug("formData");
+          logger.debug(formData);
+        /* 
+          var https = require('https');
+          var querystring = require('querystring');
+          
+          // form data
+          var postData = querystring.stringify(formData);
+          
+          // request option
+          var options = {
+            host: 'ml.avnode.net',
+            port: 443,
+            method: 'POST',
+            path: '/subscribe',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Content-Length': postData.length
+            }
+          };
+          
+          // request object
+          var req = https.request(options, function (resres) {
+            var result = '';
+            resres.on('data', function (chunk) {
+              result += chunk;
+            });
+            resres.on('end', function (error) {
+              logger.debug("Newsletter");
+              logger.debug(error);
+              res.json(error);
+            });
+            resres.on('error', function (err) {
+              logger.debug("Newsletter err");
+              logger.debug(error);
+              res.json(err);
+            })
+          });
+          
+          // req error
+          req.on('error', function (err) {
+            logger.debug(err);
+          });
+          
+          //send request witht the postData form
+          req.write(postData);
+          req.end(); */
+          var querystring = require('querystring');
+          var postData = querystring.stringify(formData);
+      
+          axios.post('https://ml.avnode.net/subscribe', postData)
+          .then(
+            (response) => {
+              logger.debug("Newsletter");
+              logger.debug(response);
+              res.json({message:"User is saved"});
+            },
+            (error) => {
+              logger.debug(error);
+              res.json({errors:error});
+            }
+          );
+        });
+      }
+     /*  if (!is_banned) {
+        logger.debug(user);
+        logger.debug(err);
+        message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
+        let messagetext = "FROM\n";
+        messagetext+= "Stagename: "+req.user.stagename+"\n";
+        messagetext+= "Name: "+req.user.name+"\n";
+        messagetext+= "Surname: "+req.user.surname+"\n";
+        messagetext+= "Email: "+req.user.email+"\n";
+        messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n---------\n";
+        messagetext+= "TO\n";
+        messagetext+= "Stagename: "+req.user.stagename+"\n";
+        if (!user.is_crew) {
+          messagetext+= "Name: "+user.name+"\n";
+          messagetext+= "Surname: "+user.surname+"\n";
+          messagetext+= "Email: "+user.email+"\n";
+        }
+        messagetext+= "Link: http://"+req.headers.host+"/"+user.slug+"\n\n---------\n";
+        messagetext+= req.body.message+"\n--------------";
+        logger.debug(messagetext);
+        const mailer = require('../../../utilities/mailer');
+        mailer.mySendMailer({
+          template: 'bookingRequest',
+          message: message,
+          locals: {
+          },
+          email_content: {
+            site: 'https://'+req.headers.host,
+            subject:  req.body.subject+' | AVnode.net',
+            text_text:  messagetext,
+            html_text: messagetext.replace(new RegExp("\n","g"),"<br />"),
+            html_sign: "The AVnode.net Team",
+            text_sign:  "The AVnode.net Team"
+          }
+        }, function(error_1){
+          if (error_1 && error_1.message != "") {
+            res.json(error_1);
+          } else {
+            message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
+            if (user.is_crew) {
+              logger.debug("crew")
+              for (var b=0;b<user.members.length;b++) {
+                if (!message.to) {
+                  message.to = user.members[b].stagename+" <"+user.members[b].email+">";
+                } else {
+                  if (!message.cc) message.cc = [];
+                  message.cc.push(user.members[b].stagename+" <"+user.members[b].email+">");
+                }
+                }
+            } else {
+              logger.debug("single")
+              if (!message.to) {
+                message.to = user.stagename+" <"+user.email+">";
+              } else {
+                if (!message.cc) message.cc = [];
+                message.cc.push(user.stagename+" <"+user.email+">");
+              }
+            }
+            messagetext = "Dear "+user.stagename+",\nwe got this message, are you interested?\n\n---------\n"+req.body.message+"\n--------------";
+            mailer.mySendMailer({
+              template: 'bookingRequest',
+              message: message,
+              locals: {
+              },
+              email_content: {
+                site: 'http://'+req.headers.host,
+                subject:  req.body.subject+' | AVnode.net',
+                text_text:  messagetext,
+                html_text: messagetext.replace(new RegExp("\n","g"), "<br />"),
+                html_sign: "The AVnode.net Team",
+                text_sign:  "The AVnode.net Team"
+              }
+            }, function(error_2){
+              error_2.step = 2;
+              res.json(error_2);
+            });
+          }
+        });
+
+      } else {
+        res.json({message:"User is banned"});
+      } */
     });
   } else {
     res.json({message:"User do not exists"});
@@ -1246,15 +1452,15 @@ router.updateSendy = function (req, res) {
     };
     
     // request object
-    var req = https.request(options, function (res) {
+    var req = https.request(options, function (resres) {
       var result = '';
-      res.on('data', function (chunk) {
+      resres.on('data', function (chunk) {
         result += chunk;
       });
-      res.on('end', function () {
+      resres.on('end', function (error) {
         res.json(error);
       });
-      res.on('error', function (err) {
+      resres.on('error', function (err) {
         res.json(err);
       })
     });
@@ -1268,15 +1474,11 @@ router.updateSendy = function (req, res) {
     req.write(postData);
     req.end();
 
-    request.post({
-      url: 'https://ml.avnode.net/subscribe',
-      form: formData,
-      function (error, response, body) {
+    axios.post('https://ml.avnode.net/subscribe', formData)
+    .then((response) => {
         logger.debug("Newsletter");
-        logger.debug(error);
-        logger.debug(body);
-        res.json(error);
-      }
+        logger.debug(response);
+        res.json({message:"User is saved"});
     });
     //logger.debug(mailinglists.join(','));  }
   //}

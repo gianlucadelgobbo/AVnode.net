@@ -112,24 +112,58 @@ router.get('/:event/orders', (req, res) => {
    });
   });
 
-router.get('/:event/program-print', (req, res) => {
-  router.getActsData(req, res, data => {
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-      res.json(data);
-    } else {
-      req.query.sez = "acts";
-      res.render('adminpro/events/program-print', {
-        title: 'Events | '+data.event.title + ': Acts',
-        data: data,
-        currentUrl: req.originalUrl,
-        
-        get: req.query
-      });
-    }
-  });
-});  
-
-router.get('/:event/acts', (req, res) => {
+  router.get('/:event/program-print', (req, res) => {
+    router.getActsData(req, res, data => {
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        res.json(data);
+      } else {
+        req.query.sez = "acts";
+        res.render('adminpro/events/program-print', {
+          title: 'Events | '+data.event.title + ': '+__('Program Prints'),
+          data: data,
+          currentUrl: req.originalUrl,
+          
+          get: req.query
+        });
+      }
+    });
+  });  
+  
+  router.get('/:event/program-print-siae', (req, res) => {
+    router.getActsData(req, res, data => {
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        res.json(data);
+      } else {
+        req.query.sez = "acts";
+        res.render('adminpro/events/program-print-siae', {
+          title: 'Events | '+data.event.title + ': '+__('Program Prints Siae'),
+          data: data,
+          currentUrl: req.originalUrl,
+          
+          get: req.query
+        });
+      }
+    });
+  });  
+  
+  router.get('/:event/program-print-comune', (req, res) => {
+    router.getActsData(req, res, data => {
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        res.json(data);
+      } else {
+        req.query.sez = "acts";
+        res.render('adminpro/events/program-print-comune', {
+          title: 'Events | '+data.event.title + ': '+__('Program Prints Comune'),
+          data: data,
+          currentUrl: req.originalUrl,
+          
+          get: req.query
+        });
+      }
+    });
+  });  
+  
+  router.get('/:event/acts', (req, res) => {
   router.getActsData(req, res, data => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);

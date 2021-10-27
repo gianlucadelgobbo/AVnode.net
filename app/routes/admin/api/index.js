@@ -78,6 +78,10 @@ router.get('/profile/emails/email/:email', (req, res)=>{
   get.getEmail(req, res);
 });
 
+router.post('/forceemailchange', (req, res)=>{
+  post.forceEmailChange(req, res);
+});
+
 router.get('/:sez/new/slugs/:slug', (req, res)=>{
   get.getSlug(req, res);
 });

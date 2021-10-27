@@ -429,7 +429,10 @@
           "selectaddon": {
             "slug": 1,
             "is_public": 1,
-            "stagename": 1
+            "stagename": 1,
+            "name": 1,
+            "surname": 1,
+            "addresses": 1
           },
           "populate": []
         },

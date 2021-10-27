@@ -27,7 +27,48 @@ $(function () {
 		});
   });
 
-  $( ".categories_filter" ).click(function( event ) {
+  $( ".forceEmailChange" ).click(function( event ) {
+    event.preventDefault();
+		const owner = $(this).data("id");
+		const oldemail = $(this).data("oldemail");
+		$("#modalForceEmailChange .id").val(owner)
+		$("#modalForceEmailChange .oldemail").val(oldemail)
+		$('#modalForceEmailChange .alert').addClass('d-none');
+		$("#modalForceEmailChange").modal()
+
+  });
+  $("#modalForceEmailChange form").submit(function(event) {
+    event.preventDefault();
+    var datastring = $("#modalForceEmailChange form").serialize();
+    $.ajax({
+      type: "POST",
+      url: "/admin/api/forceemailchange",
+      data: datastring
+    }).
+    done(function(data) {
+      if (data.errors) {
+        $('#modalForceEmailChange .alert').html(data.errors.message);
+        $('#modalForceEmailChange .alert').addClass('alert-danger');
+        $('#modalForceEmailChange .alert').removeClass('alert-success');
+        $('#modalForceEmailChange .alert').removeClass('d-none');
+      } else {
+        $('#modalForceEmailChange .alert').html("Data saved with success.");
+        $('#modalForceEmailChange .alert').removeClass('alert-danger');
+        $('#modalForceEmailChange .alert').addClass('alert-success');
+        $('#modalForceEmailChange .alert').removeClass('d-none');
+      }
+      //console.log(data);
+    })
+    .fail(function (jqXHR, textStatus) {
+      $('#modalForceEmailChange .alert').html("Internal Server Error");
+			$('#modalForceEmailChange .alert').addClass('alert-danger');
+			$('#modalForceEmailChange .alert').removeClass('alert-success');
+			$('#modalForceEmailChange .alert').removeClass('d-none');
+		});
+  });
+
+
+	$( ".categories_filter" ).click(function( event ) {
 		if ($( ".categories_filter" ).prop('checked')) {
 			$( ".anykind" ).prop('checked',false);
 			$( ".nokind" ).prop('checked',false);
