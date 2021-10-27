@@ -966,7 +966,7 @@ router.forceEmailChange = (req, res) => {
           user.emails[emailindex].mailinglists = deaultmailinglists;
         }
         if (user.email == req.body.oldemail) {
-          user.emails[emailindex].email = newemail;
+          user.email = newemail;
         }
         let formData = {
           list: 'AXRGq2Ftn2Fiab3skb5E892g',
@@ -985,7 +985,10 @@ router.forceEmailChange = (req, res) => {
         if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = req.user.addresses[0].country;
         if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
         if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
-        user.save(err => {
+        Models.User.updateOne({_id:user._id}, { emails: user.emails, email: user.email })
+        .exec((err, user) => {
+          console.log(err)
+          console.log(user)
           logger.debug("formData");
           logger.debug(formData);
         
@@ -994,52 +997,6 @@ router.forceEmailChange = (req, res) => {
           
           // form data
           var postData = querystring.stringify(formData);
-          
-          /* // request option
-          var options = {
-            host: 'ml.avnode.net',
-            port: 443,
-            method: 'POST',
-            path: '/subscribe',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Content-Length': postData.length
-            }
-          };
-          
-          // request object
-          var req = https.request(options, function (resres) {
-            console.log('statusCode:', resres.statusCode);
-            console.log('headers:', resres.headers);
-            var result = '';
-            resres.on('data', function (chunk) {
-              process.stdout.write(chunk);
-              logger.debug("on chunk");
-              logger.debug(chunk);
-              result += chunk;
-            });
-            resres.on('end', function (error) {
-              logger.debug("on end");
-              logger.debug(error);
-              res.json(error);
-            });
-            resres.on('error', function (error) {
-              logger.debug("on error");
-              logger.debug(error);
-              res.json(error);
-            })
-          });
-          
-          // req error
-          req.on('error', function (err) {
-            logger.debug("on req error");
-            logger.debug(error);
-            res.json(error);
-          });
-          
-          //send request witht the postData form
-          req.write(postData);
-          req.end(); */
       
           axios.post('https://ml.avnode.net/subscribe', postData)
           .then(
