@@ -1,0 +1,80 @@
+extends ../../layout_admin
+block topmenu
+  include topmenu
+block content
+  //- var del = []
+    - var emails = []
+    - var emails_noimage = []
+    - var emails_noaddress = []
+    - var emails_notext = []
+    - var emails_noname = []
+  - var counters = {Total:{}, Type: {}, Status:{}, Schedule: {"Scheduled": 0, "Not scheduled": 0}}
+
+  include ./_filters
+
+  - counters.Total.Submissions = data.program.length
+  
+  each item, index in data.program
+    if item.performance.type
+      - if (!counters.Type[item.performance.type.name]) counters.Type[item.performance.type.name] = 0
+      - counters.Type[item.performance.type.name]++
+    else
+      - if (!counters.Type["UNDEFINED"]) counters.Type["UNDEFINED"] = 0
+      - counters.Type["UNDEFINED"]++
+    if item.schedule && item.schedule.length && item.schedule[0].boxDate
+      - counters.Schedule.Scheduled++
+    else
+      - counters.Schedule["Not scheduled"]++
+    each status in data.status
+      - if (item.status._id.toString()==status._id.toString()) {
+        - if(!counters.Status[status.name]) counters.Status[status.name] = 0
+        - counters.Status[status.name]++
+      - }
+
+  .row
+    each counter, countername in counters
+      .col
+        b=countername
+        ul
+          each item, index in counter
+            li!=index+": <b>"+item+"</b>"
+
+  if data.performnce_missing
+    pre=data.performnce_missing
+  - var people = []
+  table.table.table-fixed#table-acts(data-toggle="table", data-classes=" ", data-show-columns="true", data-search="true")
+    //thead
+      tr
+        th="ID"
+        th="SCHEDULE"
+    tbody
+      - var app_count = 0
+      - data.program = data.program.sort(function(a,b){
+      -   // Turn your strings into dates, and then subtract them
+      -   // to get a value that is either negative, positive, or zero.
+      -   return new Date(a.schedule[0].starttime) - new Date(b.schedule[0].starttime);
+      - });
+      each item, index in data.program
+        if item.schedule && item.schedule.length && item.schedule[0].boxDate
+          each schedule, index2 in item.schedule
+              //if item.performance.type == "AV Performance"
+              - app_count++
+              tr
+                td(colspan="2")
+                  b="APPUNTAMENTO "+app_count
+              tr
+                td="TITOLO"
+                td=item.performance.title
+              tr
+                td="DATA e ORARIO"
+                td=schedule.boxDate
+              tr
+                td="TIPOLOGIA APPUNTAMENTO"
+                td
+                  if item.performance.type
+                    !=item.performance.type.name
+              tr
+                td="CAST ARTISTICO/RELATORI INCONTRI/OSPITI/CURATORI/DOCENTI"
+                td
+                  each useruser in item.performance.users
+                    p!=useruser.stagename

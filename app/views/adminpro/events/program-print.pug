@@ -49,10 +49,16 @@ block content
         th="SCHEDULE"
     tbody
       - var app_count = 0
+      - data.program = data.program.sort(function(a,b){
+      -   // Turn your strings into dates, and then subtract them
+      -   // to get a value that is either negative, positive, or zero.
+      -   return new Date(a.schedule[0].starttime) - new Date(b.schedule[0].starttime);
+      - });
       each item, index in data.program
         if item.schedule && item.schedule.length && item.schedule[0].boxDate
           each schedule, index2 in item.schedule
               //if item.performance.type == "AV Performance"
+              - console.log(item.performance.type)
               - app_count++
               tr
                 td(colspan="2")
@@ -64,12 +70,71 @@ block content
                 td="DATA e ORARIO"
                 td=schedule.boxDate
               tr
+                td="LUOGO/INDIRIZZO/MUNICIPIO"
+                td=schedule.venue.name+" / "+schedule.venue.location.formatted_address+" / "
+              tr
                 td="TIPOLOGIA APPUNTAMENTO"
                 td
-                  if item.performance.type
+                  if item.performance.type == "AV Performance"
+                    !="EVENTI/SPETTACOLI"
+                  else if item.performance.type == "DJ Set"
+                    !="EVENTI/SPETTACOLI"
+                  else if item.performance.type == "VJ Set"
+                    !="EVENTI/SPETTACOLI"
+                  else if item.performance.type == "Workshop"
+                    !="LABORATORI"
+                  else if item.performance.type == "Mapping"
+                    !="MOSTRE/INSTALLAZIONI"
+                  else if item.performance.type == "AV Installation"
+                    !="MOSTRE/INSTALLAZIONI"
+                  else if item.performance.type == "Net Art"
+                    !="MOSTRE/INSTALLAZIONI"
+                  else if item.performance.type == "Lecture"
+                    !="INCONTRI"
+                  else
                     !=item.performance.type.name
+              tr
+                td="AMBITO TEMATICO"
+                td
+                  if item.performance.type == "AV Performance"
+                    !="ARTE, NUOVE TECNOLOGIE, INTERCULTURA, MUSICA, PERFORMANCE E AZIONI"
+                  else if item.performance.type == "DJ Set"
+                    !="ARTE, NUOVE TECNOLOGIE, INTERCULTURA, MUSICA, PERFORMANCE E AZIONI"
+                  else if item.performance.type == "VJ Set"
+                    !="ARTE, NUOVE TECNOLOGIE, INTERCULTURA, MUSICA, PERFORMANCE E AZIONI"
+                  else if item.performance.type == "Workshop"
+                    !="ARTE, NUOVE TECNOLOGIE, INTERCULTURA, MUSICA, PERFORMANCE E AZIONI"
+                  else if item.performance.type == "Mapping"
+                    !="ARTE, NUOVE TECNOLOGIE, INTERCULTURA, MUSICA, PERFORMANCE E AZIONI"
+                  else if item.performance.type == "AV Installation"
+                    !="ARTE, NUOVE TECNOLOGIE, INTERCULTURA, MUSICA, INSTALLAZIONI"
+                  else if item.performance.type == "Net Art"
+                    !="ARTE, NUOVE TECNOLOGIE, INTERCULTURA, MUSICA, INSTALLAZIONI"
+                  else if item.performance.type == "Lecture"
+                    !="ARTE, NUOVE TECNOLOGIE, INTERCULTURA, MUSICA, PERFORMANCE E AZIONI"
+                  else
+                    !=item.performance.type.name
+
+              tr
+                td="BREVE DESCRIZIONE DELL'EVENTO"
+                td!=item.performance.about
               tr
                 td="CAST ARTISTICO/RELATORI INCONTRI/OSPITI/CURATORI/DOCENTI"
                 td
                   each useruser in item.performance.users
                     p!=useruser.stagename
+              tr
+                td="PUBBLICO DI RIFERIMENTO"
+                td="TUTTI"
+              tr
+                td="MODALITÀ DI ACCESSO"
+                td
+                  if schedule.price && !item.schedule[0].alleventschedulewithoneprice
+                    !="A PAGAMENTO"
+                  else 
+                    !="GRATUITO CONTINGENTATO"
+
+              tr
+                td="FRUIBILE ANCHE ONLINE"
+                td="https://fotonicafestival.com"
+
