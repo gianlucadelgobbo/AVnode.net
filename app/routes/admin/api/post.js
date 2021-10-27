@@ -1045,8 +1045,12 @@ router.forceEmailChange = (req, res) => {
           .then(
             (response) => {
               console.log("Newsletter User is saved");
-              console.log(response);
-              res.json({message:"User is saved"});
+              console.log(response.data);
+              if (response.data === 1) {
+                res.json({message:"User is saved"});
+              } else {
+                res.json({error:{message:response.data}});
+              }
             },
             (error) => {
               console.log("Newsletter User is NOT saved");
