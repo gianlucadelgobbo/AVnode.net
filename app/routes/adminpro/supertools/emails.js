@@ -46,6 +46,7 @@ router.get('/allemails', (req, res) => {
       } */
       let email = {
         list: 'AXRGq2Ftn2Fiab3skb5E892g',
+        api_key: process.env.SENDYAPIKEY,
         //email: e.email,
         avnode_id: e._id.toString(),
         SiteFrom: "AVnode.net",
@@ -112,6 +113,7 @@ router.get('/updateSendy', (req, res) => {
         logger.debug(e);
         let email = {
           list: 'AXRGq2Ftn2Fiab3skb5E892g',
+          api_key: process.env.SENDYAPIKEY,
           avnode_id: e._id.toString(),
           SiteFrom: "AVnode.net",
           avnode_slug: e.slug,
@@ -194,6 +196,7 @@ router.get('/mailinator', (req, res) => {
       } */
       let email = {
         list: 'AXRGq2Ftn2Fiab3skb5E892g',
+        api_key: process.env.SENDYAPIKEY,
         //email: e.email,
         avnode_id: e._id.toString(),
         SiteFrom: "AVnode.net",

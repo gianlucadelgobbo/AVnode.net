@@ -156,6 +156,7 @@ router.get('/:sez/:code', (req, res) => {
 router.updateSendy = (user, email, cb) => {
   let formData = {
     list: 'AXRGq2Ftn2Fiab3skb5E892g',
+    api_key: process.env.SENDYAPIKEY,
     email: email,
     Topics: "flxer,livevisuals",
     avnode_id: user._id.toString(),

@@ -970,6 +970,7 @@ router.forceEmailChange = (req, res) => {
         }
         let formData = {
           list: 'AXRGq2Ftn2Fiab3skb5E892g',
+          api_key: process.env.SENDYAPIKEY,
           email: newemail,
           Topics: sendytopics,
           avnode_id: user._id.toString(),

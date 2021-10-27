@@ -414,6 +414,7 @@ userSchema.pre('save', function (next) {
         for (mailinglist in this.emails[item].mailinglists) if (this.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);
         let formData = {
           list: 'AXRGq2Ftn2Fiab3skb5E892g',
+          api_key: process.env.SENDYAPIKEY,
           email: this.emails[item].email,
           Topics: mailinglists.join(','),
           avnode_id: this._id.toString(),

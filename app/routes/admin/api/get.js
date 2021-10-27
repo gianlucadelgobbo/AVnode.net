@@ -2861,6 +2861,7 @@ router.addVideos = (req, res) => {
 
           let formData = {
             list: 'AXRGq2Ftn2Fiab3skb5E892g',
+            api_key: process.env.SENDYAPIKEY,
             email: user.emails[item].email,
             Topics: mailinglists.join(','),
             avnode_id: user._id.toString(),
