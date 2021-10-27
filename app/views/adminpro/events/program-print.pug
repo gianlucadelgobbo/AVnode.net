@@ -128,7 +128,8 @@ block content
               tr
                 td="MODALITÀ DI ACCESSO"
                 td
-                  if schedule.price && !item.schedule[0].alleventschedulewithoneprice
+                  - console.log(schedule)
+                  if schedule.price
                     !="A PAGAMENTO"
                   else 
                     !="GRATUITO CONTINGENTATO"
