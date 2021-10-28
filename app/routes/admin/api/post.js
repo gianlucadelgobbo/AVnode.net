@@ -740,8 +740,9 @@ router.updatePartnerships = (req, res) => {
 }
 
 router.updateProgram = (req, res) => {
+  logger.debug("updateProgram");
   logger.debug("req.body");
-  //logger.debug(req.body);
+  logger.debug(req.body);
   var performances = [];
   var programIDS = [];
   var program = [];
@@ -751,6 +752,8 @@ router.updateProgram = (req, res) => {
   if (req.body.tobescheduled && req.body.tobescheduled.length) {
     for (var a=0;a<req.body.tobescheduled.length;a++) {
       var index = programIDS.indexOf(req.body.tobescheduled[a]._id);
+      logger.debug("req.body.tobescheduled[a]");
+      logger.debug(req.body.tobescheduled[a]);
       if (index===-1) {
         programIDS.push(req.body.tobescheduled[a]._id);
         program.push(req.body.tobescheduled[a]);
@@ -759,21 +762,31 @@ router.updateProgram = (req, res) => {
       }
     }  
   }  
-  for (var a=0;a<req.body.data.length;a++) {
-    var index = programIDS.indexOf(req.body.data[a]._id);
-    logger.debug(req.body.data[a]);
-    if (index===-1) {
-      programIDS.push(req.body.data[a]._id);
-      program.push(req.body.data[a]);
-    } else {
-      if (!program[index].schedule) program[index].schedule = [];
-      program[index].schedule.push(req.body.data[a].schedule[0]);
-    }
-  }  
-  for (var a=0;a<program.length;a++) {
-    eventProgram.push({performance:program[a].performance,schedule: program[a].schedule});
-    promises.push(Models.Program.findOneAndUpdate({_id: program[a]._id}, { $set: { schedule: program[a].schedule }}, {upsert: true, useFindAndModify: false}));
+  if (req.body.data && req.body.data.length) {
+    for (var a=0;a<req.body.data.length;a++) {
+      var index = programIDS.indexOf(req.body.data[a]._id);
+      logger.debug("req.body.data[a]");
+      logger.debug(req.body.data[a]);
+      if (index===-1) {
+        programIDS.push(req.body.data[a]._id);
+        program.push(req.body.data[a]);
+      } else {
+        if (!program[index].schedule) program[index].schedule = [];
+        program[index].schedule.push(req.body.data[a].schedule[0]);
+      }
+    } 
   }
+  for (var a=0;a<program.length;a++) {
+    eventProgram.push({subscription_id: program[a]._id, performance: program[a].performance, schedule: !program[a].schedule ? [] : program[a].schedule});
+    if (program[a].performance.toString() == "60ef195282f94366b0a464d2") {
+      logger.debug("60ef195282f94366b0a464d260ef195282f94366b0a464d2");
+      logger.debug(program[a]._id);
+      logger.debug(program[a].schedule);
+    }
+    promises.push(Models.Program.findOneAndUpdate({_id: program[a]._id}, { $set: { schedule: !program[a].schedule ? [] : program[a].schedule }}, {upsert: true, useFindAndModify: false}));
+  }
+  logger.debug("eventProgram");
+  logger.debug(eventProgram);
   Promise.all(
     promises
   ).then( (resultsPromise) => {

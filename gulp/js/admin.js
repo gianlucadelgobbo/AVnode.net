@@ -500,35 +500,55 @@ function programSortableUpdate() {
       console.log("----------");
       for (var b=0;b<day.program.length;b++) {
         day.program[b] = JSON.parse(day.program[b]);
-        if (day.room.venue.breakduration>-1) timing+= b > 0 ? (parseFloat(day.room.venue.breakduration)*(60*1000)) : 0;
-        var start = new Date (timing);
-        if (parseFloat(day.program[b].performance.duration)>500 && day.program[b].performance.type.name=="Workshop") {
-          day.program[b].performance.duration = parseFloat(day.program[b].performance.duration)/4;
-        }
-        if (day.room.venue.breakduration>-1) {
-          timing+=(parseFloat(day.program[b].performance.duration)*(60*1000));
-          var end = new Date (timing);
-        } else {
-          var end = new Date (timing+(parseFloat(day.program[b].performance.duration)*(60*1000)));
-        }
+        console.log(day.program[b].performance.title)
         if (!$(boxes[b]).hasClass("disabled")) {
           console.log("NOT disabled");
-          console.log(day.program[b].performance.title)
-          console.log(day.room);
-          day.program[b].schedule = [{
+          //console.log(day.room);
+          // AGGIUNGO INTERVALLO SE PREVISTO
+          if (day.room.venue.breakduration>-1 && b > 0) timing+= parseFloat(day.room.venue.breakduration)*(60*1000);
+          var start = new Date (timing);
+          if (day.room.venue.breakduration>-1) {
+            timing+=(parseFloat(day.program[b].performance.duration)*(60*1000));
+            var end = new Date (timing);
+          } else {
+            var end = new Date (timing+(parseFloat(day.program[b].performance.duration)*(60*1000)));
+          }
+          if (day.program[b].schedule.length) day.program[b].schedule = day.program[b].schedule[0];
+          /* day.program[b].schedule = {
             starttime: start.toISOString(),
             endtime: end.toISOString(),
             venue: day.room.venue
-          }];
+          }; */
+          day.program[b].schedule.starttime = start.toISOString();
+          day.program[b].schedule.endtime = end.toISOString();
+          day.program[b].schedule.venue = day.room.venue;
+
+          $(boxes[b]).find("input").val(JSON.stringify(day.program[b]))
+          day.program[b].schedule = [day.program[b].schedule]
+          console.log(day.program[b].schedule);
           $(boxes[b]).find(".timing").html(moment(start).utc().format("H:mm")+" - "+moment(end).utc().format("H:mm"));
           $(boxes[b]).find(".index").html(b+1);
-          data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
+          $(boxes[b]).removeAttr("style");
         } else {
           console.log("disabled")
-          console.log(day.program[b].performance.title)
           console.log(day.program[b].schedule)
-          var st = new Date(room_starttime);
+
+          if (day.room.venue.breakduration>-1) {
+            var daylyend = new Date (timing);
+            daylyend.setUTCHours(new Date (day.program[b].schedule.endtime).getUTCHours())
+            daylyend.setUTCMinutes(new Date (day.program[b].schedule.endtime).getUTCMinutes())
+            if (daylyend.getTime()<timing) {
+              timing = daylyend.getTime()
+              timing+=24*60*60*1000
+            } else {
+              timing = daylyend.getTime()
+            }
+          }
+          day.program[b].schedule.disableautoschedule = true;
+          day.program[b].schedule = [day.program[b].schedule]
+          /* var st = new Date(room_starttime);
           var startNew = new Date(day.program[b].schedule.starttime);
+
           console.log("room_starttime")
           console.log(st)
           console.log(st.getUTCFullYear()+"-"+st.getUTCMonth()+"-"+st.getUTCDate())
@@ -544,13 +564,12 @@ function programSortableUpdate() {
             console.log(start.toISOString())
             console.log(day.program[b].schedule.starttime)
 
-            day.program[b].schedule.disableautoschedule = true;
-            day.program[b].schedule = [day.program[b].schedule]
-            //console.log("disabled");
-            data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
+            //console.log("disabled"); */
           //}
         }
-        //console.log(day.program[b]);
+        data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
+        console.log("schedule")
+        console.log(day.program[b].schedule);
       }
     }
     //
@@ -559,7 +578,7 @@ function programSortableUpdate() {
   var boxes = $(connectedSortable[0]).find("li");
   if (day.program && day.program.length) {
     for (var b=0;b<day.program.length;b++) {
-      $(boxes[b]).find(".timing").html("");
+      $(boxes[b]).find(".timing").html("TBD");
       $(boxes[b]).find(".index").html(b+1);
       day.program[b] = JSON.parse(day.program[b]);
       tobescheduled.push({_id: day.program[b]._id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event});

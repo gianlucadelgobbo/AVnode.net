@@ -46,8 +46,9 @@ block content
                       
                       li.list-group-item(style="overflow: hidden;", class=(program.performance.duration != parseFloat(program.performance.duration) ? "disabled" : ""))
                         - conta++
+                        .timing.small!="TBD"
                         .index.badge.disabled=(conta)
-                        .title
+                        .title.mt-2
                           b!=program.performance.title
                         .clearfix
                           .float-left
@@ -76,7 +77,9 @@ block content
                             each day, i in daydayA
                               span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
                                 !=new Date(data.days[i]).getDate()
-                        input(type="hidden", name="program[]", value=JSON.stringify(program))
+                        - var programprogram = JSON.parse(JSON.stringify(program))
+                        - programprogram.schedule = (programprogram.schedule && programprogram.schedule.length) ? program.schedule[0] : {}
+                        input(type="hidden", name="program[]", value=JSON.stringify(programprogram))
         td(style="padding:0;border:none;")
           div(style="max-height: calc(100vh - 40px);overflow-y: scroll;")
             table(style='width: 100%')
