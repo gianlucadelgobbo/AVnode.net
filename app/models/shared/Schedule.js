@@ -109,11 +109,15 @@ Schedule.virtual('boxDate').get(function () {
     let endformattedA = moment.utc(this.endtime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear).split(" ");
     if (startformattedA[startformattedA.length-1] == endformattedA[startformattedA.length-1]) startformattedA.pop()
     if (startformattedA[startformattedA.length-1] == endformattedA[startformattedA.length-1]) startformattedA.pop()
-    boxDate = startformattedA.join(" ");
-    boxDate+= " > ";
+    if (days>1) {
+      boxDate = startformattedA.join(" ");
+      boxDate+= " > ";
+    } else {
+      boxDate = "";
+    }
     boxDate+= endformattedA.join(" ");
     boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
-    boxDate+= " > "+moment.utc(this.endtime).format('HH:mm');
+    boxDate+= " > "+moment.utc(this.endtime).format('HH:mm')+days;
   }
   return boxDate;
 });

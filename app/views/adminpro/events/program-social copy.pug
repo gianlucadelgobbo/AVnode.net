@@ -1,0 +1,29 @@
+extends ../../layout_admin
+block topmenu
+  include topmenu
+block content
+  div
+      //each social in data.event.web
+      each day in data.programmebydayvenue
+        each room,i in day.rooms
+          if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'].indexOf(room.schedule.venue.room)>-1)
+            if room.program
+              each program,ii in room.program
+                h3!=social.url.split("/")[2]
+                pre
+                  !="@"+social.url.split("/")[3]+"\n"
+                  !=program.performance.title+"\n"
+                  each user in program.performance.users
+                    each social in user.social
+                      !="@"+social.url.split("/")[3]+"\n"
+                  !=day.date+"\n"
+                  - hours = "0"+program.schedule.starttime.getHours()
+                  - minutes = "0"+program.schedule.starttime.getMinutes()
+                  !=hours.substring(hours.length - 2, hours.length) +":"+minutes.substring(minutes.length - 2, minutes.length)+" > "
+                  - hours = "0"+program.schedule.endtime.getHours()
+                  - minutes = "0"+program.schedule.endtime.getMinutes()
+                  !=hours.substring(hours.length - 2, hours.length) +":"+minutes.substring(minutes.length - 2, minutes.length)+"\n"
+                  !="#"+program.performance.type.name+"\n"
+                  !=program.schedule.venue.name+"\n"
+                  //!=program.schedule.venue.room+"\n\n"
+                  !="#fotonica2019\n\n#audiovisual #laboratory #fotonicafestival #fotonicafestival2019 #electronicdancemusic #audiovisual #vj #generativeart #projectionmapping #generative #creativecoding #vjing #audiovisualart #ledmapping"

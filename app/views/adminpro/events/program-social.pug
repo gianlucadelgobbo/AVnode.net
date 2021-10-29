@@ -1,29 +1,201 @@
-extends ../../layout_adminpro_nocss
-block filters
-  include ./_filters
+extends ../../layout_admin
+block topmenu
+  include topmenu
 block content
-  div
-    each social in data.event.web
-      each day in data.programmebydayvenue
-        each room,i in day.rooms
-          if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'].indexOf(room.schedule.venue.room)>-1)
-            if room.program
-              each program,ii in room.program
-                h3!=social.url.split("/")[2]
-                pre
-                  !="@"+social.url.split("/")[3]+"\n"
-                  !=program.performance.title+"\n"
-                  each user in program.performance.users
-                    each social in user.social
-                      !="@"+social.url.split("/")[3]+"\n"
-                  !=day.date+"\n"
-                  - hours = "0"+program.schedule.starttime.getHours()
-                  - minutes = "0"+program.schedule.starttime.getMinutes()
-                  !=hours.substring(hours.length - 2, hours.length) +":"+minutes.substring(minutes.length - 2, minutes.length)+" > "
-                  - hours = "0"+program.schedule.endtime.getHours()
-                  - minutes = "0"+program.schedule.endtime.getMinutes()
-                  !=hours.substring(hours.length - 2, hours.length) +":"+minutes.substring(minutes.length - 2, minutes.length)+"\n"
-                  !="#"+program.performance.type.name+"\n"
-                  !=program.schedule.venue.name+"\n"
-                  //!=program.schedule.venue.room+"\n\n"
-                  !="#fotonica2019\n\n#audiovisual #laboratory #fotonicafestival #fotonicafestival2019 #electronicdancemusic #audiovisual #vj #generativeart #projectionmapping #generative #creativecoding #vjing #audiovisualart #ledmapping"
+  //- var del = []
+    - var emails = []
+    - var emails_noimage = []
+    - var emails_noaddress = []
+    - var emails_notext = []
+    - var emails_noname = []
+  - var counters = {Total:{}, Type: {}, Status:{}, Schedule: {"Scheduled": 0, "Not scheduled": 0}}
+
+  include ./_filters
+
+  - counters.Total.Submissions = data.program.length
+  - data.program = data.program.sort(function(a,b){
+  -   // Turn your strings into dates, and then subtract them
+  -   // to get a value that is either negative, positive, or zero.
+  -   if (a.schedule && a.schedule.length && b.schedule && b.schedule.length) {
+  -     return new Date(a.schedule[0].starttime) - new Date(b.schedule[0].starttime);
+  -   } else if (!a.schedule || !a.schedule.length) {
+  -     return 1;
+  -   } else {
+  -     return -1;
+  -   }
+  - });
+  
+  each item, index in data.program
+    if item.performance.type
+      - if (!counters.Type[item.performance.type.name]) counters.Type[item.performance.type.name] = 0
+      - counters.Type[item.performance.type.name]++
+    else
+      - if (!counters.Type["UNDEFINED"]) counters.Type["UNDEFINED"] = 0
+      - counters.Type["UNDEFINED"]++
+    if item.schedule && item.schedule.length && item.schedule[0].boxDate
+      - counters.Schedule.Scheduled++
+    else
+      - counters.Schedule["Not scheduled"]++
+    each status in data.status
+      - if (item.status._id.toString()==status._id.toString()) {
+        - if(!counters.Status[status.name]) counters.Status[status.name] = 0
+        - counters.Status[status.name]++
+      - }
+
+  .row
+    each counter, countername in counters
+      .col
+        b=countername
+        ul
+          each item, index in counter
+            li!=index+": <b>"+item+"</b>"
+
+  if data.performnce_missing
+    pre=data.performnce_missing
+  - var people = []
+  each item, index in data.program
+    div(id='sub'+item._id) 
+        div
+          b!=item.performance.title+" | "
+          - console.log(item.performance)
+          each useruser in item.performance.users
+            b!=useruser.stagename
+            if useruser.addressesFormatted && useruser.addressesFormatted.length
+              !=" ["+useruser.addressesFormatted.join(", ")+"] "
+          br
+          if item.performance.type
+            b="#"+item.performance.type.name.replace(new RegExp(" ", "g"), "")
+          if item.schedule && item.schedule.length && item.schedule[0].boxDate
+            if item.schedule[0].price && item.schedule[0].alleventschedulewithoneprice
+                !=" | Price: <b>"+item.schedule[0].price+",00 €</b>"
+            else if !item.schedule[0].price
+                !=' | '
+                b!='#FREEENTRY'
+            each schedule, index in item.schedule
+              if schedule.boxDate
+                div=schedule.boxDate
+                div=schedule.venue.name
+                div=schedule.venue.location.formatted_address
+
+              else
+                .badge.badge-danger=global.__('TO BE SCHEDULED')
+          if get.fullinfo && item.performance.about
+            !=item.performance.about
+          else if item.performance.description
+            br
+            !=item.performance.description+" [link 4 more]"
+            br
+            br
+          each useruser in item.performance.users
+            if useruser.social.length
+              each social in useruser.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+                !=social
+              br
+          - var baseweb = "https://fotonicafestival.com/editions/2021-rome/program/detail/"
+          a(href=baseweb+item.performance.slug+"/" target="_blank")!=baseweb+item.performance.slug+"/"
+          if get.fullinfo
+            .mb-2
+              img.img-fluid(src=item.performance.imageFormats.small)
+            .mb-2
+              p
+                !="DURATION: "
+                b=item.performance.duration
+                  if item.performance.duration != parseFloat(item.performance.duration)
+                    !=" "
+                    span.badge.badge-danger="WRONG DURATION"
+                br
+                if item.performance.tecnique
+                  !="STYLE: "
+                  b=item.performance.tecnique.name
+                  br
+                if item.performance.genre
+                  !="GENRE: "
+                  b=item.performance.genre.name
+                  br
+                //!="CALL: "
+                  if (item.call>=0 && data.event.organizationsettings.call && data.event.organizationsettings.call.calls && data.event.organizationsettings.call.calls[item.call] && data.event.organizationsettings.call.calls[item.call].title)
+                    b!=data.event.organizationsettings.call.calls[item.call].title
+                  else 
+                    .badge.badge-danger MISSING CALL
+                  br
+                  !="TOPICS: "
+                  if item.topics
+                    b!=item.topics.join(", ")
+                  else
+                    .badge.badge-danger MISSING
+                  br
+          //if item.performance.videos && item.performance.videos.length
+            .mt-2
+              b VIDEOS
+              ul.lightvideos
+                each video in item.performance.videos
+                  if video.media && video.media.file
+                    li(data-html="#"+video._id, data-poster=video.imageFormats.large, data-sub-html=video.title )
+                      //!=video.title
+                      img(src=video.imageFormats.small)
+                  else
+                    !=" "
+                    .badge.badge-danger MISSING MEDIAS
+                    //- del.push("db.videos.remove(_id:ObjectId('"+video._id+"')\n")
+              each video in item.performance.videos
+                if video.media && video.media.file
+                  div(style='display:none;', id=video._id)
+                    video.lg-video-object.lg-html5.video-js.vjs-big-play-centered.vjs-default-skin(controls='', preload='none')
+                      source(src="https://avnode.net"+video.media.file, type='video/mp4')
+                      !="Your browser does not support HTML5 video."
+
+          //if item.performance.galleries && item.performance.galleries.length
+            .mt-2
+              b GALLERIES
+              ul
+                each gallery in item.performance.galleries
+                  li
+                    !=gallery.title
+                    if gallery.medias.length
+                      .lightgallery
+                        each media in gallery.medias
+                          a.media(href=media.imageFormats.large)
+                    else
+                      !=" "
+                      .badge.badge-danger MISSING MEDIAS
+                      //- del.push("db.galleries.remove(_id:ObjectId('"+gallery._id+"')\n")
+        each useruser in item.performance.users
+          //
+            if useruser.imageFormats.small=="https://avnode.net/images/default-user.svg" || item.performance.imageFormats.small=="https://avnode.net/images/default-item.svg"
+              - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
+              - if (emails_noimage.indexOf(str)==-1) emails_noimage.push(str)
+            if !useruser.about || !item.performance.about
+              - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
+              - if (emails_notext.indexOf(str)==-1) emails_notext.push(str)
+          if get.fullinfo
+            .mb-2
+              img.img-fluid(class=useruser.imageFormats.small.substring(useruser.imageFormats.small.lastIndexOf(".")+1), src=useruser.imageFormats.small, alt=useruser.stagename)
+            h3.mb-2
+              !=useruser.stagename
+            .mb-2
+              if useruser.addressesFormatted && useruser.addressesFormatted.length
+                !=useruser.addressesFormatted.join(", ")
+              else
+                .badge.badge-danger MISSING ADDRESS
+
+            .mb-2!=useruser.aboutFull ? useruser.aboutFull : useruser.about
+            if useruser.web.length
+              .mt-3
+                b!="WEB"
+              ul
+                each web in useruser.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+                  li!=web
+            if useruser.social.length
+              .mt-3
+                b!="SOCIAL"
+              ul
+                each social in useruser.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+                  li!=social
+          
+          
+          
+          //td!=item.performance.users.map((item) => {return item.addressesFormatted}).join("<br />")
+            - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
+            - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
+            p!=addressesaddresses.sort().join(", ")
+    hr
