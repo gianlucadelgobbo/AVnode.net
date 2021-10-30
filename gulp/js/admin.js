@@ -157,6 +157,7 @@ $(function() {
       } else {
         $('#modalEdit .alert-success').html("Data saved with success.");
         $('#modalEdit .alert-success').removeClass('d-none');
+        setTimeout(() => {$('#modalEdit').modal('hide')}, 2000);
       }
       //console.log(data);
     })

@@ -68,16 +68,27 @@ block content
                     if schedule.boxDate
                       div=schedule.venue.room
                       div=schedule.boxDate
-                      if schedule.price && !item.schedule[0].alleventschedulewithoneprice
-                        p.price
+                      p.price
+                        if schedule.price && schedule.price > 0
                           !="Price: <b>"+schedule.price+",00 €</b>"
-                          !=" | "
-                          b
-                            a.edit-price(data-program=item._id, href="#")
-                              span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                                i.icon-edit
+                          if schedule.alleventschedulewithoneprice
+                            !=" | <b>"+global.__('PRICE INCLUDES ALL APPOINTMENTS')+"</b>"
+                          if schedule.priceincludesothershows
+                            !=" | <b>"+global.__('PRICE IS FOR THE FULL DAY')+"</b>"
+                          if schedule.paypal
+                            !=" | "
+                            a(href=schedule.paypal target="_blank")
+                              i.icon-money-check-alt
+                        else
+                          !="Price: "
+                          span.badge.badge-info=global.__('FREE ENTRY')
+                        !=" | "
+                        b
+                          a.edit-price(data-program=item._id, href="#")
+                            span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                              i.icon-edit
 
-                  if item.schedule[0].price && item.schedule[0].alleventschedulewithoneprice
+                  //if item.schedule[0].price && item.schedule[0].alleventschedulewithoneprice
                     p.price
                       !="Price: <b>"+item.schedule[0].price+",00 €</b>"
                       !=" | "
@@ -85,15 +96,15 @@ block content
                         a.edit-price(data-program=item._id, href="#")
                           span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
                             i.icon-edit
-                  else if !item.schedule[0].price
-                    p.price
-                      !="Price: "
-                      span.badge.badge-info=global.__('FREE ENTRY')
-                      !=" | "
-                      b
-                        a.edit-price(data-program=item._id, href="#")
-                          span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                            i.icon-edit
+                    else if !item.schedule[0].price
+                      p.price
+                        !="Price: "
+                        span.badge.badge-info=global.__('FREE ENTRY')
+                        !=" | "
+                        b
+                          a.edit-price(data-program=item._id, href="#")
+                            span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                              i.icon-edit
                 else
                   .badge.badge-danger=global.__('TO BE SCHEDULED')
                 div

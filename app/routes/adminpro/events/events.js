@@ -304,7 +304,7 @@ router.get('/:event/orders', (req, res) => {
   });
   
  */  
-  router.get('/:event/acts', (req, res) => {
+router.get('/:event/acts', (req, res) => {
   router.getActsData(req, res, data => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);

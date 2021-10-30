@@ -247,11 +247,23 @@ router.editSubscriptionSave = (req, res) => {
             }
             logger.debug(performance.bookings);
             performance.save(function(err){
-              if (err) {
-                res.json(err);
-              } else {
-                res.json({success: true});
-              }
+              Models.Event.findOne({"program.subscription_id": req.body.program})
+              .exec((err, event) => {
+                logger.debug(event.program);
+                for(var a=0;a<event.program.length;a++){
+                  if (event.program[a].subscription_id.toString()===req.body.program.toString()) {
+                    event.program[a].schedule = program.schedule;
+                  }
+                }
+                logger.debug(event.program);
+                event.save(function(err){
+                  if (err) {
+                    res.json(err);
+                  } else {
+                    res.json({success: true});
+                  }
+                });
+              });
             });
           });
         }
