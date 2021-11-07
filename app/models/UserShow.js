@@ -163,7 +163,7 @@ userSchema.virtual('crews', {
 
 // Crews only
 
-userSchema.virtual('learnings', {
+/* userSchema.virtual('learnings', {
   ref: "Performance",
   foreignField: '_id',
   localField: 'performances',
@@ -176,7 +176,7 @@ userSchema.virtual('learnings', {
   if (this.performances) {
     return this.performances;
   }
-});
+}); */
 
 userSchema.virtual('publicEmails').get(function () {
   let emails = [];

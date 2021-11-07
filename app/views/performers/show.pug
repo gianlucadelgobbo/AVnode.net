@@ -78,6 +78,7 @@ block content
           g
             polygon(fill='#0f8fcf' points='1927.4,99.5 0,99.5 0,-1 		')
             polygon(fill='transparent' points='0,0 1920,0 1920,100.5 		')
+  if data.stats.performances                  
     section#performances.performer_performances_wrapper
       .content_wrapper
         .container
@@ -86,13 +87,14 @@ block content
               h2.main_title.indented_title!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
               .performance_divider.basic_divider
               .owl-carousel.loop.owl-theme
-                each item in data.performances                
-                  include ../partials/boxPerformance
+                each item in data.performances
+                  if (["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"].indexOf(item.type._id)==-1)                
+                    include ../partials/boxPerformance
               .button_more.button_more_grey
                 a(href="/"+data.slug+"/performances", title=data.stagename)
                   span.button_more_label!='+ '+global.__('All the performances')
-                  span.button_more_bkg                  
-  if data.learnings && data.learnings.length
+                  span.button_more_bkg
+  if data.stats.learnings                  
     section#learnings.performer_performances_wrapper
       .content_wrapper
         .container
@@ -101,8 +103,11 @@ block content
               h2.main_title.indented_title!=global.__('Learnings')+" <small>(<span>"+data.stats.learnings+"</span>)</small>"  
               .performance_divider.basic_divider
               .owl-carousel.loop.owl-theme
-                each item in data.learnings                
-                  include ../partials/boxLearnings
+                each item in data.performances
+                  - console.log("item.type")                
+                  - console.log(item.type)                
+                  if (["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"].indexOf(item.type._id)!=-1)                
+                    include ../partials/boxPerformance
               .button_more.button_more_grey
                 a(href="/"+data.slug+"/learnings", title=data.stagename)
                   span.button_more_label!='+ '+global.__('All the learnings')

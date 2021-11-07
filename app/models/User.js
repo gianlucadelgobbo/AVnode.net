@@ -231,7 +231,7 @@ userSchema.virtual('birthdayFormatted').get(function () {
   }
 });
 
-userSchema.virtual('learnings', {
+/* userSchema.virtual('learnings', {
   ref: "Performance",
   foreignField: '_id',
   localField: 'performances',
@@ -244,7 +244,7 @@ userSchema.virtual('learnings', {
   if (this.performances) {
     return this.performances;
   }
-});
+}); */
 
 // Return thumbnail
 userSchema.virtual('imageFormats').get(function () {
