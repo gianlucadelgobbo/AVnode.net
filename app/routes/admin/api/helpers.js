@@ -290,7 +290,7 @@ router.setStatsAndActivitySingle = function(query) {
         e.events = events;
         e.performances = performances;
         e.performances_only = performances_only;
-        e.learnings = learnings;
+        e.learningslearnings = learnings;
         e.partnerships = partnerships;
         e.galleries = galleries;
         e.videos = videos;
@@ -303,7 +303,7 @@ router.setStatsAndActivitySingle = function(query) {
         if (e.crews && e.crews.length) e.stats.crews = e.crews.length;
     
         if (e.performances_only && e.performances_only.length) e.stats.performances = e.performances_only.length;
-        if (e.learnings && e.learnings.length) e.stats.learnings = e.learnings.length;
+        if (e.learningslearnings && e.learningslearnings.length) e.stats.learnings = e.learningslearnings.length;
         if (e.events && e.events.length) e.stats.events = e.events.length;
         if (e.partnerships && e.partnerships.length) e.stats.partnerships = e.partnerships.length;
         if (e.footage && e.footage.length) e.stats.footage = e.footage.length;
@@ -338,7 +338,7 @@ router.setStatsAndActivitySingle = function(query) {
         e.activity_as_organization = router.getActivityAsOrganization(e.stats);
 
         delete e.performances_only;
-        delete e.learnings;
+        delete e.learningslearnings;
 
         //logger.debug(e);
         e.save((err) => {
