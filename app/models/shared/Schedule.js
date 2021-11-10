@@ -117,7 +117,7 @@ Schedule.virtual('boxDate').get(function () {
     }
     boxDate+= endformattedA.join(" ");
     boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
-    boxDate+= " > "+moment.utc(this.endtime).format('HH:mm')+days;
+    boxDate+= " > "+moment.utc(this.endtime).format('HH:mm');
   }
   return boxDate;
 });
