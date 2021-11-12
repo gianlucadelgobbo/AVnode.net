@@ -130,13 +130,13 @@ router.get('/:event/orders', (req, res) => {
   });  
   
   router.get('/:event/program-print', (req, res) => {
-    router.getActsData(req, res, data => {
+    router.getPrintData(req, res, data => {
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         res.json(data);
       } else {
         req.query.sez = "acts";
         res.render('adminpro/events/program-print', {
-          title: 'Events | '+data.event.title + ': '+__('Program Prints'),
+          title: 'Events | '+data.title + ': '+__('Program Prints'),
           data: data,
           currentUrl: req.originalUrl,
           
@@ -429,6 +429,187 @@ router.getActsData = (req, res, cb) => {
           cb(data);
         }
       });
+    }
+   });
+};
+
+router.getPrintData = (req, res, cb) => {
+  logger.debug('/events/'+req.params.event+'/getPrintData');
+  logger.debug(req.query)
+  let data = {};
+  Event.
+  findOne({"_id": req.params.event}).
+  select({
+    "title": 1,
+    "subtitles": 1,
+    "abouts": 1,
+    "slug": 1,
+    "is_freezed": 1,
+    "program_freezed": 1,
+    "stats": 1,
+    "web": 1,
+    "social": 1,
+    "emails": 1,
+    "image": 1,
+    "schedule": 1,
+    "program": 1,
+    "videos": 1,
+    "galleries": 1,
+    "type": 1,
+    "organizationsettings": 1,
+    "partners": 1
+  }).
+  populate([
+    {
+    "path": "program.performance",
+    "select": {
+      "title": 1,
+      "stats": 1,
+      "users": 1,
+      "type": 1,
+      "image": 1,
+      "duration": 1,
+      "tech_arts": 1,
+      "tech_reqs": 1,
+      "paypal": 1,
+      "price": 1,
+      "slug": 1
+    },
+    "model": "Performance",
+    "populate": [{
+      "path": "users",
+      "select": {
+        "slug": 1,
+        "image": 1,
+        "organizationData.logo": 1,
+        "members": 1,
+        "addresses.country": 1,
+        "addresses.locality": 1,
+        "stats": 1,
+        "stagename": 1
+      },
+      "model": "UserShow"
+    }, {
+      "path": "type",
+      "select": {
+        "name": 1,
+        "slug": 1
+      },
+      "model": "Category"
+    }]
+  }, {
+    "path": "program.schedule.categories",
+    "select": {
+      "name": 1
+    },
+    "model": "Category"
+  }, {
+    "path": "program.schedule.status",
+    "select": {
+      "name": 1
+    },
+    "model": "Category"
+  }, {
+    "path": "type",
+    "select": {
+      "name": 1
+    },
+    "model": "Category"
+  }]).
+  exec((err, event) => {
+    if (err) {
+      res.json(err);
+    } else {
+      logger.debug(event);
+      cb(event);
+
+/*       logger.debug("pre-populate");
+      const native_populate = JSON.parse(JSON.stringify(config.cpanel["events_advanced"].forms["acts"].populate));
+      logger.debug(native_populate);
+      const select = config.cpanel["events_advanced"].forms["acts"].select;
+      let populate = req.query.pure ? [] : native_populate;
+      let query = {"event": req.params.event};
+      if (req.query.call && req.query.call!='none') query.call = req.query.call;
+      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
+      if (req.query['subscriptions.packages.name'] && req.query['subscriptions.packages.name']!='0') query['subscriptions.packages.name'] = req.query['notaccommodation'] ? {$ne :req.query['subscriptions.packages.name']} : req.query['subscriptions.packages.name'];
+      for(var item in populate) {
+        if (populate[item].path == "performance") {
+          if (req.query['performance_category'] && req.query['performance_category']!='0') {
+            populate[item].match = {type: req.query['performance_category']};
+          }
+          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
+            populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
+          }
+        }
+      }
+      logger.debug("populate")
+      logger.debug(populate)
+      Program.
+      find(query).
+      select(select).
+      populate(populate).
+      exec((err, program) => {
+        if (err) {
+          res.json(err);
+        } else {
+          data.event = event;
+          data.status = config.cpanel["events_advanced"].status;
+          data.program = JSON.parse(JSON.stringify(program));
+          for(let a=0;a<data.program.length;a++) {
+            if(data.program[a].performance) {
+              if (data.program[a].performance.abouts) delete data.program[a].performance.abouts;
+              if (data.program[a].performance.tech_arts) delete data.program[a].performance.tech_arts;
+              if (data.program[a].performance.tech_reqs) delete data.program[a].performance.tech_reqs;
+              if (data.program[a].performance.bookings) delete data.program[a].performance.bookings;              
+            } else if (!data.program[a].performance && !req.query['performance_category']){
+              if (!data.performnce_missing) data.performnce_missing = []; 
+              data.performnce_missing.push(data.program[a]);
+            }
+          }
+          if (data.performnce_missing) data.performnce_missing = JSON.stringify(data.performnce_missing);
+          //if (req.query['performance_category'] && req.query['performance_category']!='0') {
+            let prg = [];
+            for(let a=0;a<data.program.length;a++) {
+              if (data.program[a].performance) prg.push(data.program[a]);
+            }
+            data.program = prg;
+          //}
+          if (req.query.sortby && req.query.sortby=='sortby_ref_name') {
+            data.program = data.program.sort((a,b) => (a.reference.stagename > b.reference.stagename) ? 1 : ((b.reference.stagename > a.reference.stagename) ? -1 : 0));
+          }
+          if (req.query.sortby && req.query.sortby=='sortby_perf_name') {
+            data.program = data.program.sort((a,b) => (a.performance.title > b.performance.title) ? 1 : ((b.performance.title > a.performance.title) ? -1 : 0));
+          }
+
+          data.admitted = [];
+          let admittedO = {};
+          for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
+          for(let adm in admittedO) data.admitted.push(admittedO[adm]);
+
+          data.rooms = [];
+          for(let a=0;a<data.event.schedule.length;a++)  if (data.event.schedule[a].venue && data.event.schedule[a].venue.room && data.rooms.indexOf(data.event.schedule[a].venue.room) == -1) data.rooms.push(data.event.schedule[a].venue.room);
+          data.sortby = [
+            {value: 'sortby_perf_name', key: 'sort by perf name'},
+            {value: 'sortby_ref_name', key: 'sort by ref name'},
+            //{value: 'sortby_person_name', key: 'sort by person name'},
+            //{value: 'sortby_arrival_date', key: 'sort by arrival date'},
+            {value: '0', key: 'sort by sub date'}
+          ];
+          if (req.query['missing_img'] && req.query['missing_img']!='0') {
+            //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg'})
+            data.program = data.program.filter(item => {
+              return item.performance.users.map(item => {return item.imageFormats.small}).indexOf('https://avnode.net/images/default-user.svg')!==-1 || item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg';
+            });
+          }
+          if (req.query['missing_text'] && req.query['missing_text']!='0') {
+            //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg'})
+            data.program = data.program.filter(item => {
+              return item.performance.users.map(item => {console.log(item.about);return !item.about || item.about=="Text is missing"  ? "0" : "1"}).indexOf('0')!==-1 || item.performance.about == 'Text is missing';
+            });
+          }
+          cb(event);
+        }
+      }); */
     }
    });
 };

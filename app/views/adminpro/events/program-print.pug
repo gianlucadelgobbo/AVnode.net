@@ -19,7 +19,7 @@ block content
   -   return new Date(a.schedule[0].starttime) - new Date(b.schedule[0].starttime);
   - });
   
-  each item, index in data.program
+  //each item, index in data.program
     if item.performance.type
       - if (!counters.Type[item.performance.type.name]) counters.Type[item.performance.type.name] = 0
       - counters.Type[item.performance.type.name]++
@@ -37,7 +37,7 @@ block content
       - }
 
   .row
-    each counter, countername in counters
+    //each counter, countername in counters
       .col
         b=countername
         ul
@@ -55,8 +55,23 @@ block content
         th="ACT"
         th="AUTHORS"
     tbody
-      each item, index in data.program
-        tr(id='sub'+item._id) 
+      each item in data.advanced.programmebydayvenue
+        pre
+          b=item.date
+          br
+          each itemitem in item.rooms
+            b=itemitem.room +" | "+itemitem.venue
+            br
+            each itemitemitem in itemitem.performances
+              //- console.log(itemitemitem)
+              b=itemitemitem.schedule.boxDate.split(" | ")[1]
+              !=" | "
+              b=itemitemitem.performance.title
+              !=" | "
+              each itemitemitemitem in itemitemitem.performance.users
+                b=itemitemitemitem.stagename
+                br
+        //tr(id='sub'+item._id) 
           td.table-firstcolumn-ID!=(index+1)
           td
                 if item.schedule && item.schedule.length && item.schedule[0].boxDate
