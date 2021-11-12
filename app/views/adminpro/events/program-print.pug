@@ -68,9 +68,11 @@ block content
               !=" | "
               b=itemitemitem.performance.title
               !=" | "
-              each itemitemitemitem in itemitemitem.performance.users
+              each itemitemitemitem, index in itemitemitem.performance.users
                 b=itemitemitemitem.stagename
-                br
+                if index<itemitemitem.performance.users.length-1
+                  !=" + "
+              br
         //tr(id='sub'+item._id) 
           td.table-firstcolumn-ID!=(index+1)
           td
