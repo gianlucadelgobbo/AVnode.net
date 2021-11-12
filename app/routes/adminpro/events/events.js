@@ -486,6 +486,7 @@ router.getPrintData = (req, res, cb) => {
         "addresses.country": 1,
         "addresses.locality": 1,
         "stats": 1,
+        "social": 1,
         "stagename": 1
       },
       "model": "UserShow"

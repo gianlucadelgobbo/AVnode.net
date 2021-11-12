@@ -152,7 +152,7 @@ router.getPartners = (req, res) => {
     sort({title: 1}).
     //select({stagename: 1, createdAt: 1, crews:1}).
     exec((err, events) => {
-      var query = {$or : [{"partner_owner": req.params.id}]}
+      var query = {$or : [{"partner_owner.owner": req.params.id}]}
       if (req.params.event) query.partnerships = req.params.event;
       if (user._id.toString()=="5be8772bfc39610000007065") query["$or"].push({"is_crew" : true, "activity_as_organization" : {"$gt": 0}});
       User.
