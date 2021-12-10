@@ -1,0 +1,40 @@
+extends ../../layout_admin
+block topmenu
+  include topmenu
+block content
+  .row
+    pre
+      each item in data.advanced.programmebydayvenue
+        b="//// "+item.date.toUpperCase()+" ////"
+        br
+        br
+        each itemitem in item.rooms
+          b="// "+itemitem.room +" | "+itemitem.venue+" //"
+          br
+          each itemitemitem in itemitem.performances
+            //- console.log(itemitemitem)
+            b=itemitemitem.schedule.boxDate.split(" | ")[1]
+            !=" | "
+            b=itemitemitem.performance.title
+            !=" | "
+            b=itemitemitem.performance.type.name
+            !=" | "
+            each itemitemitemitem, index in itemitemitem.performance.users
+              - console.log("itemitemitemitem")
+              - console.log(itemitemitemitem)
+              b=itemitemitemitem.stagename
+              if itemitemitemitem.social
+                each social in itemitemitemitem.social
+                  if social.url
+                    if social.url.indexOf("fb.com")!=-1
+                      !=" | (fb @"+social.url.split("fb.com/")[1].split("/")[0]+")"
+                    if social.url.indexOf("facebook.com")!=-1
+                      !=" | (fb @"+social.url.split("facebook.com/")[1].split("/")[0]+")"
+                    if social.url.indexOf("instagram.com")!=-1
+                      !=" | (ig @"+social.url.split("instagram.com/")[1].split("/")[0]+")"
+                    if social.url.indexOf("twitter.com")!=-1
+                      !=" | (tw @"+social.url.split("twitter.com/")[1].split("/")[0]+")"
+              if index<itemitemitem.performance.users.length-1
+                !=" + "
+            br
+          br

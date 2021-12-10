@@ -2,39 +2,70 @@ extends ../../layout_admin
 block topmenu
   include topmenu
 block content
-  .row
-    pre
-      each item in data.advanced.programmebydayvenue
-        b="//// "+item.date.toUpperCase()+" ////"
-        br
-        br
-        each itemitem in item.rooms
-          b="// "+itemitem.room +" | "+itemitem.venue+" //"
-          br
+  include ./_filters
+  table.table
+    each item in data.advanced.programmebydayvenue
+      - console.log(item)
+      - var day = item.day.split("-")
+      each itemitem in item.rooms
           each itemitemitem in itemitem.performances
-            //- console.log(itemitemitem)
-            b=itemitemitem.schedule.boxDate.split(" | ")[1]
-            !=" | "
-            b=itemitemitem.performance.title
-            !=" | "
-            b=itemitemitem.performance.type.name
-            !=" | "
-            each itemitemitemitem, index in itemitemitem.performance.users
-              - console.log("itemitemitemitem")
-              - console.log(itemitemitemitem)
-              b=itemitemitemitem.stagename
-              if itemitemitemitem.social
-                each social in itemitemitemitem.social
-                  if social.url
-                    if social.url.indexOf("fb.com")!=-1
-                      !=" | (fb @"+social.url.split("fb.com/")[1].split("/")[0]+")"
-                    if social.url.indexOf("facebook.com")!=-1
-                      !=" | (fb @"+social.url.split("facebook.com/")[1].split("/")[0]+")"
-                    if social.url.indexOf("instagram.com")!=-1
-                      !=" | (ig @"+social.url.split("instagram.com/")[1].split("/")[0]+")"
-                    if social.url.indexOf("twitter.com")!=-1
-                      !=" | (tw @"+social.url.split("twitter.com/")[1].split("/")[0]+")"
-              if index<itemitemitem.performance.users.length-1
-                !=" + "
-            br
-          br
+            tr
+              td!="Contemporaneamente Roma"
+              td!=data.title
+              td!=itemitemitem.performance.title
+              td
+                if itemitemitem.performance.type.name == "AV Performance"
+                  !="Musica"
+                else if itemitemitem.performance.type.name == "DJ Set"
+                  !="Musica"
+                else if itemitemitem.performance.type.name == "VJ Set"
+                  !="Musica"
+                else if itemitemitem.performance.type.name == "Workshop"
+                  !="Laboratori, seminari, workshop, visite guidate"
+                else if itemitemitem.performance.type.name == "Mapping"
+                  !="Mostre"
+                else if itemitemitem.performance.type.name == "AV Installation"
+                  !="Mostre"
+                else if itemitemitem.performance.type.name == "Net Art"
+                  !="Mostre"
+                else if itemitemitem.performance.type.name == "Lecture"
+                  !="INCONTRI"
+                else
+                  !=itemitemitem.performance.type.name
+              td!="IN PRESENZA"
+              td=day[1]+"/"+day[2]+"/"+day[0]
+              td!=itemitem.venue
+              td!=itemitem.venue
+              td!=itemitem.venue
+              td=itemitemitem.performance.type.name
+              td=itemitemitem.schedule.venue.name
+              td=itemitemitem.schedule.venue.room
+            if itemitemitem.performance.type.name == "AV Performance" || itemitemitem.performance.type.name == "DJ Set" || itemitemitem.performance.type.name == "VJ Set"
+              tr
+                td!="Contemporaneamente Roma"
+                td!=data.title
+                td!=itemitemitem.performance.title
+                td
+                  if itemitemitem.performance.type.name == "AV Performance"
+                    !="Musica"
+                  else if itemitemitem.performance.type.name == "DJ Set"
+                    !="Musica"
+                  else if itemitemitem.performance.type.name == "VJ Set"
+                    !="Musica"
+                  else if itemitemitem.performance.type.name == "Workshop"
+                    !="Laboratori, seminari, workshop, visite guidate"
+                  else if itemitemitem.performance.type.name == "Mapping"
+                    !="Mostre"
+                  else if itemitemitem.performance.type.name == "AV Installation"
+                    !="Mostre"
+                  else if itemitemitem.performance.type.name == "Net Art"
+                    !="Mostre"
+                  else if itemitemitem.performance.type.name == "Lecture"
+                    !="INCONTRI"
+                  else
+                    !=itemitemitem.performance.type.name
+                td!="IN PRESENZA"
+                td=day[1]+"/"+day[2]+"/"+day[0]
+                td!=itemitem.venue
+                td!=itemitem.venue
+                td!=itemitem.venue
