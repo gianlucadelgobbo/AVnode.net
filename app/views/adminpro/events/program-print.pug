@@ -8,7 +8,39 @@ block content
       - console.log(item)
       - var day = item.day.split("-")
       each itemitem in item.rooms
-          each itemitemitem in itemitem.performances
+        each itemitemitem in itemitem.performances
+          tr
+            td!="Contemporaneamente Roma"
+            td!=data.title
+            td!=itemitemitem.performance.title
+            td
+              if itemitemitem.performance.type.name == "AV Performance"
+                !="Musica"
+              else if itemitemitem.performance.type.name == "DJ Set"
+                !="Musica"
+              else if itemitemitem.performance.type.name == "VJ Set"
+                !="Musica"
+              else if itemitemitem.performance.type.name == "Workshop"
+                !="Laboratori, seminari, workshop, visite guidate"
+              else if itemitemitem.performance.type.name == "Mapping"
+                !="Mostre"
+              else if itemitemitem.performance.type.name == "AV Installation"
+                !="Mostre"
+              else if itemitemitem.performance.type.name == "Net Art"
+                !="Mostre"
+              else if itemitemitem.performance.type.name == "Lecture"
+                !="INCONTRI"
+              else
+                !=itemitemitem.performance.type.name
+            td!="IN PRESENZA"
+            td=day[1]+"/"+day[2]+"/"+day[0]
+            td!=itemitem.venue
+            td!=itemitem.venue
+            td!=itemitem.venue
+            td=itemitemitem.performance.type.name
+            td=itemitemitem.schedule.venue.name
+            td=itemitemitem.schedule.venue.room
+          if itemitemitem.performance.type.name == "AV Performance" || itemitemitem.performance.type.name == "DJ Set" || itemitemitem.performance.type.name == "VJ Set"
             tr
               td!="Contemporaneamente Roma"
               td!=data.title
@@ -32,40 +64,8 @@ block content
                   !="INCONTRI"
                 else
                   !=itemitemitem.performance.type.name
-              td!="IN PRESENZA"
+              td!="IN STREAMING"
               td=day[1]+"/"+day[2]+"/"+day[0]
               td!=itemitem.venue
               td!=itemitem.venue
               td!=itemitem.venue
-              td=itemitemitem.performance.type.name
-              td=itemitemitem.schedule.venue.name
-              td=itemitemitem.schedule.venue.room
-            if itemitemitem.performance.type.name == "AV Performance" || itemitemitem.performance.type.name == "DJ Set" || itemitemitem.performance.type.name == "VJ Set"
-              tr
-                td!="Contemporaneamente Roma"
-                td!=data.title
-                td!=itemitemitem.performance.title
-                td
-                  if itemitemitem.performance.type.name == "AV Performance"
-                    !="Musica"
-                  else if itemitemitem.performance.type.name == "DJ Set"
-                    !="Musica"
-                  else if itemitemitem.performance.type.name == "VJ Set"
-                    !="Musica"
-                  else if itemitemitem.performance.type.name == "Workshop"
-                    !="Laboratori, seminari, workshop, visite guidate"
-                  else if itemitemitem.performance.type.name == "Mapping"
-                    !="Mostre"
-                  else if itemitemitem.performance.type.name == "AV Installation"
-                    !="Mostre"
-                  else if itemitemitem.performance.type.name == "Net Art"
-                    !="Mostre"
-                  else if itemitemitem.performance.type.name == "Lecture"
-                    !="INCONTRI"
-                  else
-                    !=itemitemitem.performance.type.name
-                td!="IN PRESENZA"
-                td=day[1]+"/"+day[2]+"/"+day[0]
-                td!=itemitem.venue
-                td!=itemitem.venue
-                td!=itemitem.venue
