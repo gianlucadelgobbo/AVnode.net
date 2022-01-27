@@ -2651,20 +2651,22 @@ router.eventGetFreezed = (req, res) => {
   console.log("eventGetFreezed")
   var populate = [
     { 
-      "path": "program.performance", "select": "id title image slug duration price paypal users is_public stats abouts galleries videos", "model": "Performance",  "populate": [
-        { "path": "users", "select": "stagename slug stats addresses members organizationData gender image abouts web social performances", "model": "UserShow", "populate": [
+      "path": "program.performance", "select": "id title image slug duration price paypal users is_public stats abouts galleries videos bookings", "model": "Performance",  
+      "populate": [
+        { "path": "users", "select": "stagename slug stats addresses members organizationData gender image abouts web social performances", "model": "UserShow"/* , "populate": [
           { "path": "performances", "select": "title slug image users", "model": "Performance", "populate": [
             { "path": "users", "select": "stagename slug stats addresses members organizationData gender image abouts web social performances", "model": "UserShow"},
-            { "path": "bookings.performance", "select": "title slug image users", "model": "Performance"}
+            { "path": "bookings", "populate":{ "path": "performance", "select": "title slug image users", "model": "Performance"}}
           ]}
-        ]},
-        { "path": "bookings.performance", "select": "title slug image users", "model": "Performance"},
+        ] */},
+        { "path": "bookings", "populate":{ "path": "performance", "select": "title slug image users", "model": "Performance"}},
         { "path": "galleries", "select": "title slug image medias", "model": "Gallery"},
         { "path": "videos", "select": "title slug image media", "model": "Video"},
         { "path": "type", "select": "name slug", "model": "Category"},
         { "path": "tecnique", "select": "name slug", "model": "Category"},
         { "path": "genre", "select": "name slug", "model": "Category"}
-      ]},
+      ]
+    },
     { "path": "program.schedule.categories", "select": "name"}
   ];
   //console.log()
@@ -2675,12 +2677,15 @@ router.eventGetFreezed = (req, res) => {
       Models.EventShow.
       //find({"users": req.params.id}).
       findOne({_id: req.params.id}).
+      select({title: 1, slug: 1, program: 1, is_freezed: 1, program_freezed: 1, galleries: 1, videos: 1, partners: 1}).
       populate(populate).
-      select({title: 1, slug: 1, program: 1, is_freezed: 1, program_freezed: 1}).
       //sort({title: 1}).
       //select({stagename: 1, createdAt: 1, crews:1}).
       //exec((err, events) => {
       exec((err, event) => {
+        console.log("program_freezed")
+        console.log(event.advanced.menu);
+        console.log("program_freezed")
        /*  console.log("program_freezed")
         console.log(event.is_freezed)
         console.log(event.advanced.performers) */

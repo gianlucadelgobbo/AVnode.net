@@ -525,11 +525,16 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }
         //logger.debug(res.performer);
         if (res.performer) {
+          //console.log("res.performer.performances")
+          //console.log(res.performer.performances)
+          res.performer.performances = []
+          //console.log(res.advanced.programmebydayvenue)
+          /*
           let a=0;
           while(a<res.performer.performances.length) {
             let b=0;
             while(b<res.performer.performances[a].bookings.length) {
-              if (!res.performer.performances[a].bookings[b].event/* .slug != req.params.slug */) {
+              if (!res.performer.performances[a].bookings[b].event) { ///.slug != req.params.slug
                 res.performer.performances[a].bookings.splice(b, 1);
               } else {
                 b++;
@@ -540,7 +545,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
             } else {
               a++;
             }
-          }
+          } */
         }
         delete res.advanced.performers;
       }

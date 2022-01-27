@@ -223,6 +223,55 @@ block content
             polygon(fill='#232323' points='0,0 1920,0 1920,100.5 		')    
 
     
+    if data.advanced.programmebydayvenue
+      - var programmebydayvenue = []
+      each day in data.advanced.programmebydayvenue
+        - var day_rooms = []
+        each venueroom in day.rooms
+          if venueroom.performances
+            - console.log("venueroom")
+            - console.log(venueroom.room)
+            - var performances_new = []
+            each item in venueroom.performances
+              if item.performance && item.performance.users.map(user =>{return user._id}).indexOf(data.performer._id)!=-1
+                - performances_new.push(item)
+                //- venueroom.performances.splice(a, 1)
+            - venueroom.performances = performances_new
+            if venueroom.performances.length
+              - console.log("pusha")
+              - console.log(venueroom)
+              - day_rooms.push(venueroom)
+        - day.rooms = day_rooms
+        if day.rooms.length
+          - console.log("pusha")
+          - console.log(venueroom)
+          - programmebydayvenue.push(day)
+
+
+      .program_event_wrapper_bkg
+        section.row.program_event_wrapper
+            .col-lg-12
+              .container
+                h2.main_title.indented_title.color1!=global.__('Program')
+                - addtit = false;
+                each day, index in programmebydayvenue
+                  if programmebydayvenue[index+1] && JSON.stringify(programmebydayvenue[index].rooms) == JSON.stringify(programmebydayvenue[index+1].rooms)
+                    - if (!addtit) titstart = day.date
+                    - addtit = true;
+                  else
+                    h3.date_schedule_title=addtit ? titstart+" // "+day.date : day.date
+                    - addtit = false;
+                    .data_program_divider
+                    each venueroom in day.rooms
+                      if venueroom.room && venueroom.performances.length
+                        h4.program_category_title=venueroom.venue+" // "+venueroom.room                      
+                      .owl-carousel.loop.owl-theme
+                        if venueroom.performances
+                          each item in venueroom.performances
+                            //if item.performance.users.map(user =>{return user._id}).indexOf(data.performer._id)!=-1
+                            include ../partials/boxPerformanceScheduled
+
+
     if data.performer.performances && data.performer.performances.length
       .polygon_divider_top
         svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')

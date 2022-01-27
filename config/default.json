@@ -6203,6 +6203,7 @@
           "participate": 1,
           "advanced": {
             "menu": 1,
+            "programmebydayvenue": 1,
             "performers": 1
           }
         },

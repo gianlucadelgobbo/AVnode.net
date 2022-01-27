@@ -185,7 +185,7 @@ const eventSchema = new Schema({
 }); */
 
 eventSchema.virtual('advanced').get(function (req) {
-  //logger.debug("virtual advanced");
+  logger.debug("virtual advanced");
   //let programmebydayvenue = [];
   let performers = {
     performersN: 0,
@@ -339,6 +339,7 @@ eventSchema.virtual('advanced').get(function (req) {
   } else {
     advanced = this.program_freezed
   }
+  //console.log(advanced)
   return advanced;
 });
 
