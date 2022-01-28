@@ -195,6 +195,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
       populate(nolimit).
       select("_id").
       exec((err, d) => {
+        logger.debug(d);
         const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
         model.
         findOne({slug: req.params.slug}).
