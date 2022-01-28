@@ -68,10 +68,10 @@ app.use("/warehouse", express.static(path.join(__dirname, "warehouse")));
 app.use("/glacier", express.static(path.join(__dirname, "glacier")));
 // app.use("/gulp", express.static(path.join(__dirname, "gulp")));
 
-app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.json({ limit: "10gb" }));
 app.use(
   bodyParser.urlencoded({
-    limit: "50mb",
+    limit: "10gb",
     extended: true,
     parameterLimit: 50000
   })
