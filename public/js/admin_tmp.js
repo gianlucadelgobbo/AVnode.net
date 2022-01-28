@@ -417,7 +417,7 @@ $(function () {
 		var dropzone = $("#formuploadvideo").dropzone({ 
 			url: "/admin/api/"+get.sez+"/"+get.id+"/video",
 			paramName: "media", // The name that will be used to transfer the file
-			maxFilesize: 2048, // MB
+			maxFilesize: 10000, // MB
 			acceptedFiles: "video/*",
 			autoProcessQueue: true,
 			addRemoveLinks: false,
