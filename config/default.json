@@ -4727,7 +4727,7 @@
           "web": 1,
           "social": 1,
           "emails": 1,
-          "organizationData":1,
+          "organizationData.logo":1,
           "image": 1
         },
         "populate": [{
@@ -4807,7 +4807,7 @@
             "media": 1
           },
           "populate": [{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "options": { "sort": { "createdAt": -1 }},
           "model": "Video"
         }, {
           "path": "performances",
@@ -4815,30 +4815,35 @@
           "select": {
             "title": 1,
             "slug": 1,
-            "abouts":1,
+            "abouts": 1,
             "type": 1,
             "stats": 1,
             "image": 1
           },
-          "populate": [{ "path": "type", "select": "name slug", "model": "Category"},{ "path": "style", "select": "name slug", "model": "Category"},{ "path": "genre", "select": "name slug", "model": "Category"        }, {
-            "path": "bookings.event",
-            "select": {
-              "title": 1,
-              "image": 1,
-              "abouts": 1,
-              "web": 1,
-              "social": 1,
-              "schedule": 1,
-              "slug": 1
-            },
-            "model": "EventShow"
-          }, {
-            "path": "bookings.schedule.categories",
-            "select": {
-              "name": 1
-            },
-            "model": "Category"
-          }],
+          "populate": [
+            { "path": "type", "select": "name slug", "model": "Category"},
+            { "path": "genre", "select": "name slug", "model": "Category"}, 
+            { "path": "bookings", "populate":[
+              {"path": "event",
+                "select": {
+                  "title": 1,
+                  "image": 1,
+                  "abouts": 1,
+                  "web": 1,
+                  "social": 1,
+                  "schedule": 1,
+                  "slug": 1
+                },
+                "model": "EventShow"
+              },{
+                "path": "schedule.categories",
+                "select": {
+                  "name": 1
+                },
+                "model": "Category"
+              }
+            ]}
+          ],
           "options": { "sort": { "createdAt": -1 }},
           "model": "Performance"
         }, {
@@ -4870,7 +4875,7 @@
             "image": 1,
             "organizationData.logo": 1
           },
-          "options": { "sort": { "activity": -1 }},
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "UserShow"
         }, {
           "path": "members",
@@ -4886,7 +4891,7 @@
             "image": 1,
             "organizationData.logo": 1
           },
-          "options": {"sort": { "activity": -1 }},
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "UserShow"
         }, {
           "path": "categories",
