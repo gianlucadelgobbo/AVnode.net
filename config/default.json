@@ -1692,7 +1692,7 @@
                 "fileext": ["mp4","mov","m4v","avi"],
                 "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/footage_originals/",
-                "maxsize": 2147483648,
+                "maxsize": 10737418240,
                 "minwidth": 1280,
                 "minheight": 720,
                 "sizes": {
@@ -2555,7 +2555,7 @@
                 "fileext": ["mp4","mov","m4v","avi"],
                 "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/footage_originals/",
-                "maxsize": 2147483648,
+                "maxsize": 10737418240,
                 "minwidth": 1280,
                 "minheight": 720,
                 "sizes": {
@@ -2646,7 +2646,7 @@
                 "fileext": ["mp4","mov","m4v","avi"],
                 "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/footage_originals/",
-                "maxsize": 2147483648,
+                "maxsize": 10737418240,
                 "minwidth": 1280,
                 "minheight": 720,
                 "sizes": {
@@ -3590,7 +3590,7 @@
                 "fileext": ["mp4","mov","m4v","avi"],
                 "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/videos_originals/",
-                "maxsize": 2147483648,
+                "maxsize": 10737418240,
                 "minwidth": 1280,
                 "minheight": 720,
                 "sizes": {
@@ -3665,7 +3665,7 @@
                 "fileext": ["mp4","mov","m4v","avi"],
                 "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/videos_originals/",
-                "maxsize": 2147483648,
+                "maxsize": 10737418240,
                 "minwidth": 1280,
                 "minheight": 720,
                 "sizes": {
@@ -3857,7 +3857,7 @@
                 "fileext": ["mp4","mov","m4v","avi"],
                 "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/footage_originals/",
-                "maxsize": 2147483648,
+                "maxsize": 10737418240,
                 "minwidth": 1280,
                 "minheight": 720,
                 "sizes": {
@@ -4109,7 +4109,7 @@
                 "fileext": ["mp4","mov","m4v","avi"],
                 "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/videos_originals/",
-                "maxsize": 2147483648,
+                "maxsize": 10737418240,
                 "minwidth": 1280,
                 "minheight": 720,
                 "sizes": {

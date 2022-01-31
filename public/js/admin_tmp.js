@@ -448,7 +448,14 @@ $(function () {
 					//$(".dz-error-message").html('<div class="alert alert-danger">'+error.errors.image[0].err+'</div>');
 				});
 				this.on("error", function(file, error) {
-					var err = error.errors && error.errors.image && error.errors.image[0] && error.errors.image[0].err ? error.errors.image[0].err : error
+					var err;
+					if (error.message) {
+						error.message = JSON.parse(error.message);
+						err = error.message.message
+						console.log(error)
+					} else {
+						err = error.errors && error.errors.image && error.errors.image[0] && error.errors.image[0].err ? error.errors.image[0].err : error
+					}
 					console.log(error)
 					$(".data-dz-remove").removeClass("d-none");
 					$(".progress-bar").css('width', '0');
