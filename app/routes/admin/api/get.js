@@ -560,6 +560,8 @@ router.getList = (req, res, view) => {
     const query = req.params.sez == "crews" ? {members: req.params.id} : {users:{$in: ids}};
     console.log("bella "+req.params.sez);
     console.log(config.cpanel[req.params.sez].list.model);
+    console.log(query);
+    console.log(select);
     console.log(populate);
 
     Models[config.cpanel[req.params.sez].list.model]
@@ -568,6 +570,7 @@ router.getList = (req, res, view) => {
     .populate(populate)
     .sort({createdAt:-1})
     .exec((err, data) => {
+      console.log(err || data);
       if (err) {
         if (view == "json") {
           res.status(500).send({ message: `${JSON.stringify(err)}` });
