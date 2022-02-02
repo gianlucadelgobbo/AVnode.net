@@ -229,8 +229,6 @@ block content
         - var day_rooms = []
         each venueroom in day.rooms
           if venueroom.performances
-            - console.log("venueroom")
-            - console.log(venueroom.room)
             - var performances_new = []
             each item in venueroom.performances
               if item.performance && item.performance.users.map(user =>{return user._id}).indexOf(data.performer._id)!=-1
@@ -238,13 +236,9 @@ block content
                 //- venueroom.performances.splice(a, 1)
             - venueroom.performances = performances_new
             if venueroom.performances.length
-              - console.log("pusha")
-              - console.log(venueroom)
               - day_rooms.push(venueroom)
         - day.rooms = day_rooms
         if day.rooms.length
-          - console.log("pusha")
-          - console.log(venueroom)
           - programmebydayvenue.push(day)
 
 
