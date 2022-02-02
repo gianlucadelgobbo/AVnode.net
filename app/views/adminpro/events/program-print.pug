@@ -5,7 +5,6 @@ block content
   include ./_filters
   table.table
     each item in data.advanced.programmebydayvenue
-      - console.log(item)
       - var day = item.day.split("-")
       each itemitem in item.rooms
         each itemitemitem in itemitem.performances

@@ -57,7 +57,6 @@ block content
     div(id='sub'+item._id) 
         div
           b!=item.performance.title+" | "
-          - console.log(item.performance)
           each useruser in item.performance.users
             b!=useruser.stagename
             if useruser.addressesFormatted && useruser.addressesFormatted.length
