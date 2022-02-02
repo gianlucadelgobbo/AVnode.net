@@ -1420,8 +1420,7 @@
             "slug": 1,
             "is_public": 1,
             "title": 1
-          },
-          "populate": [{ "path": "partners.users", "select": "stagename image slug organizationData.logo", "model": "User"},{ "path": "partners.category", "select": "name", "model": "Category"}]
+          }
         },
         "partners-message": {
           "title": "Partners message",
@@ -2893,7 +2892,7 @@
           "selectaddon": {
             "imageFormats": 1
           },
-          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}, { "path": "categories" , "select": "name" }]
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}]
         },
         "medias": {
           "components": {
@@ -2973,6 +2972,10 @@
         "model": "Gallery",
         "select": {
           "title": 1,
+          "categories": 1,
+          "users": 1,
+          "events": 1,
+          "performances": 1,
           "image": 1
         },
         "selectaddon": {
@@ -2982,7 +2985,7 @@
           "stats": 1,
           "is_public": 1
         },
-        "populate": [{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image organizationData.logo"},{ "path": "events", "select": "title", "model": "Event"},{ "path": "performances", "select": "title", "model": "Performance"}],
+        "populate": [{ "path": "users" , "select": "stagename image organizationData.logo", "model": "User"},{ "path": "events", "select": "title", "model": "Event"},{ "path": "performances", "select": "title", "model": "Performance"}],
         "orders": [
           "mostrecent",
           "mostviewed"
