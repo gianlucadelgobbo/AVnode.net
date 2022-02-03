@@ -75,7 +75,7 @@ block content
                   .col-md-4
                     .form-group
                       label.labelField=__("Venue")
-                      input.form-control(type='text' autocomplete='off' name='schedule['+i+'][venue][name]' placeholder=__('Venue') value=schedule.venue.name)
+                      input.form-control(type='text' autocomplete='nope' name='schedule['+i+'][venue][name]' placeholder=__('Venue') value=schedule.venue.name)
                 .row
                   .col-md-3
                     .form-group
@@ -99,7 +99,7 @@ block content
                       .col-md-8
                         .form-group
                           label.labelField=__("Street, City, country")
-                          input.form-control.address-search-input(type='text' autocomplete='off' role='combobox' aria-autocomplete='list' aria-expanded='false' placeholder=__('Street, City, country') value=schedule.venue.location && schedule.venue.location.formatted_address ? schedule.venue.location.formatted_address : "")
+                          input.form-control.address-search-input(type='text' autocomplete='nope' role='combobox' aria-autocomplete='list' aria-expanded='false' placeholder=__('Street, City, country') value=schedule.venue.location && schedule.venue.location.formatted_address ? schedule.venue.location.formatted_address : "")
                           input.lat(type='hidden' name='schedule['+i+'][venue][location][geometry][lat]' value=schedule.venue.location && schedule.venue.location.geometry ? schedule.venue.location.geometry.lat : "")
                           input.lng(type='hidden' name='schedule['+i+'][venue][location][geometry][lng]' value=schedule.venue.location && schedule.venue.location.geometry ? schedule.venue.location.geometry.lng : "")
                           input.locality(type='hidden' name='schedule['+i+'][venue][location][locality]' value=schedule.venue.location && schedule.venue.location.locality ? schedule.venue.location.locality : "")
@@ -113,7 +113,7 @@ block content
                           label.labelField=__("Room")
                           !="  "
                           small=__("(Optional)")
-                          input.form-control(type='text' autocomplete='off' name='schedule['+i+'][venue][room]' placeholder=__('Room') value=schedule.venue.room)
+                          input.form-control(type='text' autocomplete='nope' name='schedule['+i+'][venue][room]' placeholder=__('Room') value=schedule.venue.room)
         button.mb-2.btn.btn-success.btn-sm.duplicator2(type='button' data-duplicate="scheduleslist")
           i.icon-plus
           !=" "

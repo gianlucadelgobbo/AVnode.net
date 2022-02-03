@@ -6,19 +6,28 @@ block content
 			a.btn.btn-primary(href=data.is_public ? '/events/'+data.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")=__("SHOW")
 	include partials/menuobj
 	.row.mt-3
-		.col-md-10
+		.col-md-7
 			h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
-		.col-md-2
+		.col-md-5
+			.input-group.autocomplete_video
+				input.form-control(type='text' autocomplete='nope' placeholder=__("Video Title") value='')
+				.input-group-append
+					button.mb-2.btn.btn-success.disabled(type='button' data-objid=data._id data-obj=get.sez)
+						i.icon-plus
+						!=" "
+						b=__("Add Video")
+			.alert.alert-danger.autocomplete_gallery_err.d-none(role="alert")
 			#dropdownContents
-				a.float-right.btn.btn-success(href='#'
-					data-labelfield=global.__("Video title")
-					data-title=global.__("Add Video")
-					data-param="title"
-					data-user=user && user._id ? user._id : undefined
-					data-id=data._id
-					data-sez="events"
-					data-newsez="videos"
-					)=global.__('New Video')
+				.text-right
+					a.float-right.btn.btn-success(href='#'
+						data-labelfield=global.__("Video title")
+						data-title=global.__("Add Video")
+						data-param="title"
+						data-user=user && user._id ? user._id : undefined
+						data-id=data._id
+						data-sez="events"
+						data-newsez="videos"
+						)=global.__('New Video')
 	hr
 	.row
 		.col-md-12
@@ -33,12 +42,16 @@ block content
 						th(data-sortable="true")=__("Links")
 				tbody
 					each video in data.videos
-						tr
+						tr(id="link"+video._id)
 							td
 								a(href='/admin/videos/'+video._id+'/public')
 									img.img-fluid(src=video.imageFormats.small)
 							td
 								b
+									if user.is_admin && video._id
+										a.text-danger.unlink-admin(href='#' data-link-id=video._id data-id=data._id data-type="events" data-link="video")
+											i.icon-unlink
+										!=" | "  
 									a(href='/admin/videos/'+video._id+'/public')
 										i.icon-edit
 									!=" | "  
@@ -46,18 +59,18 @@ block content
 										i.icon-eye
 									!=" | "  
 									!=video.title 
-									div
-										i.icon-circle(class=video.is_public ? "text-success" : "text-danger")
-										!=" "  
-										!=__("Public")
-									div
-										i.icon-eye
-										!=" "  
-										!=video.stats.visits
-										!=" | "  
-										i.icon-heart
-										!=" "  
-										!=video.stats.likes
+								div
+									i.icon-circle(class=video.is_public ? "text-success" : "text-danger")
+									!=" "  
+									!=__("Public")
+								div
+									i.icon-eye
+									!=" "  
+									!=video.stats.visits
+									!=" | "  
+									i.icon-heart
+									!=" "  
+									!=video.stats.likes
 							td=video.type && video.type.name ? video.type.name : "MISSING"
 							td
 								ul

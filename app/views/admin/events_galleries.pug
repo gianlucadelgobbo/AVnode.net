@@ -6,19 +6,29 @@ block content
 			a.btn.btn-primary(href=data.is_public ? '/events/'+data.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")=__("SHOW")
 	include partials/menuobj
 	.row.mt-3
-		.col-md-10
+		.col-md-7
 			h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
-		.col-md-2
+		.col-md-5
+			.input-group.autocomplete_gallery
+				input.form-control(type='text' autocomplete='nope' placeholder=__("Gallery Title") value='')
+				.input-group-append
+					button.mb-2.btn.btn-success.disabled(type='button' data-objid=data._id data-obj=get.sez)
+						i.icon-plus
+						!=" "
+						b=__("Add Gallery")
+			.alert.alert-danger.autocomplete_gallery_err.d-none(role="alert")
 			#dropdownContents
-				a.float-right.btn.btn-success(href='#'
-					data-labelfield=global.__("Gallery Name")
-					data-title=global.__("Add Gallery")
-					data-param="title"
-					data-user=user && user._id ? user._id : undefined
-					data-id=data._id
-					data-sez="events"
-					data-newsez="galleries"
-					)=global.__('New Gallery')
+				.text-right
+					a.btn.btn-success(href='#'
+						data-labelfield=global.__("Gallery Name")
+						data-title=global.__("New Gallery")
+						data-param="title"
+						data-user=user && user._id ? user._id : undefined
+						data-id=data._id
+						data-sez="events"
+						data-newsez="galleries"
+						)=global.__('New Gallery')
+					!=" "
 	hr
 	.row
 		.col-md-12
@@ -33,12 +43,16 @@ block content
 						th(data-sortable="true")=__("Links")
 				tbody
 					each gallery in data.galleries
-						tr
+						tr(id="link"+gallery._id)
 							td
 								a(href='/admin/galleries/'+gallery._id+'/public')
 									img.img-fluid(src=gallery.imageFormats.small)
 							td
 								b
+									if user.is_admin && gallery._id
+										a.text-danger.unlink-admin(href='#' data-link-id=gallery._id data-id=data._id data-type="events" data-link="gallery")
+											i.icon-unlink
+										!=" | "  
 									a(href='/admin/galleries/'+gallery._id+'/public')
 										i.icon-edit
 									!=" | "  
@@ -46,18 +60,18 @@ block content
 										i.icon-eye
 									!=" | "  
 									!=gallery.title 
-									div
-										i.icon-circle(class=gallery.is_public ? "text-success" : "text-danger")
-										!=" "  
-										!=__("Public")
-									div
-										i.icon-eye
-										!=" "  
-										!=gallery.stats.visits
-										!=" | "  
-										i.icon-heart
-										!=" "  
-										!=gallery.stats.likes
+								div
+									i.icon-circle(class=gallery.is_public ? "text-success" : "text-danger")
+									!=" "  
+									!=__("Public")
+								div
+									i.icon-eye
+									!=" "  
+									!=gallery.stats.visits
+									!=" | "  
+									i.icon-heart
+									!=" "  
+									!=gallery.stats.likes
 							td=gallery.stats.img
 							td
 								ul

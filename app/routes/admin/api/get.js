@@ -599,6 +599,8 @@ router.getList = (req, res, view) => {
 }
 
 router.getData = (req, res, view) => {
+  console.log(config.cpanel[req.params.sez].model)
+  console.log(req.params.id)
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     const id = req.params.id;
     const select = req.query.pure ? config.cpanel[req.params.sez].forms[req.params.form].select : Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
@@ -617,6 +619,7 @@ router.getData = (req, res, view) => {
       } else {
         if (!data) {
           if (view == "json") {
+            console.log("stocazzo")
             res.status(404).send({ message: `DOC_NOT_FOUND` });
           } else {
             res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
@@ -1066,6 +1069,36 @@ router.getPerformances = (req, res) => {
   .exec((err, performances) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
     res.json(performances);
+  });
+}
+
+router.getGalleries = (req, res) => {
+  Models.Gallery
+  .find({$or:[
+    { slug : { "$regex": req.params.q, "$options": "i" } },
+    { title : { "$regex": req.params.q, "$options": "i" } }
+  ]})
+  .lean()
+  .select({'title':1})
+  .sort({'title': 1})
+  .exec((err, galleries) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    res.json(galleries);
+  });
+}
+
+router.getVideos = (req, res) => {
+  Models.Video
+  .find({$or:[
+    { slug : { "$regex": req.params.q, "$options": "i" } },
+    { title : { "$regex": req.params.q, "$options": "i" } }
+  ]})
+  .lean()
+  .select({'title':1})
+  .sort({'title': 1})
+  .exec((err, video) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    res.json(video);
   });
 }
 
@@ -2309,6 +2342,7 @@ router.sendEmailVericaition = (req, res) => {
 
 
 router.addGallery = (req, res) => {
+  logger.debug("addGallery");
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
   if (req.params.sez == "events" || req.params.sez == "performances") {
@@ -2318,6 +2352,8 @@ router.addGallery = (req, res) => {
     .select({_id:1, title:1, stats:1, galleries:1})
     //.populate({ "path": "users", "select": "stagename", "model": "User"})
     .exec((err, item) => {
+      logger.debug("addGallery");
+      logger.debug(item);
       if (err) {
         logger.debug(`${JSON.stringify(err)}`);
         res.status(404).send({ message: err });
@@ -2363,19 +2399,21 @@ router.addGallery = (req, res) => {
             res.status(404).send({ message: err });
           } else {
             var query = {_id: req.params.gallery};
-            var select = {_id:1, events:1}
+            var select = {_id:1}
+            select[req.params.sez] = 1
             Models["Gallery"]
             .findOne(query)
             .select(select)
             //.populate({ "path": "members", "select": "addresses", "model": "User"})
             .exec((err, gallery) => {
-              gallery.events.push(req.params.id);
+              if (!gallery[req.params.sez]) gallery[req.params.sez] = [];
+              gallery[req.params.sez].push(req.params.id);
               gallery.save(function(err){
                 if (err) {
                   logger.debug(`${JSON.stringify(err)}`);
                   res.status(404).send({ message: err });
                 } else {
-                  req.params.sez = 'events';
+                  //req.params.sez = 'events';
                   req.params.form = 'galleries';
                   router.getData(req, res, "json");            
                 }
@@ -2459,7 +2497,7 @@ router.removeGallery = (req, res) => {
                   logger.debug(`${JSON.stringify(err)}`);
                   res.status(404).send({ message: err });
                 } else {
-                  req.params.sez = 'events';
+                  //req.params.sez = 'events';
                   req.params.form = 'galleries';
                   router.getData(req, res, "json");            
                 }
@@ -2532,7 +2570,8 @@ router.addVideo = (req, res) => {
             res.status(404).send({ message: err });
           } else {
             var query = {_id: req.params.video};
-            var select = {_id:1, events:1}
+            var select = {_id:1}
+            select[req.params.sez] = 1
             Models["Video"]
             .findOne(query)
             .select(select)
@@ -2635,7 +2674,7 @@ router.removeVideo = (req, res) => {
                 logger.debug(`${JSON.stringify(err)}`);
                 res.status(404).send({ message: err });
               } else {
-                req.params.sez = 'events';
+                //req.params.sez = 'events';
                 req.params.form = 'videos';
                 router.getData(req, res, "json");            
               }

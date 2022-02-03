@@ -8,7 +8,7 @@
 		each address, i in data.addresses
 			.mb-3
 				.input-group
-					input.form-control.location-search-input(type='text' autocomplete='off' role='combobox' aria-autocomplete='list' aria-expanded='false' placeholder='City, country' value=address.formatted_address)
+					input.form-control.location-search-input(type='text' autocomplete='nope' role='combobox' aria-autocomplete='list' aria-expanded='false' placeholder='City, country' value=address.formatted_address)
 					input.lat(type='hidden' name='addresses['+i+'][geometry][lat]' value=address.geometry.lat)
 					input.lng(type='hidden' name='addresses['+i+'][geometry][lng]' value=address.geometry.lng)
 					input.locality(type='hidden' name='addresses['+i+'][locality]' value=address.locality)

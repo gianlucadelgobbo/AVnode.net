@@ -192,7 +192,7 @@ $(function() {
     cancel_sub(ev, this)
   }); */
   cancel_sub = (ev, obj) => {
-    var result = confirm("Want to delete?");
+    var result = confirm("Want to unlink?");
     if (result) {
       const id = $(obj).data("id");
       $.ajax({

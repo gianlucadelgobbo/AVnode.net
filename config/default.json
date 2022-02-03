@@ -1678,7 +1678,7 @@
             "videos": 1,
             "title": 1
           },
-          "populate": [{ "path": "galleries", "select": "title image imageFormats users", "model": "Gallery", "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "User"}}]
+          "populate": [{ "path": "galleries", "select": "title image imageFormats users is_public stats createdAt updatedAt", "model": "Gallery", "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "User"}}]
         },
         "videos": {
           "title": "Videos",
@@ -3580,7 +3580,7 @@
             "is_public": 1,
             "title": 1
           },
-          "populate": [{ "path": "galleries", "select": "title image imageFormats createdAt updatedAt is_public stats", "model": "Gallery","populate":[{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image organizationData.logo"},{ "path": "events", "select": "title", "model": "Event"},{ "path": "performances", "select": "title", "model": "Performance"}]}]
+          "populate": [{ "path": "galleries", "select": "title image imageFormats createdAt updatedAt is_public stats", "model": "Gallery","populate":[{ "path": "users" , "select": "stagename image organizationData.logo"},{ "path": "events", "select": "title", "model": "Event"},{ "path": "performances", "select": "title", "model": "Performance"}]}]
         },
         "videos": {
           "title": "Videos",

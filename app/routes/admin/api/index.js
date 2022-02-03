@@ -40,6 +40,14 @@ router.get('/getperformances/:q', (req, res)=>{
   get.getPerformances(req, res);
 });
 
+router.get('/getgalleries/:q', (req, res)=>{
+  get.getGalleries(req, res);
+});
+
+router.get('/getvideos/:q', (req, res)=>{
+  get.getVideos(req, res);
+});
+
 router.get('/setstatsandactivity/:id', (req, res)=>{
   get.setStatsAndActivity(req, res);
 });

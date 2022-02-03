@@ -578,6 +578,7 @@ $(function () {
 	}
 
 	if ($(".autocomplete_users") && $(".autocomplete_users").length) {
+		var selectedItem;
 		$('.autocomplete_users input').autoComplete({
 			resolverSettings: {
 					url: "/admin/api/getauthors/"+$(this).val()
@@ -616,37 +617,35 @@ $(function () {
 				});
 			}
 		}
-		adduser = (elem, evt, item) => {
-			console.log('select', item);
-			$(elem).parent().find("button").removeClass("disabled");
-			$(elem).parent().find("button").on("click", function () {
-				var objid = $(this).data("objid");
-				var obj = $(this).data("obj");
-				$("#users").append('<div class="mb-3 saving"><a href="#" data-objid="'+objid+'" data-obj="'+obj+'"><i class="icon-spinner animate-spin"></i></a> | '+item.text+'</div>')
-				$.ajax({
-					url: "/admin/api/"+ obj +"/"+ objid +"/users/add/"+item.value,
-					method: "get"
-				}).done((data) => {
-					$("#users .saving a:last i").removeClass("fa-spinner");
-					$("#users .saving a:last i").removeClass("animate-spin");
-					$("#users .saving a:last i").addClass("fa-trash");
-					$("#users .saving a:last").attr("data-id", item.value)
-					$("#users .saving").removeClass("saving");
-					$("#users a:last").on("click", function (event) {
-						removeuser(this, event)
-					});
-				});
-			});
-		}
 		$("#users a").on("click", function (event) {
 			removeuser(this, event)
 		});
 		$('.autocomplete_users input').on('autocomplete.select', function (evt, item) {
-			adduser(this, evt, item);
+			selectedItem = item;
+			$('.autocomplete_users button').removeClass("disabled");
+		});
+		$('.autocomplete_users button').on("click", function () {
+			var objid = $(this).data("objid");
+			var obj = $(this).data("obj");
+			$("#users").append('<div class="mb-3 saving"><a href="#" data-objid="'+objid+'" data-obj="'+obj+'"><i class="icon-spinner animate-spin"></i></a> | '+selectedItem.text+'</div>')
+			$.ajax({
+				url: "/admin/api/"+ obj +"/"+ objid +"/users/add/"+selectedItem.value,
+				method: "get"
+			}).done((data) => {
+				$("#users .saving a:last i").removeClass("fa-spinner");
+				$("#users .saving a:last i").removeClass("animate-spin");
+				$("#users .saving a:last i").addClass("fa-trash");
+				$("#users .saving a:last").attr("data-id", selectedItem.value)
+				$("#users .saving").removeClass("saving");
+				$("#users a:last").on("click", function (event) {
+					removeuser(this, event)
+				});
+			});
 		});
 	}
 
 	if ($(".autocomplete_performance") && $(".autocomplete_performance").length) {
+		var selectedItem;
 		$('.autocomplete_performance input').autoComplete({
 			resolverSettings: {
 					url: "/admin/api/getperformances/"+$(this).val()
@@ -659,34 +658,128 @@ $(function () {
 			},
 			noResultsText: "NO performance found, think about to invite him to join AVnode"
 		});
-		addperformance = (elem, evt, item) => {
-			console.log('select', item);
-			$(elem).parent().find("button").removeClass("disabled");
-			$(elem).parent().find("button").on("click", function () {
-				var objid = $(this).data("objid");
-				var obj = $(this).data("obj");
-				$("#performances").append('<div class="mb-3 saving"><a href="#" data-objid="'+objid+'" data-obj="'+obj+'"><i class="icon-spinner animate-spin"></i></a> | '+item.text+'</div>')
-				$.ajax({
-					url: "/admin/api/"+ obj +"/"+ objid +"/performance/add/"+item.value,
-					method: "get"
-				})
-				.done(function(data) {
-					console.log(data);
-					location.reload();
-				})
-				.fail(function(err) {
-						$(".autocomplete_performance_err").html(err.responseJSON.message);
-						$(".autocomplete_performance_err").removeClass("d-none");	
-				})
-			});
-		}
+		$('.autocomplete_performance button').on("click", function () {
+			var objid = $(this).data("objid");
+			var obj = $(this).data("obj");
+			$("#performances").append('<div class="mb-3 saving"><a href="#" data-objid="'+objid+'" data-obj="'+obj+'"><i class="icon-spinner animate-spin"></i></a> | '+selectedItem.text+'</div>')
+			$.ajax({
+				url: "/admin/api/"+ obj +"/"+ objid +"/performance/add/"+selectedItem.value,
+				method: "get"
+			})
+			.done(function(data) {
+				console.log(data);
+				location.reload();
+			})
+			.fail(function(err) {
+					$(".autocomplete_performance_err").html(err.responseJSON.message);
+					$(".autocomplete_performance_err").removeClass("d-none");	
+			})
+		});
 		$('.autocomplete_performance input').on('autocomplete.select', function (evt, item) {
-			addperformance(this, evt, item);
+			$('.autocomplete_performance button').removeClass("disabled");
+			selectedItem = item;
 		});
 	}
-  $(".cancel-sub-admin").on('click', function(ev) {
+
+	if ($(".autocomplete_gallery") && $(".autocomplete_gallery").length) {
+		var selectedItem;
+		$('.autocomplete_gallery input').autoComplete({
+			resolverSettings: {
+					url: "/admin/api/getgalleries/"+$(this).val()
+			},
+			bootstrapVersion: "4",
+			minLength: 3,
+			events: {
+				search: addGalleryAutocomplete/* ,
+				formatResult: addgalleryAutocompleteSelect */
+			},
+			noResultsText: "NO gallery found, think about to invite him to join AVnode"
+		});
+		$('.autocomplete_gallery button').on("click", function () {
+			var objid = $(this).data("objid");
+			var obj = $(this).data("obj");
+			$("#galleries").append('<div class="mb-3 saving"><a href="#" data-objid="'+objid+'" data-obj="'+obj+'"><i class="icon-spinner animate-spin"></i></a> | '+selectedItem.text+'</div>')
+			$.ajax({
+				url: "/admin/api/"+ obj +"/"+ objid +"/gallery/add/"+selectedItem.value,
+				method: "get"
+			})
+			.done(function(data) {
+				console.log(data);
+				location.reload();
+			})
+			.fail(function(err) {
+					$(".autocomplete_gallery_err").html(err.responseJSON.message);
+					$(".autocomplete_gallery_err").removeClass("d-none");	
+			})
+		});
+		$('.autocomplete_gallery input').on('autocomplete.select', function (evt, item) {
+			selectedItem = item;
+			$('.autocomplete_gallery button').removeClass("disabled");
+		});
+	}
+
+	if ($(".autocomplete_video") && $(".autocomplete_video").length) {
+		var selectedItem;
+		$('.autocomplete_video input').autoComplete({
+			resolverSettings: {
+					url: "/admin/api/getvideos/"+$(this).val()
+			},
+			bootstrapVersion: "4",
+			minLength: 3,
+			events: {
+				search: addVideoAutocomplete/* ,
+				formatResult: addvideoAutocompleteSelect */
+			},
+			noResultsText: "NO video found, think about to invite him to join AVnode"
+		});
+		$('.autocomplete_video button').on("click", function () {
+			var objid = $(this).data("objid");
+			var obj = $(this).data("obj");
+			$("#videos").append('<div class="mb-3 saving"><a href="#" data-objid="'+objid+'" data-obj="'+obj+'"><i class="icon-spinner animate-spin"></i></a> | '+selectedItem.text+'</div>')
+			$.ajax({
+				url: "/admin/api/"+ obj +"/"+ objid +"/video/add/"+selectedItem.value,
+				method: "get"
+			})
+			.done(function(data) {
+				console.log(data);
+				location.reload();
+			})
+			.fail(function(err) {
+					$(".autocomplete_video_err").html(err.responseJSON.message);
+					$(".autocomplete_video_err").removeClass("d-none");	
+			})
+		});
+		$('.autocomplete_video input').on('autocomplete.select', function (evt, item) {
+			selectedItem = item;
+			$('.autocomplete_video button').removeClass("disabled");
+		});
+	}
+
+	$(".cancel-sub-admin").on('click', function(ev) {
     cancel_sub(ev, this)
   });
+
+	$(".unlink-admin").on('click', function(ev) {
+    unlink_admin(ev, this)
+  });
+  unlink_admin = (ev, obj) => {
+    var result = confirm("Want to unlink?");
+    if (result) {
+      const id = $(obj).data("id");
+      const type = $(obj).data("type");
+      const link_id = $(obj).data("link-id");
+      const link = $(obj).data("link");
+			console.log("unlink_admin")
+      $.ajax({
+        url: "/admin/api/"+type+"/"+id+"/"+link+"/remove/"+link_id+"",
+        method: "get",
+        data: {id:id}
+      }).done(function(data) {
+				console.log("#link"+link_id)
+        $("#link"+link_id).remove();
+      });
+    } 
+  }
 
 	if ($(".autocomplete_members") && $(".autocomplete_members").length) {
 		var memberToAdd;
@@ -1022,6 +1115,62 @@ addPerformanceAutocomplete = function (qry, callback, origJQElement) {
 		if (qry.length>2) {
 			$.ajax({
 				url: "/admin/api/getperformances/"+qry,
+				method: "get",
+				dataType: "json"
+			}).done((data) => {
+				var res = []
+				for(var item in data) {
+					res.push({
+						value: data[item]._id,
+						text:data[item].title
+					})
+				}
+				callback(res)
+			});
+		}
+	//});
+}
+
+addGalleryAutocomplete = function (qry, callback, origJQElement) {
+	$(".autocomplete_gallery_err").addClass("d-none")					
+	/* 	$('.autocomplete_users input').on( "blur", function () {
+		var inputinput = $(this);
+	});
+	$('.autocomplete_users input').on( "keyup", function () {
+		var inputinput = $(this);
+		console.log(this)
+		inputinput.parent().find(".dropdown-menu").addClass("show") */
+		if (qry.length>2) {
+			$.ajax({
+				url: "/admin/api/getgalleries/"+qry,
+				method: "get",
+				dataType: "json"
+			}).done((data) => {
+				var res = []
+				for(var item in data) {
+					res.push({
+						value: data[item]._id,
+						text:data[item].title
+					})
+				}
+				callback(res)
+			});
+		}
+	//});
+}
+
+addVideoAutocomplete = function (qry, callback, origJQElement) {
+	$(".autocomplete_video_err").addClass("d-none")					
+	/* 	$('.autocomplete_users input').on( "blur", function () {
+		var inputinput = $(this);
+	});
+	$('.autocomplete_users input').on( "keyup", function () {
+		var inputinput = $(this);
+		console.log(this)
+		inputinput.parent().find(".dropdown-menu").addClass("show") */
+		if (qry.length>2) {
+			$.ajax({
+				url: "/admin/api/getvideos/"+qry,
 				method: "get",
 				dataType: "json"
 			}).done((data) => {
