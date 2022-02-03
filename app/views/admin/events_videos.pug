@@ -71,7 +71,7 @@ block content
 									i.icon-heart
 									!=" "  
 									!=video.stats.likes
-							td=video.type && video.type.name ? video.type.name : "MISSING"
+							td=(video.categories && video.categories.length ? video.categories.map(item => {return item.name}).join(", ") : "MISSING")
 							td
 								ul
 									each member in video.users
