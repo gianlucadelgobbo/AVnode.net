@@ -204,6 +204,10 @@ router.post('/setvideocategory', (req, res)=>{
   post.setVideoCategory(req, res);
 });
 
+router.post('/reordered', (req, res)=>{
+  post.setReordered(req, res);
+});
+
 router.post('/shareontelegram', (req, res)=>{
   post.shareOnTelegram(req, res);
 });

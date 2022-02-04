@@ -93,7 +93,9 @@ const compress_js_admin = () => {
     './gulp/js/includes_admin/jquery-ui.js',
     './gulp/js/includes_admin/moment-with-locales.min.js',
     './gulp/js/includes_admin/jquery.serializejson.min.js',
+    './gulp/js/includes_admin/jquery.tablednd.1.0.5.min.js',
     './gulp/js/includes_admin/bootstrap-table.min.js',
+    './gulp/js/includes_admin/bootstrap-table-reorder-rows.min.js',
     './gulp/js/includes_admin/cookielawinfo.min.js',
     './gulp/js/includes_admin/jquery.geocomplete.js',
     './gulp/js/includes_admin/dropzone.min.js'

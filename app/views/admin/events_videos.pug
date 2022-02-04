@@ -31,9 +31,10 @@ block content
 	hr
 	.row
 		.col-md-12
-			table(data-toggle="table", data-show-columns="true", data-search="true")
+			table(data-toggle="table", data-id=data._id, data-model="Event", data-link="videos", data-show-columns="true", data-search="true", data-reorderable-rows="true")
 				thead
 					tr
+						th.d-none="ID"
 						th=__("Image")
 						th(data-sortable="true")=__("Title")
 						th(data-sortable="true")=__("Type")
@@ -43,7 +44,10 @@ block content
 				tbody
 					each video in data.videos
 						tr(id="link"+video._id)
-							td
+							td.d-none=video._id
+							td(style="position: relative")
+								.btn.btn-secondary(type="button" style="position: absolute; top:10px; left:10px")
+									i.icon-arrows-alt
 								a(href='/admin/videos/'+video._id+'/public')
 									img.img-fluid(src=video.imageFormats.small)
 							td

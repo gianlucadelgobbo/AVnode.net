@@ -1,4 +1,19 @@
 $(function () {
+	$("table").on('reorder-row.bs.table', function (e, data){
+		const obj = data.map(item => {return item[0]});
+		const id = $(this).data("id");
+		const model = $(this).data('model');
+		const link = $(this).data('link');
+		$.ajax({
+			url: "/admin/api/reordered/",
+			method: "post",
+			data: {id:id, model:model, link:link, obj:obj}
+		}).done(function(data) {
+			console.log(data);
+			alert("Reordered!!!");
+		});
+	});
+
   $( ".edit_partners_partner" ).click(function( event ) {
 		const owner = $(this).data("owner");
 		const partner = $(this).data("partner");

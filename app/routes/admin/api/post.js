@@ -356,6 +356,21 @@ router.shareOnTelegram = (req, res) => {
   })
 }
 
+router.setReordered = (req, res) => {
+  logger.debug(req.body);
+  Models[req.body.model]
+  .findOne({_id: req.body.id}, (err, item) => {
+    if (item) {
+      item[req.body.link] = req.body.obj;
+      logger.debug(item[req.body.link]);
+      item.save(err => {
+        res.json({err: err});
+      });
+    } else {
+      res.json({err: "Item not found"});
+    }
+  });
+}
 router.setVideoCategory = (req, res) => {
   logger.debug(req.body);
   Models.Video
