@@ -10,7 +10,7 @@ $(function () {
 			data: {id:id, model:model, link:link, obj:obj}
 		}).done(function(data) {
 			console.log(data);
-			alert("Reordered!!!");
+			console.log("Reordered!!!");
 		});
 	});
 
@@ -502,7 +502,7 @@ $(function () {
 		var dropzone = $("#formmultiupload").dropzone({ 
 			url: "/admin/api/galleries/"+get.id+"/medias",
 			paramName: paramNameForSend, // The name that will be used to transfer the file
-			maxFilesize: 2, // MB
+			maxFilesize: 20, // MB
 			acceptedFiles: "image/*",
 			autoProcessQueue: true,
 			addRemoveLinks: false,
