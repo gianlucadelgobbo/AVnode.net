@@ -1,4 +1,8 @@
 $(function () {
+
+
+
+
 	$("table").on('reorder-row.bs.table', function (e, data){
 		const obj = data.map(item => {return item[0]});
 		const id = $(this).data("id");

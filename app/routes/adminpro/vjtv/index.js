@@ -8,7 +8,7 @@ const User = mongoose.model('User');
 
 const logger = require('../../../utilities/logger');
 
-router.get('/', (req, res) => {
+router.get('/generator', (req, res) => {
   let month = [];
   Vjtv.
   aggregate([
@@ -258,7 +258,7 @@ router.get('/', (req, res) => {
                   res.json(data);
                 } else {
                   res.render('adminpro/vjtv/generator', {
-                    title: 'VJTV Generator',
+                    title: 'VJ Television',
                     currentUrl: req.originalUrl,
                     data: data,
                     availabledays: days.map(item =>{return item._id}),
@@ -274,7 +274,7 @@ router.get('/', (req, res) => {
       });
     } else {
       res.render('adminpro/vjtv/generator', {
-        title: 'VJTV Generator',
+        title: 'VJ Television',
         currentUrl: req.originalUrl,
         data: month,
         availabledays: days.map(item =>{return item._id}),
@@ -284,6 +284,14 @@ router.get('/', (req, res) => {
     }
   });
 });
-
+router.get('/', (req, res) => {
+  res.render('adminpro/vjtv/calendar', {
+    title: 'VJ Television',
+    currentUrl: req.originalUrl,
+    get: req.query,
+    calendar: true,
+    script: false
+  });
+});
 
 module.exports = router;

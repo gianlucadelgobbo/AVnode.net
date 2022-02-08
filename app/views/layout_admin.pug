@@ -113,6 +113,10 @@ html(lang=session.current_lang)
       script.
         var slug = "#{data.slug}";
     script(src='/js/admin_tmp.js')
+    if calendar
+      script(src='/fullcalendar/main.min.js')
+      script(src='/fullcalendar/script.js')
+
     script(src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js")
 
     //- script(src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js")

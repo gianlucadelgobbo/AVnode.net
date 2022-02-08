@@ -2,7 +2,46 @@ extends ../../layout_admin
 block topmenu
   include topmenu
 block content
-  table.table
+  .row
+    .col.mb-2.mb-md-0.d-print-none
+      form.d-print-none
+        .from-group
+          label(for="datepicker")=global.__("Generator by day")
+          .input-group
+            input#datepicker.form-control(type="text", name="day", value=get.day placeholder=global.__("Select a day"))
+            .input-group-append
+              button.btn.btn-outline-secondary(type="button" onclick="$( '#datepicker' ).datepicker( 'show' );")
+                i.icon-calendar
+        script.
+          var dates = !{JSON.stringify(availabledays)};
+        button.btn.btn-primary.btn-sm.mt-2(type="submit")=global.__("GENERATE")
+    .col.mb-2.mb-md-0.d-print-none.mr-3
+      form.d-print-none
+        .from-group
+          label(for="monthpicker")=global.__("Generator by month")
+          select#monthpicker.form-control(style="width:300px" name="month")
+            //onchange="if (this.value) window.location.href='/adminpro/vjtv/?month='+this.value+''"
+            option(value=0)=global.__("Select month")
+            - var now = new Date();
+            - var mydate = new Date(now.setFullYear(now.getFullYear()-1))
+            - var end = new Date(now.setFullYear(now.getFullYear()+2))
+            - while (mydate<end) {
+              - str = mydate.getFullYear()+"-"+("0" + (mydate.getMonth() + 1)).slice(-2);
+              option(value=str, selected=str==get.month ? "selected" : undefined)=str
+              - mydate = new Date(mydate.setMonth(mydate.getMonth()+1));
+
+            - }
+        button.btn.btn-primary.btn-sm.mt-2=global.__("GENERATE")
+
+        //.btn-group.mr-2
+          button.btn.btn-sm.btn-outline-secondary(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD FROM AVNODE"
+          button.btn.btn-sm.btn-outline-secondary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD NEW"
+          if map
+            a.btn.btn-sm.btn-outline-secondary.mr-2(href='?map=0')="TABLE"
+          else 
+            a.btn.btn-sm.btn-outline-secondary.mr-2(href='?map=1')="MAP"
+          a.btn.btn-sm.btn-outline-secondary(href='?csv=1')="CSV"
+  table.table.mt-5
     thead
       tr
         th=global.__("Programming")

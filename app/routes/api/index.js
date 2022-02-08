@@ -338,7 +338,11 @@ router.get('/getprograms', (req, res) => {
   //.select(select)
   .sort({programming: 1})
   .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
-  .exec((err, data) => {
+  .exec((err, results) => {
+    var data = [];
+    for(var i = 0; i<results.length;i++){
+      if (results[i].video && results[i].video.media && results[i].video.media.duration) data.push(results[i]);
+    }
     if(req.query.stream) {
       var stream = {
         "channel": "VJ Television",
@@ -382,7 +386,71 @@ router.get('/getprograms', (req, res) => {
   });
 });
   
-  
+router.get('/getprograms2', (req, res) => {
+  logger.debug("getprograms2");
+  //req.body.month = "2020-03";
+  logger.debug(req.query);
+  if(req.query.start && req.query.end) {
+    var start = req.query.start;
+    var end = req.query.end;
+  } else {
+    var date = new Date();
+    logger.debug(date);
+    // 1 Month
+    //var start = new Date(new Date(date.getFullYear(), date.getMonth(), 1, 0, 0,0,0).getTime()+offset);
+    //var end = new Date(new Date(date.getFullYear(), date.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset);
+    
+    //1 Week
+    var week = 7*24*60*60*1000;
+    //1 Full day
+    //var start = new Date(new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0,0,0).getTime()+offset);
+    //var end = new Date(new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59,0,0).getTime()+offset+offset);
+
+    //1 Full day
+    var day = 24*60*60*1000;
+    //var start = new Date(date.getTime()+offset);
+    var start = date;
+    var end = new Date(date.getTime()+day);
+  }
+
+  logger.debug(start);
+  logger.debug(end);
+  Vjtv
+  .find({programming: { $lt: end, $gt: start}})
+  //.select(select)
+  .sort({programming: 1})
+  .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: [{path:"users", select: {stagename: 1}},{path:"categories", select: "name", model:"Category"}]}])
+  .exec((err, results) => {
+    var data = [];
+    var colors = {"PERFORMANCES": "purple", "VJ-DJ SETS": "red", "DOCS": "green"};    
+    for(var i = 0; i<results.length;i++){
+      console.log(results[i].video.categories)
+      if (results[i].video && results[i].video.media && results[i].video.media.duration) data.push( {
+        "title": results[i].video.title,
+        "start": results[i].programming.getTime(),
+        "end": results[i].programming.getTime()+results[i].video.media.duration,
+        "color": colors[results[i].video.categories[0].name] ? colors[results[i].video.categories[0].name] : undefined
+      });
+    }
+    res.json(data);
+    /* if (err) {
+      res.status(404).send({ message: `${JSON.stringify(err)}` });
+    } else {
+      if (!data) {
+        res.status(404).send({ message: `DOC_NOT_FOUND` });
+      } else {
+        if (helpers.editable(req, data, id)) {
+          let send = {_id: data._id};
+          for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
+          res.json(send);
+        } else {
+          res.status(401).send({ message: `DOC_NOT_OWNED` });
+        }
+      }
+    } */
+  });
+});
+    
 router.get('/getcurrentprogram', (req, res) => {
   logger.debug("getcurrentprogram");
   logger.debug(req.query);

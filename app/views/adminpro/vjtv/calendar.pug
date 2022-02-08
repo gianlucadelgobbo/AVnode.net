@@ -1,0 +1,68 @@
+extends ../../layout_admin
+block topmenu
+  include topmenu
+block content
+  link(rel='stylesheet' href='/fullcalendar/main.min.css')
+  //link(rel='stylesheet' href='/fullcalendar/style.css')
+  // partial:index.partial.html
+  .row
+    .col-md-4.fc
+      .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr
+        .fc-toolbar-chunk
+          h2#fc-dom-1.fc-toolbar-title ADD PROGRAM
+        .fc-toolbar-chunk
+          button.fc-prev-button.fc-button.fc-button-primary(type='button' title='Previous day' aria-pressed='false')
+            span.icon-plus
+
+      #external-events
+        .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
+          .fc-event-main My Event 1
+        .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
+          .fc-event-main My Event 2
+        .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
+          .fc-event-main My Event 3
+        .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
+          .fc-event-main My Event 4
+        .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
+          .fc-event-main My Event 5
+        p
+          input#drop-remove(type='checkbox')
+          label(for='drop-remove') remove after drop
+      .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr.mt-3
+        .fc-toolbar-chunk
+          h2#fc-dom-1.fc-toolbar-title MANAGE SCALE
+        .btn-group(role='group')
+          button#heightsmall.btn.btn-sm.btn-outline-secondary(type='button' data-height="1000") SMALL
+          button#heightmid.btn.btn-sm.btn-outline-secondary(type='button' data-height="10000") MID
+          button#heightbig.btn.btn-sm.btn-outline-secondary(type='button' data-height="20000") LARGE
+      .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr.mt-3
+        .fc-toolbar-chunk
+          h2#fc-dom-1.fc-toolbar-title MANAGE STREAM
+      .cnt
+        button.btn.btn-danger.mr-3(type='button') STOP
+        button.btn.btn-success.mr-3.disabled(type='button') START
+        button.btn.btn-warning.mr-3(type='button') RELOAD
+        a.btn.btn-info(href='https://www.twitch.tv/vjtelevision' target="_blank") WATCH
+      .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr.mt-5
+        .fc-toolbar-chunk
+          h4#fc-dom-1.fc-toolbar-title CONTENTS
+      p
+        span.mr-3(style="border-color: purple; background-color: purple;color:purple") XX
+        !="PERFORMANCES"
+      p
+        span.mr-3(style="border-color: red; background-color: red;color:red") XX
+        !="red VJ-DJ SETS"
+      p
+        span.mr-3(style="border-color: green; background-color: green;color:green") XX
+        !="DOCS"
+      p
+        span.mr-3(style="border-color: #3788d8; background-color: #3788d8;color:#3788d8") XX
+        !="VIDEOS"
+      p
+        span.mr-3(style="border-color:orange; background-color: orange;color:orange") XX
+        !="ADVERTISING"
+
+    .col-md-8
+      #calendar-container
+        #calendar
+      // partial
