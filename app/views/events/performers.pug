@@ -51,36 +51,39 @@ block title
       .row
         .col
           ul.links_list.list-inline
-            each item in data.web
-              li.list-inline-item.mb-3
-                a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
-                  i.icon-link-light.about_button
-            each item in data.social
-              if item.url.indexOf('instagram.com/')!=-1
-                li.list-inline-item.mb-3
-                  - var tooltip = item.url.replace("http://","").replace("https://","").split("/")
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                    i.icon-instagram.about_button
-              else if item.url.indexOf('twitter.com/')!=-1
+            if data.web.length && data.web[0].url != ""
+              each item in data.web
                 li.list-inline-item.mb-3
                   a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
-                    i.icon-twitter.about_button
-              else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
-                li.list-inline-item.mb-3
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
-                    i.icon-facebook.about_button
-              else if item.url.indexOf('vimeo.com/')!=-1
-                li.list-inline-item.mb-3
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
-                    i.icon-vimeo.about_button
-              else if item.url.indexOf('youtube.com/')!=-1
-                li.list-inline-item.mb-3
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
-                    i.icon-youtube.about_button
-              else
-                li.list-inline-item.mb-3
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
-                    i.icon-link-light.about_button
+                    span.icon-link-light.about_button
+            if data.social.length && data.social[0].url != ""
+              each item in data.social
+                if item.url.indexOf('instagram.com/')!=-1
+                  li.list-inline-item.mb-3
+                    - var tooltip = item.url.replace("http://","").replace("https://","").split("/")
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                      i.icon-instagram.about_button
+                else if item.url.indexOf('twitter.com/')!=-1
+                  li.list-inline-item.mb-3
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
+                      i.icon-twitter.about_button
+                else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
+                  li.list-inline-item.mb-3
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
+                      i.icon-facebook.about_button
+                else if item.url.indexOf('vimeo.com/')!=-1
+                  li.list-inline-item.mb-3
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
+                      i.icon-vimeo.about_button
+                else if item.url.indexOf('youtube.com/')!=-1
+                  li.list-inline-item.mb-3
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
+                      i.icon-youtube.about_button
+                else
+                  li.list-inline-item.mb-3
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
+                      span.icon-link-light.about_button
+
         if data.participate
           .col            
             p.text-right
@@ -151,48 +154,50 @@ block content
               .col-lg-12
                 if (data.performer.web && data.performer.web.length) || (data.performer.social && data.performer.social.length) || (data.performer.publicEmails && data.performer.publicEmails.length)
                   div
-                    ul.links_list.list-inline                 
-                      each item in data.performer.web
-                        li.list-inline-item.mb-3
-                          a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
-                            i.icon-link-light.about_button
-                      each item in data.performer.social
-                        if item.url.indexOf('instagram.com/')!=-1
+                    ul.links_list.list-inline     
+                      if data.performer.web.length && data.performer.web[0].url != ""
+                        each item in data.performer.web
                           li.list-inline-item.mb-3
-                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                              i.icon-instagram.about_button
-                        else if item.url.indexOf('twitter.com/')!=-1
-                          li.list-inline-item.mb-3
-                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                              i.icon-twitter.about_button
-                        else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
-                          li.list-inline-item.mb-3
-                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").replace("facebook.com","fb.com").split("/")
-                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                              i.icon-facebook.about_button
-                        else if item.url.indexOf('vimeo.com/')!=-1
-                          li.list-inline-item.mb-3
-                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                              i.icon-vimeo.about_button
-                        else if item.url.indexOf('youtube.com/')!=-1
-                          li.list-inline-item.mb-3
-                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                              i.icon-youtube.about_button
-                        else
-                          li.list-inline-item.mb-3
-                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
                               i.icon-link-light.about_button
-                      if data.performer.publicEmails && data.performer.publicEmails.length          
-                        each email in data.performer.publicEmails
-                          li.list-inline-item.mb-3
-                            a(href="mailto:"+email data-toggle="tooltip" data-placement="top" title=global.__("Write an email to")+" "+email)
-                              i.icon-envelope.about_button
-                              
+                      if data.performer.social.length && data.performer.social[0].url != ""
+                        each item in data.performer.social
+                          if item.url.indexOf('instagram.com/')!=-1
+                            li.list-inline-item.mb-3
+                              - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                              a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                                i.icon-instagram.about_button
+                          else if item.url.indexOf('twitter.com/')!=-1
+                            li.list-inline-item.mb-3
+                              - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                              a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                                i.icon-twitter.about_button
+                          else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
+                            li.list-inline-item.mb-3
+                              - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").replace("facebook.com","fb.com").split("/")
+                              a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                                i.icon-facebook.about_button
+                          else if item.url.indexOf('vimeo.com/')!=-1
+                            li.list-inline-item.mb-3
+                              - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                              a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                                i.icon-vimeo.about_button
+                          else if item.url.indexOf('youtube.com/')!=-1
+                            li.list-inline-item.mb-3
+                              - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                              a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                                i.icon-youtube.about_button
+                          else
+                            li.list-inline-item.mb-3
+                              - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                              a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                                i.icon-link-light.about_button
+                        if data.performer.publicEmails && data.performer.publicEmails.length          
+                          each email in data.performer.publicEmails
+                            li.list-inline-item.mb-3
+                              a(href="mailto:"+email data-toggle="tooltip" data-placement="top" title=global.__("Write an email to")+" "+email)
+                                i.icon-envelope.about_button
+                                
 
         .col-lg-4
           img.img-fluid.d-none.d-md-block(

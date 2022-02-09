@@ -96,9 +96,9 @@ block content
 									!="NO EVENT"
 								div
 									b!=__("Performances")+":"
-								if video.events && video.events.length
+								if video.performances && video.performances.length
 									ul
-										each performance in video.events
+										each performance in video.performances
 											li=performance.title
 								else
 									!="NO PERFORMANCE"
