@@ -978,7 +978,7 @@
             "is_public": 1,
             "imageFormats": 1
           },
-          "populate": [{ "path": "partners.partner", "select": "stagename slug organizationData.contacts", "model": "User", "populate": [{ "path": "members", "select": "stagename name surname emails", "model": "User"}]}]
+          "populate": [{ "path": "partners.partner", "select": "stagename slug organizationData.contacts", "model": "User", "populate": [{ "path": "members", "select": "stagename name surname slug emails", "model": "User"}]}]
         },
         "channels": {
           "title": "Channels",
