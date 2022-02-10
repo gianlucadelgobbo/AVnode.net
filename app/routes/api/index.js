@@ -426,8 +426,8 @@ router.get('/getprograms2', (req, res) => {
     for(var i = 0; i<results.length;i++){
       if (results[i].video && results[i].video.media && results[i].video.media.duration) data.push( {
         "title": results[i].video.title,
-        "start": results[i].programming.getTime()-(results[i].programming.getTimezoneOffset()*60*1000),
-        "end": results[i].programming.getTime()-(results[i].programming.getTimezoneOffset()*60*1000)+results[i].video.media.duration,
+        "start": results[i].programming.getTime()+(results[i].programming.getTimezoneOffset()*60*1000),
+        "end": results[i].programming.getTime()+(results[i].programming.getTimezoneOffset()*60*1000)+results[i].video.media.duration,
         "color": colors[results[i].video.categories[0].name] ? colors[results[i].video.categories[0].name] : undefined
       });
     }
