@@ -463,7 +463,7 @@ router.get('/getcurrentprogram', (req, res) => {
       date.getFullYear(),
       date.getMonth(),
       date.getDate(),
-      date.getHours(),
+      date.getHours()+1,
       date.getMinutes(),
       date.getSeconds()
     ));
