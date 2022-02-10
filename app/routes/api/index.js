@@ -391,8 +391,8 @@ router.get('/getprograms2', (req, res) => {
   //req.body.month = "2020-03";
   logger.debug(req.query);
   if(req.query.start && req.query.end) {
-    var start = req.query.start;
-    var end = req.query.end;
+    var start = new Date(new Date(req.query.start).getTime()-(new Date(req.query.start).getTimezoneOffset()*60*1000));
+    var end = new Date(new Date(req.query.end).getTime()-(new Date(req.query.end).getTimezoneOffset()*60*1000));
   } else {
     var date = new Date();
     logger.debug(date);
