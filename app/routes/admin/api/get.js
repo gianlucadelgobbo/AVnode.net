@@ -2815,7 +2815,6 @@ router.getPartners = (req, res) => {
                   if (partnersID.indexOf(partners[item].partner._id.toString())===-1) {
                     if (notassignedID.indexOf(partners[item].partner._id.toString())===-1) {
                       notassignedID.push(partners[item].partner._id.toString());
-                      console.log(partners[item]);
                       notassigned.push(partners[item].partner);
                     }
                   }
