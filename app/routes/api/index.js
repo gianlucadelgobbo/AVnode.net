@@ -424,7 +424,6 @@ router.get('/getprograms2', (req, res) => {
     var data = [];
     var colors = {"PERFORMANCES": "purple", "VJ-DJ SETS": "red", "DOCS": "green"};    
     for(var i = 0; i<results.length;i++){
-      console.log(results[i].video.categories)
       if (results[i].video && results[i].video.media && results[i].video.media.duration) data.push( {
         "title": results[i].video.title,
         "start": results[i].programming.getTime(),
