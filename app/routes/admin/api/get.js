@@ -2823,6 +2823,15 @@ router.getPartners = (req, res) => {
                   logger.debug(partners[item]);
                 }
               }
+              notassigned.sort((a,b)=>{
+                if ( a.stagename < b.stagename ){
+                  return -1;
+                }
+                if ( a.stagename > b.stagename ){
+                  return 1;
+                }
+                return 0;
+              });
               var existingCat = partnerships.map(item => {return item.category._id.toString()});
               var pp = partnerships.map(item => {return item});
               
