@@ -2811,10 +2811,11 @@ router.getPartners = (req, res) => {
 
               for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
               for (var item in partners) {
-                if (partners[item] && partners[item].partner) {
+                if (partners[item] && partners[item].is_active && partners[item].is_selecta && partners[item].partner) {
                   if (partnersID.indexOf(partners[item].partner._id.toString())===-1) {
                     if (notassignedID.indexOf(partners[item].partner._id.toString())===-1) {
                       notassignedID.push(partners[item].partner._id.toString());
+                      console.log(partners[item]);
                       notassigned.push(partners[item].partner);
                     }
                   }
