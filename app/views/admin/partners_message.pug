@@ -84,9 +84,9 @@ block content
             label(for='message_en')="Message EN"
             textarea(rows="20",name="message_en")#message_en.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_en : 'Ciao [name],\n\n\n[slug]\n\n\n[signature]')
       - if (query.all!="1") {
-        - data.partners = data.partners.filter(partner => partner.is_active == (query.is_active=="1"));
-        - data.partners = data.partners.filter(partner => partner.is_event == (query.is_event=="1"));
-        - data.partners = data.partners.filter(partner => partner.is_selecta == (query.is_selecta=="1"));
+            - if (query.is_active=="1") data.partners = data.partners.filter(partner => partner.is_active == (query.is_active=="1"));
+            - if (query.is_event=="1") data.partners = data.partners.filter(partner => partner.is_event == (query.is_event=="1"));
+            - if (query.is_selecta=="1") data.partners = data.partners.filter(partner => partner.is_selecta == (query.is_selecta=="1"));
       - }
       //-each q in query.categories
       - if (query.categories) 
