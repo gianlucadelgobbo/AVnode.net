@@ -704,65 +704,33 @@ router.deleteContacts = (req, res) => {
 router.updatePartnerships = (req, res) => {
   logger.debug("req.body");
   logger.debug(req.body);
-
-  Models.User
-  .findOne({_id: req.body.partner},'partnerships', (err, partner) => {
-    /* 
-    var toadd = true;
-    for (var a=0;a<partner.partnerships.length;a++) {
-      logger.debug(partner.partnerships[a]);
-      if(partner.partnerships[a].toString() === req.body.event) {
-        partner.partnerships[a].splice(a, 1);
-      }
-      if (req.body.category) {
-        partner.partnerships[a].push(req.body.event);
-        toadd = false;
-      }
-    }
-    a=0;
-    while (a<partner.partnerships.length) {
-      if(!partner.partnerships[a].events.length) {
-        partner.partnerships.splice(a, 1);
-      }
-      a++
-    }
-    */
-    if (req.body.category) {
-      if (partner.partnerships.map(item => {return item.toString()}).indexOf(req.body.event)) {
-        partner.partnerships.push(req.body.event);
-      }
-    } else {
-      for (var a=0;a<partner.partnerships.length;a++) {
-        if(partner.partnerships[a].toString() === req.body.event) {
-          partner.partnerships.splice(a, 1);
-        }
-      }
-    }
-    partner.stats.partnerships = partner.partnerships.length;
-
-
-    partner.save(err => {
-
-
-
-      Models.Event
-      .findOne({_id: req.body.event},'partnerships', (err, event) => {
-        event.partners = req.body.partnerships;
-        /* for (var a=0;a<event.partners.length;a++) {
-          logger.debug(event.partners[a].users);
-        } */
-    
-    
-        event.save(err => {
-          res.json(err);
+  Models.Event
+  .findOne({_id: req.body.event},'partnerships', (err, event) => {
+    event.partners = req.body.partnerships;
+    event.save(err => {
+      if (req.body.partner) {
+        Models.User
+        .findOne({_id: req.body.partner},'partnerships', (err, partner) => {
+          if (req.body.category) {
+            if (partner.partnerships.map(item => {return item.toString()}).indexOf(req.body.event)) {
+              partner.partnerships.push(req.body.event);
+            }
+          } else {
+            for (var a=0;a<partner.partnerships.length;a++) {
+              if(partner.partnerships[a].toString() === req.body.event) {
+                partner.partnerships.splice(a, 1);
+              }
+            }
+          }
+          partner.stats.partnerships = partner.partnerships.length;
+          partner.save(err => {
+            res.json(err);
+          });
         });
-      });
-    
-
-
-
+      } else {
+        res.json(err);
+      }
     });
-
   });
 }
 

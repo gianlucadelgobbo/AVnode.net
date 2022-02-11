@@ -619,10 +619,12 @@ $( ".lock-schedule" ).click(function( event ) {
 });
 
   // PARTNERS
-  $('.sorter').click(function() {
+  $('.sorter').click(function(event) {
+    event.preventDefault();
     const id = $(this).data("target");
     sortUnorderedList(id);
   });
+
   sortUnorderedList = (ul, sortDescending) => {
     if(typeof ul == "string")
       ul = document.getElementById(ul);
@@ -651,43 +653,54 @@ $( ".lock-schedule" ).click(function( event ) {
     // Change the list on the page
     for(var i = 0, l = lis.length; i < l; i++)
       lis[i].innerHTML = vals[i];
+    partnershipsupdate (false);
   }
   
   $( ".partners .connectedSortable" ).sortable({
+    stop: function( event, ui ) {
+      partnershipsupdate (ui);
+    },
     remove: function( e, ui ) {
-      var partnerships = [];
-      var connectedSortable = $(".connectedSortable").parent();
-      for (var a=1;a<connectedSortable.length;a++) {
-        var partnership = {};
-        $(connectedSortable[a]).serializeArray().map(n => {
-          if (n['name']=="users") {
-            if (!partnership[n['name']]) partnership[n['name']] = []
-            partnership[n['name']].push(n['value']);
-    
-          } else {
-            partnership[n['name']] = n['value'];
-          }
-        });
-        if (partnership.users && partnership.users.length) partnerships.push(partnership);
-      }
-      var data = {
-        category: ui.item.parent().parent().find("input[name='category']").val(),
-        partner: ui.item.find("input[name='users']").val(),
-        event: event,
-        partnerships:partnerships
-      }
-      $.ajax({
-        url: "/admin/api/partnershipsupdate",
-        method: "post",
-        data: data
-      }).done(function(data) {
-        //console.log("#");
-      });
+      partnershipsupdate (ui);
     },
     connectWith: ".connectedSortable"
   }).disableSelection();
 
+  function partnershipsupdate (ui) {
+    var partnerships = [];
+    var connectedSortable = $(".connectedSortable").parent();
+    for (var a=1;a<connectedSortable.length;a++) {
+      var partnership = {};
+      $(connectedSortable[a]).serializeArray().map(n => {
+        if (n['name']=="users") {
+          if (!partnership[n['name']]) partnership[n['name']] = []
+          partnership[n['name']].push(n['value']);
+  
+        } else {
+          partnership[n['name']] = n['value'];
+        }
+      });
+      if (partnership.users && partnership.users.length) partnerships.push(partnership);
+    }
+    var data = {
+      event: event,
+      partnerships:partnerships
+    }
+    if (ui) {
+      data.category = ui.item.parent().parent().find("input[name='category']").val();
+      data.partner = ui.item.find("input[name='users']").val();
 
+    }
+    console.log(data);
+    $.ajax({
+      url: "/admin/api/partnershipsupdate",
+      method: "post",
+      data: data
+    }).done(function(data) {
+      //console.log("#");
+    });
+    
+  }
   $('#modalAddContact').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
     $('#modalAddContact form')[0].reset();
