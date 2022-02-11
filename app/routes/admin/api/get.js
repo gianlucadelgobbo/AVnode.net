@@ -718,7 +718,8 @@ router.addPartnersToQueque = (req, res, data, cb) => {
 
   data.partners.forEach((item, index) => {
     var message = {};
-    if (item.partner && item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && req.body.exclude && req.body.exclude.indexOf(item.partner._id.toString())===-1) {
+    if (!req.body.exclude) req.body.exclude = [];
+    if (item.partner && item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && req.body.exclude.indexOf(item.partner._id.toString())===-1) {
       message.to_html = "";
       message.cc_html = [];
 
@@ -739,9 +740,13 @@ router.addPartnersToQueque = (req, res, data, cb) => {
         }
       });
 
-      if (message.to_html != "") tosave.messages_tosend.push(message)
+      if (message.to_html != "") {
+        tosave.messages_tosend.push(message);
+      } else {
+        logger.debug(item);
+      }
     } else {
-      //logger.debug(item.partner.stagename);
+      logger.debug(item);
     }
   });
   Models.Emailqueue.create(tosave, function (err) {
