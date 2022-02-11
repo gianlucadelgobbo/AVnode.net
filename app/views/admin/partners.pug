@@ -10,6 +10,7 @@ block content
       h3.labelField.mb-3=__(config.cpanel[get.sez].title)
   b!="Your organizations"
   if data.crews.length
+    - data.crews.sort((a,b)=>{var nameA = a.stagename.toUpperCase();var nameB = b.stagename.toUpperCase();if (nameA < nameB) return -1;if (nameA > nameB) return 1;return 0;})
     ol
       each item, index in data.crews
         li
