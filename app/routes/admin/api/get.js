@@ -707,9 +707,9 @@ router.addPartnersToQueque = (req, res, data, cb) => {
   tosave.subject = req.body.subject;
   tosave.messages_tosend = [];
   tosave.messages_sent = [];
-  data.partners = data.partners.filter(partner => partner.is_active == (req.query.is_active=="1"));
-  data.partners = data.partners.filter(partner => partner.is_event == (req.query.is_event=="1"));
-  data.partners = data.partners.filter(partner => partner.is_selecta == (req.query.is_selecta=="1"));
+  if (req.query.is_active=="1") data.partners = data.partners.filter(partner => partner.is_active == (req.query.is_active=="1"));
+  if (req.query.is_event=="1") data.partners = data.partners.filter(partner => partner.is_event == (req.query.is_event=="1"));
+  if (req.query.is_selecta=="1") data.partners = data.partners.filter(partner => partner.is_selecta == (req.query.is_selecta=="1"));
   //-each q in req.query.categories
   if (req.query.categories) 
     data.partners = data.partners.filter(partner => req.query.categories.some(r => partner.categories.map(item => {return item._id.toString()}).includes(r) ));
