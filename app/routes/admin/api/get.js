@@ -1090,13 +1090,25 @@ router.getGalleries = (req, res) => {
 }
 
 router.getVideos = (req, res) => {
+  var select, find;
+  if (req.query.vjtv) {
+    find = {"categories.0":{$exists:true},"media.externalurl":{$exists:false},"media.duration": {$gt:60000}, "media.encoded": 1, $or:[
+      { slug : { "$regex": req.params.q, "$options": "i" } },
+      { title : { "$regex": req.params.q, "$options": "i" } }
+    ]};
+    select = {'title':1, 'slug':1, "categories": 1,"media.duration": 1}
+  } else {
+    find = {$or:[
+      { slug : { "$regex": req.params.q, "$options": "i" } },
+      { title : { "$regex": req.params.q, "$options": "i" } }
+    ]};
+    select = {'title':1}
+  }
   Models.Video
-  .find({$or:[
-    { slug : { "$regex": req.params.q, "$options": "i" } },
-    { title : { "$regex": req.params.q, "$options": "i" } }
-  ]})
+  .find(find)
   .lean()
-  .select({'title':1})
+  //.populate({path:"categories", })
+  .select(select)
   .sort({'title': 1})
   .exec((err, video) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);

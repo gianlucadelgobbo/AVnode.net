@@ -10,31 +10,26 @@ block content
       .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr
         .fc-toolbar-chunk
           h2#fc-dom-1.fc-toolbar-title ADD PROGRAM
-        .fc-toolbar-chunk
-          button.fc-prev-button.fc-button.fc-button-primary(type='button' title='Previous day' aria-pressed='false')
-            span.icon-plus
+      .input-group.autocomplete_vjtv.mb-3
+        input.form-control(type='text' autocomplete='nope' placeholder=__("Search Video") value='')
+        //.input-group-append
+          button.mb-2.btn.btn-success.disabled(type='button' /*data-objid=data._id data-obj=get.sez*/)
+            i.icon-plus
+            !=" "
+            b=__("Add")
 
       #external-events
-        .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
-          .fc-event-main My Event 1
-        .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
-          .fc-event-main My Event 2
-        .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
-          .fc-event-main My Event 3
-        .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
-          .fc-event-main My Event 4
-        .fc-event.fc-h-event.fc-daygrid-event.fc-daygrid-block-event
-          .fc-event-main My Event 5
-        p
-          input#drop-remove(type='checkbox')
-          label(for='drop-remove') remove after drop
+        .attachment-dropzone NO Video
+      .form-check.mt-3
+        input#drop-remove.form-check-input(type='checkbox' checked)
+        label.form-check-label(for='drop-remove') remove after drop
       .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr.mt-3
         .fc-toolbar-chunk
           h2#fc-dom-1.fc-toolbar-title MANAGE SCALE
         .btn-group(role='group')
-          button#heightsmall.btn.btn-sm.btn-outline-secondary(type='button' data-height="1000") SMALL
-          button#heightmid.btn.btn-sm.btn-outline-secondary(type='button' data-height="10000") MID
-          button#heightbig.btn.btn-sm.btn-outline-secondary(type='button' data-height="20000") LARGE
+          button#slotsmall.btn.btn-sm.btn-secondary.disabled(type='button' data-slot="00:30:00") SMALL
+          button#slotmid.btn.btn-sm.btn-outline-secondary(type='button' data-slot="00:10:00") MID
+          button#slotbig.btn.btn-sm.btn-outline-secondary(type='button' data-slot="00:01:00") LARGE
       .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr.mt-3
         .fc-toolbar-chunk
           h2#fc-dom-1.fc-toolbar-title MANAGE STREAM

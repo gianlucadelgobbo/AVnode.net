@@ -771,6 +771,13 @@ $(function () {
 		$('.autocomplete_video input').on('autocomplete.select', function (evt, item) {
 			selectedItem = item;
 			$('.autocomplete_video button').removeClass("disabled");
+      if ($("#external-events")) {
+				console.log(item)
+        var append = "<div class=\"fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event\"><div class=\"fc-event-main\">"+ item.text + "</div></div>";
+				$(".attachment-dropzone").hide()
+				$("#external-events").append(append)
+				new Draggable($("#external-events .fc-event"));
+			}
 		});
 	}
 
