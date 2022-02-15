@@ -95,17 +95,18 @@ const Models = {
 
 
 router.get('/sitemap.xml', (req, res) => {
+  console.log("sitemap")
   Promise.all([
     Models['User'].find(  {"performances.0":{"$exists": true}, "is_public": true}).select("_id updatedAt"),
-    Models['User'].find(  {"$or" : [{"partner_owner": "5be8772bfc39610000007065"},{"activity_as_organization" : {"$gt": 0}}], "is_crew" : true, "is_public": true}).select("_id updatedAt"),
+    Models['User'].find(  {"$or" : [{"partner_owner.owner": "5be8772bfc39610000007065"},{"activity_as_organization" : {"$gt": 0}}], "is_crew" : true, "is_public": true}).select("_id updatedAt"),
     Models['Event'].find( {"is_public": true}).select("_id updatedAt"),
     Models['Performance'].find({"is_public": true, "type": {"$nin":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}}).select("_id updatedAt"),
     Models['Performance'].find({"is_public": true, "type": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}}).select("_id updatedAt"),
     Models['Gallery'].find({"is_public": true}).select("_id updatedAt"),
     Models['Video'].find({"is_public": true}).select("_id updatedAt"),
-    Models['News'].find({"is_public": true}).select("_id updatedAt"),
-    Models['Footage'].find({"is_public": true}).select("_id updatedAt"),
-    Models['Playlist'].find({"is_public": true}).select("_id updatedAt")
+    Models['News'].find({"is_public": true}).select("_id updatedAt")/* ,
+    //Models['Footage'].find({"is_public": true}).select("_id updatedAt"),
+    //Models['Playlist'].find({"is_public": true}).select("_id updatedAt") */
   ]).then( ([
     performers,
     organizations,
@@ -114,44 +115,44 @@ router.get('/sitemap.xml', (req, res) => {
     learnings,
     galleries,
     videos,
-    news,
+    news/* ,
     footage,
-    playlists
+    playlists */
   ]) => {
     config.sections.performers.sitemap_pages = Math.ceil(performers.length/config.sections.performers.limit);
     config.sections.organizations.sitemap_pages = Math.ceil(organizations.length/config.sections.organizations.limit);
     config.sections.events.sitemap_pages = Math.ceil(events.length/config.sections.events.limit);
     config.sections.performances.sitemap_pages = Math.ceil(performances.length/config.sections.performances.limit);
     config.sections.learnings.sitemap_pages = Math.ceil(learnings.length/config.sections.learnings.limit);
+    config.sections.galleries.sitemap_pages = Math.ceil(galleries.length/config.sections.galleries.limit);
     config.sections.videos.sitemap_pages = Math.ceil(videos.length/config.sections.videos.limit);
-    config.sections.news.sitemap_pages = Math.ceil(news.length/config.sections.news.limit);
+    config.sections.news.sitemap_pages = Math.ceil(news.length/config.sections.news.limit);/* 
     config.sections.footage.sitemap_pages = Math.ceil(footage.length/config.sections.footage.limit);
     config.sections.playlists.sitemap_pages = Math.ceil(playlists.length/config.sections.playlists.limit);
-    config.sections.galleries.sitemap_pages = Math.ceil(galleries.length/config.sections.galleries.limit);
-
+ */
     config.sections.performers.lastmod = helper.dateoW3CString(performers.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
     config.sections.organizations.lastmod = helper.dateoW3CString(organizations.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
     config.sections.events.lastmod = helper.dateoW3CString(events.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
     config.sections.performances.lastmod = helper.dateoW3CString(performances.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
     config.sections.learnings.lastmod = helper.dateoW3CString(learnings.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
+    config.sections.galleries.lastmod = helper.dateoW3CString(galleries.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
     config.sections.videos.lastmod = helper.dateoW3CString(videos.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
     config.sections.news.lastmod = helper.dateoW3CString(news.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
-    config.sections.footage.lastmod = helper.dateoW3CString(footage.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
+    /* config.sections.footage.lastmod = helper.dateoW3CString(footage.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
     config.sections.playlists.lastmod = helper.dateoW3CString(playlists.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
-    config.sections.galleries.lastmod = helper.dateoW3CString(galleries.map(item => {return item.updatedAt ? item.updatedAt : item.createdAt ? item.createdAt : new Date("1970-01-01T00:00:00.00Z")}).sort().reverse()[0]);;
-
+ */
     let lastmod = [];
     lastmod.push(config.sections.performers.lastmod);
     lastmod.push(config.sections.organizations.lastmod);
     lastmod.push(config.sections.events.lastmod);
     lastmod.push(config.sections.performances.lastmod);
     lastmod.push(config.sections.learnings.lastmod);
+    lastmod.push(config.sections.galleries.lastmod);
     lastmod.push(config.sections.videos.lastmod);
     lastmod.push(config.sections.news.lastmod);
-    lastmod.push(config.sections.footage.lastmod);
+   /*  lastmod.push(config.sections.footage.lastmod);
     lastmod.push(config.sections.playlists.lastmod);
-    lastmod.push(config.sections.galleries.lastmod);
-  
+   */
     res.set('Content-Type', 'text/xml');
     res.render('sitemaps/index', {
       pretty: true,
