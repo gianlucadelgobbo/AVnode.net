@@ -31,7 +31,7 @@ block content
     .row
       .col-md-8
         if data.media && data.media.file
-          .embed-responsive(class=(data.media.width/data.media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
+          .embed-responsive(class=(data.media.width && data.media.height && data.media.width/data.media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
             - var ext = data.media.file.substring(data.media.file.lastIndexOf(".")+1)
             if ext==="swf" || ext==="flv"
               #swfcontainer.embed-responsive-item
@@ -42,7 +42,7 @@ block content
                   param(name='movie', value='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
                   embed(width='550', height='400', align='middle',  src='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
             else
-              video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=(data.media.width/data.media.height<1.4 ? "480" : "264"), poster=data.imageFormats.large, data-setup='{"aspectRatio":"'+(data.media.width/data.media.height<1.4 ? "4:3" : "16:9")+'", "fluid": true}')
+              video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=(data.media.width && data.media.height && data.media.width/data.media.height<1.4 ? "480" : "264"), poster=data.imageFormats.large, data-setup='{"aspectRatio":"'+(data.media.width && data.media.height && data.media.width/data.media.height<1.4 ? "4:3" : "16:9")+'", "fluid": true}')
                 source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
                 //-source(src='MY_VIDEO.webm', type='video/webm')
                 p.vjs-no-js

@@ -29,41 +29,42 @@ block content
   .container.content
     .row
       .col-lg-8
-        .embed-responsive(class=(data.media.width/data.media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
-          if data.media && data.media.file
-            .toclone
-              table
-                tr
-                  td(style="width:100%")
-                    //.users_video_item_wrapper
-                      .flex
-                          img(class=data.users[0].imageFormats.small.substring(data.users[0].imageFormats.small.lastIndexOf(".")+1), src=data.users[0].imageFormats.small, alt=data.users[0].stagename)
-                      .flex
-                        h1
-                          a(href="https://avnode.net/videos/"+data.slug+"/")=data.title
-                        .users_performance_item_name
-                          !=__("Author")+": "
-                          a.mr-3(href="/"+data.users[0].slug+"/")=data.users[0].stagename
-                          if data.users[0].addressesFormatted && data.users[0].addressesFormatted.length
-                            !=" | "
-                            span.users_performance_item_country!=data.users[0].addressesFormatted.join(", ")
-                  td(style="width:50px")
-                    ul.share_like_list.list-unstyled
-                      li
-                        a(href="javascript:myModal.open();")
-                          .share_button
-                              img(src="/images/icon_embed.svg")        
-                          .label_like_button_wrapper
-                              span.label_like_button="embed"
-                      - var payload = data.img ? "{\"section\":\""+section+"\",\"id\":\""+data._id+"\",\"img_index\":\""+data.img.index+"\",\"img_slug\":\""+data.img.slug+"\"}" : "{\"section\":\""+section+"\",\"id\":\""+data._id+"\"}" 
-            video#my-video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=data.media.width/data.media.height<1.4 ? "480" : "264", poster=data.imageFormats.large, data-setup='{"aspectRatio":"'+(data.media.width/data.media.height<1.4 ? "4:3" : "16:9")+'", "fluid": true}')
-              source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
-              //-source(src='MY_VIDEO.webm', type='video/webm')
-              p.vjs-no-js
-                !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
-                a(href='http://videojs.com/html5-video-support/', target='_blank')=!"HTML5 video"
-          if data.media && data.media.iframe
-            !=data.media.iframe
+        if data.media
+          .embed-responsive(class=(data.media.width && data.media.height && data.media.width/data.media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
+            if data.media.file
+              .toclone
+                table
+                  tr
+                    td(style="width:100%")
+                      //.users_video_item_wrapper
+                        .flex
+                            img(class=data.users[0].imageFormats.small.substring(data.users[0].imageFormats.small.lastIndexOf(".")+1), src=data.users[0].imageFormats.small, alt=data.users[0].stagename)
+                        .flex
+                          h1
+                            a(href="https://avnode.net/videos/"+data.slug+"/")=data.title
+                          .users_performance_item_name
+                            !=__("Author")+": "
+                            a.mr-3(href="/"+data.users[0].slug+"/")=data.users[0].stagename
+                            if data.users[0].addressesFormatted && data.users[0].addressesFormatted.length
+                              !=" | "
+                              span.users_performance_item_country!=data.users[0].addressesFormatted.join(", ")
+                    td(style="width:50px")
+                      ul.share_like_list.list-unstyled
+                        li
+                          a(href="javascript:myModal.open();")
+                            .share_button
+                                img(src="/images/icon_embed.svg")        
+                            .label_like_button_wrapper
+                                span.label_like_button="embed"
+                        - var payload = data.img ? "{\"section\":\""+section+"\",\"id\":\""+data._id+"\",\"img_index\":\""+data.img.index+"\",\"img_slug\":\""+data.img.slug+"\"}" : "{\"section\":\""+section+"\",\"id\":\""+data._id+"\"}" 
+              video#my-video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=data.media.width && data.media.height && data.media.width/data.media.height<1.4 ? "480" : "264", poster=data.imageFormats.large, data-setup='{"aspectRatio":"'+(data.media.width && data.media.height && data.media.width/data.media.height<1.4 ? "4:3" : "16:9")+'", "fluid": true}')
+                source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
+                //-source(src='MY_VIDEO.webm', type='video/webm')
+                p.vjs-no-js
+                  !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
+                  a(href='http://videojs.com/html5-video-support/', target='_blank')=!"HTML5 video"
+            if data.media.iframe
+              !=data.media.iframe
         if data.about
           .data_footage_video_wrapper.d-none.d-lg-block
             h3=__("About")
