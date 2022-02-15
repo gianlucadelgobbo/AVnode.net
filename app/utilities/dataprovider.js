@@ -819,10 +819,12 @@ dataprovider.fetchRandomPerformance = (model, query, select, populate, limit, sk
 
 dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting, cb) => {
   query.is_public = true;
-  /* //logger.debug("BINGOOOOO");
-  //logger.debug(query);
-  //logger.debug(select);
-  //logger.debug(sorting); */
+  /* 
+  logger.debug("BINGOOOOO");
+  logger.debug(query);
+  logger.debug(select);
+  logger.debug(sorting);
+  */
   model.countDocuments(query, function(error, total) {
     model.find(query)
     .populate(populate)

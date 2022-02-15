@@ -7543,7 +7543,7 @@
         "media":1,
         "stats":1
       },
-      "list_populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+      "list_populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"}],
       "orders": [
         "mostrecent",
         "mostviewed",
