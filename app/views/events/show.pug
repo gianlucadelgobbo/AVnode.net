@@ -238,15 +238,15 @@ block content
           .row.partners_list_wrapper
             each partner in data.users
               .col-sm-2
-                .partner_box_wrapper
-                  a(href="/"+partner.slug+"/", title=partner.stagename)
+                .partner_box_wrapper.embed-responsive.embed-responsive-1by1
+                  a.embed-responsive-item(href="/"+partner.slug+"/", title=partner.stagename)
                     if partner.imageFormats                          
                       img.card-img-top.img-fluid(
                         class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
                         src=partner.imageFormats.small
                         alt=partner.stagename
                       )
-                  p.partner_stagename
+                  .partner_stagename
                     a(href="/"+partner.slug+"/", title=partner.stagename)
                       span=partner.stagename
 
@@ -272,41 +272,42 @@ block content
                         - var url = null;
                       if partner.activity > 0
                         .col-sm-2
-                          .partner_box_wrapper
-                            a(href="/"+partner.slug+"/", title=partner.stagename)
+                          .partner_box_wrapper.embed-responsive.embed-responsive-1by1
+                            a.embed-responsive-item(href="/"+partner.slug+"/", title=partner.stagename)
                               if partner.imageFormats                          
                                 img.card-img-top.img-fluid(
                                   class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
                                   src=partner.imageFormats.small
                                   alt=partner.stagename
                                 )
-                            p.partner_stagename
+                            .partner_stagename
                               a(href="/"+partner.slug+"/", title=partner.stagename)
                                 span=partner.stagename
                       else
                         if url
                           .col-sm-2
-                            .partner_box_wrapper
-                              a(href=url, target="_blank", title=partner.stagename)
+                            .partner_box_wrapper.embed-responsive.embed-responsive-1by1
+                              a.embed-responsive-item(href=url, target="_blank", title=partner.stagename)
                                 if partner.imageFormats                          
                                   img.card-img-top.img-fluid(
                                     class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
                                     src=partner.imageFormats.small
                                     alt=partner.stagename
                                   )
-                              p.partner_stagename
+                              .partner_stagename
                                 a(href=url, target="_blank", title=partner.stagename)
                                   span=partner.stagename
                         else
                           .col-sm-2
-                            .partner_box_wrapper
-                              if partner.imageFormats                          
-                                img.card-img-top.img-fluid(
-                                  class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
-                                  src=partner.imageFormats.small
-                                  alt=partner.stagename
-                                )
-                              p.partner_stagename
+                            .partner_box_wrapper.embed-responsive.embed-responsive-1by1
+                              if partner.imageFormats
+                                .embed-responsive-item                    
+                                  img.card-img-top.img-fluid(
+                                    class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
+                                    src=partner.imageFormats.small
+                                    alt=partner.stagename
+                                  )
+                              .partner_stagename
                                 span=partner.stagename
                       
 
