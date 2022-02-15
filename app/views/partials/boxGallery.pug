@@ -6,19 +6,20 @@
     .gallery_item_info_wrapper
       .flex_left
         h4=item.title
-      .flex_right.gallery_stats        
-        if item.stats.visits
-          .gallery_item_visits
-            span.icon-eye
-            br
-            span.value=item.stats.visits
-        if item.stats.likes
-          .gallery_item_likes
-            span.icon-heart
-            br
-            span.value=item.stats.likes 
-        if item.stats.img
-          .gallery_item_images
-            span.icon-picture
-            br
-            span.value=item.stats.img
+      if item.stats 
+        .flex_right.gallery_stats        
+          if item.stats.visits
+            .gallery_item_visits
+              span.icon-eye
+              br
+              span.value=item.stats.visits
+          if item.stats.likes
+            .gallery_item_likes
+              span.icon-heart
+              br
+              span.value=item.stats.likes 
+          if item.stats.img
+            .gallery_item_images
+              span.icon-picture
+              br
+              span.value=item.stats.img
