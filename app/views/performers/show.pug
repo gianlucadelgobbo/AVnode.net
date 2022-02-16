@@ -88,7 +88,7 @@ block content
               .performance_divider.basic_divider
               .owl-carousel.loop.owl-theme
                 each item in data.performances
-                  if (["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"].indexOf(item.type._id)==-1)                
+                  if (!item.type || ["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"].indexOf(item.type._id)==-1)                
                     include ../partials/boxPerformance
               .button_more.button_more_grey
                 a(href="/"+data.slug+"/performances", title=data.stagename)
@@ -104,7 +104,7 @@ block content
               .performance_divider.basic_divider
               .owl-carousel.loop.owl-theme
                 each item in data.performances
-                  if (["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"].indexOf(item.type._id)!=-1)                
+                  if (!item.type || ["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"].indexOf(item.type._id)!=-1)                
                     include ../partials/boxPerformance
               .button_more.button_more_grey
                 a(href="/"+data.slug+"/learnings", title=data.stagename)
