@@ -185,7 +185,7 @@ const eventSchema = new Schema({
 }); */
 
 eventSchema.virtual('advanced').get(function (req) {
-  logger.debug("virtual advanced");
+  //logger.debug("virtual advanced");
   //let programmebydayvenue = [];
   let performers = {
     performersN: 0,

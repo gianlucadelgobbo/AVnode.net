@@ -653,15 +653,18 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
         if (data.web) for(let a=0;a<data.web.length;a++) jsonld.sameAs.push(data.web[a].url);
         if (data.social) for(let a=0;a<data.social.length;a++) jsonld.sameAs.push(data.social[a].url);
       }
-      if (data.addressesFormatted) {
+      if (data.addresses.length) {
         jsonld.address = {
           "@type": "PostalAddress",
-          "addressLocality": data.addressesFormatted.join(", ").trim().split(",")[0].replace(" ", ", ").replace("<b>", "").replace("</b>", "")
+          "addressLocality": data.addresses[0].locality,
+          "addressCountry": data.addresses[0].country
         }  
       }
     }
   } else if (data && data.title) {
-    if (subsection != "show") {
+    logger.debug("subsection");
+    logger.debug(subsection);
+    if (subsection != "show" && !data.performer && !data.performance) {
       jsonld["@type"] = "ItemList";
       jsonld.itemListElement = [];
       jsonld.name = data.title+" "+__(config.sections[section][subsection].title);
@@ -709,6 +712,90 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
       /* jsonld.name = data.title;
       jsonld.description = data.description;
       jsonld.image = data.imageFormats.large; */
+    } else if (subsection == "performers" && data.performer) {
+      if (data.performer.is_crew) {
+        jsonld["@type"] = "PerformingGroup";
+        if (data.performer.members && data.performer.members.length) {
+          jsonld.member = [];
+          for(let a=0;a<data.performer.members.length;a++) {
+            jsonld.member.push({
+              '@type': 'OrganizationRole', 
+              "member": {
+                "@type": "Person",
+                "name": data.performer.members[a].stagename
+              }
+            });
+          }
+        }
+      } else {
+        jsonld["@type"] = "Person";
+      }
+      jsonld.name = data.performer.stagename;
+      jsonld.description = data.performer.description;
+      jsonld.image = data.performer.imageFormats.large;
+      if ((data.performer.web && data.performer.web.length) || (data.performer.social && data.performer.social.length)) {
+        jsonld.sameAs = [];
+        if (data.performer.web) for(let a=0;a<data.performer.web.length;a++) jsonld.sameAs.push(data.performer.web[a].url);
+        if (data.performer.social) for(let a=0;a<data.performer.social.length;a++) jsonld.sameAs.push(data.performer.social[a].url);
+      }
+      if (data.performer.addresses.length) {
+        logger.debug(data.addresses);
+        jsonld.address = {
+          "@type": "PostalAddress",
+          "addressLocality": data.performer.addresses[0].locality,
+          "addressCountry": data.performer.addresses[0].country/* .join(", ").trim().split(",")[0].replace(" ", ", ").replace("<b>", "").replace("</b>", "") */
+        }  
+      }
+    } else if (subsection == "program" && data.performance) {
+      if (data.performance.bookings && data.performance.bookings.length) {
+        for(let a=0;a<data.performance.bookings.length;a++) {
+          //logger.debug(data.performance.bookings[a]);
+          if(data.performance.bookings[a].event._id.toString()==data._id.toString()) {
+            jsonld.startDate = data.performance.bookings[a].schedule[0].starttime;
+            jsonld.location = {
+              "@type": "Place",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": data.performance.bookings[a].schedule[0].venue.location.locality,
+                "addressCountry": data.performance.bookings[a].schedule[0].venue.location.country
+              },
+              "name": data.performance.bookings[a].schedule[0].venue.name
+            };    
+          }
+        }
+      }
+      jsonld["@type"] = "CreativeWork";
+      jsonld.author = [];
+      if (data.performance.users) {
+        for(let a=0;a<data.performance.users.length;a++) {
+          if (data.performance.users[a].members && data.performance.users[a].members.length) {
+            jsonld.author.push({
+              '@type': 'OrganizationRole',
+              "name": data.performance.users[a].stagename
+            });
+    
+          } else {
+            jsonld.author.push({
+              '@type': 'Person',
+              "name": data.performance.users[a].stagename
+            });
+          }
+        }  
+      }
+      jsonld.name = data.title+" "+__("Program")+": "+data.performance.title;
+      jsonld.description = data.performance.description;
+      jsonld.image = data.performance.imageFormats.large;
+      if ((data.performance.web && data.performance.web.length) || (data.performance.social && data.performance.social.length)) {
+        jsonld.sameAs = [];
+        if (data.performance.web) for(let a=0;a<data.performance.web.length;a++) jsonld.sameAs.push(data.performance.web[a].url);
+        if (data.performance.social) for(let a=0;a<data.performance.social.length;a++) jsonld.sameAs.push(data.performance.social[a].url);
+      }
+      if (data.performance.media && data.performance.media.file && data.performance.media.width && data.performance.media.height) {
+        jsonld.video = "https://"+req.headers.host+data.performance.media.file;
+        jsonld.video_width = data.performance.media.width;
+        jsonld.video_height = data.performance.media.height;
+      }
+
     } else {
       if (data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
         jsonld["@type"] = "Event";
@@ -798,7 +885,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
     jsonld.image = data.imageFormats.large; */
   }
 
-  //logger.debug(jsonld);
+  logger.debug(jsonld);
   return jsonld;
 };
 
