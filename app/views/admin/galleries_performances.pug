@@ -1,0 +1,80 @@
+extends ../layout_admin
+block content
+  .formcontainer(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h1.h2=data.title
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        a.btn.btn-primary(href=data.is_public ? '/videos/'+data.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")=__("SHOW")
+    include partials/menuobj
+    h3.labelField=__("Performances")
+      //-.row.mt-3
+        .col-md-10
+        .col-md-2
+          #dropdownContents
+            a.float-right.btn.btn-success(href='#'
+              data-labelfield=global.__("Performance Name")
+              data-title=global.__("Add Performance")
+              data-user=user && user._id ? user._id : undefined
+              data-param="title"
+              data-sez="performances")=global.__('New Performance')
+    hr
+    .row
+      .col-md-12
+        table(data-toggle="table", data-show-columns="true", data-search="true")
+          thead
+            tr
+              th=__("Image")
+              th(data-sortable="true")=__("Title")
+              th(data-sortable="true")=__("Type")
+              th(data-sortable="true")=__("Productions")
+              th(data-sortable="true")=__("Date")
+              //-th(data-sortable="true")=__("Bookings")
+          tbody
+            - console.log(data)
+            each performance in data.performances
+              tr(id=performance._id)
+                td
+                  a(href='/admin/performances/'+performance._id+'/public')
+                    img.img-fluid(src=performance.imageFormats.small)
+                td
+                  b
+                    if user.is_admin
+                      a.text-danger.delete(href='#' data-id=performance._id data-sez=get.sez)
+                        i.icon-trash
+                      !=" | "  
+                    a(href='/admin/performances/'+performance._id+'/public')
+                      i.icon-edit
+                    !=" | "  
+                    a(href=performance.is_public ? '/performances/'+performance.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
+                      i.icon-eye
+                    !=" | "  
+                    !=performance.title 
+                    div
+                      i.icon-circle(class=performance.is_public ? "text-success" : "text-danger")
+                      !=" "  
+                      !=__("Public")
+                    div
+                      i.icon-eye
+                      !=" "  
+                      !=performance.stats.visits
+                      !=" | "  
+                      i.icon-heart
+                      !=" "  
+                      !=performance.stats.likes
+                td=performance.type && performance.type.name ? performance.type.name : "MISSING"
+                td
+                  ul
+                    each member in performance.users
+                      li=member.stagename
+                td
+                  p
+                    !=new Date(performance.createdAt).toLocaleDateString()
+                    br
+                    !=new Date(performance.updatedAt).toLocaleDateString()
+                //-td
+                  if performance.bookings
+                    ul
+                      each booking in performance.bookings
+                        li=booking.event.title
+                  else
+                    !="NO BOOKING YET"

@@ -1,0 +1,75 @@
+extends ../layout_admin
+block content
+  .formcontainer(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h1.h2=data.title
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        a.btn.btn-primary(href=data.is_public ? '/videos/'+data.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")=__("SHOW")
+    .row
+      .col-md-12
+        h3.labelField=__("Events")
+        //-.row.mt-3
+          .col-md-10
+          .col-md-2
+            #dropdownContents
+              a.float-right.btn.btn-success(href='#'
+                data-labelfield=global.__("Event Name")
+                data-title=global.__("Add Event")
+                data-param="title"
+                data-user=user && user._id ? user._id : undefined
+                data-sez="events")=global.__('New Event')
+        hr
+        .row
+          .col-md-12
+            table(data-toggle="table", data-show-columns="true", data-search="true")
+              thead
+                tr
+                  th=__("Image")
+                  th(data-sortable="true")=__("Title")
+                  th(data-sortable="true")=__("Type")
+                  th(data-sortable="true")=__("Productions")
+                  th(data-sortable="true")=__("Date")
+              tbody
+                each event in data.events
+                  tr(id=event._id)
+                    td
+                      a(href='/admin/events/'+event._id+'/public')
+                        img.img-fluid(src=event.imageFormats.small)
+                    td
+                      b
+                        if user.is_admin
+                          a.text-danger.delete(href='#' data-id=event._id data-sez=get.sez)
+                            i.icon-trash
+                          !=" | "  
+                          a.text-success.duplicate(href='#' data-id=event._id data-sez=get.sez)
+                            i.icon-clone
+                          !=" | "  
+                        a(href='/admin/events/'+event._id+'/public')
+                          i.icon-edit
+                        !=" | "  
+                        a(href=event.is_public ? '/events/'+event.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
+                          i.icon-eye
+                        !=" | "  
+                        !=event.title 
+                        div
+                          i.icon-circle(class=event.is_public ? "text-success" : "text-danger")
+                          !=" "  
+                          !=__("Public")
+                        div
+                          i.icon-eye
+                          !=" "  
+                          !=event.stats.visits
+                          !=" | "  
+                          i.icon-heart
+                          !=" "  
+                          !=event.stats.likes
+                    td=event.type && event.type.name ? event.type.name : "MISSING"
+                    td
+                      ul
+                        each member in event.users
+                          li=member.stagename
+                    td
+                      p
+                        !=new Date(event.createdAt).toLocaleDateString()
+                        br
+                        !=new Date(event.updatedAt).toLocaleDateString()

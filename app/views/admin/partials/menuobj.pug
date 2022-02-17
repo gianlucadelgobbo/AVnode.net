@@ -1,6 +1,6 @@
 nav.mb-3.border-bottom
-	//- console.log(config.cpanel[get.sez].forms)
-	- var exclude = ["connections", "partners", "partners-message", "program", "calls", "settings","groups"]
+	- console.log(config.cpanel[get.sez].forms)
+	- var exclude = ["connections", "partners", "partners-message", "program", "calls", "settings","groups","image"]
 	each obj,form in config.cpanel[get.sez].forms
 		if (user.is_admin || exclude.indexOf(form)===-1) && config.cpanel[get.sez].forms[form].title
 			a.btn.btn-primary.btn-sm.mr-3.mb-3(aria-current=(form==get.form ? 'true' : undefined) class=(form==get.form ? 'disabled' : undefined) href='/admin/'+get.sez+'/'+get.id+'/'+form+(get.sez=="partners" ? (currentUrl.split("?")[1] ? "?"+currentUrl.split("?")[1] : "?is_active=1&anykind=1") : ""))=__(config.cpanel[get.sez].forms[form].title)

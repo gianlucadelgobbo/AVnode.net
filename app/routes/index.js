@@ -95,7 +95,6 @@ const Models = {
 
 
 router.get('/sitemap.xml', (req, res) => {
-  console.log("sitemap")
   Promise.all([
     Models['User'].find(  {"performances.0":{"$exists": true}, "is_public": true}).select("_id updatedAt"),
     Models['User'].find(  {"$or" : [{"partner_owner.owner": "5be8772bfc39610000007065"},{"activity_as_organization" : {"$gt": 0}}], "is_crew" : true, "is_public": true}).select("_id updatedAt"),

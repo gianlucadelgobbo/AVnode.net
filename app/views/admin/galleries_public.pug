@@ -5,7 +5,7 @@ block content
       h1.h2=data.title
       .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
         a.btn.btn-primary(href=data.is_public ? '/galleries/'+data.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")=__("SHOW")
-    //include partials/menuobj
+    include partials/menuobj
     //h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
     form(method="post")
       .row
