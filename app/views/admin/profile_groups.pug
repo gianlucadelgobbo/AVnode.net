@@ -65,6 +65,8 @@ block content
 
     script.
       function ActionFormatter(obj) {
+        console.log("obj");
+        console.log(obj);
         return "<a href=\"https://www.facebook.com/groups/"+obj.id+"/\" target=\"\">"+obj.name+"</a>";
       } 
       function getGroups(profile) {
@@ -84,7 +86,7 @@ block content
                   id: response.data[a].id,
                   name: response.data[a].name,
                 }
-              })
+              });
               //$(".profilegroups tbody").append("<tr id=\"row"+response.data[a].id+"\"><td></td></tr>")
             }
             console.log(rows)
