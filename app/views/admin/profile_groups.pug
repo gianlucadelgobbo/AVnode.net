@@ -8,13 +8,14 @@ block content
     include partials/menuobj
     h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
     .row
-      .input-group.getgroups
-        input.form-control(type='text' autocomplete='nope' placeholder=__("Facebook profile") value='')
-        .input-group-append
-          button.mb-2.btn.btn-success(type='button' data-objid=data._id data-obj=get.sez)
-            i.icon-plus
-            !=" "
-            b=__("Get Groups")
+      .col-md-12
+        .input-group.getgroups
+          input.form-control(type='text' autocomplete='nope' placeholder=__("Facebook profile") value='')
+          .input-group-append
+            button.mb-2.btn.btn-success(type='button' data-objid=data._id data-obj=get.sez)
+              i.icon-plus
+              !=" "
+              b=__("Get Groups")
     hr
     .row
       .col-md-12
