@@ -86,6 +86,12 @@ $(function () {
 		});
   });
 
+	$( ".getgroups button" ).click(function( event ) {
+		console.log(FB)
+		console.log($( ".getgroups input" ).val())
+		getGroups($( ".getgroups input" ).val())
+  });
+
 
 	$( ".categories_filter" ).click(function( event ) {
 		if ($( ".categories_filter" ).prop('checked')) {
