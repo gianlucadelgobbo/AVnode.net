@@ -21,9 +21,9 @@ block content
         table.profilegroups(data-toggle="table", data-show-columns="true", data-search="true")
           thead
             tr
-              th(data-sortable="true")=__("Group")
-              th=__("Image")
+              th(data-sortable="true" data-field="name" data-formatter="ActionFormatter")=__("Group")
               //-th(data-sortable="true")=__("Url")
+                th=__("Image")
                 th(data-sortable="true")=__("Productions")
                 th(data-sortable="true")=__("Date")
           tbody
@@ -63,6 +63,9 @@ block content
 
 
     script.
+      function ActionFormatter(obj) {
+        return "<a href=\"https://www.facebook.com/groups/"+obj.id+"/\" target=\"\">"+obj.name+"</a>";
+      } 
       function getGroups(profile) {
         console.log('Fetching your information.... ');
         FB.api(
@@ -71,8 +74,17 @@ block content
           {"limit":"1000"},
           function(response) {
             console.log(response)
+            var rows = []
             for(var a=0;a<response.data.length;a++) {
-              $(".profilegroups tbody").append("<tr id=\"row"+response.data[a].id+"\"><td><a href=\"https://www.facebook.com/groups/"+response.data[a].id+"/\" target=\"\">"+response.data[a].name+"</a></td></tr>")
+              rows.push({
+                id: response.data[a].id,
+                name: response.data[a].name,
+                action: {
+                  id: response.data[a].id,
+                  name: response.data[a].name,
+                }
+              })
+              //$(".profilegroups tbody").append("<tr id=\"row"+response.data[a].id+"\"><td></td></tr>")
             }
             //Insert your code here
           }
