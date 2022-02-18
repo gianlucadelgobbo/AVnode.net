@@ -67,7 +67,7 @@ block content
         return "<a href=\"https://www.facebook.com/groups/"+obj.id+"/\" target=\"\">"+obj.name+"</a>";
       } 
       function getGroups(profile) {
-        console.log('Fetching your information.... ');
+        console.log('Fetching your information...');
         FB.api(
           '/'+profile+'/groups',
           'GET',
@@ -86,6 +86,7 @@ block content
               })
               //$(".profilegroups tbody").append("<tr id=\"row"+response.data[a].id+"\"><td></td></tr>")
             }
+            $(".profilegroups").bootstrapTable('append', rows)
             //Insert your code here
           }
         );
