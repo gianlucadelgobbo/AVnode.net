@@ -7,45 +7,94 @@ block content
         a.btn.btn-primary(href=data.is_public ? '/'+data.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")=__("SHOW")
     include partials/menuobj
     h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
-    .input-group.getgroups
-      input.form-control(type='text' autocomplete='nope' placeholder=__("Facebook profile") value='')
-      .input-group-append
-        button.mb-2.btn.btn-success(type='button' data-objid=data._id data-obj=get.sez)
-          i.icon-plus
-          !=" "
-          b=__("Get Groups")
+    .row
+      .input-group.getgroups
+        input.form-control(type='text' autocomplete='nope' placeholder=__("Facebook profile") value='')
+        .input-group-append
+          button.mb-2.btn.btn-success(type='button' data-objid=data._id data-obj=get.sez)
+            i.icon-plus
+            !=" "
+            b=__("Get Groups")
+    hr
+    .row
+      .col-md-12
+        table.profilegroups(data-toggle="table", data-show-columns="true", data-search="true")
+          thead
+            tr
+              th(data-sortable="true")=__("Group")
+              th=__("Image")
+              //-th(data-sortable="true")=__("Url")
+                th(data-sortable="true")=__("Productions")
+                th(data-sortable="true")=__("Date")
+          tbody
+            //-each group in response.data
+              tr(id=event._id)
+                td
+                  a(href='https://www.facebook.com/groups/'+group._id+'/public')=group.name
+                    
+                //td
+                  b
+                    if user.is_admin
+                      a.text-danger.delete(href='#' data-id=event._id data-sez=get.sez)
+                        i.icon-trash
+                      !=" | "  
+                      a.text-success.duplicate(href='#' data-id=event._id data-sez=get.sez)
+                        i.icon-clone
+                      !=" | "  
+                    a(href='/admin/events/'+event._id+'/public')
+                      i.icon-edit
+                    !=" | "  
+                    a(href=event.is_public ? '/events/'+event.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
+                      i.icon-eye
+                    !=" | "  
+                    !=event.title 
+                    div
+                      i.icon-circle(class=event.is_public ? "text-success" : "text-danger")
+                      !=" "  
+                      !=__("Public")
+                    div
+                      i.icon-eye
+                      !=" "  
+                      !=event.stats.visits
+                      !=" | "  
+                      i.icon-heart
+                      !=" "  
+                      !=event.stats.likes
 
-    form(method="post")
-      script.
-        function getGroups(profile) {
-          console.log('Fetching your information.... ');
-          FB.api(
-            '/'+profile+'/groups',
-            'GET',
-            {"limit":"1000"},
-            function(response) {
-              console.log(response)
-              //Insert your code here
+
+    script.
+      function getGroups(profile) {
+        console.log('Fetching your information.... ');
+        FB.api(
+          '/'+profile+'/groups',
+          'GET',
+          {"limit":"1000"},
+          function(response) {
+            console.log(response)
+            for(var a=0;a<response.data.length;a++) {
+              $(".profilegroups tbody").append("<tr id=\"row"+response.data[a].id+"\"><td><a href=\"https://www.facebook.com/groups/"+response.data[a].id+"/\" target=\"\">"+response.data[a].name+"</a></td></tr>")
             }
-          );
-        }
-        window.fbAsyncInit = function() {
-          FB.init({
-            appId            : '457341845506141',
-            autoLogAppEvents : true,
-            xfbml            : true,
-            version          : 'v10.0'
-          });
-          FB.login(function(response) {
-            if (response.authResponse) {
-              console.log('Welcome!');
-            } else {
-              console.log('User cancelled login or did not fully authorize.');
-            }
-          });
-        };
-      script(async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js")
+            //Insert your code here
+          }
+        );
+      }
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId            : '457341845506141',
+          autoLogAppEvents : true,
+          xfbml            : true,
+          version          : 'v10.0'
+        });
+        FB.login(function(response) {
+          if (response.authResponse) {
+            console.log('Welcome!');
+          } else {
+            console.log('User cancelled login or did not fully authorize.');
+          }
+        });
+      };
+    script(async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js")
 
 
-      hr
-      button.btn.btn-primary.btn-lg.btn-block(type='submit')=__("Save")
+    hr
+    button.btn.btn-primary.btn-lg.btn-block(type='submit')=__("Save")
