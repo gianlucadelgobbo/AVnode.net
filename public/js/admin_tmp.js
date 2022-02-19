@@ -87,7 +87,7 @@ $(function () {
   });
 
 	// ADMIN PROFILE / GROUPS
-	if ($( ".getgroups button" ).length) {
+	if ($( ".getgroups" ).length) {
 		function ActionFormatter(index, row) {
 			console.log("index");
 			console.log(index);
