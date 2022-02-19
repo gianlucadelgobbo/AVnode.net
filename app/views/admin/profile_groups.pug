@@ -23,7 +23,7 @@ block content
           thead
             tr
               th(data-sortable="true" data-field="name")=__("Group")
-              th(data-sortable="true" data-field="url" data-formatter="ActionFormatter")=__("Url")
+              th(data-sortable="true" data-field="id" data-formatter="ActionFormatter")=__("Url")
               //-th=__("Image")
                 th(data-sortable="true")=__("Productions")
                 th(data-sortable="true")=__("Date")
@@ -64,10 +64,11 @@ block content
 
 
     script.
-      function ActionFormatter(obj) {
-        console.log("obj");
-        console.log(obj);
-        return "<a href=\"https://www.facebook.com/groups/"+obj+"/\" target=\"\">"+obj+"</a>";
+      function ActionFormatter(index, row) {
+        console.log("index");
+        console.log(index);
+        console.log(row);
+        return "<a href=\"https://www.facebook.com/groups/"+row.id+"/\" target=\"\">"+row.id+"</a>";
       } 
       function getGroups(profile) {
         console.log('Fetching your information...');
@@ -81,8 +82,7 @@ block content
             for(var a=0;a<response.data.length;a++) {
               rows.push({
                 id: response.data[a].id,
-                name: response.data[a].name,
-                action: response.data[a].id
+                name: response.data[a].name
               });
               //$(".profilegroups tbody").append("<tr id=\"row"+response.data[a].id+"\"><td></td></tr>")
             }
