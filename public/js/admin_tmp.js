@@ -88,12 +88,6 @@ $(function () {
 
 	// ADMIN PROFILE / GROUPS
 	if ($( ".getgroups" ).length) {
-		function ActionFormatter(index, row) {
-			console.log("index");
-			console.log(index);
-			console.log(row);
-			return "<a href=\"https://www.facebook.com/groups/"+row.id+"/\" target=\"_blank\">https://fb.com/"+row.id+"</a>";
-		} 
 		function fbLogin() {
 			FB.login(function(response) {
 				if (response.authResponse) {
@@ -146,8 +140,8 @@ $(function () {
 		$( ".getgroups" ).change(function( event ) {
 			console.log(FB)
 			console.log($(this).val())
-			console.log($(this).text())
-			getGroups($(this).val(), $(this).text())
+			console.log($( ".getgroups option:selected" ).text())
+			getGroups($(this).val(), $( ".getgroups option:selected" ).text())
 		});	
 	}
 

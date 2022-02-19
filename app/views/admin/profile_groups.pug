@@ -73,6 +73,12 @@ block content
 
 
     script.
+      function ActionFormatter(index, row) {
+        console.log("index");
+        console.log(index);
+        console.log(row);
+        return "<a href=\"https://www.facebook.com/groups/"+row.id+"/\" target=\"_blank\">https://fb.com/"+row.id+"</a>";
+      } 
       window.fbAsyncInit = function() {
         FB.init({
           appId            : '457341845506141',
