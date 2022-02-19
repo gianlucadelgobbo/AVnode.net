@@ -11,20 +11,9 @@ block content
       .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
         button.mb-2.btn.btn-success.fblogin(type='button' data-objid=data._id data-obj=get.sez)
           b=__("FB Login")
-      select.getgroups.form-control.my-1.mr-sm-2.d-none(style="width:230px")
+      select.getgroups.form-control.my-1.mr-sm-2.d-none.disabled(style="width:230px")
         option(selected='')=__("Refresh groups from...")
         option(value='me')=__("Your personal profile")
-
-    //-.row
-      .col-md-12
-        .input-group.getgroups
-          input.form-control(type='text' autocomplete='nope' placeholder=__("Facebook profile") value='')
-          .input-group-append
-            button.mb-2.btn.btn-success(type='button' data-objid=data._id data-obj=get.sez)
-              i.icon-plus
-              !=" "
-              b=__("Get Groups")
-    hr
     .row
       .col-md-12
         table.profilegroups(data-toggle="table", data-show-columns="true", data-search="true")
@@ -33,43 +22,13 @@ block content
               th(data-sortable="true" data-field="name")=__("Group")
               th(data-sortable="true" data-field="id" data-formatter="ActionFormatter")=__("Url")
               th(data-sortable="true" data-field="profile")=__("Profile")
-              //-th=__("Image")
-                th(data-sortable="true")=__("Productions")
-                th(data-sortable="true")=__("Date")
           tbody
             //-each group in response.data
-              tr(id=event._id)
+              tr(data-index='0')
+                td Amici di Filettino
                 td
-                  a(href='https://www.facebook.com/groups/'+group._id+'/public')=group.name
-                    
-                //td
-                  b
-                    if user.is_admin
-                      a.text-danger.delete(href='#' data-id=event._id data-sez=get.sez)
-                        i.icon-trash
-                      !=" | "  
-                      a.text-success.duplicate(href='#' data-id=event._id data-sez=get.sez)
-                        i.icon-clone
-                      !=" | "  
-                    a(href='/admin/events/'+event._id+'/public')
-                      i.icon-edit
-                    !=" | "  
-                    a(href=event.is_public ? '/events/'+event.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
-                      i.icon-eye
-                    !=" | "  
-                    !=event.title 
-                    div
-                      i.icon-circle(class=event.is_public ? "text-success" : "text-danger")
-                      !=" "  
-                      !=__("Public")
-                    div
-                      i.icon-eye
-                      !=" "  
-                      !=event.stats.visits
-                      !=" | "  
-                      i.icon-heart
-                      !=" "  
-                      !=event.stats.likes
+                  a(href='https://www.facebook.com/groups/31631428097/' target='_blank') https://fb.com/31631428097
+                td Your personal profile
 
 
     script.
@@ -90,5 +49,5 @@ block content
     script(async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js")
 
 
-    hr
-    button.btn.btn-primary.btn-lg.btn-block(type='submit')=__("Save")
+    //-hr
+     button.btn.btn-primary.btn-lg.btn-block(type='submit')=__("Save")

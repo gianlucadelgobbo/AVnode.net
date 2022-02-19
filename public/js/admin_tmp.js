@@ -94,6 +94,7 @@ $(function () {
 					console.log('Welcome!');
 					console.log('Fetching your pages');
 					$( ".fblogin" ).addClass("d-none");
+					$( ".getgroups" ).removeClass("d-none");
 					FB.api(
 						'/me/accounts?fields=name',
 						'GET',
@@ -103,7 +104,7 @@ $(function () {
 							for(var a=0;a<response.data.length;a++) {
 								$(".getgroups").append("<option value=\""+response.data[a].id+"\">"+response.data[a].name+"</option>")
 							}
-							$( ".getgroups" ).removeClass("d-none");
+							$( ".getgroups" ).removeClass("disabled");
 						}
 					);
 				} else {
