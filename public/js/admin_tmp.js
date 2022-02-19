@@ -145,14 +145,6 @@ $(function () {
 				}
 			);
 		}
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId            : '457341845506141',
-				autoLogAppEvents : true,
-				xfbml            : true,
-				version          : 'v10.0'
-			});
-		};
 		$( ".fblogin" ).click(function( event ) {
 			console.log(FB)
 			fbLogin()

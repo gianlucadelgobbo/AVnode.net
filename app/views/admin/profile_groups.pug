@@ -68,7 +68,15 @@ block content
                       !=event.stats.likes
 
 
-    //-script.
+    script.
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId            : '457341845506141',
+          autoLogAppEvents : true,
+          xfbml            : true,
+          version          : 'v10.0'
+        });
+      };
     script(async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js")
 
 
