@@ -93,6 +93,7 @@ $(function () {
 				if (response.authResponse) {
 					console.log('Welcome!');
 					console.log('Fetching your pages');
+					$( ".fblogin" ).addClass("d-none");
 					FB.api(
 						'/me/accounts?fields=name',
 						'GET',
@@ -102,6 +103,7 @@ $(function () {
 							for(var a=0;a<response.data.length;a++) {
 								$(".getgroups").append("<option value=\""+response.data[a].id+"\">"+response.data[a].name+"</option>")
 							}
+							$( ".getgroups" ).removeClass("d-none");
 						}
 					);
 				} else {
