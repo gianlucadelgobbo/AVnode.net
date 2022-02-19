@@ -6,7 +6,11 @@ block content
       .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
         a.btn.btn-primary(href=data.is_public ? '/'+data.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")=__("SHOW")
     include partials/menuobj
-    h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        button.mb-2.btn.btn-success.fblogin(type='button' data-objid=data._id data-obj=get.sez)
+          b=__("FB Login")
     .row
       .col-md-12
         .input-group.getgroups
@@ -24,6 +28,7 @@ block content
             tr
               th(data-sortable="true" data-field="name")=__("Group")
               th(data-sortable="true" data-field="id" data-formatter="ActionFormatter")=__("Url")
+              th(data-sortable="true" data-field="profile")=__("Profile")
               //-th=__("Image")
                 th(data-sortable="true")=__("Productions")
                 th(data-sortable="true")=__("Date")
@@ -63,50 +68,7 @@ block content
                       !=event.stats.likes
 
 
-    script.
-      function ActionFormatter(index, row) {
-        console.log("index");
-        console.log(index);
-        console.log(row);
-        return "<a href=\"https://www.facebook.com/groups/"+row.id+"/\" target=\"\">"+row.id+"</a>";
-      } 
-      function getGroups(profile) {
-        console.log('Fetching your information...');
-        FB.api(
-          '/'+profile+'/groups',
-          'GET',
-          {"limit":"1000"},
-          function(response) {
-            console.log(response)
-            var rows = []
-            for(var a=0;a<response.data.length;a++) {
-              rows.push({
-                id: response.data[a].id,
-                name: response.data[a].name
-              });
-              //$(".profilegroups tbody").append("<tr id=\"row"+response.data[a].id+"\"><td></td></tr>")
-            }
-            console.log(rows)
-            $(".profilegroups").bootstrapTable('append', rows)
-            //Insert your code here
-          }
-        );
-      }
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId            : '457341845506141',
-          autoLogAppEvents : true,
-          xfbml            : true,
-          version          : 'v10.0'
-        });
-        FB.login(function(response) {
-          if (response.authResponse) {
-            console.log('Welcome!');
-          } else {
-            console.log('User cancelled login or did not fully authorize.');
-          }
-        });
-      };
+    //-script.
     script(async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js")
 
 

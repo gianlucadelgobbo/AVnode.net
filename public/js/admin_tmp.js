@@ -86,11 +86,84 @@ $(function () {
 		});
   });
 
-	$( ".getgroups button" ).click(function( event ) {
-		console.log(FB)
-		console.log($( ".getgroups input" ).val())
-		getGroups($( ".getgroups input" ).val())
-  });
+	// ADMIN PROFILE / GROUPS
+	if ($( ".getgroups button" ).length) {
+		function ActionFormatter(index, row) {
+			console.log("index");
+			console.log(index);
+			console.log(row);
+			return "<a href=\"https://www.facebook.com/groups/"+row.id+"/\" target=\"_blank\">https://fb.com/"+row.id+"</a>";
+		} 
+		function fbLogin() {
+			FB.login(function(response) {
+				FB.api(
+					'/me/accounts?fields=name',
+					'GET',
+					{"limit":"1000"},
+					function(response) {
+						console.log(response)
+						var rows = []
+						for(var a=0;a<response.data.length;a++) {
+							rows.push({
+								id: response.data[a].id,
+								name: response.data[a].name
+							});
+							//$(".profilegroups tbody").append("<tr id=\"row"+response.data[a].id+"\"><td></td></tr>")
+						}
+						console.log(rows)
+						//$(".profilegroups").bootstrapTable('append', rows)
+						//Insert your code here
+					}
+				);
+				if (response.authResponse) {
+					console.log('Welcome!');
+				} else {
+					console.log('User cancelled login or did not fully authorize.');
+				}
+			});
+		} 
+		function getGroups(profile) {
+			console.log('Fetching your information...');
+			FB.api(
+				'/'+profile+'/groups',
+				'GET',
+				{"limit":"1000"},
+				function(response) {
+					console.log(response)
+					var rows = []
+					for(var a=0;a<response.data.length;a++) {
+						rows.push({
+							id: response.data[a].id,
+							name: response.data[a].name,
+							profile: profile
+						});
+						//$(".profilegroups tbody").append("<tr id=\"row"+response.data[a].id+"\"><td></td></tr>")
+					}
+					console.log(rows)
+					$(".profilegroups").bootstrapTable('append', rows)
+					//Insert your code here
+				}
+			);
+		}
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId            : '457341845506141',
+				autoLogAppEvents : true,
+				xfbml            : true,
+				version          : 'v10.0'
+			});
+		};
+		$( ".fblogin" ).click(function( event ) {
+			console.log(FB)
+			fbLogin()
+		});
+	
+		$( ".getgroups button" ).click(function( event ) {
+			console.log(FB)
+			console.log($( ".getgroups input" ).val())
+			getGroups($( ".getgroups input" ).val())
+		});	
+	}
 
 
 	$( ".categories_filter" ).click(function( event ) {
