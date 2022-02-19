@@ -101,7 +101,7 @@ $(function () {
 						'GET',
 						{"limit":"1000"},
 						function(response) {
-							response.sort( compare2 );
+							response.data.sort( compare2 );
 							console.log(response)
 							for(var a=0;a<response.data.length;a++) {
 								$(".getgroups").append("<option value=\""+response.data[a].id+"\">"+response.data[a].name+"</option>")
@@ -122,7 +122,7 @@ $(function () {
 				{"limit":"1000"},
 				function(response) {
 					console.log(response)
-					response.sort( compare2 );
+					response.data.sort( compare2 );
 					var rows = []
 					for(var a=0;a<response.data.length;a++) {
 						rows.push({
