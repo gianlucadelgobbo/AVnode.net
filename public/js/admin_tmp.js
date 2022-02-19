@@ -96,33 +96,26 @@ $(function () {
 		} 
 		function fbLogin() {
 			FB.login(function(response) {
-				FB.api(
-					'/me/accounts?fields=name',
-					'GET',
-					{"limit":"1000"},
-					function(response) {
-						console.log(response)
-						var rows = []
-						for(var a=0;a<response.data.length;a++) {
-							rows.push({
-								id: response.data[a].id,
-								name: response.data[a].name
-							});
-							//$(".profilegroups tbody").append("<tr id=\"row"+response.data[a].id+"\"><td></td></tr>")
-						}
-						console.log(rows)
-						//$(".profilegroups").bootstrapTable('append', rows)
-						//Insert your code here
-					}
-				);
 				if (response.authResponse) {
 					console.log('Welcome!');
+					console.log('Fetching your pages');
+					FB.api(
+						'/me/accounts?fields=name',
+						'GET',
+						{"limit":"1000"},
+						function(response) {
+							console.log(response)
+							for(var a=0;a<response.data.length;a++) {
+								$(".getgroups").append("<option value=\""+response.data[a].id+"\">"+response.data[a].name+"</option>")
+							}
+						}
+					);
 				} else {
 					console.log('User cancelled login or did not fully authorize.');
 				}
 			});
 		} 
-		function getGroups(profile) {
+		function getGroups(profile, name) {
 			console.log('Fetching your information...');
 			FB.api(
 				'/'+profile+'/groups',
@@ -135,7 +128,7 @@ $(function () {
 						rows.push({
 							id: response.data[a].id,
 							name: response.data[a].name,
-							profile: profile
+							profile: name
 						});
 						//$(".profilegroups tbody").append("<tr id=\"row"+response.data[a].id+"\"><td></td></tr>")
 					}
@@ -150,10 +143,11 @@ $(function () {
 			fbLogin()
 		});
 	
-		$( ".getgroups button" ).click(function( event ) {
+		$( ".getgroups" ).change(function( event ) {
 			console.log(FB)
-			console.log($( ".getgroups input" ).val())
-			getGroups($( ".getgroups input" ).val())
+			console.log($(this).val())
+			console.log($(this).text())
+			getGroups($(this).val(), $(this).text())
 		});	
 	}
 

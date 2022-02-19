@@ -11,7 +11,11 @@ block content
       .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
         button.mb-2.btn.btn-success.fblogin(type='button' data-objid=data._id data-obj=get.sez)
           b=__("FB Login")
-    .row
+      select.getgroups.custom-select.my-1.mr-sm-2
+        option(selected='')=__("Refresh groups from...")
+        option(value='me')=__("Your personal profile")
+
+    //-.row
       .col-md-12
         .input-group.getgroups
           input.form-control(type='text' autocomplete='nope' placeholder=__("Facebook profile") value='')
