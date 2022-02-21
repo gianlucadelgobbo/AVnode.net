@@ -119,7 +119,7 @@ html.no-js(lang=session.current_lang)
     if scripts && scripts.indexOf("signup")!==-1
       script(src='/datetimeentry/jquery.plugin.js')
       script(src='/datetimeentry/jquery.datetimeentry.js')
-      script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places")
+      script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places&language=en")
       script(src='/js/combo_admin.min.js')
     include partials/modals/cookielawinfo
     script(async src="https://www.googletagmanager.com/gtag/js?id=UA-124799696-1")

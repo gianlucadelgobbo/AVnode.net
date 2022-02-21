@@ -100,7 +100,7 @@ block title
       .row
         .col-lg-12
           #mappa_evento
-            script(src='https://maps.googleapis.com/maps/api/js?key='+process.env.GOOGLEMAPSAPIKEY+'&extension=.js')
+            script(src='https://maps.googleapis.com/maps/api/js?key='+process.env.GOOGLEMAPSAPIKEY+'&extension=.js&language=en')
             script.
               var locations = !{JSON.stringify(data.locations)}
             script(src='/js/combo_mymaps.min.js')
