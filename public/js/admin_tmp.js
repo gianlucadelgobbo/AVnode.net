@@ -336,9 +336,6 @@ $(function () {
 		$('#birthday').datetimeEntry({datetimeFormat: 'D/O/Y', spinnerBigImage: '/datetimeentry/spinnerDefaultBig.png'});
 	}
 
-	if ($(".datetime-format") && $(".datetime-format").length) {
-		$('.datetime-format').datetimeEntry({datetimeFormat: 'D/O/Y H:M', spinnerBigImage: '/datetimeentry/spinnerDefaultBig.png'});
-	}
 
 	if ($("#types") && $("#types").length) {
 		$('#types input.form-check-input').on("change", function () {
@@ -348,41 +345,79 @@ $(function () {
 			console.log($(this).attr("id")+"tecnique");
 		});
 	}
-
+	// EVENT scheduleslist
 	if ($("#scheduleslist") && $("#scheduleslist").length) {
-		$('#scheduleslist .remove').on("click", function () {
-			$(this).parent().parent().remove()
+		$('.datetime-format').datetimeEntry({datetimeFormat: 'D/O/Y H:M', spinnerBigImage: '/datetimeentry/spinnerDefaultBig.png'});
+
+		function scheduleslistRenumber() {
+			if ($('#scheduleslist').children().length>1) {
+				$('#scheduleslist').find(".remove").removeClass("d-none");
+			} else {
+				$('#scheduleslist').find(".remove").addClass("d-none");
+			}
 			$('#scheduleslist').children().each(function(i, item) {
 				$(item).find(".number").text(i+1);
 				$(item).find("input").each(function(ii, item2) {
 					if ($(item2).attr("name"))
 						$(item2).attr("name", $(item2).attr("name").replace(/\[([0-9]+)\]/g, "["+i+"]"))
+					if ($(item2).attr("id"))
+						$(item2).attr("id", $(item2).attr("id").replace(/\[([0-9]+)\]/g, "["+i+"]").replace(/\_([0-9]+)\_/g, "_"+i+"_"))
 					if ($(item2).attr("onclick"))
 						$(item2).attr("onclick", $(item2).attr("onclick").replace(/\_([0-9]+)\_/g, "_"+i+"_"))
-				})
+					if ($(item2).attr("onchange"))
+						$(item2).attr("onchange", $(item2).attr("onchange").replace(/\_([0-9]+)\_/g, "_"+i+"_"))
+				});
 				$(item).find(".collapse").each(function(ii, item2) {
 					if ($(item2).attr("id"))
 						$(item2).attr("id", $(item2).attr("id").replace(/\_([0-9]+)\_/g, "_"+i+"_"))
 				})
-			})
+				$(item).find("label").each(function (ii, item2) {
+					if ($(item2).attr("for"))
+						$(item2).attr("for", $(item2).attr("for").replace(/\[([0-9]+)\]/g, "["+i+"]"))
+				});
+				$(item).find(".physicalform").each(function (ii, item2) {
+					console.log("$(item2)")
+					console.log($(item2))
+					if ($(item2).attr("id"))
+						$(item2).attr("id", $(item2).attr("id").replace(/\_([0-9]+)\_/g, "_"+i+"_"))
+				});
+				$(item).find(".virtualform").each(function (ii, item2) {
+					if ($(item2).attr("id"))
+						$(item2).attr("id", $(item2).attr("id").replace(/\_([0-9]+)\_/g, "_"+i+"_"))
+				});
+			});
+		}
+		function scheduleslistRemove(el) {
+			$(el).parent().parent().remove();
+			scheduleslistRenumber();
+		}
+		$('#scheduleslist .remove').on("click", function () {
+			scheduleslistRemove(this)
 		});
-	}
-
-	if ($("#medias") && $("#medias").length) {
-		activateSortable();
-	}
-	//duplicator
-	if ($(".duplicator2") && $(".duplicator2").length) {
+		//duplicator
 		$(".duplicator2").on("click", function () {
 			var list = "#"+$(this).data("duplicate");
 			var clone = $($(list).children()[$(list).children().length-1]).clone();
+			$(clone).find(".remove").on("click", function () {
+				scheduleslistRemove(this)
+			});
+			$(clone).find(".datetimeEntry-control").remove();
+			$(clone).find(".datetime-format").datetimeEntry("destroy");
+			$(clone).find(".datetime-format").datetimeEntry({datetimeFormat: 'D/O/Y H:M', spinnerBigImage: '/datetimeentry/spinnerDefaultBig.png'});
+				
 			$(clone).find(".number").text($(list).children().length+1);
 			$(clone).find("input").each(function () {
 				if ($(this).attr("name"))
 					$(this).attr("name", $(this).attr("name").replace(/\[([0-9]+)\]/g, "["+$(list).children().length+"]"))
 			});
 			$(list).append(clone);
+			scheduleslistRenumber();
+			addAddressAutocomplete();
 		});
+	}
+
+	if ($("#medias") && $("#medias").length) {
+		activateSortable();
 	}
 	//duplicator
 	if ($(".duplicator") && $(".duplicator").length) {
@@ -392,8 +427,6 @@ $(function () {
 			clone.find('button').each(function() {
 				$(this).removeAttr('disabled');
 			});
-			console.log(clone.find('input').attr('name'));
-			console.log($(list).children().length);
 			clone.find('input').each(function() {
 				this.name= this.name.replace('[0]', '['+($(list).children().length+1)+']');
 				this.value = "";
@@ -1009,7 +1042,7 @@ $(function () {
 			$(this).parent().find(".street_number").val("");
 			$(this).parent().find(".route").val("");
 			$(this).parent().find(".postal_code").val("");
-	});
+		});
 		$(".address-search-input").on("blur", function() {
 			$(this).val($(this).parent().find(".formatted_address").val());
 		});
