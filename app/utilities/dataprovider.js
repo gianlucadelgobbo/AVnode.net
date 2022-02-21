@@ -800,15 +800,22 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
       if (data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
         jsonld["@type"] = "Event";
         jsonld.startDate = data.schedule[0].starttime;
-        jsonld.location = {
-          "@type": "Place",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": data.schedule[0].venue.location.locality,
-            "addressCountry": data.schedule[0].venue.location.country
-          },
-          "name": data.schedule[0].venue.name
-        };
+        if (data.schedule[0].venue.type == 'virtual') {
+          jsonld.location = {
+            "@type": "VirtualLocation",
+            "url": data.schedule[0].venue.url
+          }
+        } else {
+          jsonld.location = {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": data.schedule[0].venue.location.locality,
+              "addressCountry": data.schedule[0].venue.location.country
+            },
+            "name": data.schedule[0].venue.name
+          };  
+        }
       } else {
         jsonld["@type"] = "CreativeWork";
         jsonld.author = [];
