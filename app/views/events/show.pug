@@ -97,14 +97,15 @@ block title
           .col            
             p.text-right
               a.participate.btn.btn-primary(href="/events/"+data.slug+"/participate/")=global.__('Participate')
-      .row
-        .col-lg-12
-          #mappa_evento
-            script(src='https://maps.googleapis.com/maps/api/js?key='+process.env.GOOGLEMAPSAPIKEY+'&extension=.js&language=en')
-            script.
-              var locations = !{JSON.stringify(data.locations)}
-            script(src='/js/combo_mymaps.min.js')
-            #performer_map
+      if data.locations.length
+        .row
+          .col-lg-12
+            #mappa_evento
+              script(src='https://maps.googleapis.com/maps/api/js?key='+process.env.GOOGLEMAPSAPIKEY+'&extension=.js&language=en')
+              script.
+                var locations = !{JSON.stringify(data.locations)}
+              script(src='/js/combo_mymaps.min.js')
+              #performer_map
   .wrapper_about_partecipate_evento
     .abouts_wrapper(style='background-image: url(/images/logo_avnode_grey.svg)') 
       .container 
