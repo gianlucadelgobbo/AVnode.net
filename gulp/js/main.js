@@ -65,7 +65,6 @@ $(document).ready(function(){
 				$(event.target).parent().find(".country").val(res.country)
 				$(event.target).parent().find(".formatted_address").val(res.formatted_address)
 				$(event.target).parent().find(".location-search-input").val(res.formatted_address)
-				console.log(res);
 			});
 		}
 		addLocationAutocomplete();
@@ -360,7 +359,6 @@ $(document).ready(function(){
             $('#modalBookPerf .alert').addClass('alert-success');
             $('#modalBookPerf .alert').removeClass('d-none');
           }
-          //console.log(data);
         })
         .fail(function (jqXHR, textStatus) {
           $('#modalBookPerf .alert').html("Internal Server Error");

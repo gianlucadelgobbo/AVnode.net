@@ -30,7 +30,6 @@ block content
               th(data-sortable="true")=__("Date")
               //-th(data-sortable="true")=__("Bookings")
           tbody
-            - console.log(data)
             each performance in data.performances
               tr(id=performance._id)
                 td

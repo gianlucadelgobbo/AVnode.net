@@ -961,7 +961,6 @@ router.get('/videofilestodelete_videos', (req, res) => {
     .find({"media.file": {$exists: true}})
     .select({_id: 1, media: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.media.file})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
@@ -1012,7 +1011,6 @@ router.get('/videofilestodelete_formats', (req, res) => {
     .find({"media": {$exists: true}})
     .select({_id: 1, media: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = [];
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
@@ -1065,7 +1063,6 @@ router.get('/videofilestodelete_previews', (req, res) => {
     .find({"media.preview": {$exists: true}})
     .select({_id: 1, media: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.media.preview})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
@@ -1116,7 +1113,6 @@ router.get('/videofilestodelete_originals', (req, res) => {
     .find({"media.original": {$exists: true}})
     .select({_id: 1, media: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.media.original})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
@@ -1167,7 +1163,6 @@ router.get('/eventfilestodelete_formats', (req, res) => {
     .find({"image": {$exists: true}})
     .select({_id: 1, image: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = [];
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
@@ -1220,7 +1215,6 @@ router.get('/eventfilestodelete_images', (req, res) => {
     .find({"image": {$exists: true}})
     .select({_id: 1, image: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.image ? item.image.file : null})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
@@ -1271,7 +1265,6 @@ router.get('/userfilestodelete_formats', (req, res) => {
     .find({"image": {$exists: true}})
     .select({_id: 1, image: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = [];
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
@@ -1324,7 +1317,6 @@ router.get('/usersfilestodelete_images', (req, res) => {
     .find({"image": {$exists: true}})
     .select({_id: 1, image: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.image.file})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
@@ -1375,7 +1367,6 @@ router.get('/performancefilestodelete_formats', (req, res) => {
     .find({"image": {$exists: true}})
     .select({_id: 1, image: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = [];
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
@@ -1428,7 +1419,6 @@ router.get('/performancefilestodelete_images', (req, res) => {
     .find({"image": {$exists: true}})
     .select({_id: 1, image: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.image.file})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
@@ -1479,7 +1469,6 @@ router.get('/newsfilestodelete_formats', (req, res) => {
     .find({"image": {$exists: true}})
     .select({_id: 1, image: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = [];
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
@@ -1532,7 +1521,6 @@ router.get('/newsfilestodelete_images', (req, res) => {
     .find({"image": {$exists: true}})
     .select({_id: 1, image: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.image.file})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
@@ -1583,7 +1571,6 @@ router.get('/footagefilestodelete_videos', (req, res) => {
     .find({"media.file": {$exists: true}})
     .select({_id: 1, media: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.media.file})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
@@ -1634,7 +1621,6 @@ router.get('/footagefilestodelete_formats', (req, res) => {
     .find({"media": {$exists: true}})
     .select({_id: 1, media: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = [];
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
@@ -1687,7 +1673,6 @@ router.get('/footagefilestodelete_previews', (req, res) => {
     .find({"media.preview": {$exists: true}})
     .select({_id: 1, media: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.media.preview})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
@@ -1738,7 +1723,6 @@ router.get('/footagefilestodelete_originals', (req, res) => {
     .find({"media.original": {$exists: true}})
     .select({_id: 1, media: 1})
     .exec((err, data) => {
-      //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.media.original})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];

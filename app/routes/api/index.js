@@ -467,7 +467,6 @@ router.get('/getcurrentprogram', (req, res) => {
       date.getSeconds()
     ));
   }
-  console.log({programming: { $lt: date}});
   Vjtv
   .findOne({programming: { $lt: date}})
   //.select(select)

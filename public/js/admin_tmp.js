@@ -637,7 +637,7 @@ $(function () {
 							$($(".dz-success-message")[i]).html(''+"The file is ok"+'');
 							$($(".dz-error-message")[i]).addClass("d-none");
 							$($(".dz-success-message")[i]).removeClass("d-none");
-							$("#medias").append('<div class="col-md-4 col-sm-6 ui-sortable-handle"><img class="img-fluid" src="'+data2[i].imageFormats.large+'"><div class="d-flex justify-content-between mb-3 mt-1"><input type="hidden" value=\''+JSON.stringify(data2[i])+'\' data-id="'+($("#medias").length)+'" name="mediastr"><input class="form-control title" type="text" value="'+data2[i].title+'"><button class="btn btn-danger ml-2 remove" type="button"><i class="icon-trash"></i></button></div></div>')
+							$("#medias").append('<div class="col-md-4 col-sm-6 ui-sortable-handle"><img class="img-fluid" src="'+data2[i].imageFormats.large+'"><div class="d-flex justify-content-between mb-3 mt-1"><input type="hidden" value=\''+JSON.stringify(data2[i])+'\' data-id="'+($("#medias").length)+'" name="mediastr" class="mediastr"><input class="form-control title" type="text" value="'+data2[i].title+'"><button class="btn btn-danger ml-2 remove" type="button"><i class="icon-trash"></i></button></div></div>')
 						}
 					}
 					var dz = this
@@ -1053,9 +1053,9 @@ $(function () {
 activateSortable = () => {
 	$( "#medias" ).sortable({});
 	$( "#medias .title" ).on("blur", function () {
-		var item = JSON.parse($(this).parent().find(".mediaitem").val());
+		var item = JSON.parse($(this).parent().find(".mediastr").val());
 		item.title = $(this).val()
-		$(this).parent().find(".mediaitem").val(JSON.stringify(item))
+		$(this).parent().find(".mediastr").val(JSON.stringify(item))
 	});
 	$( "#medias .remove" ).on("click", function () {
 		$(this).parent().parent().remove()

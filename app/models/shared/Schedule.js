@@ -53,7 +53,6 @@ Schedule.virtual('boxDateFull').get(function () {
     const start = new Date(this.starttime).getTime()
     const end = new Date(this.endtime).getTime()
     const days = Math.ceil((end-start)/(24*60*60*1000))
-    //if (this.price == 120) console.log(days);
     if (days > 1) {
       let boxDateA = []
       for(let a=0;a<=days-1;a++) {

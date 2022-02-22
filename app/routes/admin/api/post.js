@@ -995,8 +995,6 @@ router.forceEmailChange = (req, res) => {
         if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
         Models.User.updateOne({_id:user._id}, { emails: user.emails, email: user.email })
         .exec((err, user) => {
-          console.log(err)
-          console.log(user)
           logger.debug("formData");
           logger.debug(formData);
         
@@ -1009,8 +1007,6 @@ router.forceEmailChange = (req, res) => {
           axios.post('https://ml.avnode.net/subscribe', postData)
           .then(
             (response) => {
-              console.log("Newsletter User is saved");
-              console.log(response.data);
               if (response.data === 1) {
                 res.json({message:"User is saved"});
               } else {
@@ -1018,8 +1014,6 @@ router.forceEmailChange = (req, res) => {
               }
             },
             (error) => {
-              console.log("Newsletter User is NOT saved");
-              console.log(error);
               res.json({error:{message:"User is NOT saved"}});
           });
         });

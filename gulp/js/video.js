@@ -60,7 +60,6 @@ if ($("#my-video").length) {
   function myCopy(id, button) {
     /* Get the text field */
     var copyText = document.getElementById(id);
-    console.log(document.getElementById(button).dataset.label);
     /* Select the text field */
     copyText.select();
     copyText.setSelectionRange(0, 99999); /*For mobile devices*/

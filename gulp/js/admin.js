@@ -159,7 +159,6 @@ $(function() {
         $('#modalEdit .alert-success').removeClass('d-none');
         setTimeout(() => {$('#modalEdit').modal('hide')}, 2000);
       }
-      //console.log(data);
     })
     .fail(function (jqXHR, textStatus) {
       $('#modalEdit .alert-danger').html("Internal Server Error");
@@ -183,7 +182,6 @@ $(function() {
         if (res.error) {
           alert("Some error occurred: "+res.msg);
         }  
-        console.log(res);
       });
     } 
   }
@@ -256,7 +254,7 @@ $(function() {
       method: "post",
       data: data
     }).done(function(res) {
-      console.log(res);
+      //console.log(res);
     });
   });
   $(".option_selected_hotel_room").blur(function(ev) {
@@ -323,81 +321,6 @@ $(function() {
 $( ".program .connectedSortable" ).sortable({
   update: function( e, ui ) {
     programSortableUpdate();
-    /*var data = [];
-    var tobescheduled = [];
-    var connectedSortable = $(".connectedSortable").parent();
-    for (var a=1;a<connectedSortable.length;a++) {
-      var day = $(connectedSortable[a]).serializeJSON();
-      day.room = JSON.parse(day.room);
-      if (day.program && day.program.length) {
-        var boxes = $(connectedSortable[a]).find("li");
-        var timing = new Date (day.room.starttime).getTime();
-        for (var b=0;b<day.program.length;b++) {
-          day.program[b] = JSON.parse(day.program[b]);
-          if (day.room.venue.breakduration>-1) timing+= b > 0 ? (parseFloat(day.room.venue.breakduration)*(60*1000)) : 0;
-          var start = new Date (timing);
-          if (parseFloat(day.program[b].performance.duration)>500 && day.program[b].performance.type.name=="Workshop") {
-            day.program[b].performance.duration = parseFloat(day.program[b].performance.duration)/4;
-          }
-          if (day.room.venue.breakduration>-1) {
-            timing+=(parseFloat(day.program[b].performance.duration)*(60*1000));
-            var end = new Date (timing);
-          } else {
-            var end = new Date (timing+(parseFloat(day.program[b].performance.duration)*(60*1000)));
-          }
-          if (!$(boxes[b]).hasClass("disabled")) {
-            console.log("NOT disabled");
-            console.log(day.program[b].performance.title)
-            console.log(day.room);
-            var price = day.program[b].schedule && day.program[b].schedule.price ? day.program[b].schedule.price : undefined;
-            var alleventschedulewithoneprice = day.program[b].schedule && day.program[b].schedule.alleventschedulewithoneprice ? day.program[b].schedule.alleventschedulewithoneprice : undefined;
-            var priceincludesothershows = day.program[b].schedule && day.program[b].schedule.priceincludesothershows ? day.program[b].schedule.priceincludesothershows : undefined;
-            console.log(day.program[b].schedule);
-            day.program[b].schedule = [{
-              starttime: start.toISOString(),
-              endtime: end.toISOString(),
-              price: price,
-              alleventschedulewithoneprice: alleventschedulewithoneprice,
-              priceincludesothershows: priceincludesothershows,
-              venue: day.room.venue
-            }];
-            console.log(day.program[b].schedule);
-            $(boxes[b]).find(".timing").html(moment(start).utc().format("H:mm")+" - "+moment(end).utc().format("H:mm"));
-            $(boxes[b]).find(".index").html(b+1);
-            data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
-          } else {
-            console.log("disabled")
-            console.log(day.program[b].performance.title)
-            if (start.toISOString() == day.program[b].schedule.starttime){
-              console.log("salvo disabled")
-              console.log(start.toISOString())
-              console.log(day.program[b].schedule.starttime)
-              day.program[b].schedule = [day.program[b].schedule];
-              //data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
-            }
-          }
-          //console.log(day.program[b]);
-        }
-      }
-      //
-    }
-    var day = $(connectedSortable[0]).serializeJSON();
-    var boxes = $(connectedSortable[0]).find("li");
-    if (day.program && day.program.length) {
-      for (var b=0;b<day.program.length;b++) {
-        $(boxes[b]).find(".timing").html("");
-        $(boxes[b]).find(".index").html(b+1);
-        day.program[b] = JSON.parse(day.program[b]);
-        tobescheduled.push({_id: day.program[b]._id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event});
-      }
-    }
-    $.ajax({
-      url: "/admin/api/programupdate",
-      method: "post",
-      data: {data: data, tobescheduled: tobescheduled, event: day.event}
-    }).done(function(data) {
-      //console.log(data);
-    });*/
   },
   connectWith: ".connectedSortable"
 }).disableSelection();
@@ -406,14 +329,6 @@ var current;
 $( ".edit-schedule" ).click(function( event ) {
   current = $(this).parent().parent().find("input");
   var schedule = JSON.parse(current.val()).schedule;
-  console.log(schedule);
-  //console.log(schedule.starttime);
-  //console.log(schedule.endtime);
-  //console.log(new Date(schedule.starttime).getUTCHours());
-  //console.log(new Date(schedule.starttime).getUTCMinutes());
-  //console.log(new Date(schedule.endtime).getUTCHours());
-  //console.log(new Date(schedule.endtime).getUTCMinutes());
-  //const id = $(this).data("program");
   var starttime = new Date(schedule.starttime);
   $('#modalEditSchedule input[name="startday"][value="'+starttime.getFullYear()+"-"+("0"+(starttime.getMonth()+1)).substr(-2)+"-"+("0"+(starttime.getDate())).substr(-2)+'"]').attr("checked","checked");
   var endtime = new Date(schedule.endtime);
@@ -434,7 +349,6 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   event.preventDefault();
   var formdata = getFormData($( this ));
   var currentObj = JSON.parse(current.val());
-  console.log("#modalEditSchedule form");
   currentObj.schedule.starttime = new Date(Date.UTC(
     parseFloat(formdata.startday.split("-")[0]),
     parseFloat(formdata.startday.split("-")[1])-1,
@@ -449,42 +363,16 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
     parseFloat(formdata.endtime_hours),
     parseFloat(formdata.endtime_minutes)
   ));
-  /*
-  currentObj.schedule.starttime = new Date(currentObj.schedule.starttime);
-  currentObj.schedule.starttime.setUTCYear(formdata.startday.split("-")[0]);
-  currentObj.schedule.starttime.setUTCMonth(parseFloat(formdata.startday.split("-")[1])-1);
-  currentObj.schedule.starttime.setUTCDate(parseFloat(formdata.startday.split("-")[2]));
-  currentObj.schedule.starttime.setUTCHours(formdata.starttime_hours);
-  currentObj.schedule.starttime.setUTCMinutes(formdata.starttime_minutes);
-  currentObj.schedule.endtime = new Date(currentObj.schedule.endtime)
-  currentObj.schedule.endtime.setUTCYear(formdata.endday.split("-")[0]);
-  currentObj.schedule.endtime.setUTCMonth(parseFloat(formdata.endday.split("-")[1])-1);
-  currentObj.schedule.endtime.setUTCDate(parseFloat(formdata.endday.split("-")[2]));
-  currentObj.schedule.endtime.setUTCHours(formdata.endtime_hours);
-  currentObj.schedule.endtime.setUTCMinutes(formdata.endtime_minutes);
- */
+
   var timestr = "";
   timestr+= ("0"+formdata.starttime_hours).substr(-2)+":"+("0"+formdata.starttime_minutes).substr(-2);
   timestr+= " - ";
   timestr+= ("0"+formdata.endtime_hours).substr(-2)+":"+("0"+formdata.endtime_minutes).substr(-2);
-  //console.log(formdata);
-  //console.log(currentObj.schedule);
-  //console.log(currentObj.schedule.starttime);
-  //console.log(currentObj.schedule.endtime);
-  //console.log(new Date(currentObj.schedule.starttime).getUTCHours());
-  //console.log(new Date(currentObj.schedule.starttime).getUTCMinutes());
-  //console.log(new Date(currentObj.schedule.endtime).getUTCHours());
-  //console.log(new Date(currentObj.schedule.endtime).getUTCMinutes());
 
   current.val(JSON.stringify(currentObj));
   $(current.parent().parent().parent().find(".timing")).html(timestr);
   $(current.parent().parent()).addClass("disabled");
   programSortableUpdate();
-  //const id = $(this).data("program");
-  /*$('#modalEditSchedule .starttime-hours').val(new Date(schedule.starttime).getUTCHours())
-  $('#modalEditSchedule .starttime-minutes').val(new Date(schedule.starttime).getUTCMinutes())
-  $('#modalEditSchedule .endtime-hours').val(new Date(schedule.endtime).getUTCHours())
-  $('#modalEditSchedule .endtime-minutes').val(new Date(schedule.endtime).getUTCMinutes())*/
 });
 
 function programSortableUpdate() {
@@ -498,13 +386,9 @@ function programSortableUpdate() {
       var boxes = $(connectedSortable[a]).find("li");
       var room_starttime = new Date (day.room.starttime).getTime();
       var timing = new Date (day.room.starttime).getTime();
-      console.log("----------");
       for (var b=0;b<day.program.length;b++) {
         day.program[b] = JSON.parse(day.program[b]);
-        console.log(day.program[b].performance.title)
         if (!$(boxes[b]).hasClass("disabled")) {
-          console.log("NOT disabled");
-          //console.log(day.room);
           // AGGIUNGO INTERVALLO SE PREVISTO
           if (day.room.venue.breakduration>-1 && b > 0) timing+= parseFloat(day.room.venue.breakduration)*(60*1000);
           var start = new Date (timing);
@@ -526,13 +410,10 @@ function programSortableUpdate() {
 
           $(boxes[b]).find("input").val(JSON.stringify(day.program[b]))
           day.program[b].schedule = [day.program[b].schedule]
-          console.log(day.program[b].schedule);
           $(boxes[b]).find(".timing").html(moment(start).utc().format("H:mm")+" - "+moment(end).utc().format("H:mm"));
           $(boxes[b]).find(".index").html(b+1);
           $(boxes[b]).removeAttr("style");
         } else {
-          console.log("disabled")
-          console.log(day.program[b].schedule)
 
           if (day.room.venue.breakduration>-1) {
             var daylyend = new Date (timing);
@@ -547,30 +428,8 @@ function programSortableUpdate() {
           }
           day.program[b].schedule.disableautoschedule = true;
           day.program[b].schedule = [day.program[b].schedule]
-          /* var st = new Date(room_starttime);
-          var startNew = new Date(day.program[b].schedule.starttime);
-
-          console.log("room_starttime")
-          console.log(st)
-          console.log(st.getUTCFullYear()+"-"+st.getUTCMonth()+"-"+st.getUTCDate())
-          console.log(st.getUTCHours())
-          console.log("startNew")
-          console.log(startNew)
-          console.log(startNew.getUTCFullYear()+"-"+startNew.getUTCMonth()+"-"+startNew.getUTCDate())
-          console.log(startNew.getUTCHours())
-
-
-          //if (startNew.getUTCFullYear()+startNew.getUTCMonth()+startNew.getUTCDate() === st.getUTCFullYear()+st.getUTCMonth()+st.getUTCDate()){
-            console.log("salvo disabled")
-            console.log(start.toISOString())
-            console.log(day.program[b].schedule.starttime)
-
-            //console.log("disabled"); */
-          //}
         }
         data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
-        console.log("schedule")
-        console.log(day.program[b].schedule);
       }
     }
     //
@@ -585,7 +444,6 @@ function programSortableUpdate() {
       tobescheduled.push({_id: day.program[b]._id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event});
     }
   }
-  //console.log("pre ajax");
   $.ajax({
     url: "/admin/api/programupdate",
     method: "post",
@@ -691,7 +549,6 @@ $( ".lock-schedule" ).click(function( event ) {
       data.partner = ui.item.find("input[name='users']").val();
 
     }
-    console.log(data);
     $.ajax({
       url: "/admin/api/partnershipsupdate",
       method: "post",
@@ -709,11 +566,7 @@ $( ".lock-schedule" ).click(function( event ) {
     var stagename = button.data('stagename') // Extract info from data-* attributes
     var item = button.data('item') // Extract info from data-* attributes
     var index = button.data('index') // Extract info from data-* attributes
-    console.log("Edit?");
-    console.log(item);
     for (i in item) {
-      console.log(i+": "+item[i]);
-      console.log(i+": "+item[i]);
       if ($( "#modalAddContact input[name='"+ i +"'][type='text']" ).length) $( "#modalAddContact input[name='"+ i +"']" ).val( item[i] );
       if ($( "#modalAddContact select[name='"+ i +"']" ).length) $( "#modalAddContact select[name='"+ i +"']" ).val( item[i] );
     }
@@ -856,9 +709,6 @@ $( ".lock-schedule" ).click(function( event ) {
   };
 
   emailqueue2 = (idid, buttonbutton ) => {
-    console.log("emailqueue");
-    console.log(buttonbutton);
-    console.log(idid);
     delayLoop(idid, buttonbutton)
   }
   
@@ -903,7 +753,6 @@ $( ".lock-schedule" ).click(function( event ) {
 
   $( "#formPartnerLinkName" ).autocomplete({
     source: function( request, response ) {
-      console.log("formPartnerLinkName")
       $( "#modalLinkPartner" ).find(".alert").html("").addClass("d-none").removeClass("alert-danger").removeClass("alert-success");
       $.ajax( {
         url: "/admin/api/getauthors/"+request.term+"?is_crew=1",
@@ -914,7 +763,6 @@ $( ".lock-schedule" ).click(function( event ) {
       } );
     },
     select: function( event, ui ) {
-      console.log(ui.item);
       $("input[name='id']").val(ui.item.id);
     }
   });
@@ -960,7 +808,6 @@ $( "#modalLinkPartner form" ).submit(function( event ) {
   $( this ).serializeArray().map(n => {
     post[n['name']] = n['value'].trim();
   });
-  console.log(post); 
   $.ajax({
     url: "/admin/api/partner/link/",
     method: "post",
@@ -1220,14 +1067,11 @@ $(document).ready(function() {
         version: 'v2.7' // or v2.1, v2.2, v2.3, ...
       });
       FB.getLoginStatus(function(response) {
-        console.log(response);
         if (response.status == "connected") {
           getPagesAdmin();
         } else {
           FB.login(function(response) {
-            console.log(response);
             getPagesAdmin();
-            //getGroupsList();
           }, {scope: "user_likes, manage_pages, pages_show_list, groups_access_member_info, public_profile"});    
         }
       });
@@ -1246,7 +1090,6 @@ $(document).ready(function() {
                 "fields":"name, id"
               },
               function(response) {
-                console.log(response);
                 response.data.sort(compare2);
                 response.data.unshift(responseme);
                 var str = "";
@@ -1296,7 +1139,6 @@ $(document).ready(function() {
             "limit":"10000"
           },
           function(response) {
-            console.log(response);
             var str = "";
             if (response.data && response.data.length) {
               response.data.sort(compare2);
@@ -1328,7 +1170,6 @@ $(document).ready(function() {
             "limit":"10000"
           },
           function(response) {
-            console.log(response);
             var str = "";
             if (response.data && response.data.length) {
               response.data.sort(compare2);

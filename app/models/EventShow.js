@@ -199,9 +199,6 @@ eventSchema.virtual('advanced').get(function (req) {
   let performersN = [];
   let actsN = [];
   let advanced = {}
-  /* console.log("this.is_freezed")
-  console.log(this.is_freezed)
-  console.log(this.program_freezed) */
   if (!this.is_freezed) {
     advanced.menu = [];
     //
@@ -339,7 +336,6 @@ eventSchema.virtual('advanced').get(function (req) {
   } else {
     advanced = this.program_freezed
   }
-  //console.log(advanced)
   return advanced;
 });
 
