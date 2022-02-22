@@ -1043,13 +1043,15 @@ router.getMembers = (req, res) => {
 }
 
 router.getAuthors = (req, res) => {
-  Models.User
-  .find({$or:[
+  var find = {$or:[
     { slug : { "$regex": req.params.q, "$options": "i" } },
     { stagename : { "$regex": req.params.q, "$options": "i" } },
     { name : { "$regex": req.params.q, "$options": "i" } },
     { surname : { "$regex": req.params.q, "$options": "i" } }
-  ]})
+  ]};
+  if (req.query.is_crew) find.is_crew = true;
+  Models.User
+  .find(find)
   .lean()
   .select({'stagename':1})
   .sort({'stagename': 1})

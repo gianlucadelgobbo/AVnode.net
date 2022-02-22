@@ -55,7 +55,7 @@ block content
                   td!=contact.social ? contact.social.filter(item => item.url.indexOf("facebook")!==-1).map(item => {return item.url}).join("<br />\n") : ""
                   td!=contact.type
                   td!="YES"
-                  //if item.partnerships && item.partnerships.length
+                  //-if item.partnerships && item.partnerships.length
                       - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
 
                       each partnership in item.partnerships
@@ -71,7 +71,7 @@ block content
                         div!=contact.name+" "+contact.surname+" "+contact.email+" "+contact.lang
   else 
     #toolbar
-      //.btn-group.mr-2.mb-3
+      //-.btn-group.mr-2.mb-3
         button.btn.btn-outline-secondary(type="button" onclick="$('#table').bootstrapTable('filterBy', {})")!=__("ALL")
         button.btn.btn-outline-secondary(type="button" onclick="$('#table').bootstrapTable('filterBy', {is_active: ['true']})")!=__("ACTIVE")
         button.btn.btn-outline-secondary(type="button" onclick="$('#table').bootstrapTable('filterBy', {is_active: ['false']})")!=__("NOT ACTIVE")
@@ -200,6 +200,8 @@ block content
                           a(href="mailto:"+contact.email, target="_blank")
                             !=contact.name+" "+contact.surname
                             =" <"+contact.email+">"
+                    else
+                      .badge.badge-danger!="MISSING"
                 td
                   if item.partner.members && item.partner.members.length
                     h5="Members"
@@ -278,7 +280,7 @@ block content
 
           .modal-footer
             button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
-            button.btn.btn-primary(type='submit')=global.__("Save")
+            button.btn.btn-primary(type='submit')=global.__("Add")
 
   // Modal Add Contact
   #modalAddContact.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddContactLabel', aria-hidden='true')

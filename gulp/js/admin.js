@@ -903,8 +903,10 @@ $( ".lock-schedule" ).click(function( event ) {
 
   $( "#formPartnerLinkName" ).autocomplete({
     source: function( request, response ) {
+      console.log("formPartnerLinkName")
+      $( "#modalLinkPartner" ).find(".alert").html("").addClass("d-none").removeClass("alert-danger").removeClass("alert-success");
       $.ajax( {
-        url: "/admin/api/getauthors/"+request.term,
+        url: "/admin/api/getauthors/"+request.term+"?is_crew=1",
         success: function( data ) {
           var dd = data.map(item=>{return {value:item.stagename, id: item._id}}) ;
           response(dd );
@@ -966,6 +968,11 @@ $( "#modalLinkPartner form" ).submit(function( event ) {
   })
   .done(function(data) {
     $( "#modalLinkPartner form" ).find(".alert").html("SAVED!!!").removeClass("d-none").removeClass("alert-danger").addClass("alert-success");
+    setTimeout(function(){
+      $( "#modalLinkPartner" ).find(".alert").html("").addClass("d-none").removeClass("alert-danger").removeClass("alert-success");
+      $( "#modalLinkPartner").modal('hide')
+      $( "#formPartnerLinkName").val("")
+    }, 2000)
   })
   .fail(function(err) {
     $( "#modalLinkPartner form" ).find(".alert").html(err.responseJSON.err).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
