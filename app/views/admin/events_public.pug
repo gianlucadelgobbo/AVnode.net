@@ -74,8 +74,8 @@ block content
                         //
                   .col-md-4
                     .form-group
-                      label.labelField=__("Venue")
-                      input.form-control(type='text' autocomplete='nope' name='schedule['+i+'][venue][name]' placeholder=__('Venue') value=schedule.venue.name)
+                      label.labelField=__("Venue / Platform")
+                      input.form-control(type='text' autocomplete='nope' name='schedule['+i+'][venue][name]' placeholder=__('Venue / Platform name') value=schedule.venue.name)
                 .row
                   .col-md-3
                     .form-group
@@ -94,7 +94,7 @@ block content
                       .col-md-12
                         .form-group
                           label.labelField=__("URL")
-                          input.form-control(type='text' name='schedule['+i+'][venue][url]' placeholder=__('Venue') value=schedule.venue.url)
+                          input.form-control(type='text' name='schedule['+i+'][venue][url]' placeholder=__('Platform URL') value=schedule.venue.url)
                     .row.collapse.physicalform(id="location_"+i+"_physicalform" class=schedule.venue.type=="virtual" ? undefined : "show")
                       .col-md-8
                         .form-group

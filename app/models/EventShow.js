@@ -555,7 +555,7 @@ eventSchema.virtual('boxVenue').get(function () {
           if (v.location && v.location.country && v.location.locality && !boxVenueO[v.location.country][v.location.locality]) boxVenueO[v.location.country][v.location.locality] = {};
           if (v.location && v.location.country && v.location.locality && v.name && !boxVenueO[v.location.country][v.location.locality][v.name]) boxVenueO[v.location.country][v.location.locality][v.name] = [];
           //if (v.location && v.location.country && v.location.locality && v.name && v.room && !boxVenueO[v.location.country][v.location.locality][v.name][v.room]) boxVenueO[v.location.country][v.location.locality][v.name][v.room] = {};
-        } else if (v.url) {
+        } else if (v.type == 'virtual') {
           if (!boxVenueO['virtual']) boxVenueO['virtual'] = [];
           boxVenueO['virtual'].push(v)
         }
@@ -565,7 +565,11 @@ eventSchema.virtual('boxVenue').get(function () {
     for (let country in boxVenueO) {
       if (country == 'virtual') {
         for (let city in boxVenueO[country]) {
-          boxVenue = "<a href=\""+boxVenueO[country][city].url+"\" target=\"_blank\">"+(boxVenueO[country][city].name ? boxVenueO[country][city].name : country)+"</a> "+boxVenue;
+          if (boxVenueO[country][city].url) {
+            boxVenue = "<a href=\""+boxVenueO[country][city].url+"\" target=\"_blank\">"+(boxVenueO[country][city].name ? boxVenueO[country][city].name : country)+"</a> "+boxVenue;
+          } else {
+            boxVenue = (boxVenueO[country][city].name ? boxVenueO[country][city].name : country)+" "+boxVenue;
+          }
         }
       } else {
         boxVenue = country+" "+boxVenue;
@@ -639,7 +643,7 @@ eventSchema.virtual('fullSchedule').get(function (req) {
           if (v.location && v.location.country && v.location.locality && !boxVenueO[v.location.country][v.location.locality]) boxVenueO[v.location.country][v.location.locality] = {};
           if (v.location && v.location.country && v.location.locality && v.name && !boxVenueO[v.location.country][v.location.locality][v.name]) boxVenueO[v.location.country][v.location.locality][v.name] = [];
           if (v.location && v.location.country && v.location.locality && v.name && v.room && !boxVenueO[v.location.country][v.location.locality][v.name][v.room]) boxVenueO[v.location.country][v.location.locality][v.name][v.room] = {};
-        } else if (v.url) {
+        } else if (v.type == 'virtual') {
           if (!boxVenueO['virtual']) boxVenueO['virtual'] = [];
           boxVenueO['virtual'].push(v)
         }
@@ -648,7 +652,11 @@ eventSchema.virtual('fullSchedule').get(function (req) {
       for (let country in boxVenueO) {
         if (country == 'virtual') {
           for (let city in boxVenueO[country]) {
-            boxVenue = "<a href=\""+boxVenueO[country][city].url+"\" target=\"_blank\">"+(boxVenueO[country][city].name ? boxVenueO[country][city].name : country)+"</a> "+boxVenue;
+            if (boxVenueO[country][city].url) {
+              boxVenue = "<a href=\""+boxVenueO[country][city].url+"\" target=\"_blank\">"+(boxVenueO[country][city].name ? boxVenueO[country][city].name : country)+"</a> "+boxVenue;
+            } else {
+              boxVenue = (boxVenueO[country][city].name ? boxVenueO[country][city].name : country)+" "+boxVenue;
+            }
           }
         } else {
           boxVenue = country+" "+boxVenue;
