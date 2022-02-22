@@ -557,8 +557,6 @@ eventSchema.virtual('boxVenue').get(function () {
           //if (v.location && v.location.country && v.location.locality && v.name && v.room && !boxVenueO[v.location.country][v.location.locality][v.name][v.room]) boxVenueO[v.location.country][v.location.locality][v.name][v.room] = {};
         } else if (v.url) {
           if (!boxVenueO['virtual']) boxVenueO['virtual'] = [];
-          console.log(v)
-          console.log(boxVenueO)
           boxVenueO['virtual'].push(v)
         }
       //}
