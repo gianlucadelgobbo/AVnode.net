@@ -639,8 +639,8 @@ eventSchema.virtual('fullSchedule').get(function (req) {
           if (v.location && v.location.country && v.location.locality && !boxVenueO[v.location.country][v.location.locality]) boxVenueO[v.location.country][v.location.locality] = {};
           if (v.location && v.location.country && v.location.locality && v.name && !boxVenueO[v.location.country][v.location.locality][v.name]) boxVenueO[v.location.country][v.location.locality][v.name] = [];
           if (v.location && v.location.country && v.location.locality && v.name && v.room && !boxVenueO[v.location.country][v.location.locality][v.name][v.room]) boxVenueO[v.location.country][v.location.locality][v.name][v.room] = {};
-        } else {
-          if (v.name && !boxVenueO['virtual']) boxVenueO['virtual'] = [];
+        } else if (v.url) {
+          if (!boxVenueO['virtual']) boxVenueO['virtual'] = [];
           boxVenueO['virtual'].push(v)
         }
       }
