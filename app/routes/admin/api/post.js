@@ -529,15 +529,28 @@ router.unlinkPartner = (req, res) => {
   logger.debug("unlinkPartner");
   logger.debug(req.body);
   Models.User
-  .findOne({_id: req.body.id, is_crew: true, "partner_owner": req.body.owner},'_id event partner_owner', (err, partner) => {
-    logger.debug(partner);
-    if (partner && partner.partner_owner && partner.partner_owner.length) {
-      partner.partner_owner.splice(partner.partner_owner.map(item => {return item.owner.toString();}).indexOf(req.body.owner), 1);
-      partner.save(err => {
-        res.json({err: err});
+  .findOne({_id: req.body.owner, /* is_crew: true,  */"partners.partner": req.body.id},'_id event partners', (err, user) => {
+    logger.debug(user.partners.length);
+    if (user && user.partners && user.partners.length) {
+      user.partners.splice(user.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id), 1);
+      logger.debug(user.partners.length);
+      user.save(err => {
+        Models.User
+        .findOne({_id: req.body.id, /* is_crew: true,  */"partner_owner.owner": req.body.owner},'_id event partner_owner', (err, partner) => {
+          logger.debug(partner.partner_owner.length);
+          if (partner && partner.partner_owner && partner.partner_owner.length) {
+            partner.partner_owner.splice(partner.partner_owner.map(item => {return item.owner.toString();}).indexOf(req.body.owner), 1);
+            logger.debug(partner.partner_owner.length);
+            partner.save(err => {
+              res.json({err: err});
+            });
+          } else {
+            res.json({err: "Partner not found"});
+          }
+        });
       });
     } else {
-      res.json({err: "Partner not found"});
+      res.json({err: "Owner not found"});
     }
 });
 }

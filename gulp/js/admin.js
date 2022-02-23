@@ -702,17 +702,11 @@ $( ".lock-schedule" ).click(function( event ) {
     });
   }
 
-  let delayLoop = (id, button) => {
+  const delayLoop = (id, button) => {
       setTimeout(() => {
         emailqueue(id, button);
       }, 1500);
   };
-
-  emailqueue2 = (idid, buttonbutton ) => {
-    delayLoop(idid, buttonbutton)
-  }
-  
-
 
 
   $( ".duplicate" ).click(function( event ) {
@@ -721,24 +715,6 @@ $( ".lock-schedule" ).click(function( event ) {
 
   if ($(".multiple-select").length) $(".multiple-select").bsMultiSelect({  placeholder:'Room'});
   if ($(".dashboardcode-bsmultiselect").length) $(".dashboardcode-bsmultiselect").addClass("mb-3");
-
-
-  $( ".unlink" ).click(function( event ) {
-    var row = $(this).parent().parent();
-    var result = confirm("Want to unlink this partner?");
-    if (result) {
-      event.preventDefault();
-      const owner = $(this).data("owner");
-      const partner = $(this).data("partner");
-      $.ajax({
-        url: "/admin/api/partner/unlink/",
-        method: "post",
-        data: {id:partner, owner:owner}
-      }).done(function(data) {
-        row.remove();
-      });
-    }
-  });
   
   $('#modalAddPartner').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
@@ -799,33 +775,32 @@ $( ".lock-schedule" ).click(function( event ) {
     });
 
   });
-});
 
-$( "#modalLinkPartner form" ).submit(function( event ) {
-  event.preventDefault();
-  console.log("DAFARE"); 
-  var post = {};
-  $( this ).serializeArray().map(n => {
-    post[n['name']] = n['value'].trim();
-  });
-  $.ajax({
-    url: "/admin/api/partner/link/",
-    method: "post",
-    data: post
-  })
-  .done(function(data) {
-    $( "#modalLinkPartner form" ).find(".alert").html("SAVED!!!").removeClass("d-none").removeClass("alert-danger").addClass("alert-success");
-    setTimeout(function(){
-      $( "#modalLinkPartner" ).find(".alert").html("").addClass("d-none").removeClass("alert-danger").removeClass("alert-success");
-      $( "#modalLinkPartner").modal('hide')
-      $( "#formPartnerLinkName").val("")
-    }, 2000)
-  })
-  .fail(function(err) {
-    $( "#modalLinkPartner form" ).find(".alert").html(err.responseJSON.err).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
+  $( "#modalLinkPartner form" ).submit(function( event ) {
+    event.preventDefault();
+    console.log("DAFARE"); 
+    var post = {};
+    $( this ).serializeArray().map(n => {
+      post[n['name']] = n['value'].trim();
+    });
+    $.ajax({
+      url: "/admin/api/partner/link/",
+      method: "post",
+      data: post
+    })
+    .done(function(data) {
+      $( "#modalLinkPartner form" ).find(".alert").html("SAVED!!!").removeClass("d-none").removeClass("alert-danger").addClass("alert-success");
+      setTimeout(function(){
+        $( "#modalLinkPartner" ).find(".alert").html("").addClass("d-none").removeClass("alert-danger").removeClass("alert-success");
+        $( "#modalLinkPartner").modal('hide')
+        $( "#formPartnerLinkName").val("")
+      }, 2000)
+    })
+    .fail(function(err) {
+      $( "#modalLinkPartner form" ).find(".alert").html(err.responseJSON.err).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
+    });
   });
 });
-
 const slugify = (str) => {
   str = String(str).toString();
   str = str.replace(/^\s+|\s+$/g, ""); // trim
@@ -959,6 +934,24 @@ const slugify = (str) => {
       .replace(/^-+/, "") // trim - from start of text
       .replace(/-+$/, "");
 };
+function compare( a, b ) {
+  if ( a.unread < b.unread ){
+    return 1;
+  }
+  if ( a.unread > b.unread ){
+    return -1;
+  }
+  return 0;
+}
+function compare2( a, b ) {
+  if ( a.name < b.name ){
+    return -1;
+  }
+  if ( a.name > b.name ){
+    return 1;
+  }
+  return 0;
+}
 /* 
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
@@ -1040,24 +1033,7 @@ const request = (url, method, payload, cb) => {
 } */
 
 
-function compare( a, b ) {
-  if ( a.unread < b.unread ){
-    return 1;
-  }
-  if ( a.unread > b.unread ){
-    return -1;
-  }
-  return 0;
-}
-function compare2( a, b ) {
-  if ( a.name < b.name ){
-    return -1;
-  }
-  if ( a.name > b.name ){
-    return 1;
-  }
-  return 0;
-}
+/* 
 $(document).ready(function() {
   if (document.getElementById("jsapp") !== null) {
     $.ajaxSetup({ cache: true });
@@ -1135,7 +1111,7 @@ $(document).ready(function() {
           '/'+$("#getFBdataSelect").val()+'/groups',
           'GET',
           {
-            "fields":"name,unread,description,picture{url}", /* "can_post,best_page,name,link,fan_count,talking_about_count,about,description,picture{url}" */
+            "fields":"name,unread,description,picture{url}", /* "can_post,best_page,name,link,fan_count,talking_about_count,about,description,picture{url}"
             "limit":"10000"
           },
           function(response) {
@@ -1195,3 +1171,5 @@ $(document).ready(function() {
 
   }
 });
+
+ */

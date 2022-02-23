@@ -139,7 +139,7 @@ block content
                     span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
                       i.icon-edit
                   !=" | "
-                  a.unlink(href="#", data-owner=owner, data-partner=item.partner._id, title=global.__("Unlink"))
+                  a.unlink(href="#", data-owner=data._id, data-partner=item.partner._id, title=global.__("Unlink"))
                     span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
                       i.icon-unlink
                   if item.partner.members && item.partner.members.length

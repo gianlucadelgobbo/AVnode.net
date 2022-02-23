@@ -1,5 +1,21 @@
 $(function () {
 
+  $( ".unlink" ).click(function( event ) {
+    var row = $(this).parent().parent();
+    var result = confirm("Want to unlink this partner?");
+    if (result) {
+      event.preventDefault();
+      const owner = $(this).data("owner");
+      const partner = $(this).data("partner");
+      $.ajax({
+        url: "/admin/api/partner/unlink/",
+        method: "post",
+        data: {id:partner, owner:owner}
+      }).done(function(data) {
+        row.remove();
+      });
+    }
+  });
 
 
 
@@ -252,6 +268,7 @@ $(function () {
 		});
 	});
   
+	/*
 	$('.unlink').click(function (event) {
     event.preventDefault();
     var sez = $(this).data('sez'); // Extract info from data-* attributes
@@ -293,7 +310,7 @@ $(function () {
 		});
 	});
   
-/*   $('.s').click(function (event) {
+   $('.s').click(function (event) {
     event.preventDefault();
     var sez = $(this).data('sez'); // Extract info from data-* attributes
     var id = $(this).data('id'); // Extract info from data-* attributes
