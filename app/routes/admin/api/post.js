@@ -552,7 +552,7 @@ router.unlinkPartner = (req, res) => {
     } else {
       res.json({err: "Owner not found"});
     }
-});
+  });
 }
 router.setStatus = (req, res) => {
   logger.debug('/partners/status/');

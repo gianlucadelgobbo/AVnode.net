@@ -68,42 +68,46 @@ include ../partials/modals/modalContact
                 a.cv_performer(href="/"+data.slug+"/print" : "#", data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
                   span.performer_button!="DOWNLOAD CV"       
         .col-md-12
-          ul.links_list.list-inline
-            each item in data.web
-              li.list-inline-item.mb-3
-                a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
-                  span.icon-link-light.about_button
+          if data.web && data.web.length
+            ul.links_list.list-inline
+              each item in data.web
+                if item.url
+                  li.list-inline-item.mb-3
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
+                      span.icon-link-light.about_button
+          if data.social && data.social.length
             each item in data.social
-              if item.url.indexOf('instagram.com/')!=-1
-                li.list-inline-item.mb-3
-                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                    i.icon-instagram.about_button
-              else if item.url.indexOf('twitter.com/')!=-1
-                li.list-inline-item.mb-3
-                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                    i.icon-twitter.about_button
-              else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
-                li.list-inline-item.mb-3
-                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").replace("facebook.com","fb.com").split("/")
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                    i.icon-facebook.about_button
-              else if item.url.indexOf('vimeo.com/')!=-1
-                li.list-inline-item.mb-3
-                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                    i.icon-vimeo.about_button
-              else if item.url.indexOf('youtube.com/')!=-1
-                li.list-inline-item.mb-3
-                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                    i.icon-youtube.about_button
-              else
-                li.list-inline-item.mb-3
-                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                    span.icon-link-light.about_button
+              if item.url
+                if item.url.indexOf('instagram.com/')!=-1
+                  li.list-inline-item.mb-3
+                    - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                      i.icon-instagram.about_button
+                else if item.url.indexOf('twitter.com/')!=-1
+                  li.list-inline-item.mb-3
+                    - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                      i.icon-twitter.about_button
+                else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
+                  li.list-inline-item.mb-3
+                    - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").replace("facebook.com","fb.com").split("/")
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                      i.icon-facebook.about_button
+                else if item.url.indexOf('vimeo.com/')!=-1
+                  li.list-inline-item.mb-3
+                    - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                      i.icon-vimeo.about_button
+                else if item.url.indexOf('youtube.com/')!=-1
+                  li.list-inline-item.mb-3
+                    - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                      i.icon-youtube.about_button
+                else
+                  li.list-inline-item.mb-3
+                    - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                      span.icon-link-light.about_button
             //if data.publicEmails && data.publicEmails.length          
               each email in data.publicEmails
                 li.list-inline-item.mb-3

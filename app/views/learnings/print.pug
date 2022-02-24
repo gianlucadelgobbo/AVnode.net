@@ -125,28 +125,30 @@ block content
                                   !="https://avnode.net/events/"+booking.event.slug
                               if booking.event.web && booking.event.web.length
                                 each web in booking.event.web
-                                  li.mb-3
-                                    a(href=web.url)
-                                      i.icon-link.mr-2
-                                      !=web.url
-                            if booking.social && booking.event.social.length
+                                  if web.url
+                                    li.mb-3
+                                      a(href=web.url)
+                                        i.icon-link.mr-2
+                                        !=web.url
+                            if booking.event.social && booking.event.social.length
                               ul.list-unstyled.pt-3
                                 each social in booking.social
-                                  li.mb-3
-                                    a(href=social.url)
-                                      if social.url.indexOf('instagram.com/')!=-1
-                                        i.icon-instagram.mr-2
-                                      else if social.url.indexOf('twitter.com/')!=-1
-                                        i.icon-twitter.mr-2
-                                      else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
-                                        i.icon-facebook.mr-2
-                                      else if social.url.indexOf('vimeo.com/')!=-1
-                                        i.icon-vimeo.mr-2
-                                      else if social.url.indexOf('youtube.com/')!=-1
-                                        i.icon-youtube.mr-2
-                                      else
-                                        i.icon-link.mr-2
-                                      !=social.url
+                                  if social.url
+                                    li.mb-3
+                                      a(href=social.url)
+                                        if social.url.indexOf('instagram.com/')!=-1
+                                          i.icon-instagram.mr-2
+                                        else if social.url.indexOf('twitter.com/')!=-1
+                                          i.icon-twitter.mr-2
+                                        else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                          i.icon-facebook.mr-2
+                                        else if social.url.indexOf('vimeo.com/')!=-1
+                                          i.icon-vimeo.mr-2
+                                        else if social.url.indexOf('youtube.com/')!=-1
+                                          i.icon-youtube.mr-2
+                                        else
+                                          i.icon-link.mr-2
+                                        !=social.url
                                       
               if data.galleries.length || data.videos.length
                 .galleries

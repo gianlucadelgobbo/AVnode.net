@@ -51,30 +51,32 @@ block content
                         i.icon-link.mr-2
                         !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug
                     each item in data.web
-                      li.mb-3
-                        a(href=item.url)
-                          i.icon-link.mr-2
-                          !=item.url
+                      if item.url
+                        li.mb-3
+                          a(href=item.url)
+                            i.icon-link.mr-2
+                            !=item.url
                   if data.social && data.social.length
                     .pb-2
                       b="Social media"
                     ul.pl-2.list-unstyled
                       each item in data.social
-                        li.mb-3
-                          a(href=item.url)
-                            if item.url.indexOf('instagram.com/')!=-1
-                              i.icon-instagram.mr-2
-                            else if item.url.indexOf('twitter.com/')!=-1
-                              i.icon-twitter.mr-2
-                            else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
-                              i.icon-facebook.mr-2
-                            else if item.url.indexOf('vimeo.com/')!=-1
-                              i.icon-vimeo.mr-2
-                            else if item.url.indexOf('youtube.com/')!=-1
-                              i.icon-youtube.mr-2
-                            else
-                              i.icon-link.mr-2
-                            !=item.url
+                        if item.url
+                          li.mb-3
+                            a(href=item.url)
+                              if item.url.indexOf('instagram.com/')!=-1
+                                i.icon-instagram.mr-2
+                              else if item.url.indexOf('twitter.com/')!=-1
+                                i.icon-twitter.mr-2
+                              else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
+                                i.icon-facebook.mr-2
+                              else if item.url.indexOf('vimeo.com/')!=-1
+                                i.icon-vimeo.mr-2
+                              else if item.url.indexOf('youtube.com/')!=-1
+                                i.icon-youtube.mr-2
+                              else
+                                i.icon-link.mr-2
+                              !=item.url
 
                   if data.publicEmails && data.publicEmails.length    
                     ul.pl-2.list-unstyled
