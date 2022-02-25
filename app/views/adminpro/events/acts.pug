@@ -128,7 +128,7 @@ block content
                   else 
                     .badge.badge-info=global.__('NO COSTS')
               .text-right.pb-1.mb-1
-                button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Delete')
+                button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Cancel subscription')
           td(style="max-width:35vw;overflow: hidden;")
             if index>0 && get.sortby=="sortby_perf_name" && item.performance._id == data.program[index-1].performance._id && item.call == data.program[index-1].call
               span.badge.badge-danger="DUPLICATE"+item.call+" "+data.program[index-1].call

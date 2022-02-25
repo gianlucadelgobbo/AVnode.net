@@ -74,9 +74,9 @@ $(function() {
     $(".change-status").on('click', function(ev) {
       change_status(ev, this);
     });
-    /* $(".cancel-sub").on('click', function(ev) {
+    $(".cancel-sub").on('click', function(ev) {
       cancel_sub(ev, this)
-    }); */
+    });
     $(".edit-price").on('click', function(ev) {
       edit_price(ev, this);
     });
@@ -84,7 +84,7 @@ $(function() {
       edit_cost(ev, this);
     });
   });
-  $(".cancel-sub").on('click', function(ev) {
+  $(".cancel-sub-profile").on('click', function(ev) {
     cancel_sub(ev, this)
   });
 
@@ -191,9 +191,6 @@ $(function() {
     } 
   }
 
-  /* $(".cancel-sub").on('click', function(ev) {
-    cancel_sub(ev, this)
-  }); */
   cancel_sub = (ev, obj) => {
     var result = confirm("Want to cancel this subscripion?");
     if (result) {

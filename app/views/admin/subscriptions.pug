@@ -52,7 +52,7 @@ block content
                   .badge.badge-info.mb-2=global.__('Waiting your confirm')
                   a.mr-2.mb-2.btn.btn-success.btn-sm.btn-inline(href='#collapse'+index, data-toggle='collapse', aria-expanded='true', aria-controls='collapse'+index)=global.__('Confirm')
                 if item.status._id!="5be8708afc39610000000013"
-                  button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Cancel your proposal')
+                  button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub-profile(type='button', data-id=item._id)=global.__('Cancel your proposal')
             .collapse(id='collapse'+index)
               table.table
                 tr
