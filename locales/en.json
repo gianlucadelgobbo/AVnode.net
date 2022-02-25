@@ -735,5 +735,9 @@
 	"unlink": "unlink",
 	"Venue / Platform": "Venue / Platform",
 	"Venue / Platform name": "Venue / Platform name",
-	"Platform URL": "Platform URL"
+	"Platform URL": "Platform URL",
+	"Waiting your confirm": "Waiting your confirm",
+	"Confirm": "Confirm",
+	"Cancel your proposal": "Cancel your proposal",
+	"Amount to pay to confirm you participation": "Amount to pay to confirm you participation"
 }

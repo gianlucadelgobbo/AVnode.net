@@ -65,22 +65,27 @@ $(function() {
   }
 
   // EVENTS - ACTS
+
   $('#table-acts').on('post-body.bs.table', function (e) {
+
     $(".edit-availability").on('click', function(ev) {
       edit_availability(ev, this);
     });
     $(".change-status").on('click', function(ev) {
       change_status(ev, this);
     });
-    $(".cancel-sub").on('click', function(ev) {
+    /* $(".cancel-sub").on('click', function(ev) {
       cancel_sub(ev, this)
-    });
+    }); */
     $(".edit-price").on('click', function(ev) {
       edit_price(ev, this);
     });
     $(".edit-cost").on('click', function(ev) {
       edit_cost(ev, this);
     });
+  });
+  $(".cancel-sub").on('click', function(ev) {
+    cancel_sub(ev, this)
   });
 
   $(".edit-availability").on('click', function(ev) {
@@ -190,7 +195,7 @@ $(function() {
     cancel_sub(ev, this)
   }); */
   cancel_sub = (ev, obj) => {
-    var result = confirm("Want to unlink?");
+    var result = confirm("Want to cancel this subscripion?");
     if (result) {
       const id = $(obj).data("id");
       $.ajax({
