@@ -4,6 +4,7 @@ const config = require('getconfig');
 const get = require('./get');
 const put = require('./put');
 const post = require('./post');
+const ssh = require('./ssh');
 const upload = require('./upload');
 
 const logger = require('../../../utilities/logger');
@@ -13,6 +14,18 @@ if (process.env.DEBUG) {
     res.render('json', {data: require('getconfig').cpanel});
   });
 }
+
+router.get('/stream-stop', (req, res) => {
+  ssh.streamStop(req, res);
+});
+
+router.get('/stream-update-and-restart', (req, res) => {
+  ssh.streamUpdateAndRestart(req, res);
+});
+
+router.get('/stream-restart', (req, res) => {
+  ssh.streamRestart(req, res);
+});
 
 // UTILITIES
 
