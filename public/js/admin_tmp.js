@@ -895,6 +895,56 @@ $(function () {
 			}
 		});
 	}
+	$("#streamStop").on('click', function(ev) {
+		var btn = $(this);
+    btn.addClass("disabled");
+		$.ajax({
+			url: "/admin/api/stream-stop",
+			method: "get"
+		})
+		.done(function(data) {
+			console.log(data);
+			btn.removeClass("disabled");
+		})
+		.fail(function(err) {
+			btn.removeClass("disabled");
+			alert("An error occurred");	
+		})
+  });
+
+	$("#streamRestart").on('click', function(ev) {
+		var btn = $(this);
+    btn.addClass("disabled");
+		$.ajax({
+			url: "/admin/api/stream-restart",
+			method: "get"
+		})
+		.done(function(data) {
+			console.log(data);
+			btn.removeClass("disabled");
+		})
+		.fail(function(err) {
+			btn.removeClass("disabled");
+			alert("An error occurred");	
+		})
+  });
+
+	$("#streamUpdateAndRestart").on('click', function(ev) {
+		var btn = $(this);
+    btn.addClass("disabled");
+		$.ajax({
+			url: "/admin/api/stream-update-and-restart",
+			method: "get"
+		})
+		.done(function(data) {
+			console.log(data);
+			btn.removeClass("disabled");
+		})
+		.fail(function(err) {
+			btn.removeClass("disabled");
+			alert("An error occurred");	
+		})
+  });
 
 	$(".cancel-sub-admin").on('click', function(ev) {
     cancel_sub(ev, this)

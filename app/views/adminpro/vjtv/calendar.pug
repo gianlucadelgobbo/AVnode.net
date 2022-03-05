@@ -34,9 +34,21 @@ block content
         .fc-toolbar-chunk
           h2#fc-dom-1.fc-toolbar-title MANAGE STREAM
       .cnt
-        button.btn.btn-danger.mr-3(type='button') STOP
-        button.btn.btn-success.mr-3.disabled(type='button') START
-        button.btn.btn-warning.mr-3(type='button') RELOAD
+        button#streamStop.btn.btn-danger.mr-3(type='button')
+          span
+            i.icon-spinner.animate-spin
+            !=" "
+          !="STOP"
+        button#streamRestart.btn.btn-success.mr-3(type='button')
+          span
+            i.icon-spinner.animate-spin
+            !=" "
+          !="RESTART"
+        button#streamUpdateAndRestart.btn.btn-warning.mr-3(type='button')
+          span
+            i.icon-spinner.animate-spin
+            !=" "
+          !="UPDATE"
         a.btn.btn-info(href='https://www.twitch.tv/vjtelevision' target="_blank") WATCH
       .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr.mt-5
         .fc-toolbar-chunk

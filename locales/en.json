@@ -740,5 +740,6 @@
 	"Confirm": "Confirm",
 	"Cancel your proposal": "Cancel your proposal",
 	"Amount to pay to confirm you participation": "Amount to pay to confirm you participation",
-	"Cancel subscription": "Cancel subscription"
+	"Cancel subscription": "Cancel subscription",
+	"Username %s not found.": "Username %s not found."
 }

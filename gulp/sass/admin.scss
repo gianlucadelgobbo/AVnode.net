@@ -675,3 +675,12 @@ div.ReactTags__selected a.ReactTags__remove {
   line-height: 1.1;
   font-size: .8rem;
 }
+
+#streamStop span{display: none}
+#streamStop.disabled span{display: inline-block}
+
+#streamRestart span{display: none}
+#streamRestart.disabled span{display: inline-block}
+
+#streamUpdateAndRestart span{display: none}
+#streamUpdateAndRestart.disabled span{display: inline-block}
