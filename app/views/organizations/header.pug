@@ -76,9 +76,10 @@ include ../partials/modals/modalContact
                         
 
     .col-md-4
-      img.img-fluid.d-none.d-md-block(
-        class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
-        src=data.imageFormats.large
-        alt=data.stagename
-      )
-
+      .embed-responsive-1by1
+        .embed-responsive-item
+          img.img-fluid.rounded-circle.d-none.d-md-block(
+            class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
+            src=data.imageFormats.large
+            alt=data.stagename
+          )

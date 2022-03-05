@@ -62,7 +62,7 @@ block title
             each partner in data.users
               .col-sm-2
                 .partner_box_wrapper.embed-responsive.embed-responsive-1by1
-                  a(href="/"+partner.slug+"/", title=partner.stagename)
+                  a.embed-responsive-item(href="/"+partner.slug+"/", title=partner.stagename)
                     if partner.imageFormats                          
                       img.card-img-top.img-fluid(
                         class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
@@ -96,7 +96,7 @@ block title
                       if partner.activity > 0
                         .col-sm-2
                           .partner_box_wrapper.embed-responsive.embed-responsive-1by1
-                            a(href="/"+partner.slug+"/", title=partner.stagename)
+                            a.embed-responsive-item(href="/"+partner.slug+"/", title=partner.stagename)
                               if partner.imageFormats                          
                                 img.card-img-top.img-fluid(
                                   class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
@@ -110,7 +110,7 @@ block title
                         if url
                           .col-sm-2
                             .partner_box_wrapper.embed-responsive.embed-responsive-1by1
-                              a(href=url, target="_blank", title=partner.stagename)
+                              a.embed-responsive-item(href=url, target="_blank", title=partner.stagename)
                                 if partner.imageFormats                          
                                   img.card-img-top.img-fluid(
                                     class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
@@ -123,12 +123,13 @@ block title
                         else
                           .col-sm-2
                             .partner_box_wrapper.embed-responsive.embed-responsive-1by1
-                              if partner.imageFormats                          
-                                img.card-img-top.img-fluid(
-                                  class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
-                                  src=partner.imageFormats.small
-                                  alt=partner.stagename
-                                )
+                              .embed-responsive-item 
+                                if partner.imageFormats                          
+                                  img.card-img-top.img-fluid(
+                                    class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
+                                    src=partner.imageFormats.small
+                                    alt=partner.stagename
+                                  )
                               .partner_stagename
                                 span=partner.stagename
                       

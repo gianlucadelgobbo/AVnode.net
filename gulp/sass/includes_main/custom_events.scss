@@ -134,7 +134,7 @@ div.time_schedule {
 }
 
 a:hover + .partner_stagename,
-.partner_stagename:hover {
+.partner_box_wrapper:hover .partner_stagename{
   display: block;
 }
 
