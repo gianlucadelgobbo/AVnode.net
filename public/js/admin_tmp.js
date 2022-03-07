@@ -1139,6 +1139,8 @@ addLocationAutocomplete = function () {
 		fields: ["address_components", "geometry"]
 	})
 	.bind("geocode:result", (event, place) => {
+		console.log("place")
+		console.log(place)
 		var res = {
 			"geometry": {
 				"lat": place.geometry.location.lat(),
@@ -1163,6 +1165,13 @@ addLocationAutocomplete = function () {
 				}
 			}
 		}
+		if (res.locality=="") {
+			for(var item in place.address_components) {
+				if (place.address_components[item].types.indexOf("administrative_area_level_2")!==-1) {
+					res.locality = place.address_components[item].long_name
+				}
+			}
+		}
 		res.formatted_address = res.locality && res.country ? res.locality +", "+ res.country : res.locality ? res.locality : res.country ? res.country : "";
 		event.target.value = res.formatted_address
 		$(event.target).parent().find(".lat").val(res.geometry.lat)
@@ -1181,6 +1190,8 @@ addAddressAutocomplete = function () {
 		fields: ["address_components", "geometry", "formatted_address"]
 	})
 	.bind("geocode:result", (event, place) => {
+		console.log("placeplace")
+		console.log(place)
 		var res = {
 			"street_number": "",
 			"route": "",
@@ -1213,6 +1224,13 @@ addAddressAutocomplete = function () {
 		if (res.locality=="") {
 			for(var item in place.address_components) {
 				if (place.address_components[item].types.indexOf("administrative_area_level_3")!==-1) {
+					res.locality = place.address_components[item].long_name
+				}
+			}
+		}
+		if (res.locality=="") {
+			for(var item in place.address_components) {
+				if (place.address_components[item].types.indexOf("administrative_area_level_2")!==-1) {
 					res.locality = place.address_components[item].long_name
 				}
 			}
