@@ -4,7 +4,6 @@ if messages.errors
       h4=global.__("ERROR")
       for error in messages.errors
         if error instanceof Object
-          - console.log(error)
           if (typeof error.msg === 'string' || error.msg instanceof String)
             - //error.msg = JSON.parse(error.msg)
             div!=error.msg
