@@ -1343,7 +1343,7 @@ router.updateSubscription = (req, res) => {
             if(!err) {
               if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
                 const auth = {
-                  user: event.organizationsettings.call.calls[sub.call].email,
+                  user: event.organizationsettings.call.calls[sub.call].emailuser,
                   pass: event.organizationsettings.call.calls[sub.call].emailpassword
                 };
                 let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals \""+event.organizationsettings.call.calls[sub.call].title+"\" with \""+sub.performance.title+"\" changed the status from \"" + old_status_name + "\" to \"" + status[req.body.status] + "\".";

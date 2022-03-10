@@ -247,7 +247,7 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
             res.status(500).send({ message: `${JSON.stringify(err)}` });
           } else {
             const auth = {
-              user: event.organizationsettings.email,
+              user: event.organizationsettings.emailuser,
               pass: event.organizationsettings.emailpassword
             };
             let email = "Ciao " + req.body.details.payer.name.given_name +",\n"+"your payment to \""+event.title+"\" was successful!!!";

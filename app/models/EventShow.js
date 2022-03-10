@@ -69,6 +69,7 @@ const callSchema = new Schema({
   title: String,
   email: String,
   emailname: String,
+  emailuser: String,
   emailpassword: String,
   imgalt: String,
   imghead: String,
