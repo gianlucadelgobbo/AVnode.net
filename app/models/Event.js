@@ -66,6 +66,7 @@ const callSchema = new Schema({
   title: String,
   email: String,
   emailname: String,
+  emailuser: String,
   emailpassword: String,
   imgalt: String,
   imghead: String,
@@ -148,6 +149,7 @@ const eventSchema = new Schema({
   organizationsettings: {
     email : String,
     emailname : String,
+    emailuser: String,
     emailpassword : String,
     text_sign : String,
     program_builder: { type: Boolean, default: false },
