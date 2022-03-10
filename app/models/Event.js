@@ -70,6 +70,7 @@ const callSchema = new Schema({
   emailpassword: String,
   imgalt: String,
   imghead: String,
+  colBkg: String,
   text_sign: String,
   html_sign: String,
   permalink: String,

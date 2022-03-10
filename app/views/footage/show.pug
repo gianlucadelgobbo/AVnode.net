@@ -37,7 +37,7 @@ block content
               #swfcontainer.embed-responsive-item
                 #noflash
                   img.img-fluid(src=data.imageFormats.large alt=data.title)
-                  img.img-fluid(src="/images/NO-FLASH.svg" alt=__("THIS ART CONTENT IS MADE IN FLASH FLASH IS NOT INSTALLED ON YOUR BROWSER ADOBE REMOVED THE DOWNLOAD OF THE PLUGIN BUT YOU CAN FIND A WAY TO FIND IT ;)"))
+                  img.img-fluid(src="/images/NO-FLASH.svg" alt=__("THIS ART CONTENT IS MADE IN FLASH FLASH IS NOT INSTALLED ON YOUR BROWSER ADOBE HAS REMOVED THE DOWNLOAD OF THE PLUGIN BUT YOU CAN FIND A WAY TO FIND IT")+" ;)")
                 object#flash.d-none.embed-responsive-item(classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000', width='550', height='400', align='middle',  type="application/x-shockwave-flash", data='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
                   param(name='movie', value='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
                   embed(width='550', height='400', align='middle',  src='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')

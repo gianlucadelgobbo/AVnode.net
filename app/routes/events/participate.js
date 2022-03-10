@@ -388,6 +388,7 @@ router.post('/', (req, res) => {
                       email_content: {
                         site:    (req.get('host') === "localhost:8006" ? "http" : "https")+"://"+req.headers.host,
                         imghead: (req.get('host') === "localhost:8006" ? "http" : "https")+"://"+req.headers.host + data.organizationsettings.call.calls[req.session.call.index].imghead,
+                        colBkg: data.organizationsettings.call.calls[req.session.call.index].colBkg,
                         imgalt:  data.organizationsettings.call.calls[req.session.call.index].imgalt,
                         html_sign:  data.organizationsettings.call.calls[req.session.call.index].html_sign,
                         text_sign:  data.organizationsettings.call.calls[req.session.call.index].text_sign,
