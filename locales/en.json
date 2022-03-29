@@ -754,6 +754,8 @@
 	"There are some errors": "There are some errors",
 	"Please select a call": "Please select a call",
 	"This person is already in with another act and can not be edited": "This person is already in with another act and can not be edited",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
-
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
+	"Verification Failed": "Verification Failed",
+	"Verification was already done or someone subscribed with some of your data, please sign up again.": "Verification was already done or someone subscribed with some of your data, please sign up again.",
+	"SIGN UP": "SIGN UP"
 }

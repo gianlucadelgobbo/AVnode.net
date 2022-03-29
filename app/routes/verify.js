@@ -55,6 +55,7 @@ router.get('/:sez/:code', (req, res) => {
               user.stats = {crews: 1};
             }
             user.save((err) => {
+              logger.debug(err);
               if (err) {
                 res.render('verify/signup', {
                   title: __('Signup verify'),

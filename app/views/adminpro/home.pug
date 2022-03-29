@@ -31,7 +31,9 @@ block content
 
     var conta=0;
     var error=0;
+    var timeouts=[];
     function generateHomes(conta) {
+      var a=0;
       var genUrl = [
         "https://gianlucadelgobbo.net/?createcache=1", "https://gianlucadelgobbo.net/it/?createcache=1",
         "https://flyer.it/?createcache=1","https://flyer.it/it/?createcache=1",
@@ -47,14 +49,29 @@ block content
         "https://shockart.net/?createcache=1","https://shockart.net/it/?createcache=1",
         "https://vjtelevision.com/?createcache=1",
         "https://wam.flyer.it/?createcache=1","https://wam.flyer.it/it/?createcache=1",
-        "https://chromosphere.eu/?createcache=1","https://chromosphere.eu/it/?createcache=1",
+        "https://chromosphere.eu/?createcache=1","https://chromosphere.eu/en/?createcache=1",
 
       ];
+      function apriapri() {
+        console.log(genUrl[a].length)
+        console.log(genUrl[a])
+        window.open(genUrl[a], a);
+
+        a=a+1;
+        if (a>genUrl[a].length) clearInterval(apri)
+      }
+      var apri = setInterval(function() {
+        apriapri()
+      }, 500);
+      
       if (conta==0) {
         $('#myModal .modal-body').html("");
         for (var a=0;a<genUrl.length;a++) {
           $('#myModal .modal-body').append("<div id=\"genUrl"+a+"\"><i class=\"fas fa-spinner animate-spin\"></i> "+genUrl[a]+"</div>");
-          window.open(genUrl[a], a);
+          setTimeout(function() {
+            console.log(genUrl[a])
+            timeouts[a] = window.open(genUrl[a], a);
+          }, 500*a)
         }
         $('#myModal .modal-footer .btn-primary').addClass("disabled");
         $('#myModal').modal();
@@ -83,6 +100,7 @@ block content
       //- });
       
     }
+    generateHomes(conta);
     function generateLocals(conta) {
       var genUrllocal = [
         "http://localhost:3002/meta/?generate=1", //livecinemafestival.com
