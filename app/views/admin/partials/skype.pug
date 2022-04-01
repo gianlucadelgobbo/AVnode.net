@@ -11,9 +11,9 @@
 				.input-group
 					input.form-control(type='text' name='skype['+i+'][url]' placeholder=__("Skype") value=item.url)
 					.input-group-append
-						button.btn.btn-danger(type='button' disabled=(i==0 ? "disabled" : undefined) onclick=(i>0 ? "$(this).parent().parent().parent().remove()" : undefined))
+						button.btn.btn-danger.remove_simple(type='button' data-list="skype" disabled=(data.skype.length ? "disabled" : undefined))
 							i.icon-trash
-	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-duplicate="skype")
+	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-list="skype")
 		i.icon-plus
 		!=" "
 		b=__("ADD SKYPE")

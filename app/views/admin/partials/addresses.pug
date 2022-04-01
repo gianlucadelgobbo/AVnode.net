@@ -15,9 +15,9 @@
 					input.country(type='hidden' name='addresses['+i+'][country]' value=address.country)
 					input.formatted_address(type='hidden' name='addresses['+i+'][formatted_address]' value=address.formatted_address)
 					.input-group-append
-						button.btn.btn-danger(type='button' disabled=(i==0 ? "disabled" : undefined) onclick=(i>0 ? "$(this).parent().parent().parent().remove()" : undefined))
+						button.btn.btn-danger.remove_simple(type='button' data-list="addresses" disabled=(data.addresses.length ? "disabled" : undefined))
 							i.icon-trash
-	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-duplicate="addresses")
+	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-list="addresses")
 		i.icon-plus
 		!=" "
 		b=__("ADD CITY")

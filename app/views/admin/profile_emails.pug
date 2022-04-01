@@ -17,18 +17,18 @@ block content
                 input.form-control(type='email' name='emails['+i+'][email]' value=email.email readonly=email.is_confirmed ? "readonly" : undefined)
                 .input-group-append
                   .input-group-text(style="padding-left:2rem")
-                    input.form-check-input(type='checkbox' disabled=!email.is_confirmed ? "disabled" : undefined id="email"+i+"is_public" name='emails['+i+'][is_public]' value='true' checked=email.is_public ? "checked" : undefined)
+                    input.form-check-input(type='checkbox' id="email"+i+"is_public" name='emails['+i+'][is_public]' value='true' checked=email.is_public ? "checked" : undefined)
                     label.form-check-label(for="email"+i+"is_public")=__("Is public")
                 .input-group-append
                   .input-group-text(style="padding-left:2rem")
-                    input.form-check-input(type='checkbox' disabled=!email.is_confirmed ? "disabled" : undefined id="email"+i+"is_primary" name='emails['+i+'][is_primary]' value='true' checked=email.is_primary ? "checked" : undefined)
+                    input.form-check-input(type='checkbox' id="email"+i+"is_primary" name='emails['+i+'][is_primary]' value='true' checked=email.is_primary ? "checked" : undefined)
                     label.form-check-label(for="email"+i+"is_primary")=__("Is primary")
                 .input-group-append
                     .input-group-text
                       .badge.badge-success.mr-2.ml-2=__("Verified")
                 .input-group-append
-                    button.btn.btn-danger.remove(type='button')
-                      i.icon-trash
+                  button.btn.btn-danger(type='button' data-list="emails" class=(email.is_primary ? undefined : "remove_simple") disabled=(email.is_primary ? "disabled" : undefined))
+                    i.icon-trash
               .d-flex.mt-1
                 .form-check.mr-3
                   b=__("Subscriptions")
@@ -55,7 +55,8 @@ block content
                 .input-group-append
                   buttton.btn.btn-warning.validateemail=__("Verify")
                 .input-group-append
-                    button.btn.btn-danger.remove(type='button')
+                  button.btn.btn-danger.remove_simple(type='button' data-list="emails")
+                      //button.btn.btn-danger.remove(type='button')
                       i.icon-trash
       .text-center
         input.btn.btn-primary(type="submit" value=__("SAVE"))

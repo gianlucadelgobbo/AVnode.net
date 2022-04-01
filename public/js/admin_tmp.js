@@ -365,6 +365,7 @@ $(function () {
 		$('.datetime-format').datetimeEntry({datetimeFormat: 'D/O/Y H:M', spinnerBigImage: '/datetimeentry/spinnerDefaultBig.png'});
 
 		function scheduleslistRenumber() {
+			console.log("scheduleslistRenumber")
 			if ($('#scheduleslist').children().length>1) {
 				$('#scheduleslist').find(".remove").removeClass("d-none");
 			} else {
@@ -409,9 +410,10 @@ $(function () {
 		$('#scheduleslist .remove').on("click", function () {
 			scheduleslistRemove(this)
 		});
+
 		//duplicator
 		$(".duplicator2").on("click", function () {
-			var list = "#"+$(this).data("duplicate");
+			var list = "#"+$(this).data("list");
 			var clone = $($(list).children()[$(list).children().length-1]).clone();
 			$(clone).find(".remove").on("click", function () {
 				scheduleslistRemove(this)
@@ -434,23 +436,51 @@ $(function () {
 	if ($("#medias") && $("#medias").length) {
 		activateSortable();
 	}
+
 	//duplicator
 	if ($(".duplicator") && $(".duplicator").length) {
 		$(".duplicator").on("click", function () {
-			var list = $("#"+$(this).data("duplicate"));
+			var list = $("#"+$(this).data("list"));
 			var clone = $($(list).children()[0]).clone();
-			clone.find('button').each(function() {
+			/* clone.find('button').each(function() {
 				$(this).removeAttr('disabled');
-			});
+			}); */
 			clone.find('input').each(function() {
 				this.name= this.name.replace('[0]', '['+($(list).children().length+1)+']');
 				this.value = "";
 			});
+			$(clone).find(".remove_simple").on("click", function () {
+				simpleRemove(this)
+			});
 			list.append(clone);
+
+			if (list.children().length>1) {
+				list.find(".remove_simple").removeAttr("disabled");
+			} else {
+				list.find(".remremove_simple").addAttr("disabled","disabled");
+			}
+
 			if (addAddressAutocomplete) addAddressAutocomplete();
 			if (addLocationAutocomplete) addLocationAutocomplete();
 		});
 	}
+
+	if ($(".remove_simple") && $(".remove_simple").length) {
+		function simpleRemove(el) {
+			var list = $("#"+$(el).data("list"));
+			$(el).parent().parent().parent().remove();
+			if (list.children().length>1) {
+				list.find(".remove_simple").removeAttr("disabled");
+			} else {
+				list.find(".remove_simple").prop("disabled","disabled");
+			}
+		}
+		$('.remove_simple').on("click", function () {
+			simpleRemove(this)
+		});
+	}
+
+	
 	// UPLOAD IMAGE
 
 	if ($("#formupload") && $("#formupload").length) {

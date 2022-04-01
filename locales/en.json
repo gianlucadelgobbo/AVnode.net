@@ -757,5 +757,11 @@
 	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
 	"Verification Failed": "Verification Failed",
 	"Verification was already done or someone subscribed with some of your data, please sign up again.": "Verification was already done or someone subscribed with some of your data, please sign up again.",
-	"SIGN UP": "SIGN UP"
+	"SIGN UP": "SIGN UP",
+	"Email Confirm": "Email Confirm",
+	"We’ve received a request to add this new email": "We’ve received a request to add this new email",
+	"Click here to confirm": "Click here to confirm",
+	"If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:": "If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:",
+	"Confirmation email sending failure, please try later": "Confirmation email sending failure, please try later",
+	"Email verificated with success.": "Email verificated with success."
 }
