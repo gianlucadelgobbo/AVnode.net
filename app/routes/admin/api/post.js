@@ -866,7 +866,7 @@ router.contact = (req, res) => {
     .select({stagename: 1, slug:1, name:1, surname:1, email: 1, is_crew:1, is_banned:1})
     .populate([{ "path": "members", "select": "stagename name surname email", "model": "User"}])
     .exec((err, user) => {
-      if (!is_banned) {
+      if (!user.is_banned) {
         logger.debug(user);
         logger.debug(err);
         message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
