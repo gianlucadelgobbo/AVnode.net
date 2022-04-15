@@ -263,7 +263,9 @@ router.post('/', (req, res) => {
           case 4 :
             logger.debug("req.body.subscriptions");
             logger.debug(req.body.subscriptions);
-            if (data && req.body.subscriptions && req.body.subscriptions.length) {
+            logger.debug(req.body.subscriptions.filter(item => item.subscriber_id));
+            logger.debug(req.body.subscriptions.filter(item => item.subscriber_id).length);
+            if (data && req.body.subscriptions && req.body.subscriptions.length && req.body.subscriptions.filter(item => item.subscriber_id).length) {
               let days_check = true;
               for (var a=0; a<req.body.subscriptions.length; a++) {
                 if (req.body.subscriptions[a].subscriber_id && req.body.subscriptions[a].freezed!='true'){
