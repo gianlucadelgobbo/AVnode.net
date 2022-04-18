@@ -353,10 +353,25 @@ $(function () {
 
 
 	if ($("#types") && $("#types").length) {
+		var genreshow = []
 		$('#types input.form-check-input').on("change", function () {
 			$("#tecnique .tecnique").addClass("d-none")
 			$("#tecnique .tecnique .form-check-input").removeAttr("checked")
-			$("#"+$(this).attr("id")+"tecnique").removeClass("d-none")
+			if ($("#"+$(this).attr("id")+"tecnique").length) {
+				$("#"+$(this).attr("id")+"tecnique").removeClass("d-none")
+			} 
+			if ($("#"+$(this).attr("id")+"tecnique").length || $(this).attr("id") == "5be8708afc3961000000011d") {
+				$("#genre").removeClass("d-none")
+			} else {
+				$("#genre").addClass("d-none")
+			}
+			var endless = ["5be8708afc39610000000017","5be8708afc3961000000019f","5dc9885ef25cbccc4d7dd8c9"];
+			if (endless.indexOf($(this).attr("id")) !== -1) {
+				$(".installations").removeClass("d-none")
+			} else {
+				$(".installations").addClass("d-none")
+			}
+
 			console.log($(this).attr("id")+"tecnique");
 		});
 	}

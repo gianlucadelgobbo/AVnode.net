@@ -33,7 +33,13 @@ block content
       .form-inline.mb-3
         label.labelField(for='duration')=__("Duration")
         input.form-control.mr-3.ml-3(type='text' name='duration' id='duration' placeholder=__("Duration") value=data.duration aria-describedby="durationHelpInline")
-        #durationHelpInline=__("minutes")
+        #durationHelpInline
+          !=__("minutes")
+          - var endless = ["5be8708afc39610000000017","5be8708afc3961000000019f","5dc9885ef25cbccc4d7dd8c9"]
+          span.installations(class=endless.indexOf(data.type._id.toString())==-1 ? "d-none" : undefined)
+            !=" ("
+            !=__("For endless installations set 0")
+            !=")"
         if err && Object.keys(err.errors).indexOf('duration')!==-1
           .badge.badge-danger=err.errors.duration.message
       include partials/tech_arts

@@ -271,6 +271,12 @@ block content
                       !=useruser.addressesFormatted.join(", ")
                     else
                       .badge.badge-danger MISSING ADDRESS
+                    br
+                    !="PUBLIC: "
+                    if useruser.is_public
+                      span.badge.badge-success="OK"
+                    else
+                      span.badge.badge-danger="MISSING PUBLIC"
               if get.fullinfo
                 .mt-2!=useruser.aboutFull ? useruser.aboutFull : useruser.about
                 if useruser.web
