@@ -20,7 +20,6 @@ const logger = require('../utilities/logger');
 const datevenueSchema = new Schema({
   starttime: Date,
   endtime: Date,
-  breakduration: Number,
   admitted: [{ type : Schema.ObjectId, ref : 'Category' }],
   venue: Venue,
   location: String,

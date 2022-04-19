@@ -22,7 +22,6 @@ const helper = require('../utilities/helper');
 const datevenueSchema = new Schema({
   starttime: Date,
   endtime: Date,
-  breakduration: Number,
   venue: Venue
 },{ _id : false });
 

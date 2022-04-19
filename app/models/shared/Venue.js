@@ -5,6 +5,7 @@ const Address = require('./Address');
 const Venue = new Schema({
   name: String,
   room: String,
+  breakduration: Number,
   url: String,
   type: String,
   location: Address

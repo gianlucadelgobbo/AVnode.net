@@ -122,7 +122,7 @@ block content
                             input.form-control(type='text' autocomplete='nope' name='schedule['+i+'][venue][room]' placeholder=__('Room name') value=schedule.venue.room)
                         .form-group.breakduration(class=(schedule.venue.room ? undefined : "d-none"))
                           label.labelField=__("Break between every show (minutes)")
-                          input.form-control(type='text' autocomplete='nope' name='schedule['+i+'][breakduration]' value=schedule.breakduration)
+                          input.form-control(type='text' autocomplete='nope' name='schedule['+i+'][venue][breakduration]' value=schedule.venue.breakduration)
         button.mb-2.btn.btn-success.btn-sm.duplicator2(type='button' data-list="scheduleslist")
           i.icon-plus
           !=" "
