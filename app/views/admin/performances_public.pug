@@ -36,7 +36,7 @@ block content
         #durationHelpInline
           !=__("minutes")
           - var endless = ["5be8708afc39610000000017","5be8708afc3961000000019f","5dc9885ef25cbccc4d7dd8c9"]
-          span.installations(class=endless.indexOf(data.type._id.toString())==-1 ? "d-none" : undefined)
+          span.installations(class=(data.type && endless.indexOf(data.type._id.toString())==-1 ? "d-none" : undefined))
             !=" ("
             !=__("For endless installations set 0")
             !=")"

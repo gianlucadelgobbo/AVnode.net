@@ -22,7 +22,7 @@
 
 		.col-md-4
 			- console.log(config.types.children.filter(i=>i.children.length>0).map(i=>{return i._id.toString()}))
-			#genre(class=(data.type && config.types.children.filter(i=>i.children.length>0).map(i=>{return i._id.toString()}).indexOf(data.type._id.toString())!=-1|| data.type._id.toString() == "5be8708afc3961000000011d"  ? undefined : "d-none"))
+			#genre(class=((data.type && config.types.children.filter(i=>i.children.length>0).map(i=>{return i._id.toString()}).indexOf(data.type._id.toString())!=-1) || (data.type && data.type._id.toString()) == "5be8708afc3961000000011d"  ? undefined : "d-none"))
 					label.labelField=__("Genre")
 					each genre in config.genres.children
 						.form-check
