@@ -110,10 +110,19 @@ block content
                           input.street_number(type='hidden' name='schedule['+i+'][venue][location][street_number]' value=schedule.venue.location && schedule.venue.location.street_number ? schedule.venue.location.street_number : "")
                       .col-md-4
                         .form-group
-                          label.labelField=__("Room")
+                          label.labelField
+                            if schedule.venue.room
+                              !=__("Room")
+                              !="  "
+                            else 
+                              button.btn.btn-primary.btn-sm(type="button" onclick="$(this).parent().parent().find('.room').removeClass('d-none');$(this).parent().parent().parent().find('.breakduration').removeClass('d-none');")=__("Room")
                           !="  "
                           small=__("(Optional)")
-                          input.form-control(type='text' autocomplete='nope' name='schedule['+i+'][venue][room]' placeholder=__('Room') value=schedule.venue.room)
+                          .room(class=(schedule.venue.room ? undefined : "d-none"))
+                            input.form-control(type='text' autocomplete='nope' name='schedule['+i+'][venue][room]' placeholder=__('Room name') value=schedule.venue.room)
+                        .form-group.breakduration(class=(schedule.venue.room ? undefined : "d-none"))
+                          label.labelField=__("Break between every show (minutes)")
+                          input.form-control(type='text' autocomplete='nope' name='schedule['+i+'][breakduration]' value=schedule.breakduration)
         button.mb-2.btn.btn-success.btn-sm.duplicator2(type='button' data-list="scheduleslist")
           i.icon-plus
           !=" "

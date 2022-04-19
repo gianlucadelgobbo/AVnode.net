@@ -1,4 +1,5 @@
 {
+	"10": "10",
 	"------------------POPUP------------------": "------------------POPUP------------------",
 	"AVnode.net is now in Beta Version, feel free to test it but read the following alerts:": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts:",
 	"Control panel is still under development, some features are still not fully working": "Control panel is still under development, some features are still not fully working",
@@ -772,5 +773,7 @@
 	"call for proposals": "call for proposals",
 	"Please select at least 1 person to go forward": "Please select at least 1 person to go forward",
 	"Please select at least 1 day for all the people availables to go forward": "Please select at least 1 day for all the people availables to go forward",
-	"For endless installations set 0": "For endless installations set 0"
+	"For endless installations set 0": "For endless installations set 0",
+	"Break between every show (minutes)": "Break between every show (minutes)",
+	"Room name": "Room name"
 }
