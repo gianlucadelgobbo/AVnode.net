@@ -731,6 +731,7 @@ router.get('/:event/peoples', (req, res) => {
         if (err) {
           res.json(err);
         } else {
+          data.subscriptions = data.subscriptions.filter(subscriber => subscriber.subscription.subscriber_id)
           data.event = event;
           data.status = config.cpanel["events_advanced"].status;
           let daysdays = [];
@@ -772,7 +773,7 @@ router.get('/:event/peoples', (req, res) => {
           }
           for(let a=0;a<program.length;a++) {
             for(let b=0; b<program[a].subscriptions.length;b++) {
-              if (program[a].subscriptions[b].freezed && program[a].subscriptions[b].subscriber_id && program[a].subscriptions[b].subscriber_id._id) {
+              if (program[a].subscriptions[b].freezed) {
                 let subscriber_id_map = data.subscriptions.map(subscriber => {return subscriber.subscription.subscriber_id._id.toString()});
                 let subscriber_id_index = subscriber_id_map.indexOf(program[a].subscriptions[b].subscriber_id._id.toString());
                 if (subscriber_id_index!=-1) {
