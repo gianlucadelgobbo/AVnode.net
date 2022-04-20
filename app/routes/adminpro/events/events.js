@@ -760,7 +760,7 @@ router.get('/:event/peoples', (req, res) => {
           data.subscriptions = [];
           for(let a=0;a<program.length;a++) {
             for(let b=0; b<program[a].subscriptions.length;b++) {
-              if (!program[a].subscriptions[b].freezed && program[a].subscriptions[b].subscription.subscriber_id._id) {
+              if (!program[a].subscriptions[b].freezed && program[a].subscriptions[b].subscription && program[a].subscriptions[b].subscription.subscriber_id && program[a].subscriptions[b].subscription.subscriber_id._id) {
                 let subscription = JSON.parse(JSON.stringify(program[a]));
                 delete subscription.subscriptions;
                 delete subscription.performance;
