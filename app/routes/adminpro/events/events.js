@@ -731,7 +731,6 @@ router.get('/:event/peoples', (req, res) => {
         if (err) {
           res.json(err);
         } else {
-          data.subscriptions = data.subscriptions.filter(subscriber => subscriber.subscription.subscriber_id)
           data.event = event;
           data.status = config.cpanel["events_advanced"].status;
           let daysdays = [];
@@ -761,7 +760,7 @@ router.get('/:event/peoples', (req, res) => {
           data.subscriptions = [];
           for(let a=0;a<program.length;a++) {
             for(let b=0; b<program[a].subscriptions.length;b++) {
-              if (!program[a].subscriptions[b].freezed) {
+              if (!program[a].subscriptions[b].freezed && program[a].subscriptions[b].subscription.subscriber_id._id) {
                 let subscription = JSON.parse(JSON.stringify(program[a]));
                 delete subscription.subscriptions;
                 delete subscription.performance;
