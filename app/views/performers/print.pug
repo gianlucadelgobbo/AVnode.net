@@ -11,427 +11,820 @@ block content
               .col(style="padding-top: 9px;font-size: 22px;")
                 .text-right!=global.__('CV GENERATOR')
 
-      tbody
-        tr
-          td
-            .row.mb-5.mt-5
-              .col-8
-                h1=data.stagename
-                if data.addressesFormatted && data.addressesFormatted.length       
-                  ul.pl-2.list-inline
-                    each address in data.addressesFormatted
-                      li.list-inline-item.mb-3!=address
-                if data.organizationData && (data.organizationData.foundation_year || data.organizationData.type || data.organizationData.phone || data.organizationData.public_email)
-                  .pb-2
-                    b="Organization Data"
-                  ul.pl-2.list-unstyled
-                    li.mb-3
-                      !="Foundation year: "
-                      b!=data.organizationData.foundation_year
-                    li.mb-3
-                      !="Organization type: "
-                      b!=data.organizationData.type
-                    li.mb-3
-                      !="Organization phone: "
-                      b!=data.organizationData.phone
-                    li.mb-3
-                      !="Organization email: "
-                      b!=data.organizationData.public_email
-                  //each item in data.organizationData
-                    li.mb-3
-                      !="Foundation year: "
-                      b!=item.foundation_year
-
-                if !get.hideLinks 
-                  .pb-2
-                    b="Web sites"
-                  ul.pl-2.list-unstyled
-                    li.mb-3
-                      a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug)
-                        i.icon-link.mr-2
-                        !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug
-                    each item in data.web
-                      if item.url
-                        li.mb-3
-                          a(href=item.url)
-                            i.icon-link.mr-2
-                            !=item.url
-                  if data.social && data.social.length
+      if !get.eventscolumns 
+        tbody
+          tr
+            td
+              .row.mb-5.mt-5
+                .col-8
+                  h1=data.stagename
+                  if data.addressesFormatted && data.addressesFormatted.length       
+                    ul.pl-2.list-inline
+                      each address in data.addressesFormatted
+                        li.list-inline-item.mb-3!=address
+                  if data.organizationData && (data.organizationData.foundation_year || data.organizationData.type || data.organizationData.phone || data.organizationData.public_email)
                     .pb-2
-                      b="Social media"
+                      b="Organization Data"
                     ul.pl-2.list-unstyled
-                      each item in data.social
+                      li.mb-3
+                        !="Foundation year: "
+                        b!=data.organizationData.foundation_year
+                      li.mb-3
+                        !="Organization type: "
+                        b!=data.organizationData.type
+                      li.mb-3
+                        !="Organization phone: "
+                        b!=data.organizationData.phone
+                      li.mb-3
+                        !="Organization email: "
+                        b!=data.organizationData.public_email
+                    //each item in data.organizationData
+                      li.mb-3
+                        !="Foundation year: "
+                        b!=item.foundation_year
+
+                  if !get.hideLinks 
+                    .pb-2
+                      b="Web sites"
+                    ul.pl-2.list-unstyled
+                      li.mb-3
+                        a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug)
+                          i.icon-link.mr-2
+                          !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug
+                      each item in data.web
                         if item.url
                           li.mb-3
                             a(href=item.url)
-                              if item.url.indexOf('instagram.com/')!=-1
-                                i.icon-instagram.mr-2
-                              else if item.url.indexOf('twitter.com/')!=-1
-                                i.icon-twitter.mr-2
-                              else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
-                                i.icon-facebook.mr-2
-                              else if item.url.indexOf('vimeo.com/')!=-1
-                                i.icon-vimeo.mr-2
-                              else if item.url.indexOf('youtube.com/')!=-1
-                                i.icon-youtube.mr-2
-                              else
-                                i.icon-link.mr-2
+                              i.icon-link.mr-2
                               !=item.url
-
-                  if data.publicEmails && data.publicEmails.length    
-                    ul.pl-2.list-unstyled
-                      each email in data.publicEmails
-                        li.mb-3
-                          a(href="mailto:"+item)
-                            i.icon-envelope.mr-2
-                            !=email
-              .col-4
-                .page-break
-                  img.soft-rounded-circle.img-fluid(
-                    class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
-                    src=data.imageFormats.large
-                    alt=data.stagename
-                    height=347
-                  )
-
-            .mb-5.text-justify!=data.aboutFull
-
-            if data.crews && data.crews.length
-              h2!=global.__('Crews & Organizations')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
-              ul.list-unstyled.mb-5
-                each item in data.crews
-                  li.media.mt-3.pt-3
-                    if !get.hideImages
-                      .page-break
-                        img.mr-3(
-                          src=item.imageFormats.small
-                          alt=item.stagename
-                          width=100
-                          height=100
-                        )
-                    .media-body
-                      h4!=item.stagename
-                      if item.addressesFormatted && item.addressesFormatted.length       
-                        ul.pl-2.list-inline
-                          each address in item.addressesFormatted
-                            li.list-inline-item.mb-3!=address
-
-                        if !get.hideDescription
-                          .text-justify!=get.fullDescription ? item.aboutFull : item.about
-                        if !get.hideLinks
-                          ul.list-unstyled.pt-3
+                    if data.social && data.social.length
+                      .pb-2
+                        b="Social media"
+                      ul.pl-2.list-unstyled
+                        each item in data.social
+                          if item.url
                             li.mb-3
-                              a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug)
-                                i.icon-link.mr-2
-                                !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug
-                            each web in item.web
-                              li.mb-3
-                                a(href=web.url)
+                              a(href=item.url)
+                                if item.url.indexOf('instagram.com/')!=-1
+                                  i.icon-instagram.mr-2
+                                else if item.url.indexOf('twitter.com/')!=-1
+                                  i.icon-twitter.mr-2
+                                else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
+                                  i.icon-facebook.mr-2
+                                else if item.url.indexOf('vimeo.com/')!=-1
+                                  i.icon-vimeo.mr-2
+                                else if item.url.indexOf('youtube.com/')!=-1
+                                  i.icon-youtube.mr-2
+                                else
                                   i.icon-link.mr-2
-                                  !=web.url
-                          if item.social && item.social.length
-                            ul.list-unstyled.pt-3
-                              each social in item.social
-                                li.mb-3
-                                  a(href=social.url)
-                                    if social.url.indexOf('instagram.com/')!=-1
-                                      i.icon-instagram.mr-2
-                                    else if social.url.indexOf('twitter.com/')!=-1
-                                      i.icon-twitter.mr-2
-                                    else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
-                                      i.icon-facebook.mr-2
-                                    else if social.url.indexOf('vimeo.com/')!=-1
-                                      i.icon-vimeo.mr-2
-                                    else if social.url.indexOf('youtube.com/')!=-1
-                                      i.icon-youtube.mr-2
-                                    else
-                                      i.icon-link.mr-2
-                                    !=social.url
+                                !=item.url
 
-            if data.members && data.members.length
-              .members
-                h2!=global.__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
+                    if data.publicEmails && data.publicEmails.length    
+                      ul.pl-2.list-unstyled
+                        each email in data.publicEmails
+                          li.mb-3
+                            a(href="mailto:"+item)
+                              i.icon-envelope.mr-2
+                              !=email
+                .col-4
+                  .page-break
+                    img.soft-rounded-circle.img-fluid(
+                      class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
+                      src=data.imageFormats.large
+                      alt=data.stagename
+                      height=347
+                    )
+
+              .mb-5.text-justify!=data.aboutFull
+
+              if data.crews && data.crews.length
+                h2!=global.__('Crews & Organizations')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
                 ul.list-unstyled.mb-5
-                  each item in data.members
+                  each item in data.crews
                     li.media.mt-3.pt-3
                       if !get.hideImages
                         .page-break
                           img.mr-3(
                             src=item.imageFormats.small
-                            alt=data.organizationData ? item.name+" "+item.surname : item.stagename
+                            alt=item.stagename
+                            width=100
                             height=100
                           )
                       .media-body
-                        h4!=data.organizationData ? item.name+" "+item.surname : item.stagename
+                        h4!=item.stagename
                         if item.addressesFormatted && item.addressesFormatted.length       
                           ul.pl-2.list-inline
                             each address in item.addressesFormatted
                               li.list-inline-item.mb-3!=address
 
-                        if !get.hideDescription
-                          .text-justify!=get.fullDescription ? item.aboutFull : item.about
-                        if !get.hideLinks
-                          ul.list-unstyled.pt-3
-                            li.mb-3
-                              a(href="https://avnode.net/"+item.slug)
-                                i.icon-link.mr-2
-                                !="https://avnode.net/"+item.slug
-                            each web in item.web
-                              li.mb-3
-                                a(href=web.url)
-                                  i.icon-link.mr-2
-                                  !=web.url
-                          if item.social && item.social.length
+                          if !get.hideDescription
+                            .text-justify!=get.fullDescription ? item.aboutFull : item.about
+                          if !get.hideLinks
                             ul.list-unstyled.pt-3
-                              each social in item.social
+                              li.mb-3
+                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug)
+                                  i.icon-link.mr-2
+                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug
+                              each web in item.web
                                 li.mb-3
-                                  a(href=social.url)
-                                    if social.url.indexOf('instagram.com/')!=-1
-                                      i.icon-instagram.mr-2
-                                    else if social.url.indexOf('twitter.com/')!=-1
-                                      i.icon-twitter.mr-2
-                                    else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
-                                      i.icon-facebook.mr-2
-                                    else if social.url.indexOf('vimeo.com/')!=-1
-                                      i.icon-vimeo.mr-2
-                                    else if social.url.indexOf('youtube.com/')!=-1
-                                      i.icon-youtube.mr-2
-                                    else
-                                      i.icon-link.mr-2
-                                    !=social.url
+                                  a(href=web.url)
+                                    i.icon-link.mr-2
+                                    !=web.url
+                            if item.social && item.social.length
+                              ul.list-unstyled.pt-3
+                                each social in item.social
+                                  li.mb-3
+                                    a(href=social.url)
+                                      if social.url.indexOf('instagram.com/')!=-1
+                                        i.icon-instagram.mr-2
+                                      else if social.url.indexOf('twitter.com/')!=-1
+                                        i.icon-twitter.mr-2
+                                      else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                        i.icon-facebook.mr-2
+                                      else if social.url.indexOf('vimeo.com/')!=-1
+                                        i.icon-vimeo.mr-2
+                                      else if social.url.indexOf('youtube.com/')!=-1
+                                        i.icon-youtube.mr-2
+                                      else
+                                        i.icon-link.mr-2
+                                      !=social.url
 
-            if data.performances && data.performances.length
-              .performances
-                h2!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
-                ul.list-unstyled.mb-5
-                  each item in data.performances                
-                    li.media.mt-3.pt-3
-                      if !get.hideImages
-                        .page-break
-                          img.mr-3(
-                            src=item.imageFormats.small
-                            alt=item.title
-                          )
-                      .media-body
-                        h4!=item.title
-                        small
-                          !=item.type.name
-                          if item.style
-                            !=" | "
-                            !=item.style.name
-                          if item.genre
-                            !=" | "
-                            !=item.genre.name
-                        if !get.hideDescription
-                          .text-justify!=item.about
-                        if !get.hideLinks
-                          ul.list-unstyled.pt-3
-                            li.mb-3
-                              a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug)
-                                i.icon-link.mr-2
-                                !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug
-                        if !get.hideBookings && item.bookings && item.bookings.length
-                          u.mb-2.mt-3!='Bookings'
-                          - item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
-                          if get.hideImages
-                            ul
+              if data.members && data.members.length
+                .members
+                  h2!=global.__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
+                  ul.list-unstyled.mb-5
+                    each item in data.members
+                      li.media.mt-3.pt-3
+                        if !get.hideImages
+                          .page-break
+                            img.mr-3(
+                              src=item.imageFormats.small
+                              alt=data.organizationData ? item.name+" "+item.surname : item.stagename
+                              height=100
+                            )
+                        .media-body
+                          h4!=data.organizationData ? item.name+" "+item.surname : item.stagename
+                          if item.addressesFormatted && item.addressesFormatted.length       
+                            ul.pl-2.list-inline
+                              each address in item.addressesFormatted
+                                li.list-inline-item.mb-3!=address
+
+                          if !get.hideDescription
+                            .text-justify!=get.fullDescription ? item.aboutFull : item.about
+                          if !get.hideLinks
+                            ul.list-unstyled.pt-3
+                              li.mb-3
+                                a(href="https://avnode.net/"+item.slug)
+                                  i.icon-link.mr-2
+                                  !="https://avnode.net/"+item.slug
+                              each web in item.web
+                                li.mb-3
+                                  a(href=web.url)
+                                    i.icon-link.mr-2
+                                    !=web.url
+                            if item.social && item.social.length
+                              ul.list-unstyled.pt-3
+                                each social in item.social
+                                  li.mb-3
+                                    a(href=social.url)
+                                      if social.url.indexOf('instagram.com/')!=-1
+                                        i.icon-instagram.mr-2
+                                      else if social.url.indexOf('twitter.com/')!=-1
+                                        i.icon-twitter.mr-2
+                                      else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                        i.icon-facebook.mr-2
+                                      else if social.url.indexOf('vimeo.com/')!=-1
+                                        i.icon-vimeo.mr-2
+                                      else if social.url.indexOf('youtube.com/')!=-1
+                                        i.icon-youtube.mr-2
+                                      else
+                                        i.icon-link.mr-2
+                                      !=social.url
+
+              if data.performances && data.performances.length
+                .performances
+                  h2!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
+                  ul.list-unstyled.mb-5
+                    each item in data.performances                
+                      li.media.mt-3.pt-3
+                        if !get.hideImages
+                          .page-break
+                            img.mr-3(
+                              src=item.imageFormats.small
+                              alt=item.title
+                            )
+                        .media-body
+                          h4!=item.title
+                          small
+                            !=item.type.name
+                            if item.style
+                              !=" | "
+                              !=item.style.name
+                            if item.genre
+                              !=" | "
+                              !=item.genre.name
+                          if !get.hideDescription
+                            .text-justify!=item.about
+                          if !get.hideLinks
+                            ul.list-unstyled.pt-3
+                              li.mb-3
+                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug)
+                                  i.icon-link.mr-2
+                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug
+                          if !get.hideBookings && item.bookings && item.bookings.length
+                            u.mb-2.mt-3!='Bookings'
+                            - item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
+                            if get.hideImages
+                              ul
+                                each booking in item.bookings
+                                  li
+                                    strong!=booking.event.title
+                                    br
+                                    !=booking.event.boxDate
+                                    br
+                                    !=booking.event.boxVenue
+                            else             
                               each booking in item.bookings
-                                li
-                                  strong!=booking.event.title
-                                  br
-                                  !=booking.event.boxDate
-                                  br
-                                  !=booking.event.boxVenue
-                          else             
-                            each booking in item.bookings
-                              .d-flex.mb-3
-                                .page-break
-                                  img(src=booking.event.imageFormats.small, alt=booking.event.title, height=113)
-                                .ml-3
-                                  b!=booking.event.title
-                                  br
-                                  !=booking.event.boxDate
-                                  br
-                                  !=booking.event.boxVenue
+                                .d-flex.mb-3
+                                  .page-break
+                                    img(src=booking.event.imageFormats.small, alt=booking.event.title, height=113)
+                                  .ml-3
+                                    b!=booking.event.title
+                                    br
+                                    !=booking.event.boxDate
+                                    br
+                                    !=booking.event.boxVenue
 
-            if data.events && data.events.length
-              .events
-                h2!=global.__('Productions')+" <small>(<span>"+data.stats.events+"</span>)</small>"
-                ul.list-unstyled.mb-5
-                  each item in data.events
-                    li.media.mt-3.pt-3
-                      if !get.hideImages
-                        .page-break
-                          img.mr-3(
-                            src=item.imageFormats.small
-                            alt=item.title
-                            height=113
-                          )
-                      .media-body
-                        h4!=item.title
-                        ul.list-inline
-                          li.list-inline-item=item.boxDate
-                          li.list-inline-item=item.boxVenue
-                          if item.categories && item.categories.length
-                            li.list-inline-item=item.categories[0].name
-                        if !get.hideDescription
-                          .mt-3.text-justify!=get.fullDescription ? item.aboutFull : item.about
-                        if !get.hideLinks
-                          ul.list-unstyled.pt-3
-                            li.mb-3
-                              a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug)
-                                i.icon-link.mr-2
-                                !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug
-                            each web in item.web
-                              li.mb-3
-                                a(href=web.url)
-                                  i.icon-link.mr-2
-                                  !=web.url
-                          if item.social && item.social.length
+              if data.events && data.events.length
+                .events
+                  h2!=global.__('Productions')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+                  ul.list-unstyled.mb-5
+                    each item in data.events
+                      li.media.mt-3.pt-3
+                        if !get.hideImages
+                          .page-break
+                            img.mr-3(
+                              src=item.imageFormats.small
+                              alt=item.title
+                              height=113
+                            )
+                        .media-body
+                          h4!=item.title
+                          ul.list-inline
+                            li.list-inline-item=item.boxDate
+                            li.list-inline-item=item.boxVenue
+                            if item.categories && item.categories.length
+                              li.list-inline-item=item.categories[0].name
+                          if !get.hideDescription
+                            .mt-3.text-justify!=get.fullDescription ? item.aboutFull : item.about
+                          if !get.hideLinks
                             ul.list-unstyled.pt-3
-                              each social in item.social
+                              li.mb-3
+                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug)
+                                  i.icon-link.mr-2
+                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug
+                              each web in item.web
                                 li.mb-3
-                                  a(href=social.url)
-                                    if social.url.indexOf('instagram.com/')!=-1
-                                      i.icon-instagram.mr-2
-                                    else if social.url.indexOf('twitter.com/')!=-1
-                                      i.icon-twitter.mr-2
-                                    else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
-                                      i.icon-facebook.mr-2
-                                    else if social.url.indexOf('vimeo.com/')!=-1
-                                      i.icon-vimeo.mr-2
-                                    else if social.url.indexOf('youtube.com/')!=-1
-                                      i.icon-youtube.mr-2
-                                    else
-                                      i.icon-link.mr-2
-                                    !=social.url
+                                  a(href=web.url)
+                                    i.icon-link.mr-2
+                                    !=web.url
+                            if item.social && item.social.length
+                              ul.list-unstyled.pt-3
+                                each social in item.social
+                                  li.mb-3
+                                    a(href=social.url)
+                                      if social.url.indexOf('instagram.com/')!=-1
+                                        i.icon-instagram.mr-2
+                                      else if social.url.indexOf('twitter.com/')!=-1
+                                        i.icon-twitter.mr-2
+                                      else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                        i.icon-facebook.mr-2
+                                      else if social.url.indexOf('vimeo.com/')!=-1
+                                        i.icon-vimeo.mr-2
+                                      else if social.url.indexOf('youtube.com/')!=-1
+                                        i.icon-youtube.mr-2
+                                      else
+                                        i.icon-link.mr-2
+                                      !=social.url
 
-                    
-            if data.partnerships_ordered && data.partnerships_ordered.length
-              .partnerships
-                h2!=global.__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
+                      
+              if data.partnerships_ordered && data.partnerships_ordered.length
+                .partnerships
+                  h2!=global.__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
+                  ul.list-unstyled.mb-5
+                    each item in data.partnerships_ordered
+                      li.media.mt-3.pt-3
+                        if !get.hideImages
+                          .page-break
+                            img.mr-3(
+                              src=item.imageFormats.small
+                              alt=item.title
+                              height=113
+                            )
+                        .media-body
+                          h4!=item.title
+                          ul.list-inline
+                            li.list-inline-item=item.boxDate
+                            li.list-inline-item=item.boxVenue
+                          if !get.hideDescription
+                            .text-justify!=get.fullDescription ? item.aboutFull : item.about
+                      
+              if data.news && data.news.length
+                .news
+                  h2.main_title.indented_title!=global.__('Publications')
+                  ul.list-unstyled.mb-5
+                    each item in data.news            
+                      li.media.mt-3.pt-3
+                        if !get.hideImages
+                          .page-break
+                            img.mr-3(
+                              src=item.imageFormats.small
+                              alt=item.title
+                              height=113
+                            )
+                        .media-body
+                          h4!=item.title
+                          ul.pl-2.list-inline
+                            li.list-inline-item.mb-3!=item.creation_dateFormatted
+
+                          if !get.hideDescription
+                            .text-justify!=get.fullDescription ? item.about : item.excerpt
+                          if !get.hideLinks
+                            ul.list-unstyled.pt-3
+                              li.mb-3
+                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug)
+                                  i.icon-link.mr-2
+                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug
+                              
+              //-if data.footage && data.footage.length
+                h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
                 ul.list-unstyled.mb-5
-                  each item in data.partnerships_ordered
+                  each item in data.footage            
                     li.media.mt-3.pt-3
                       if !get.hideImages
-                        .page-break
-                          img.mr-3(
-                            src=item.imageFormats.small
-                            alt=item.title
-                            height=113
-                          )
-                      .media-body
-                        h4!=item.title
-                        ul.list-inline
-                          li.list-inline-item=item.boxDate
-                          li.list-inline-item=item.boxVenue
-                        if !get.hideDescription
-                          .text-justify!=get.fullDescription ? item.aboutFull : item.about
-                    
-            if data.news && data.news.length
-              .news
-                h2.main_title.indented_title!=global.__('Publications')
-                ul.list-unstyled.mb-5
-                  each item in data.news            
-                    li.media.mt-3.pt-3
-                      if !get.hideImages
-                        .page-break
-                          img.mr-3(
-                            src=item.imageFormats.small
-                            alt=item.title
-                            height=113
-                          )
+                        img.mr-3(
+                          src=item.imageFormats.small
+                          alt=item.title
+                        )
                       .media-body
                         h4!=item.title
                         ul.pl-2.list-inline
-                          li.list-inline-item.mb-3!=item.creation_dateFormatted
+                          each tag in item.tags
+                            li.list-inline-item.mb-3!="#"+tag.tag
 
                         if !get.hideDescription
-                          .text-justify!=get.fullDescription ? item.about : item.excerpt
-                        if !get.hideLinks
-                          ul.list-unstyled.pt-3
+                          .text-justify!=item.about
+
+              //-if data.videos && data.videos.length
+                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
+                ul.list-unstyled.mb-5
+                  each item in data.videos            
+                    li.media.mt-3.pt-3
+                      if !get.hideImages
+                        img.mr-3(
+                          src=item.imageFormats.small
+                          alt=item.title
+                        )
+                      .media-body
+                        h4!=item.title
+                        if item.categories && item.categories.length
+                          ul.list-inline
+                            li.list-inline-item=item.categories[0].name
+
+                        if !get.hideDescription
+                          .text-justify!=item.about
+
+              //-if data.playlists && data.playlists.length
+                h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
+                ul.list-unstyled.mb-5
+                  each item in data.playlists
+                    li.media.mt-3.pt-3
+                      if !get.hideImages
+                        img.mr-3(
+                          src=item.imageFormats.small
+                          alt=item.title
+                        )
+                      .media-body
+                        h4!=item.title
+                        .pl-2
+                          !="Footage: "
+                          b=item.footage.length
+
+                        if !get.hideDescription
+                          .text-justify!=item.about
+            
+              //-if data.galleries && data.galleries.length    
+                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
+                ul.list-unstyled.mb-5
+                  each item in data.galleries            
+                    li.media.mt-3.pt-3
+                      if !get.hideImages
+                        img.mr-3(
+                          src=item.imageFormats.small
+                          alt=item.title
+                        )
+                      .media-body
+                        h4!=item.title
+                        .pl-2
+                          !="Images: "
+                          b=item.stats.img
+
+                        if !get.hideDescription
+                          .text-justify!=item.about
+
+      if get.eventscolumns
+        tbody
+          tr
+            td
+              .row.mb-5.mt-5
+                .col-8
+                  h1=data.stagename
+                  if data.addressesFormatted && data.addressesFormatted.length       
+                    ul.pl-2.list-inline
+                      each address in data.addressesFormatted
+                        li.list-inline-item.mb-3!=address
+                  if data.organizationData && (data.organizationData.foundation_year || data.organizationData.type || data.organizationData.phone || data.organizationData.public_email)
+                    .pb-2
+                      b="Organization Data"
+                    ul.pl-2.list-unstyled
+                      li.mb-3
+                        !="Foundation year: "
+                        b!=data.organizationData.foundation_year
+                      li.mb-3
+                        !="Organization type: "
+                        b!=data.organizationData.type
+                      li.mb-3
+                        !="Organization phone: "
+                        b!=data.organizationData.phone
+                      li.mb-3
+                        !="Organization email: "
+                        b!=data.organizationData.public_email
+                    //each item in data.organizationData
+                      li.mb-3
+                        !="Foundation year: "
+                        b!=item.foundation_year
+
+                  if !get.hideLinks 
+                    .pb-2
+                      b="Web sites"
+                    ul.pl-2.list-unstyled
+                      li.mb-3
+                        a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug)
+                          i.icon-link.mr-2
+                          !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug
+                      each item in data.web
+                        if item.url
+                          li.mb-3
+                            a(href=item.url)
+                              i.icon-link.mr-2
+                              !=item.url
+                    if data.social && data.social.length
+                      .pb-2
+                        b="Social media"
+                      ul.pl-2.list-unstyled
+                        each item in data.social
+                          if item.url
                             li.mb-3
-                              a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug)
-                                i.icon-link.mr-2
-                                !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug
+                              a(href=item.url)
+                                if item.url.indexOf('instagram.com/')!=-1
+                                  i.icon-instagram.mr-2
+                                else if item.url.indexOf('twitter.com/')!=-1
+                                  i.icon-twitter.mr-2
+                                else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
+                                  i.icon-facebook.mr-2
+                                else if item.url.indexOf('vimeo.com/')!=-1
+                                  i.icon-vimeo.mr-2
+                                else if item.url.indexOf('youtube.com/')!=-1
+                                  i.icon-youtube.mr-2
+                                else
+                                  i.icon-link.mr-2
+                                !=item.url
+
+                    if data.publicEmails && data.publicEmails.length    
+                      ul.pl-2.list-unstyled
+                        each email in data.publicEmails
+                          li.mb-3
+                            a(href="mailto:"+item)
+                              i.icon-envelope.mr-2
+                              !=email
+                .col-4
+                  .page-break
+                    img.soft-rounded-circle.img-fluid(
+                      class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
+                      src=data.imageFormats.large
+                      alt=data.stagename
+                      height=347
+                    )
+
+              .mb-5.text-justify!=data.aboutFull
+
+              if data.crews && data.crews.length
+                h2!=global.__('Crews & Organizations')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
+                ul.list-unstyled.mb-5
+                  each item in data.crews
+                    li.media.mt-3.pt-3
+                      if !get.hideImages
+                        .page-break
+                          img.mr-3(
+                            src=item.imageFormats.small
+                            alt=item.stagename
+                            width=100
+                            height=100
+                          )
+                      .media-body
+                        h4!=item.stagename
+                        if item.addressesFormatted && item.addressesFormatted.length       
+                          ul.pl-2.list-inline
+                            each address in item.addressesFormatted
+                              li.list-inline-item.mb-3!=address
+
+                          if !get.hideDescription
+                            .text-justify!=get.fullDescription ? item.aboutFull : item.about
+                          if !get.hideLinks
+                            ul.list-unstyled.pt-3
+                              li.mb-3
+                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug)
+                                  i.icon-link.mr-2
+                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug
+                              each web in item.web
+                                li.mb-3
+                                  a(href=web.url)
+                                    i.icon-link.mr-2
+                                    !=web.url
+                            if item.social && item.social.length
+                              ul.list-unstyled.pt-3
+                                each social in item.social
+                                  li.mb-3
+                                    a(href=social.url)
+                                      if social.url.indexOf('instagram.com/')!=-1
+                                        i.icon-instagram.mr-2
+                                      else if social.url.indexOf('twitter.com/')!=-1
+                                        i.icon-twitter.mr-2
+                                      else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                        i.icon-facebook.mr-2
+                                      else if social.url.indexOf('vimeo.com/')!=-1
+                                        i.icon-vimeo.mr-2
+                                      else if social.url.indexOf('youtube.com/')!=-1
+                                        i.icon-youtube.mr-2
+                                      else
+                                        i.icon-link.mr-2
+                                      !=social.url
+
+              if data.members && data.members.length
+                .members
+                  h2!=global.__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
+                  ul.list-unstyled.mb-5
+                    each item in data.members
+                      li.media.mt-3.pt-3
+                        if !get.hideImages
+                          .page-break
+                            img.mr-3(
+                              src=item.imageFormats.small
+                              alt=data.organizationData ? item.name+" "+item.surname : item.stagename
+                              height=100
+                            )
+                        .media-body
+                          h4!=data.organizationData ? item.name+" "+item.surname : item.stagename
+                          if item.addressesFormatted && item.addressesFormatted.length       
+                            ul.pl-2.list-inline
+                              each address in item.addressesFormatted
+                                li.list-inline-item.mb-3!=address
+
+                          if !get.hideDescription
+                            .text-justify!=get.fullDescription ? item.aboutFull : item.about
+                          if !get.hideLinks
+                            ul.list-unstyled.pt-3
+                              li.mb-3
+                                a(href="https://avnode.net/"+item.slug)
+                                  i.icon-link.mr-2
+                                  !="https://avnode.net/"+item.slug
+                              each web in item.web
+                                li.mb-3
+                                  a(href=web.url)
+                                    i.icon-link.mr-2
+                                    !=web.url
+                            if item.social && item.social.length
+                              ul.list-unstyled.pt-3
+                                each social in item.social
+                                  li.mb-3
+                                    a(href=social.url)
+                                      if social.url.indexOf('instagram.com/')!=-1
+                                        i.icon-instagram.mr-2
+                                      else if social.url.indexOf('twitter.com/')!=-1
+                                        i.icon-twitter.mr-2
+                                      else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                        i.icon-facebook.mr-2
+                                      else if social.url.indexOf('vimeo.com/')!=-1
+                                        i.icon-vimeo.mr-2
+                                      else if social.url.indexOf('youtube.com/')!=-1
+                                        i.icon-youtube.mr-2
+                                      else
+                                        i.icon-link.mr-2
+                                      !=social.url
+
+              if data.performances && data.performances.length
+                .performances
+                  h2!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
+                  ul.list-unstyled.mb-5
+                    each item in data.performances                
+                      li.media.mt-3.pt-3
+                        if !get.hideImages
+                          .page-break
+                            img.mr-3(
+                              src=item.imageFormats.small
+                              alt=item.title
+                            )
+                        .media-body
+                          h4!=item.title
+                          small
+                            !=item.type.name
+                            if item.style
+                              !=" | "
+                              !=item.style.name
+                            if item.genre
+                              !=" | "
+                              !=item.genre.name
+                          if !get.hideDescription
+                            .text-justify!=item.about
+                          if !get.hideLinks
+                            ul.list-unstyled.pt-3
+                              li.mb-3
+                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug)
+                                  i.icon-link.mr-2
+                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug
+                          if !get.hideBookings && item.bookings && item.bookings.length
+                            u.mb-2.mt-3!='Bookings'
+                            - item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
+                            if get.hideImages
+                              ul
+                                each booking in item.bookings
+                                  li
+                                    strong!=booking.event.title
+                                    br
+                                    !=booking.event.boxDate
+                                    br
+                                    !=booking.event.boxVenue
+                            else             
+                              each booking in item.bookings
+                                .d-flex.mb-3
+                                  .page-break
+                                    img(src=booking.event.imageFormats.small, alt=booking.event.title, height=113)
+                                  .ml-3
+                                    b!=booking.event.title
+                                    br
+                                    !=booking.event.boxDate
+                                    br
+                                    !=booking.event.boxVenue
+
+              if data.news && data.news.length
+                .news
+                  h2.main_title.indented_title!=global.__('Publications')
+                  ul.list-unstyled.mb-5
+                    each item in data.news            
+                      li.media.mt-3.pt-3
+                        if !get.hideImages
+                          .page-break
+                            img.mr-3(
+                              src=item.imageFormats.small
+                              alt=item.title
+                              height=113
+                            )
+                        .media-body
+                          h4!=item.title
+                          ul.pl-2.list-inline
+                            li.list-inline-item.mb-3!=item.creation_dateFormatted
+
+                          if !get.hideDescription
+                            .text-justify!=get.fullDescription ? item.about : item.excerpt
+                          if !get.hideLinks
+                            ul.list-unstyled.pt-3
+                              li.mb-3
+                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug)
+                                  i.icon-link.mr-2
+                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug
                             
-            //if data.footage && data.footage.length
-              h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
-              ul.list-unstyled.mb-5
-                each item in data.footage            
-                  li.media.mt-3.pt-3
-                    if !get.hideImages
+
+
+
+        table
+          if data.events && data.events.length
+            tr
+              - var colspan = 3
+              -if(!get.hideImages) colspan=colspan+1
+              -if(!get.hideDescription) colspan=colspan+1
+              -if(!get.hideLinks) colspan=colspan+1
+              td(colspan=colspan)
+                .events
+                  h2!=global.__('Productions')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+            each item in data.events
+              tr
+                if !get.hideImages
+                  td
+                    .page-break
                       img.mr-3(
                         src=item.imageFormats.small
                         alt=item.title
+                        height=113
                       )
-                    .media-body
-                      h4!=item.title
-                      ul.pl-2.list-inline
-                        each tag in item.tags
-                          li.list-inline-item.mb-3!="#"+tag.tag
+                td
+                  h4!=item.title
+                td=item.boxDate
+                td=item.boxVenue
+                //-td=item.categories[0].name
+                if !get.hideDescription
+                  td
+                    .text-justify!=get.fullDescription ? item.aboutFull : item.about
+                if !get.hideLinks
+                  td
+                    ul.list-unstyled.pt-3
+                      li.mb-3
+                        a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug)
+                          i.icon-link.mr-2
+                          !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug
+                      if item.web && item.web.length
+                        each web in item.web
+                          li.mb-3
+                            a(href=web.url)
+                              i.icon-link.mr-2
+                              !=web.url
+                    if item.social && item.social.length
+                      ul.list-unstyled.pt-3
+                        each social in item.social
+                          li.mb-3
+                            a(href=social.url)
+                              if social.url.indexOf('instagram.com/')!=-1
+                                i.icon-instagram.mr-2
+                              else if social.url.indexOf('twitter.com/')!=-1
+                                i.icon-twitter.mr-2
+                              else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                i.icon-facebook.mr-2
+                              else if social.url.indexOf('vimeo.com/')!=-1
+                                i.icon-vimeo.mr-2
+                              else if social.url.indexOf('youtube.com/')!=-1
+                                i.icon-youtube.mr-2
+                              else
+                                i.icon-link.mr-2
+                              !=social.url
 
-                      if !get.hideDescription
-                        .text-justify!=item.about
-
-            //if data.videos && data.videos.length
-              h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
-              ul.list-unstyled.mb-5
-                each item in data.videos            
-                  li.media.mt-3.pt-3
-                    if !get.hideImages
+                      
+          if data.partnerships_ordered && data.partnerships_ordered.length
+            tr
+              - var colspan = 3
+              -if(!get.hideImages) colspan=colspan+1
+              -if(!get.hideDescription) colspan=colspan+1
+              -if(!get.hideLinks) colspan=colspan+1
+              td(colspan=colspan)
+               .partnerships
+                  h2!=global.__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
+            each item in data.partnerships_ordered
+              tr
+                if !get.hideImages
+                  td
+                    .page-break
                       img.mr-3(
                         src=item.imageFormats.small
                         alt=item.title
+                        height=113
                       )
-                    .media-body
-                      h4!=item.title
-                      if item.categories && item.categories.length
-                        ul.list-inline
-                          li.list-inline-item=item.categories[0].name
-
-                      if !get.hideDescription
-                        .text-justify!=item.about
-
-            //if data.playlists && data.playlists.length
-              h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
-              ul.list-unstyled.mb-5
-                each item in data.playlists
-                  li.media.mt-3.pt-3
-                    if !get.hideImages
-                      img.mr-3(
-                        src=item.imageFormats.small
-                        alt=item.title
-                      )
-                    .media-body
-                      h4!=item.title
-                      .pl-2
-                        !="Footage: "
-                        b=item.footage.length
-
-                      if !get.hideDescription
-                        .text-justify!=item.about
-          
-            //if data.galleries && data.galleries.length    
-              h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
-              ul.list-unstyled.mb-5
-                each item in data.galleries            
-                  li.media.mt-3.pt-3
-                    if !get.hideImages
-                      img.mr-3(
-                        src=item.imageFormats.small
-                        alt=item.title
-                      )
-                    .media-body
-                      h4!=item.title
-                      .pl-2
-                        !="Images: "
-                        b=item.stats.img
-
-                      if !get.hideDescription
-                        .text-justify!=item.about
-
-
+                td
+                  h4!=item.title
+                td=item.boxDate
+                td=item.boxVenue
+                if !get.hideDescription
+                  td
+                    .text-justify!=get.fullDescription ? item.aboutFull : item.about
+                if !get.hideLinks
+                  td
+                    ul.list-unstyled.pt-3
+                      li.mb-3
+                        a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug)
+                          i.icon-link.mr-2
+                          !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug
+                      if item.web && item.web.length
+                        each web in item.web
+                          li.mb-3
+                            a(href=web.url)
+                              i.icon-link.mr-2
+                              !=web.url
+                    if item.social && item.social.length
+                      ul.list-unstyled.pt-3
+                        each social in item.social
+                          li.mb-3
+                            a(href=social.url)
+                              if social.url.indexOf('instagram.com/')!=-1
+                                i.icon-instagram.mr-2
+                              else if social.url.indexOf('twitter.com/')!=-1
+                                i.icon-twitter.mr-2
+                              else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                i.icon-facebook.mr-2
+                              else if social.url.indexOf('vimeo.com/')!=-1
+                                i.icon-vimeo.mr-2
+                              else if social.url.indexOf('youtube.com/')!=-1
+                                i.icon-youtube.mr-2
+                              else
+                                i.icon-link.mr-2
+                              !=social.url
+                    
       tfoot
         tr
           td

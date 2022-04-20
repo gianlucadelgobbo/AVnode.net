@@ -17,7 +17,9 @@ nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-t
         input#hideDescription.form-check-input.mr-2(type='checkbox', name="hideDescription", value=1, checked=get.hideDescription=="1" ? "checked" : undefined)
         label.form-check-label.mr-3(for='hideDescription')="Hide items descriptions"
         input#fullDescription.form-check-input.mr-2(type='checkbox', name="fullDescription", value=1, checked=get.fullDescription=="1" ? "checked" : undefined)
-        label.form-check-label.mr-3(for='fullDescription')="Full items descriptions"
+        label.form-check-label.mr-3(for='eventscolumns')="Full items descriptions"
+        input#fullDescription.form-check-input.mr-2(type='checkbox', name="eventscolumns", value=1, checked=get.eventscolumns=="1" ? "checked" : undefined)
+        label.form-check-label.mr-3(for='eventscolumns')="Events by columns"
         button.btn.btn-primary.update(type='submit')="UPDATE"
         .pl-2.pr-2!=" | "
         button.btn.btn-success(type='button', onclick="window.print();return false;")="PRINT"
