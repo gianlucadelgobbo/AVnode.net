@@ -23,6 +23,7 @@ block content
             div(style="width: 60px;transform: rotate(-58deg);height: 20px;position: relative;top: -10px;left: -10px;")=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
     tbody
       - var conta = 0
+      - console.log(data.subscriptions.length)
       if data.subscriptions.length
         each subscription, index in data.subscriptions
             //pre=JSON.stringify(subscription, null, 2)
