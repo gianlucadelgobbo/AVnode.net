@@ -213,7 +213,8 @@ block content
                               td
                                 .text-right
                                   b="€ "+subscriber_total
-                                      
+                      - var itemdescription = itemdescriptions[index].length > 126 ? itemdescriptions[index].substring(0,123)+"..." : itemdescriptions[index]
+
                       tr(id='pay'+index)
                         td(colspan="2", style="border-top:0;")
                           if item.status._id=="5c38c57d9d426a9522c15ba5"
@@ -239,7 +240,7 @@ block content
                                     "purchase_units": [
                                       {
                                         "reference_id": "#{item._id}",
-                                        "description": "#{itemdescriptions[index]}",
+                                        "description": "#{itemdescription}",
                                         "amount": {
                                           "currency": "EURO",
                                           "value": "#{total}"
