@@ -1,7 +1,7 @@
 .form-group
 	label.labelField=__("Street, City, country")
 	#addresses_private
-		- if (!data.addresses_private || !data.addresses_private.length) {
+		- if (!data.addresses_private || !data.addresses_private.length || !data.addresses_private[0]) {
 		-  data.addresses_private = []
 		-  data.addresses_private.push({formatted_address:"", geometry: {}});
 		- }
