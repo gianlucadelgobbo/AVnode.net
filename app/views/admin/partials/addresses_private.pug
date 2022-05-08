@@ -9,8 +9,8 @@
 			.mb-3
 				.input-group
 					input.form-control.address-search-input(type='text' autocomplete='nope' role='combobox' aria-autocomplete='list' aria-expanded='false' placeholder=__('Street, City, country') value=address.formatted_address)
-					input.lat(type='hidden' name='addresses_private['+i+'][geometry][lat]' value=address.geometry.lat)
-					input.lng(type='hidden' name='addresses_private['+i+'][geometry][lng]' value=address.geometry.lng)
+					input.lat(type='hidden' name='addresses_private['+i+'][geometry][lat]' value=address.geometry && address.geometry.lat ? address.geometry.lat : "")
+					input.lng(type='hidden' name='addresses_private['+i+'][geometry][lng]' value=address.geometry.lng && address.geometry.lng ? address.geometry.lng : "")
 					input.locality(type='hidden' name='addresses_private['+i+'][locality]' value=address.locality)
 					input.country(type='hidden' name='addresses_private['+i+'][country]' value=address.country)
 					input.formatted_address(type='hidden' name='addresses_private['+i+'][formatted_address]' value=address.formatted_address)

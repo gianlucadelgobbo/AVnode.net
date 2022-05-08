@@ -19,6 +19,7 @@ const News = mongoose.model('News');
 
 const logger = require('./logger');
 
+var countries_plugin = helpers.getCountries().map(item => {return item.label});
 var countries = [
 	"Albania",
 	"Algeria",
@@ -33,8 +34,6 @@ var countries = [
 	"Bermuda",
 	"Bolivia",
 	"Bosnia and Herzegovina",
-	"Brasil",
-	"Brasile",
 	"Brazil",
 	"Bulgaria",
 	"Canada",
@@ -45,13 +44,10 @@ var countries = [
 	"Croatia",
 	"Cyprus",
 	"Czech Republic",
-	"Czechia",
 	"Denmark",
-	"Deutschland",
 	"Dominican Republic",
 	"Ecuador",
 	"El Salvador",
-	"España",
 	"Estonia",
 	"Finland",
 	"France",
@@ -67,7 +63,6 @@ var countries = [
 	"Iran",
 	"Ireland",
 	"Israel",
-	"Italia",
 	"Italy",
 	"Jamaica",
 	"Japan",
@@ -75,18 +70,15 @@ var countries = [
 	"Kosovo",
 	"Latvia",
 	"Lithuania",
-	"Macedonia (FYROM)",
 	"Malaysia",
 	"Malta",
 	"Morocco",
-	"México",
+	"Mexico",
 	"Netherlands",
 	"New Zealand",
-	"Niederlande",
 	"Nigeria",
-	"Norvegia",
+	"North Macedonia",
 	"Norway",
-	"Paesi Bassi",
 	"Panama",
 	"Papua New Guinea",
 	"Paraguay",
@@ -94,7 +86,7 @@ var countries = [
 	"Philippines",
 	"Poland",
 	"Portugal",
-	"Reunion",
+	"Réunion",
 	"Romania",
 	"Russia",
 	"Saint Pierre and Miquelon",
@@ -105,17 +97,13 @@ var countries = [
 	"Slovenia",
 	"South Africa",
 	"South Korea",
-	"Spagna",
 	"Spain",
-	"Stati Uniti",
 	"Sweden",
 	"Switzerland",
 	"Taiwan",
 	"Thailand",
 	"Tunisia",
 	"Turkey",
-	"Türkey",
-	"UK",
 	"Ukraine",
 	"United Arab Emirates",
 	"United Kingdom",
@@ -123,9 +111,17 @@ var countries = [
 	"Uruguay",
 	"Venezuela",
 	"Vietnam",
-	"Zimbabwe",
-	"Россия"
+	"Zimbabwe"
 ];
+/* console.log(countries2.slice(0, 100))
+console.log(countries2.slice(100, 200))
+console.log(countries2.slice(200, 250))
+console.log(countries.length) */
+for(var b=0;b<countries.length;b++){
+  if (countries_plugin.indexOf(countries[b])===-1) {
+    console.log(countries[b]);
+  }
+}
 
 dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
   /* logger.debug("populate");
