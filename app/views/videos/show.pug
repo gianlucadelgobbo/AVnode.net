@@ -90,7 +90,7 @@ block content
               if data.media.width && data.media.height
                 li=global.__('Video dimensions')+": "
                   b=data.media.width+"x"+data.media.height
-        if (data.categories && data.categories.length) || (editable && !data.media.iframe)
+        if (data.categories && data.categories.length) || (editable && data.media && !data.media.iframe)
           .data_footage_video_wrapper
             h3=__("Categories")
             if data.categories && data.categories.length && !editable

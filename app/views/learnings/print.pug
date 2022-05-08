@@ -132,7 +132,7 @@ block content
                                         !=web.url
                             if booking.event.social && booking.event.social.length
                               ul.list-unstyled.pt-3
-                                each social in booking.social
+                                each social in booking.event.social
                                   if social.url
                                     li.mb-3
                                       a(href=social.url)

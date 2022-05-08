@@ -653,7 +653,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
         if (data.web) for(let a=0;a<data.web.length;a++) jsonld.sameAs.push(data.web[a].url);
         if (data.social) for(let a=0;a<data.social.length;a++) jsonld.sameAs.push(data.social[a].url);
       }
-      if (data.addresses.length) {
+      if (data.addresses.length && data.addresses[0]) {
         jsonld.address = {
           "@type": "PostalAddress",
           "addressLocality": data.addresses[0].locality,
@@ -738,7 +738,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
         if (data.performer.web) for(let a=0;a<data.performer.web.length;a++) jsonld.sameAs.push(data.performer.web[a].url);
         if (data.performer.social) for(let a=0;a<data.performer.social.length;a++) jsonld.sameAs.push(data.performer.social[a].url);
       }
-      if (data.performer.addresses.length) {
+      if (data.performer.addresses && data.performer.addresses.length) {
         logger.debug(data.addresses);
         jsonld.address = {
           "@type": "PostalAddress",
