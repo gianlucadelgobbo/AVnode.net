@@ -11,7 +11,7 @@
 				.input-group
 					input.form-control(type='text' name='mobile['+i+'][url]' placeholder=__("Mobile") value=item.url)
 					.input-group-append
-						button.btn.btn-danger.remove_simple(type='button' data-list="mobile" disabled=(data.mobile.length ? "disabled" : undefined) )
+						button.btn.btn-danger.remove_simple(type='button' data-list="mobile" disabled=(data.mobile.length < 2 ? "disabled" : undefined) )
 							i.icon-trash
 	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-list="mobile")
 		i.icon-plus

@@ -10,7 +10,7 @@
 				.input-group
 					input.form-control(type='text' name='web['+i+'][url]' placeholder=__("Web") value=item.url)
 					.input-group-append
-						button.btn.btn-danger.remove_simple(type='button' data-list="web" disabled=(data.web.length ? "disabled" : undefined))
+						button.btn.btn-danger.remove_simple(type='button' data-list="web" disabled=(data.web.length < 2 ? "disabled" : undefined))
 							i.icon-trash
 	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-list="web")
 		i.icon-plus

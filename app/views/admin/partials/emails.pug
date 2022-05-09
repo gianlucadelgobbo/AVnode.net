@@ -11,7 +11,7 @@
 				.input-group
 					input.form-control(type='text' name='emails['+i+'][url]' placeholder=__("Emails") value=item.url)
 					.input-group-append
-						button.btn.btn-danger.remove_simple(type='button' data-list="emails" disabled=(data.emails.length ? "disabled" : undefined))
+						button.btn.btn-danger.remove_simple(type='button' data-list="emails" disabled=(data.emails.length < 2 ? "disabled" : undefined))
 							i.icon-trash
 	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-list="emails")
 		i.icon-plus

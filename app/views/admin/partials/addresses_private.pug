@@ -18,7 +18,7 @@
 					input.route(type='hidden' name='addresses_private['+i+'][route]' value=address.route)
 					input.street_number(type='hidden' name='addresses_private['+i+'][street_number]' value=address.street_number)
 					.input-group-append
-						button.btn.btn-danger.remove_simple(type='button' data-list="addresses_private" disabled=(data.addresses_private.length ? "disabled" : undefined))
+						button.btn.btn-danger.remove_simple(type='button' data-list="addresses_private" disabled=(data.addresses_private.length < 2 ? "disabled" : undefined))
 							i.icon-trash
 	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-list="addresses_private")
 		i.icon-plus

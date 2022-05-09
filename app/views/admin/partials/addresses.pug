@@ -5,6 +5,7 @@
 		-  data.addresses = []
 		-  data.addresses[0] = {formatted_address:"", geometry: {}};
 		- }
+		- console.log(data.addresses)
 		each address, i in data.addresses
 			.mb-3
 				.input-group
@@ -15,7 +16,7 @@
 					input.country(type='hidden' name='addresses['+i+'][country]' value=address.country)
 					input.formatted_address(type='hidden' name='addresses['+i+'][formatted_address]' value=address.formatted_address)
 					.input-group-append
-						button.btn.btn-danger.remove_simple(type='button' data-list="addresses" disabled=(data.addresses.length ? "disabled" : undefined))
+						button.btn.btn-danger.remove_simple(type='button' data-list="addresses" disabled=(data.addresses.length < 2 ? "disabled" : undefined))
 							i.icon-trash
 	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-list="addresses")
 		i.icon-plus
