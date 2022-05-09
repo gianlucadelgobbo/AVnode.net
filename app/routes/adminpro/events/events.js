@@ -632,8 +632,6 @@ router.getMessageActs = (req, res) => {
         tosave.messages_tosend = [];
         tosave.messages_sent = [];
         data.program.forEach((item, index) => {
-          console.log("item")
-          console.log(item)
           var message = {};
           message.to_html = "";
           message.cc_html = [];
