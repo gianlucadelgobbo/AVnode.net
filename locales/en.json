@@ -779,5 +779,6 @@
 	"Please login to use this tool": "Please login to use this tool",
 	"Cast to string failed for value \"[ 'Eindhoven, Paesi Bassi', 'Rome, Italy' ]\" (type Array) at path \"formatted_address\"": "Cast to string failed for value \"[ 'Eindhoven, Paesi Bassi', 'Rome, Italy' ]\" (type Array) at path \"formatted_address\"",
 	"Cast to string failed for value \"[ 'Eindhoven', 'Rome' ]\" (type Array) at path \"locality\"": "Cast to string failed for value \"[ 'Eindhoven', 'Rome' ]\" (type Array) at path \"locality\"",
-	"Cast to string failed for value \"[ 'Paesi Bassi', 'Italy' ]\" (type Array) at path \"country\"": "Cast to string failed for value \"[ 'Paesi Bassi', 'Italy' ]\" (type Array) at path \"country\""
+	"Cast to string failed for value \"[ 'Paesi Bassi', 'Italy' ]\" (type Array) at path \"country\"": "Cast to string failed for value \"[ 'Paesi Bassi', 'Italy' ]\" (type Array) at path \"country\"",
+	"per day": "per day"
 }
