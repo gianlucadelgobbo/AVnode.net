@@ -20,7 +20,7 @@ block content
           - var slughelptext = __("To have your video at https://avnode.net/videos/mybeautyfulvideo, please insert mybeautifulvideo (lower case, no spaces, no special characters)")
           include partials/slug
           include partials/is_public
-          if data.media && !data.media.iframe
+          if data.media && !data.media.iframe && user.is_admin
             #categories.vjtv
               .row
                 .col-sm-4
@@ -29,7 +29,7 @@ block content
                     a(href='https://vjtelevision.com' target='_blank')
                       img(src='/images/VJTV.png')
                 .col-sm-8
-                  if !user.is_admin
+                  if user.is_admin
                     ul.list-unstyled.mt-3
                       li
                         input.mr-2(id="DOC", name="categories", type="checkbox" value="5be8708afc3961000000008e", checked=data.categories.map(item => {return item._id.toString();}).indexOf("5be8708afc3961000000008e")!==-1 ? "checked" : undefined)

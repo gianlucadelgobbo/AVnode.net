@@ -60,6 +60,6 @@ block content
             td=item.video.createdAt.toDateString()
             td=item.category.name
             td
-              a(href="/admin/videos/"+item._id+"/public", target="_blank")!=global.__("edit")
+              a(href="/admin/videos/"+item.video._id+"/public", target="_blank")!=global.__("edit")
                 !=" | "
-              a(href="/"+item.slug, target="_blank")!=global.__("view")
+              a(href="/videos/"+item.video.slug, target="_blank")!=global.__("view")
