@@ -2,6 +2,7 @@ extends ../../layout_admin
 block topmenu
   include topmenu
 block content
+  - var instagram = []
   //- var del = []
     - var emails = []
     - var emails_noimage = []
@@ -89,6 +90,7 @@ block content
             if useruser.social.length
               each social in useruser.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
                 !=social
+                - if (social.indexOf("instagram.com")!==-1) instagram.push(social.split("instagram.com/")[1].split("?")[0].split("/")[0].split('"')[0])
               br
           !="#fotonicafestival2021 @cultureroma #CultureRoma #ContemporaneamenteRoma2021 #Contemporaneamenteroma #videomapping #vjset #djset #workshop #roma #eventiroma #avperformance #avinstallation #art #festival #musicfestival #dancehall #interactiveart #interactiveinstallation #livecinemafestival #digitalart #multimediaart #electronicart"
           br
@@ -162,7 +164,7 @@ block content
                       .badge.badge-danger MISSING MEDIAS
                       //- del.push("db.galleries.remove(_id:ObjectId('"+gallery._id+"')\n")
         each useruser in item.performance.users
-          //
+          //-
             if useruser.imageFormats.small=="https://avnode.net/images/default-user.svg" || item.performance.imageFormats.small=="https://avnode.net/images/default-item.svg"
               - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
               - if (emails_noimage.indexOf(str)==-1) emails_noimage.push(str)
@@ -193,6 +195,7 @@ block content
               ul
                 each social in useruser.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
                   li!=social
+                  - if (social.indexOf("instagram.com")!==-1) instagram.push(social.split("instagram.com/")[1].split("?")[0])
           
           
           
@@ -201,3 +204,8 @@ block content
             - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
             p!=addressesaddresses.sort().join(", ")
     hr
+  - function onlyUnique(value, index, self) {
+  -   return self.indexOf(value) === index;
+  - }
+  - var unique = instagram.filter(onlyUnique);
+  pre!="@"+unique.sort().join("\n@")
