@@ -122,10 +122,11 @@ html.no-js(lang=session.current_lang)
       script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places&language=en")
       script(src='/js/combo_admin.min.js')
     include partials/modals/cookielawinfo
-    script(async src="https://www.googletagmanager.com/gtag/js?id=UA-124799696-1")
+    script(async src="https://www.googletagmanager.com/gtag/js?id=G-DBS5WRFJ9G")
     script.
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'UA-124799696-1', { 'anonymize_ip': true });
-      
+      //-gtag('config', 'G-DBS5WRFJ9G', { 'anonymize_ip': true });
+      gtag('config', 'G-DBS5WRFJ9G');
+     
