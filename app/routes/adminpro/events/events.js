@@ -647,6 +647,7 @@ router.getMessageActs = (req, res) => {
                 if (cindex===0) {
                   message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
                   message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+                  message.text = message.text.split("[email]").join(contact.email);
                   message.text = message.text.split("[name]").join(contact.name);
                   message.text = message.text.split("[slug]").join(contact.slug);
                   message.text = message.text.split("[performancetitle]").join(item.performance.title);
