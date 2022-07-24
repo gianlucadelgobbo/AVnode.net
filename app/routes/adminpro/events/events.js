@@ -905,8 +905,12 @@ router.get('/:event/program', (req, res) => {
           let schedule = JSON.parse(JSON.stringify(data.event.schedule));
           for(let a=0;a<schedule.length;a++) {
             let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
-            if (daysdays.indexOf(dayday)===-1) {
-              daysdays.push(dayday);
+            let endday = new Date(new Date(schedule[a].endtime).setUTCHours(0)).getTime();
+            while (dayday<=endday) {
+              if (daysdays.indexOf(dayday)===-1) {
+                daysdays.push(dayday);
+                dayday+=24*60*60*1000;
+              }                           
             }
           }
           data.days = daysdays;

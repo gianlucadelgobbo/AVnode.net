@@ -150,19 +150,22 @@ block content
             .content
               - var lastdaystr
               - var days = []
-              each day,index in data.programmebydayvenue
-                - days.push(day.day)
+              - console.log(data.days)
+              each dayn,index in data.days
+                - var dayd = new Date(dayn);
+                - var day = dayd.getFullYear()+"-"+("0"+(dayd.getMonth()+1)).substr(-2)+"-"+("0"+(dayd.getDate())).substr(-2)
+                - days.push(day)
                 .row
                   .col
                     .form-check
-                      input.form-check-input(type="radio" id="startday"+index value=day.day name="startday")
-                      label.form-check-label(for="startday"+index)=day.day
+                      input.form-check-input(type="radio" id="startday"+index value=day name="startday")
+                      label.form-check-label(for="startday"+index)=day
                   .col
                     .form-check
-                      input.form-check-input(type="radio" id="endday"+index value=day.day name="endday")
-                      label.form-check-label(for="endday"+index)=day.day
-              - days = days.sort();
-              - lastdaystr = days[days.length-1]
+                      input.form-check-input(type="radio" id="endday"+index value=day name="endday")
+                      label.form-check-label(for="endday"+index)=day
+              //- days = days.sort();
+              - lastdaystr = data.days[data.days.length-1]
               - var lastday = new Date(lastdaystr)
               - var nextday = new Date(lastdaystr)
               - var nextday = new Date(lastday.setDate(lastday.getDate()+1));
