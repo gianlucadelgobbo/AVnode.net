@@ -65,6 +65,10 @@ const partners_categories = [
   {
     "_id" : ("5be8708afc396100000000e2"),
     "name" : "NETWORK EVENTS"
+  },
+  {
+    "_id" : ("63cd0ef5803a8b74799d1d7c"),
+    "name" : "SCHOOLS"
   }
 ];
 
