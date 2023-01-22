@@ -100,7 +100,7 @@ router.postData = (req, res) => {
                       logger.debug(err);
                       res.status(400).send(err);
                     } else {
-                      logger.debug('save user success');
+                      logger.debug('save user success 1');
                       if (req.params.ancestor && req.params.id) {
                         Models[config.cpanel[req.params.ancestor].model]
                         .findById(req.params.id)
@@ -582,7 +582,7 @@ router.setStatus = (req, res) => {
             logger.debug(err);
             res.status(400).send(err);
           } else {
-            logger.debug("save user success");
+            logger.debug("save user success 2");
             logger.debug(req.body);
             res.json(req.body);                    
           }
@@ -613,9 +613,12 @@ router.setCategories = (req, res) => {
             if (req.body.value==="true") {
               user.partners[a].categories.push(req.body.category)
             } else {
-              user.partners[a].categories.splice(user.partners[a].categories.map(item => {return item.str}).indexOf(req.body.category))
+              logger.debug("req.body.category");
+              logger.debug(req.body.category);
+              logger.debug(user.partners[a].categories.map(item => {return item.toString()}));
+              user.partners[a].categories.splice(user.partners[a].categories.map(item => {return item.toString()}).indexOf(req.body.category))
             }
-            logger.debug(user.partners[a]);
+            logger.debug(user.partners[a].categories);
           }
         }
         user.save((err) => {
@@ -625,8 +628,8 @@ router.setCategories = (req, res) => {
             logger.debug(err);
             res.status(400).send(err);
           } else {
-            logger.debug("save user success");
-            logger.debug(req.body);
+            logger.debug("save user success 3");
+            //logger.debug(req.body);
             res.json(req.body);                    
           }
         });
@@ -671,7 +674,7 @@ router.addContacts = (req, res) => {
           logger.debug(err);
           res.status(400).send(err);
         } else {
-          logger.debug("save user success");
+          logger.debug("save user success 4");
           logger.debug(user.organizationData.contacts);
           res.json(user.organizationData.contacts);                    
         }
@@ -704,7 +707,7 @@ router.deleteContacts = (req, res) => {
           logger.debug(err);
           res.status(400).send(err);
         } else {
-          logger.debug("save user success");
+          logger.debug("save user success 5");
           logger.debug(user.organizationData.contacts);
           res.json(user.organizationData.contacts);                    
         }
