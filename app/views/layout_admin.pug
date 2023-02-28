@@ -78,8 +78,6 @@ html(lang=session.current_lang)
     include partials/modals/modalForceEmailChange
     #lightGallery
 
-    script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places&language=en")
-
     script(src='/js/combo.min.js')
 
     //- script(src="/js/owl.carousel.min.js")
@@ -113,6 +111,9 @@ html(lang=session.current_lang)
       script.
         var slug = "#{data.slug}";
     script(src='/js/admin_tmp.js')
+
+    //-script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places&language=en&callback=mapsCallback")
+
     if calendar
       script(src='/fullcalendar/main.min.js')
       script(src='/fullcalendar/script.js')
@@ -122,13 +123,14 @@ html(lang=session.current_lang)
     //- script(src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js")
 
     //- script(src="/js/cookielawinfo.min.js")
-    script(async src="https://www.googletagmanager.com/gtag/js?id=UA-124799696-1")
-    include partials/modals/cookielawinfo
+    //- include partials/modals/cookielawinfo
+    script(async src="https://www.googletagmanager.com/gtag/js?id=G-DBS5WRFJ9G")
     script.
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'UA-124799696-1');
+      //-gtag('config', 'G-DBS5WRFJ9G', { 'anonymize_ip': true });
+      gtag('config', 'G-DBS5WRFJ9G');
     //- Messenger Chat Plugin Code -->
       #fb-root
       script.

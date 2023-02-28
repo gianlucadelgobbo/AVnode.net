@@ -39,10 +39,6 @@
       .d-flex.w-100.justify-content-start.align-items-center
         span.icon-tv.fa-fw.mr-3
         span.menu-collapsed="VJ Television"
-    a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/facebook/')
-      .d-flex.w-100.justify-content-start.align-items-center
-        span.icon-facebook-square.fa-fw.mr-3
-        span.menu-collapsed="Facebook"
     if user.is_admin
       a.bg-dark.list-group-item.list-group-item-action(href='#submenuSuper', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? "true" : "false")
         .d-flex.w-100.justify-content-start.align-items-center

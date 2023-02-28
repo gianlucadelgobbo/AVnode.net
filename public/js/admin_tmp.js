@@ -1,6 +1,9 @@
+function mapsCallback () {
+	console.log("mapsCallback")
+}
 $(function () {
 
-  $( ".unlink" ).click(function( event ) {
+	$( ".unlink" ).click(function( event ) {
     var row = $(this).parent().parent();
     var result = confirm("Want to unlink this partner?");
     if (result) {
@@ -102,7 +105,6 @@ $(function () {
 
 	// ADMIN PROFILE / GROUPS
 	if ($( ".getgroups" ).length) {
-		
 		function fbLogin() {
 			FB.login(function(response) {
 				if (response.authResponse) {

@@ -82,14 +82,6 @@ router.use('/vjtv', vjtv);
 router.use('/supertools', supertools);
 
 
-router.get('/facebook', (req, res) => {
-  res.render('adminpro/socialmedia/facebook', {
-    title: 'Facebook',
-    currentUrl: req.originalUrl
-    
-  });
-});
-
 router.get('/api/*', (req, res) => {
   res.status(404).send({ message: `API_NOT_FOUND` });
 });

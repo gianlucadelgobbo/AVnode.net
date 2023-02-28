@@ -51,10 +51,6 @@ nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-t
               span.icon-tv.fa-fw.mr-3
               span.menu-collapsed="VJ Television"
         li.nav-item
-          a.nav-link(href='/adminpro/facebook/')
-            .d-flex.w-100.justify-content-start.align-items-center
-              span.icon-facebook-square.fa-fw.mr-3
-              span.menu-collapsed="Facebook"
           if user.is_admin
             a.nav-link(href='#submenuSuper', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? "true" : "false")
               .d-flex.w-100.justify-content-start.align-items-center
