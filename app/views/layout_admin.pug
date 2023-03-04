@@ -112,7 +112,7 @@ html(lang=session.current_lang)
         var slug = "#{data.slug}";
     script(src='/js/admin_tmp.js')
 
-    //-script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places&language=en&callback=mapsCallback")
+    script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places&language=en&callback=mapsCallback")
 
     if calendar
       script(src='/fullcalendar/main.min.js')
