@@ -125,6 +125,9 @@ block content
 
                       - if (pack.options_name && pack.option && !packagespackages["options"][pack.options_name][pack.option]) packagespackages["options"][pack.options_name][pack.option] = 0
                       - if (pack.options_name && pack.option) packagespackages["options"][pack.options_name][pack.option]+=1
+
+                      - if (pack.options_name && !pack.option && !packagespackages["options"][pack.options_name]["Not_Defined"]) packagespackages["options"][pack.options_name]["Not_Defined"] = 0
+                      - if (pack.options_name && !pack.option) packagespackages["options"][pack.options_name]["Not_Defined"]+=1
                       
                       
                       tr
@@ -227,7 +230,7 @@ block content
             - var tot = 0
             tr
               td(colspan="4")
-                b="STANDARD"
+                b="Paypal"
             each pack in packagespackages["standard"]
               tr
                 td(style="white-space: nowrap;")
@@ -241,7 +244,7 @@ block content
                   !=(pack.count*pack.price)+" €"
             tr
               td.text-right(colspan=3 style="white-space: nowrap;")
-                b!="Total STANDARD"
+                b!="Total Paypal"
               td.text-right
                 !=tot+" €"
             each pack,name in packagespackages["options"]
