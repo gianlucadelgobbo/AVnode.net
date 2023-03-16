@@ -684,3 +684,10 @@ div.ReactTags__selected a.ReactTags__remove {
 
 #streamUpdateAndRestart span{display: none}
 #streamUpdateAndRestart.disabled span{display: inline-block}
+
+.table-no-padding td {
+  padding: 0;
+}
+.table-no-padding {
+  width: 100%;
+}

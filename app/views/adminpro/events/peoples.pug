@@ -10,17 +10,17 @@ block content
     thead
       tr
         th.table-firstcolumn-ID="ID"
-        th(style="width: 210px;")="Status"
+        th(style="width: 135px;")="Status"
         th="Submission"
         th="Person"
         if get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
-          th(style="width: 210px;")="Accommodation"
+          th(style="width: 165px;")="Accommodation"
         th="Packages"
         - for(let a=0;a<=data.daysN;a++)
           - var d = new Date(data.days[0])
           - var dd = new Date(d.setDate(d.getDate() + a))
-          th(style="width:40px;")
-            div(style="width: 60px;transform: rotate(-58deg);height: 20px;position: relative;top: -10px;left: -10px;")=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
+          th(style="width:30px;")
+            div(style="width: 60px;transform: rotate(-90deg);height: 20px;position: relative;top: -10px;left: -30px;")=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
     tbody
       - var conta = 0
       - console.log(data.subscriptions.length)
@@ -116,7 +116,7 @@ block content
                           button.btn.btn-success(type="button")
                             i.icon-check
                 td(style="border-right: 2px solid #dee2e6;")
-                  table(style="width:100%")
+                  table(class="table-no-padding")
                     - var tot = 0
                     each pack in subscription.subscription.packages
                       - if (!packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name]) packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.wepay ? " WE PAY" : ""), price:pack.price, count: 0}
