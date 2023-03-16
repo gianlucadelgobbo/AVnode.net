@@ -71,9 +71,19 @@ $(document).ready(function(){
 	}
 
   $('#dropdownContents a').click(function (event) {
+    var button = $(this) // Button that triggered the modal
     console.log("dropdownContents")
     event.preventDefault();
+    createContents(event, button);
+  })
+
+  $('#createContents a').click(function (event) {
     var button = $(this) // Button that triggered the modal
+    console.log("dropdownContents")
+    event.preventDefault();
+    createContents(event, button);
+  })
+  function createContents(event, button) {
     var user = button.data('user') // Extract info from data-* attributes
     if (!user) {
       window.location.href = "/login";
@@ -102,7 +112,7 @@ $(document).ready(function(){
         
       $('#modalNewContent').modal();
     }
-  });
+  }
   
   $( "#modalNewContent form" ).submit(function( event ) {
     event.preventDefault();

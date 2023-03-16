@@ -24,7 +24,21 @@ block content
         a.btn.btn-light(href="/signup?returnTo=/events/"+dett.slug+"/participate/")=global.__("REGISTER")
       - else
         form(method="post" action=canonical)
-          h2.mb-3=participateMenu[call.step]
+          if call.step == 2
+            - var admitted = dett.organizationsettings.call.calls[call.index].admitted.map(item => {return item.name})
+            h2#createContents.mb-3
+              if admitted.indexOf('Workshop')!==-1 || admitted.indexOf('Lecture')!==-1 || admitted.indexOf('Project showcase')!==-1
+                !="Learning"
+                !=" "
+                sup
+                  a.btn-primary.btn-sm(href='#' data-labelfield='Learning Title' data-title='Add Learning' data-param='title' data-user=user._id data-sez='performances')=global.__("New Learning")
+              else 
+                !=participateMenu[call.step]
+                !=" "
+                sup
+                  a.btn-primary.btn-sm(href='#' data-labelfield='Performance Name' data-title='Add Performance' data-user=user._id data-param='title' data-sez='performances')=global.__("New Performance")
+          else 
+            h2.mb-3=participateMenu[call.step]
           case call.step
             when 0
               include participate/step_0
