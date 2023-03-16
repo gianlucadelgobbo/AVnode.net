@@ -809,7 +809,7 @@ router.get('/:event/peoples', (req, res) => {
           if (req.query.sortby && req.query.sortby=='sortby_hotel_room') {
             propertyRetriever = program => {
               for(let a=0;a<program.subscription.packages.length;a++) {
-                if (program.subscription.packages[a].name == "Accommodation") {
+                if (program.subscription.packages[a].name.indexOf("Accommodation") !== -1) {
                   if (program.subscription.packages[a].option) {
                     if (program.subscription.packages[a].option_value) {
                       return program.subscription.packages[a].option + program.subscription.packages[a].option_value;
