@@ -13,7 +13,7 @@ block content
         th(style="width: 135px;")="Status"
         th="Submission"
         th="Person"
-        if get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
+        if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
           th(style="width: 165px;")="Accommodation"
         th="Packages"
         - for(let a=0;a<=data.daysN;a++)
@@ -98,7 +98,7 @@ block content
                     br
                     !=subscription.subscription.subscriber_id.mobile.map((subscription) => {return subscription.url+' '+'<a href="https://web.whatsapp.com/send?phone='+subscription.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
                     pre=subscription.subscription.subscriber_id
-                if get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
+                if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
                   td
                     - var option = "0";
                     - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
@@ -182,7 +182,7 @@ block content
                   td(style="border-right: 2px solid #dee2e6;background-color:"+present+";color:"+present)=present=="#FF0000" ? "X" : ""
       tr
         td(colspan=3)
-        if get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
+        if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
           td
         td(colspan=2)
           
