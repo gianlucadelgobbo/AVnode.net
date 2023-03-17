@@ -8,7 +8,7 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
     ul.navbar-nav.mr-auto
       li.nav-item.mt-2.mb-2.d-block.d-lg-none
         b=__("Control Panel")
-      - var exclude = ["/admin/footage", "/admin/playlists", "/admin/subscriptions"]
+      - var exclude = ["/admin/footage", "/admin/playlists"]
       each menuitem in config.adminMenu
         if user.is_admin || exclude.indexOf(menuitem.href) === -1
           li.nav-item.mt-2.mb-2.d-block.d-lg-none(class=currentUrl==menuitem.href ? "active" : undefined)

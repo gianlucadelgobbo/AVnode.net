@@ -6,7 +6,7 @@
     // Separator with title
     .list-group-item.sidebar-separator-title.d-flex
       small.menu-collapsed=__("Control Panel")
-    - var exclude = ["/admin/footage", "/admin/playlists", "/admin/subscriptions", "/admin/partners"]
+    - var exclude = ["/admin/footage", "/admin/playlists", "/admin/partners"]
     each menuitem in config.adminMenu
       if user.is_admin || exclude.indexOf(menuitem.href) === -1
         a.list-group-item.list-group-item-action(href=menuitem.href.replace("/admin/profile", "/admin/profile/"+user._id) class=currentUrl.indexOf(menuitem.href.replace("/admin/profile", "/admin/profile/"+user._id))!==-1 ? "active bg-secondary" : "bg-dark")
