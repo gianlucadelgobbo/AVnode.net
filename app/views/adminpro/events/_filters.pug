@@ -81,6 +81,9 @@
       input.mr-sm-2#techonly(type='checkbox', name='techonly', value='1', checked=get.techonly ? "checked" : undefined)
       label.mr-sm-3(for='techonly') TECH ONLY
       input.mr-sm-3.btn.btn-primary#print(type='button', value='PRINT')
+    if get.sez == "peoples"
+      input.mr-sm-2.mb-3#csv(type='checkbox', name='csv', value='1', checked=get.csv ? "checked" : undefined)
+      label.mr-sm-3.mb-3(for='csv') CSV
 
     //input.form-control.mb-3.mr-sm-2(type='hidden', name='eventid', value='967')
     input.form-control.mb-3.mr-sm-2(type='hidden', name='save', value='1')

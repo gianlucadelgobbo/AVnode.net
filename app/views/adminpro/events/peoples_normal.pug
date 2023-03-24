@@ -1,0 +1,268 @@
+table.table.table-fixed
+  thead
+    tr
+      th.table-firstcolumn-ID="ID"
+      th(style="width: 135px;")="Status"
+      th="Submission"
+      th="Person"
+      if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
+        th(style="width: 165px;")="Accommodation"
+      th="Packages"
+      - for(let a=0;a<=data.daysN;a++)
+        - var d = new Date(data.days[0])
+        - var dd = new Date(d.setDate(d.getDate() + a))
+        th(style="width:30px;")
+          div(style="width: 60px;transform: rotate(-90deg);height: 20px;position: relative;top: -10px;left: -30px;")=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
+  tbody
+    - var conta = 0
+    - console.log(data.subscriptions.length)
+    if data.subscriptions.length
+      each subscription, index in data.subscriptions
+          //pre=JSON.stringify(subscription, null, 2)
+          if !subscription.reference
+            - subscription.reference = { _id: '61237ecad8c2eb2d2f8ff017', mobile: [], stagename: 'CRZ', lang: 'en', email: 'giuseppe.curzio@libero.it', imageFormats: { small: 'https://avnode.net/images/default-user.svg', large: 'https://avnode.net/images/default-user.svg' }}
+          if (!get["subscriptions.packages.name"] || get["subscriptions.packages.name"]=="0" || (get.notaccommodation==1 && subscription.subscription.packages.map(subscription => {return subscription.name}).indexOf(get["subscriptions.packages.name"])==-1) || (!get.notaccommodation && subscription.subscription.packages.map(subscription => {return subscription.name}).indexOf(get["subscriptions.packages.name"])!=-1))
+            - conta++
+
+            tr
+              td.table-firstcolumn-ID=conta
+              td
+                .badge.badge-danger=subscription.status.name
+                //form(action="")
+                  each status in data.status
+                    .form-check.text-nowrap
+                      input.form-check-input(id='status'+status._id+subscription._id, name='status'+subscription._id, type='radio', value=status.id, checked=subscription.status._id.toString()==status._id.toString() ? "checked" : undefined)
+                      label.form-check-label(for='status'+status._id+subscription._id)=status.name
+              td
+                - var str = '["'+(subscription.reference && subscription.reference.lang=="it" ? "it" : "en")+'","'+subscription.performances.map(performance => {return performance.title}).join(" // ")+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
+                - if (!emailsbypackages.references) emailsbypackages.references = []
+                - if (emailsbypackages.references.indexOf(str)==-1) emailsbypackages.references.push(str)
+                - if (subscription.reference.email==subscription.subscription.subscriber_id.email) {
+                -   var str = '["'+(subscription.reference && subscription.subscription.subscriber_id.lang=="it" ? "it" : "en")+'","'+subscription.subscription.subscriber_id.stagename+'","'+subscription.subscription.subscriber_id.name+'","'+subscription.subscription.subscriber_id.surname+'","'+subscription.subscription.subscriber_id.email+'"]'
+                - } else {
+                -   var str = '["'+(subscription.reference && subscription.subscription.subscriber_id.lang=="it" ? "it" : "en")+'","'+subscription.subscription.subscriber_id.stagename+'","'+subscription.subscription.subscriber_id.name+'","'+subscription.subscription.subscriber_id.surname+'","'+subscription.subscription.subscriber_id.email+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
+                - }
+                - if (!emailsbypackages.subscribers) emailsbypackages.subscribers = []
+                - if (emailsbypackages.subscribers.indexOf(str)==-1) emailsbypackages.subscribers.push(str)
+                - var option = "0";
+                - for (var b=0;b<subscription.subscription.packages.length;b++) {
+                -   if (subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
+                - }
+                -   if (!emailsbypackages[option]) emailsbypackages[option] = []
+                -   emailsbypackages[option].push(str)
+                .mb-1
+                  each performance in subscription.performances
+                    div
+                      b!=performance.title
+                        !=" "
+                        a.ml-2(href="/performances/"+performance.slug+"/", target="_blank")="VIEW"
+                !=subscription.reference.name+" "+subscription.reference.surname
+                br
+                if subscription.reference.email
+                  !='<a href="mailto:'+subscription.reference.email+'" target="_blank">'+subscription.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+subscription.reference.email+'" target="_blank">SEARCH MESSAGES</a>'
+                else
+                  !=" "
+                  .badge.badge-danger MISSING EMAIL
+                br
+                if subscription.reference.mobile && subscription.reference.mobile.length
+                  !=subscription.reference.mobile.map((subscription) => {if (subscription.url) return subscription.url+' '+'<a href="https://web.whatsapp.com/send?phone='+subscription.url.replace("+","").replace(/ /g,"")+'" target="_blank">Whatsapp</a>';})
+                else
+                  !=" "
+                  .badge.badge-danger MISSING MOBILE
+              td
+                !=subscription.subscription.subscriber_id.name+" "+subscription.subscription.subscriber_id.surname+" AKA "+subscription.subscription.subscriber_id.stagename
+                if subscription.subscription.freezed
+                  !=" "
+                  .badge.badge-danger WRONG FREEZED?
+                br
+                !='<a href="mailto:'+subscription.subscription.subscriber_id.email+'">'+subscription.subscription.subscriber_id.email+'</a>'
+                br
+                !='Gender: '
+                if subscription.subscription.subscriber_id.gender
+                  !=subscription.subscription.subscriber_id.gender
+                else
+                  !=" "
+                  .badge.badge-danger MISSING GENDER
+                if subscription.subscription.subscriber_id.addressesFormatted && subscription.subscription.subscriber_id.addressesFormatted.length
+                  br
+                  !=subscription.subscription.subscriber_id.addressesFormatted.join(", ")
+                //<a href="https://mail.google.com/mail/u/0/#search/'+subscription.subscription.subscriber_id.email+'">SEARCH MESSAGES</a>'
+                  br
+                  !=subscription.subscription.subscriber_id.mobile.map((subscription) => {return subscription.url+' '+'<a href="https://web.whatsapp.com/send?phone='+subscription.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
+                  pre=subscription.subscription.subscriber_id
+              if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
+                td
+                  - var option = "0";
+                  - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
+                  - var option_value = "";
+                  - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option_value) option_value = subscription.subscription.packages[b].option_value
+                  if data.hotels && data.hotels.length
+                    select.option_selected_hotel.form-control.form-control-sm.mr-sm-2(name='packages.option_selected_hotel', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
+                      option(value='0') Hotel
+                      each hotel in data.hotels
+                        option(value=hotel, selected=option==hotel ? "selected" : undefined)=hotel
+                    .input-group.input-group-sm.mt-1
+                      - console.log(data.hotels)
+                      input.option_selected_hotel_room.form-control(type="text", placeholder="Room", aria-label="Room", value=option_value ? option_value : undefined, name='packages.option_selected_hotel_room', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
+                      .input-group-append
+                        button.btn.btn-success(type="button")
+                          i.icon-check
+              td(style="border-right: 2px solid #dee2e6;")
+                table(class="table-no-padding")
+                  - var tot = 0
+                  each pack in subscription.subscription.packages
+                    - if (!packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name]) packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.wepay ? " WE PAY" : ""), price:pack.price, count: 0}
+                    - if (!packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name]) packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.cash ? " CASH" : ""), price:pack.price, count: 0}
+                    - if (pack.options_name && !packagespackages["options"][pack.options_name]) packagespackages["options"][pack.options_name] = {}
+
+                    - if (pack.options_name && pack.option && !packagespackages["options"][pack.options_name][pack.option]) packagespackages["options"][pack.options_name][pack.option] = 0
+                    - if (pack.options_name && pack.option) packagespackages["options"][pack.options_name][pack.option]+=1
+
+                    - if (pack.options_name && !pack.option && !packagespackages["options"][pack.options_name]["Not_Defined"]) packagespackages["options"][pack.options_name]["Not_Defined"] = 0
+                    - if (pack.options_name && !pack.option) packagespackages["options"][pack.options_name]["Not_Defined"]+=1
+                    
+                    
+                    tr
+                      td(style="white-space: nowrap;")
+                        b!=pack.name
+                        br
+                        !=pack.options_name
+                        if (pack.daily)
+                          br
+                          !="Days"
+                          br
+                      td.text-right
+                        !=pack.price
+                        br
+                        if pack.option
+                          !=pack.option
+                        else
+                          .badge.badge-danger="MISSING "+pack.options_name
+                        if (pack.daily)
+                          br
+                          !=subscription.subscription.days.length
+                          br
+                          - packagespackages[subscription.subscription.wepay ? "wepay" : subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=subscription.subscription.days.length
+                          !=subscription.subscription.days.length*pack.price
+                          - tot+= subscription.subscription.days.length*pack.price
+                        else
+                          - packagespackages[subscription.subscription.wepay ? "wepay" : subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=1
+                          - tot+= pack.price
+                  tr
+                    td(style="white-space: nowrap;")
+                      b!="Total"
+                    td.text-right
+                      !=tot
+                  tr
+                    td(colspan=2)
+                      .form-check.mt-1
+                        input.option_wepay.form-check-input(id="wepay"+subscription.subscription.subscriber_id._id, type="checkbox", value="1" checked=subscription.subscription.wepay ? "checked" : undefined, name='subscription.wepay', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
+                        label.form-check-label(for="wepay"+subscription.subscription.subscriber_id._id) WE PAY
+                      .form-check.mt-1
+                        input.option_cash.form-check-input(id="cash"+subscription.subscription.subscriber_id._id, type="checkbox", value="1" checked=subscription.subscription.cash ? "checked" : undefined, name='subscription.cash', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
+                        label.form-check-label(for="cash"+subscription.subscription.subscriber_id._id) CASH
+
+                  //pre=subscription.packages
+              - for(let a=0;a<=data.daysN;a++)
+                - var d = new Date(data.days[0])
+                - var dd = new Date(d.setDate(d.getDate() + a))
+                - var present = "#000000"
+                - for(let b=0;b<subscription.subscription.days.length;b++) {
+                -   var ddd = new Date(subscription.subscription.days[b])
+                -   if (ddd.toString() == dd.toString()) present = "#FF0000"
+                - }
+                td(style="border-right: 2px solid #dee2e6;background-color:"+present+";color:"+present)=present=="#FF0000" ? "X" : ""
+    tr
+      td(colspan=3)
+      if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
+        td
+      td(colspan=2)
+        
+        table(style="width:100%;")
+          - var tot = 0
+          tr
+            td(colspan="4")
+              b="WE PAY"
+          each pack in packagespackages["wepay"]
+            tr
+              td(style="white-space: nowrap;")
+                !=pack.name
+              td.text-right
+                !=pack.price+" €"
+              td.text-right
+                !=pack.count
+              td.text-right
+                - tot+=pack.count*pack.price
+                !=(pack.count*pack.price)+" €"
+          tr
+            td.text-right(colspan=3 style="white-space: nowrap;")
+              b!="Total WE PAY"
+            td.text-right
+              !=tot+" €"
+          - var tot = 0
+          tr
+            td(colspan="4")
+              b="CASH"
+          each pack in packagespackages["cash"]
+            tr
+              td(style="white-space: nowrap;")
+                !=pack.name
+              td.text-right
+                !=pack.price+" €"
+              td.text-right
+                !=pack.count
+              td.text-right
+                - tot+=pack.count*pack.price
+                !=(pack.count*pack.price)+" €"
+          tr
+            td.text-right(colspan=3 style="white-space: nowrap;")
+              b!="Total CASH"
+            td.text-right
+              !=tot+" €"
+          - var tot = 0
+          tr
+            td(colspan="4")
+              b="Paypal"
+          each pack in packagespackages["standard"]
+            tr
+              td(style="white-space: nowrap;")
+                !=pack.name
+              td.text-right
+                !=pack.price+" €"
+              td.text-right
+                !=pack.count
+              td.text-right
+                - tot+=pack.count*pack.price
+                !=(pack.count*pack.price)+" €"
+          tr
+            td.text-right(colspan=3 style="white-space: nowrap;")
+              b!="Total Paypal"
+            td.text-right
+              !=tot+" €"
+          each pack,name in packagespackages["options"]
+            tr
+              td(style="white-space: nowrap;", colspan=4)
+                b!=name
+            each value, item in pack
+              tr
+                td(style="white-space: nowrap;")
+                  !=item
+                td.text-right
+                td.text-right
+                td.text-right
+                  !=value
+
+      td(colspan=data.daysN+1)
+each item, i in emailsbypackages
+  b=i
+  form(method='post', action='http://localhost:8004/composer')
+    textarea.form-control(name='to')="["+item.join(",")+"]"
+    .text-center
+      br
+      button.btn.btn-success(type='submit') Compose email
+form(method='post', action='http://localhost:8004/composer')
+  textarea.form-control(name='to')="["+emails.join(",")+"]"
+  .text-center
+    br
+    button.btn.btn-success(type='submit') Compose email
+

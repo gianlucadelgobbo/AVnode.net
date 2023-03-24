@@ -1,0 +1,179 @@
+table.table.table-fixed
+  - var call = get.call ? get.call : 0
+  - var sums = {wepay:0,cash:0,total:0}
+
+  thead
+    tr
+      th.table-firstcolumn-ID="ID"
+      th(style="width: 135px;")="Status"
+      th="Submission"
+      th="Person"
+      if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
+        th="Hotel"
+        th="Room"
+      each pack in data.event.organizationsettings.call.calls[call].packages
+        th="Package Name"
+        th="Cost"
+        th="Package Option"
+        th="Value"
+        th="Total"
+        - sums[pack.name] = 0
+
+      th="Total"
+      th="WE PAY"
+      th="CASH"
+      - for(let a=0;a<=data.daysN;a++)
+        - var d = new Date(data.days[0])
+        - var dd = new Date(d.setDate(d.getDate() + a))
+        th(style="width:30px;")
+          div(style="width: 60px;transform: rotate(-90deg);height: 20px;position: relative;top: -10px;left: -30px;")=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
+  tbody
+    - var conta = 0
+    - console.log(get)
+    if data.subscriptions.length
+      each subscription, index in data.subscriptions
+          //pre=JSON.stringify(subscription, null, 2)
+          if !subscription.reference
+            - subscription.reference = { _id: '61237ecad8c2eb2d2f8ff017', mobile: [], stagename: 'CRZ', lang: 'en', email: 'giuseppe.curzio@libero.it', imageFormats: { small: 'https://avnode.net/images/default-user.svg', large: 'https://avnode.net/images/default-user.svg' }}
+          if (!get["subscriptions.packages.name"] || get["subscriptions.packages.name"]=="0" || (get.notaccommodation==1 && subscription.subscription.packages.map(subscription => {return subscription.name}).indexOf(get["subscriptions.packages.name"])==-1) || (!get.notaccommodation && subscription.subscription.packages.map(subscription => {return subscription.name}).indexOf(get["subscriptions.packages.name"])!=-1))
+            - conta++
+
+            tr
+              td.table-firstcolumn-ID=conta
+              td
+                .badge.badge-danger=subscription.status.name
+                //form(action="")
+                  each status in data.status
+                    .form-check.text-nowrap
+                      input.form-check-input(id='status'+status._id+subscription._id, name='status'+subscription._id, type='radio', value=status.id, checked=subscription.status._id.toString()==status._id.toString() ? "checked" : undefined)
+                      label.form-check-label(for='status'+status._id+subscription._id)=status.name
+              td
+                if get["hide_perf"]==1
+                  .mb-1
+                    each performance in subscription.performances
+                      div
+                        b!=performance.title
+                          !=" "
+                          a.ml-2(href="/performances/"+performance.slug+"/", target="_blank")="VIEW"
+                !=subscription.reference.name+" "+subscription.reference.surname
+                br
+                if subscription.reference.email
+                  !='<a href="mailto:'+subscription.reference.email+'" target="_blank">'+subscription.reference.email+'</a>'
+                else
+                  !=" "
+                  .badge.badge-danger MISSING EMAIL
+                br
+                if subscription.reference.mobile && subscription.reference.mobile.length
+                  !=subscription.reference.mobile.map((subscription) => {if (subscription.url) return subscription.url;})
+                else
+                  !=" "
+                  .badge.badge-danger MISSING MOBILE
+              td
+                !=subscription.subscription.subscriber_id.name+" "+subscription.subscription.subscriber_id.surname+" AKA "+subscription.subscription.subscriber_id.stagename
+                if subscription.subscription.freezed
+                  !=" "
+                  .badge.badge-danger WRONG FREEZED?
+                br
+                !='<a href="mailto:'+subscription.subscription.subscriber_id.email+'">'+subscription.subscription.subscriber_id.email+'</a>'
+                br
+                !='Gender: '
+                if subscription.subscription.subscriber_id.gender
+                  !=subscription.subscription.subscriber_id.gender
+                else
+                  !=" "
+                  .badge.badge-danger MISSING GENDER
+                if subscription.subscription.subscriber_id.addressesFormatted && subscription.subscription.subscriber_id.addressesFormatted.length
+                  br
+                  !=subscription.subscription.subscriber_id.addressesFormatted.join(", ")
+              if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
+                  - var option = "0";
+                  - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
+                  - var option_value = "";
+                  - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option_value) option_value = subscription.subscription.packages[b].option_value
+                  if data.hotels && data.hotels.length
+                    td
+                      !=option
+                    td
+                      !=option_value
+              - var tot = 0
+              //- console.log(call)
+              each pack in data.event.organizationsettings.call.calls[call].packages
+                - if (!packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name]) packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.wepay ? " WE PAY" : ""), price:pack.price, count: 0}
+                - if (!packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name]) packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.cash ? " CASH" : ""), price:pack.price, count: 0}
+                - if (pack.options_name && !packagespackages["options"][pack.options_name]) packagespackages["options"][pack.options_name] = {}
+
+                - if (pack.options_name && pack.option && !packagespackages["options"][pack.options_name][pack.option]) packagespackages["options"][pack.options_name][pack.option] = 0
+                - if (pack.options_name && pack.option) packagespackages["options"][pack.options_name][pack.option]+=1
+
+                - if (pack.options_name && !pack.option && !packagespackages["options"][pack.options_name]["Not_Defined"]) packagespackages["options"][pack.options_name]["Not_Defined"] = 0
+                - if (pack.options_name && !pack.option) packagespackages["options"][pack.options_name]["Not_Defined"]+=1
+                
+                
+                td(style="white-space: nowrap;")
+                  b!=pack.name
+                td.text-right
+                  !=pack.price
+                td(style="white-space: nowrap;")
+                  !=pack.options_name
+                td(style="white-space: nowrap;")
+                  if pack.option
+                    !=pack.option
+                  else
+                    .badge.badge-danger="MISSING "+pack.options_name
+                td.text-right
+                  if (pack.daily)
+                    //!=subscription.subscription.days.length
+                    - packagespackages[subscription.subscription.wepay ? "wepay" : subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=subscription.subscription.days.length
+                    !=subscription.subscription.days.length*pack.price
+                    - tot+= subscription.subscription.days.length*pack.price
+                    - sums[pack.name]+= subscription.subscription.days.length*pack.price
+                  else
+                    - packagespackages[subscription.subscription.wepay ? "wepay" : subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=1
+                    - tot+= pack.price
+                    - sums[pack.name]+= pack.price
+                    !=pack.price
+
+              td.text-right
+                - sums.total+= tot
+                !=tot
+              td
+                if subscription.subscription.wepay
+                  !=tot
+                  - sums.wepay+= tot
+              td
+                if subscription.subscription.cash
+                  !=tot
+                  - sums.cash+= tot
+
+              //pre=subscription.packages
+          
+              - for(let a=0;a<=data.daysN;a++)
+                - var d = new Date(data.days[0])
+                - var dd = new Date(d.setDate(d.getDate() + a))
+                - var present = "#000000"
+                - for(let b=0;b<subscription.subscription.days.length;b++) {
+                -   var ddd = new Date(subscription.subscription.days[b])
+                -   if (ddd.toString() == dd.toString()) present = "#FF0000"
+                - }
+                td(style="border-right: 2px solid #dee2e6;background-color:"+present+";color:"+present)=present=="#FF0000" ? "X" : ""
+
+  tfooter
+    tr
+      th.table-firstcolumn-ID="ID"
+      th(style="width: 135px;")="Status"
+      th=""
+      th=""
+      if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
+        th=""
+        th=""
+      each pack in data.event.organizationsettings.call.calls[call].packages
+        th=""
+        th=""
+        th=""
+        th=""
+        th=sums[pack.name]
+      th=sums.total
+      th=sums.wepay
+      th=sums.cash
+      - for(let a=0;a<=data.daysN;a++)
+        th
