@@ -1,6 +1,7 @@
 table.table.table-fixed
-  - var call = get.call ? get.call : 0
+  - var call = !get.call || get.call=="none" ? 0 : get.call
   - var sums = {wepay:0,cash:0,total:0}
+  - console.log(call)
 
   thead
     tr
