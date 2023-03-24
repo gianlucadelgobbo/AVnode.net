@@ -2,6 +2,7 @@ table.table.table-fixed
   - var call = !get.call || get.call=="none" ? 0 : get.call
   - var sums = {wepay:0,cash:0,total:0}
   - console.log(call)
+  - function format (lang, currency, number) {return new Intl.NumberFormat(lang, { style: "currency", currency }).format(number);} 
 
   thead
     tr
@@ -97,42 +98,54 @@ table.table.table-fixed
                     td
                       !=option_value
               - var tot = 0
+              - var packexists = false
               //- console.log(call)
               each pack in data.event.organizationsettings.call.calls[call].packages
-                - if (!packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name]) packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.wepay ? " WE PAY" : ""), price:pack.price, count: 0}
-                - if (!packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name]) packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.cash ? " CASH" : ""), price:pack.price, count: 0}
-                - if (pack.options_name && !packagespackages["options"][pack.options_name]) packagespackages["options"][pack.options_name] = {}
+                - packexists = subscription.subscription.packages.map(item => {return item.name}).indexOf(pack.name)!==-1
+                if packexists
 
-                - if (pack.options_name && pack.option && !packagespackages["options"][pack.options_name][pack.option]) packagespackages["options"][pack.options_name][pack.option] = 0
-                - if (pack.options_name && pack.option) packagespackages["options"][pack.options_name][pack.option]+=1
+                  - console.log(subscription.subscription.packages.map(item => {return item.name}))
+                  - console.log(packexists)
+                  - if (!packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name]) packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.wepay ? " WE PAY" : ""), price:pack.price, count: 0}
+                  - if (!packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name]) packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.cash ? " CASH" : ""), price:pack.price, count: 0}
+                  - if (pack.options_name && !packagespackages["options"][pack.options_name]) packagespackages["options"][pack.options_name] = {}
 
-                - if (pack.options_name && !pack.option && !packagespackages["options"][pack.options_name]["Not_Defined"]) packagespackages["options"][pack.options_name]["Not_Defined"] = 0
-                - if (pack.options_name && !pack.option) packagespackages["options"][pack.options_name]["Not_Defined"]+=1
-                
-                
-                td(style="white-space: nowrap;")
-                  b!=pack.name
-                td.text-right
-                  !=pack.price
-                td(style="white-space: nowrap;")
-                  !=pack.options_name
-                td(style="white-space: nowrap;")
-                  if pack.option
-                    !=pack.option
-                  else
-                    .badge.badge-danger="MISSING "+pack.options_name
-                td.text-right
-                  if (pack.daily)
-                    //!=subscription.subscription.days.length
-                    - packagespackages[subscription.subscription.wepay ? "wepay" : subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=subscription.subscription.days.length
-                    !=subscription.subscription.days.length*pack.price
-                    - tot+= subscription.subscription.days.length*pack.price
-                    - sums[pack.name]+= subscription.subscription.days.length*pack.price
-                  else
-                    - packagespackages[subscription.subscription.wepay ? "wepay" : subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=1
-                    - tot+= pack.price
-                    - sums[pack.name]+= pack.price
+                  - if (pack.options_name && pack.option && !packagespackages["options"][pack.options_name][pack.option]) packagespackages["options"][pack.options_name][pack.option] = 0
+                  - if (pack.options_name && pack.option) packagespackages["options"][pack.options_name][pack.option]+=1
+
+                  - if (pack.options_name && !pack.option && !packagespackages["options"][pack.options_name]["Not_Defined"]) packagespackages["options"][pack.options_name]["Not_Defined"] = 0
+                  - if (pack.options_name && !pack.option) packagespackages["options"][pack.options_name]["Not_Defined"]+=1
+                  
+                  
+                  td(style="white-space: nowrap;")
+                    b!=pack.name
+                  td.text-right
                     !=pack.price
+                  td(style="white-space: nowrap;")
+                    !=pack.options_name
+                  td(style="white-space: nowrap;")
+                    if pack.option
+                      !=pack.option
+                    else
+                      .badge.badge-danger="MISSING "+pack.options_name
+                  td.text-right
+                    if (pack.daily)
+                      //!=subscription.subscription.days.length
+                      - packagespackages[subscription.subscription.wepay ? "wepay" : subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=subscription.subscription.days.length
+                      !=subscription.subscription.days.length*pack.price
+                      - tot+= subscription.subscription.days.length*pack.price
+                      - sums[pack.name]+= subscription.subscription.days.length*pack.price
+                    else
+                      - packagespackages[subscription.subscription.wepay ? "wepay" : subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=1
+                      - tot+= pack.price
+                      - sums[pack.name]+= pack.price
+                      !=pack.price
+                else
+                  td
+                  td
+                  td
+                  td
+                  td
 
               td.text-right
                 - sums.total+= tot
@@ -173,6 +186,7 @@ table.table.table-fixed
         th=""
         th=""
         th=sums[pack.name]
+      //- th=format("it","EUR",sums.total)
       th=sums.total
       th=sums.wepay
       th=sums.cash
