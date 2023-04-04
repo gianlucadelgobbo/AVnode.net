@@ -1296,7 +1296,7 @@ router.updateSubscription = (req, res) => {
       for (var a=0;a<program.subscriptions.length;a++) {
         if (program.subscriptions[a].subscriber_id == req.body.subscriber_id) {
           for (var b=0;b<program.subscriptions[a].packages.length;b++) {
-            if (program.subscriptions[a].packages[b].name == "Accommodation") {
+            if (program.subscriptions[a].packages[b].name == req.body.package_name) {
               if (req.body.hotel) program.subscriptions[a].packages[b].option = req.body.hotel;
               if (req.body.hotel_room) program.subscriptions[a].packages[b].option_value = req.body.hotel_room;
             }

@@ -248,6 +248,7 @@ $(function() {
     const data = {
       id: $(this).data("id"),
       subscriber_id: $(this).data("subscriber_id"),
+      package_name: $(this).data("package_name"),
       hotel: $(this).val()
     }
     
@@ -263,6 +264,7 @@ $(function() {
     const data = {
       id: $(this).data("id"),
       subscriber_id: $(this).data("subscriber_id"),
+      package_name: $(this).data("package_name"),
       hotel_room: $(this).val()
     }
     $.ajax({

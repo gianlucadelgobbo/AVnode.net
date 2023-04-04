@@ -97,13 +97,13 @@ table.table.table-fixed
                   - var option_value = "";
                   - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option_value) option_value = subscription.subscription.packages[b].option_value
                   if data.hotels && data.hotels.length
-                    select.option_selected_hotel.form-control.form-control-sm.mr-sm-2(name='packages.option_selected_hotel', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
+                    select.option_selected_hotel.form-control.form-control-sm.mr-sm-2(name='packages.option_selected_hotel', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id, data-package_name=get['subscriptions.packages.name'])
                       option(value='0') Hotel
                       each hotel in data.hotels
                         option(value=hotel, selected=option==hotel ? "selected" : undefined)=hotel
                     .input-group.input-group-sm.mt-1
                       - console.log(data.hotels)
-                      input.option_selected_hotel_room.form-control(type="text", placeholder="Room", aria-label="Room", value=option_value ? option_value : undefined, name='packages.option_selected_hotel_room', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
+                      input.option_selected_hotel_room.form-control(type="text", placeholder="Room", aria-label="Room", value=option_value ? option_value : undefined, name='packages.option_selected_hotel_room', data-id=subscription._id, data-package_name=get['subscriptions.packages.name'], data-subscriber_id=subscription.subscription.subscriber_id._id)
                       .input-group-append
                         button.btn.btn-success(type="button")
                           i.icon-check
