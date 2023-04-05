@@ -351,6 +351,10 @@ router.getActsData = (req, res, cb) => {
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
       if (req.query['subscriptions.packages.name'] && req.query['subscriptions.packages.name']!='0') query['subscriptions.packages.name'] = req.query['notaccommodation'] ? {$ne :req.query['subscriptions.packages.name']} : req.query['subscriptions.packages.name'];
+      if (req.query['packages.option_selected_hotel'] && req.query['packages.option_selected_hotel']!='0') {
+        //query['subscriptions.packages.options_name'] = 'Hotels';
+        query['subscriptions.packages.option'] = req.query['packages.option_selected_hotel'];
+      }
       for(var item in populate) {
         if (populate[item].path == "performance") {
           if (req.query['performance_category'] && req.query['performance_category']!='0') {
@@ -404,6 +408,12 @@ router.getActsData = (req, res, cb) => {
           let admittedO = {};
           for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
+
+          data.hotels = [];
+          for(let a=0;a<data.event.organizationsettings.call.calls.length;a++)
+            for(let b=0; b<data.event.organizationsettings.call.calls[a].packages.length;b++)
+              if (data.event.organizationsettings.call.calls[a].packages[b].options_name == "Hotels")
+                data.hotels = data.event.organizationsettings.call.calls[a].packages[b].options.split(",");
 
           data.rooms = [];
           for(let a=0;a<data.event.schedule.length;a++)  if (data.event.schedule[a].venue && data.event.schedule[a].venue.room && data.rooms.indexOf(data.event.schedule[a].venue.room) == -1) data.rooms.push(data.event.schedule[a].venue.room);
@@ -708,8 +718,8 @@ router.get('/:event/peoples', (req, res) => {
       if (req.query['subscriptions.packages.name'] && req.query['subscriptions.packages.name']!='0') query['subscriptions.packages.name'] = req.query['notaccommodation'] ? {$ne :req.query['subscriptions.packages.name']} : req.query['subscriptions.packages.name'];
 
       if (req.query['packages.option_selected_hotel'] && req.query['packages.option_selected_hotel']!='0') {
-        query['packages.options_name'] = 'hotels';
-        query['packages.option'] = req.query['packages.option_selected_hotel'];
+        //query['subscriptions.packages.options_name'] = 'Hotels';
+        query['subscriptions.packages.option'] = req.query['packages.option_selected_hotel'];
       }
       for(var item in populate) {
         if (populate[item].path == "performance") {

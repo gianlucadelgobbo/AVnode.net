@@ -18,7 +18,7 @@ table.table.table-fixed
     - console.log(data.subscriptions.length)
     if data.subscriptions.length
       each subscription, index in data.subscriptions
-          //pre=JSON.stringify(subscription, null, 2)
+          //-pre=JSON.stringify(subscription, null, 2)
           if !subscription.reference
             - subscription.reference = { _id: '61237ecad8c2eb2d2f8ff017', mobile: [], stagename: 'CRZ', lang: 'en', email: 'giuseppe.curzio@libero.it', imageFormats: { small: 'https://avnode.net/images/default-user.svg', large: 'https://avnode.net/images/default-user.svg' }}
           if (!get["subscriptions.packages.name"] || get["subscriptions.packages.name"]=="0" || (get.notaccommodation==1 && subscription.subscription.packages.map(subscription => {return subscription.name}).indexOf(get["subscriptions.packages.name"])==-1) || (!get.notaccommodation && subscription.subscription.packages.map(subscription => {return subscription.name}).indexOf(get["subscriptions.packages.name"])!=-1))
