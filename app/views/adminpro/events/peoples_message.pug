@@ -44,24 +44,24 @@ block content
         .col-sm-6
           p
             label(for='message_it')="Message IT"
-            textarea(rows="20",name="message_it")#message_it.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_it : 'Ciao [name],\n\n\n[slug]\n\n\n[performancetitle]\n\n\n[performanceslug]')
+            textarea(rows="20",name="message_it")#message_it.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_it : 'Ciao [name],\n\n\n[email]')
         .col-sm-6
           p
             label(for='message_en')="Message EN"
-            textarea(rows="20",name="message_en")#message_en.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_en : 'Ciao [name],\n\n\n[slug]\n\n\n[performancetitle]\n\n\n[performanceslug]')
+            textarea(rows="20",name="message_en")#message_en.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_en : 'Ciao [name],\n\n\n[email]')
       .mb-3.text-center
         button(type='submit').btn.btn-success="Compose"
 
 
-    - console.log(data)
     h3="Exclude"
     ol
-        each item, index in data
-          if item
-            li
-              .form-check
-                input.form-check-input(type='checkbox', name='exclude', id=item._id.toString(), value=item._id.toString(), checked=body && body.exclude!=undefined && (item._id.toString()==body.exclude || body && body.exclude.indexOf(item._id.toString())!=-1) ? 'checked' : undefined)
-                label.form-check-label(for=item._id.toString())=item.reference.name +" "+item.reference.surname + " aka " + item.reference.stagename  
+      each item, index in data.subscriptions
+        - console.log(item.subscription.subscriber_id.email)
+        if item
+          li
+            .form-check
+              input.form-check-input(type='checkbox', name='exclude', id=item.subscription.subscriber_id._id.toString(), value=item.subscription.subscriber_id._id.toString(), checked=body && body.exclude!=undefined && (item.subscription.subscriber_id._id.toString()==body.exclude || body && body.exclude.indexOf(item.subscription.subscriber_id._id.toString())!=-1) ? 'checked' : undefined)
+              label.form-check-label(for=item.subscription.subscriber_id._id.toString())=item.subscription.subscriber_id.name +" "+item.subscription.subscriber_id.surname + " aka " + item.subscription.subscriber_id.stagename  
     if tosave
       ol
         each item in tosave.messages_tosend

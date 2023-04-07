@@ -702,8 +702,35 @@ router.getMessageActs = (req, res) => {
   });
 };
 
+router.get('/:event/peoples/message', (req, res) => {
+  logger.debug('/events/'+req.params.event+'/acts/message');
+  router.getMessagePeoples(req, res);
+});
+
+router.post('/:event/peoples/message', (req, res) => {
+  logger.debug('/events/'+req.params.event+'/acts');
+  router.getMessagePeoples(req, res);
+});
+
 router.get('/:event/peoples', (req, res) => {
   logger.debug('/events/'+req.params.event+'/peoples');
+  router.getPeoplesData(req, res, data => {
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(data);
+    } else {
+      req.query.sez = "peoples";
+      res.render('adminpro/events/peoples', {
+        title: 'Events | '+data.event.title + ': Peoples',
+        data: data,
+        currentUrl: req.originalUrl,
+        
+        get: req.query
+      });
+    }
+  });
+});
+
+router.getPeoplesData = (req, res, cb) => {
   logger.debug(req.query)
   let data = {};
   Event.
@@ -858,23 +885,85 @@ router.get('/:event/peoples', (req, res) => {
             {value: 'sortby_hotel_room', key: 'sort by hotel/room'},
             {value: '0', key: 'sort by sub date'}
           ];
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-            res.json(data);
-          } else {
-            req.query.sez = "peoples";
-            res.render('adminpro/events/peoples', {
-              title: 'Events | '+data.event.title + ': Peoples',
-              data: data,
-              currentUrl: req.originalUrl,
-              
-              get: req.query
-            });
-          }
+          cb(data)
         }
       });
     }
   });
-});
+};
+
+router.getMessagePeoples = (req, res) => {
+  router.getPeoplesData(req, res, data => {
+    console.log(data)
+    req.query.sez = "peoples";
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(data);
+    } else {
+      //logger.debug(query);
+      logger.debug("req.body");
+      logger.debug(req.body);
+      if (req.body.subject) {
+        var tosave = {};
+        if (!req.body.exclude) req.body.exclude = []
+        tosave.event = req.params.event;
+        tosave.user = req.user._id;
+        tosave.subject = req.body.subject;
+        tosave.messages_tosend = [];
+        tosave.messages_sent = [];
+        data.subscriptions.forEach((item, index) => {
+          console.log(req.body.exclude)
+          console.log(item.subscription.subscriber_id._id.toString())
+          if (req.body.exclude.indexOf(item.subscription.subscriber_id._id.toString())===-1) {
+            var message = {};
+            message.to_html = "";
+            message.cc_html = [];
+            message.from_name = req.body.from_name;
+            message.from_email = req.body.from_email;
+            message.user_email = req.body.user_email;
+            message.user_password = req.body.user_password;
+            var contact = item.subscription.subscriber_id;
+            message.subject = req.body.subject.split("[org_name]").join(contact.stagename);
+            message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
+            if (item.subscription.subscriber_id.email !== item.reference.email ) {
+              message.cc_html.push((item.reference.name ? item.reference.name+" " : "")+(item.reference.surname ? item.reference.surname+" " : "")+"<"+item.reference.email+">")
+            }
+            message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+            message.text = message.text.split("[email]").join(contact.email);
+            message.text = message.text.split("[name]").join(contact.name);
+            //message.text = message.text.split("[slug]").join(contact.slug);
+            //message.text = message.text.split("[performancetitle]").join(item.performance.title);
+            //message.text = message.text.split("[performanceslug]").join(item.performance.slug);
+            if (message.to_html != "") tosave.messages_tosend.push(message)  
+          }
+        });
+        if (req.body.send == "1") {
+          logger.debug(tosave);
+          Emailqueue.create(tosave, function (err) {
+            res.redirect("/adminpro/emailqueue/")
+          });
+        } else {
+          res.render('adminpro/events/peoples_message', {
+            title: 'Events | '+data.event.title + ': Peoples message',
+            data: data,
+            tosave: tosave,
+            currentUrl: req.originalUrl,
+            body: req.body,
+            get: req.query
+          });
+        }
+      } else {
+        res.render('adminpro/events/peoples_message', {
+          title: 'Events | '+data.event.title + ': Peoples message',
+          data: data,
+          currentUrl: req.originalUrl,
+          body: req.body,
+          get: req.query
+        });
+      }
+    }
+  });
+};
+
 
 router.get('/:event/program', (req, res) => {
   logger.debug('/events/'+req.params.event+'/program');
