@@ -53,11 +53,10 @@ block content
         button(type='submit').btn.btn-success="Compose"
 
 
-    - console.log(data)
     h3="Exclude"
     ol
-        each item, index in data
-          if item
+        each item, index in data.program
+          if item && item.reference
             li
               .form-check
                 input.form-check-input(type='checkbox', name='exclude', id=item._id.toString(), value=item._id.toString(), checked=body && body.exclude!=undefined && (item._id.toString()==body.exclude || body && body.exclude.indexOf(item._id.toString())!=-1) ? 'checked' : undefined)
