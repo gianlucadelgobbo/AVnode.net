@@ -636,39 +636,43 @@ router.getMessageActs = (req, res) => {
       logger.debug(req.body);
       if (req.body.subject) {
         var tosave = {};
+        if (!req.body.exclude) req.body.exclude = []
         tosave.event = req.params.event;
         tosave.user = req.user._id;
         tosave.subject = req.body.subject;
         tosave.messages_tosend = [];
         tosave.messages_sent = [];
         data.program.forEach((item, index) => {
-          var message = {};
-          message.to_html = "";
-          message.cc_html = [];
-          message.from_name = req.body.from_name;
-          message.from_email = req.body.from_email;
-          message.user_email = req.body.user_email;
-          message.user_password = req.body.user_password;
-          message.subject = req.body.subject.split("[org_name]").join(item.performance.title);;
-          if (item.subscriptions) {
-            item.subscriptions.forEach((subscription, cindex) => {
-              var contact = subscription.subscriber_id;
-              if (contact) {
-                if (cindex===0) {
-                  message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
-                  message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
-                  message.text = message.text.split("[email]").join(contact.email);
-                  message.text = message.text.split("[name]").join(contact.name);
-                  message.text = message.text.split("[slug]").join(contact.slug);
-                  message.text = message.text.split("[performancetitle]").join(item.performance.title);
-                  message.text = message.text.split("[performanceslug]").join(item.performance.slug);
-                } else {
-                  message.cc_html.push((contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">")
+          if (req.body.exclude.indexOf(item._id)===-1) {
+            var message = {};
+            message.to_html = "";
+            message.cc_html = [];
+            message.from_name = req.body.from_name;
+            message.from_email = req.body.from_email;
+            message.user_email = req.body.user_email;
+            message.user_password = req.body.user_password;
+            message.subject = req.body.subject.split("[org_name]").join(item.performance.title);;
+            if (item.subscriptions) {
+              item.subscriptions.forEach((subscription, cindex) => {
+                var contact = subscription.subscriber_id;
+                if (contact) {
+                  if (cindex===0) {
+                    message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
+                    message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+                    message.text = message.text.split("[email]").join(contact.email);
+                    message.text = message.text.split("[name]").join(contact.name);
+                    message.text = message.text.split("[slug]").join(contact.slug);
+                    message.text = message.text.split("[performancetitle]").join(item.performance.title);
+                    message.text = message.text.split("[performanceslug]").join(item.performance.slug);
+                  } else {
+                    message.cc_html.push((contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">")
+                  }
                 }
-              }
-            });
+              });
+            }
+            if (message.to_html != "") tosave.messages_tosend.push(message)
+  
           }
-          if (message.to_html != "") tosave.messages_tosend.push(message)
         });
         if (req.body.send == "1") {
           logger.debug(tosave);

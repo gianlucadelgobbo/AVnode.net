@@ -53,9 +53,19 @@ block content
         button(type='submit').btn.btn-success="Compose"
 
 
+    - console.log(data.program)
+    h3="Exclude"
+    ol
+        each item, index in data.program
+          if item
+            li
+              .form-check
+                input.form-check-input(type='checkbox', name='exclude', id=item._id.toString(), value=item._id.toString(), checked=body && body.exclude!=undefined && (item._id.toString()==body.exclude || body && body.exclude.indexOf(item._id.toString())!=-1) ? 'checked' : undefined)
+                label.form-check-label(for=item._id.toString())=item.reference.name +" "+item.reference.surname + " aka " + item.reference.stagename  
     if tosave
       ol
         each item in tosave.messages_tosend
+          
           li
             p!="From: <b>"+item.from_name+" &lt"+item.from_email+"&gt</b>"
             p
