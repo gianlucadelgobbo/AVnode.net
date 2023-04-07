@@ -358,7 +358,7 @@ router.getActsData = (req, res, cb) => {
       for(var item in populate) {
         if (populate[item].path == "performance") {
           if (req.query['performance_category'] && req.query['performance_category']!='0') {
-            populate[item].match = {type: req.query['performance_category']};
+            populate[item].match = {type: req.query['not2'] ? {$ne :req.query['performance_category']} : req.query['performance_category']};
           }
           if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
             populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
@@ -755,7 +755,7 @@ router.getPeoplesData = (req, res, cb) => {
       for(var item in populate) {
         if (populate[item].path == "performance") {
           if (req.query['performance_category'] && req.query['performance_category']!='0') {
-            populate[item].match = {type: req.query['performance_category']};
+            populate[item].match = {type: req.query['not2'] ? {$ne :req.query['performance_category']} : req.query['performance_category']};
           }
           if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
             populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
