@@ -4,8 +4,7 @@ block topmenu
 block content
   include ./_filters
   .white-content
-    table#reset-style
-
+    //-table#reset-style
       each subscription, index in data.subscriptions
         tr 
           td
@@ -17,3 +16,14 @@ block content
           td
             if subscription.subscription.subscriber_id.addressesFormatted && subscription.subscription.subscriber_id.addressesFormatted.length
               p!=subscription.subscription.subscriber_id.addresses.map(item => {return item.country}).join(", ")
+    each subscription, index in data.subscriptions
+      h1
+        !=subscription.subscription.subscriber_id.stagename
+        each performance in subscription.performances
+          each user in performance.users
+            if user.is_crew && user.members.indexOf(subscription.subscription.subscriber_id._id)!=-1
+              !=subscription.subscription.subscriber_id.stagename+" | "+user.stagename
+            else
+              !=subscription.subscription.subscriber_id.stagename
+          if subscription.subscription.subscriber_id.addressesFormatted && subscription.subscription.subscriber_id.addressesFormatted.length
+            h3!=subscription.subscription.subscriber_id.addresses.map(item => {return item.country}).join(", ")
