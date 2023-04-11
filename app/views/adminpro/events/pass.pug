@@ -19,10 +19,9 @@ block content
     each subscription, index in data.subscriptions
       each performance in subscription.performances
         h1
+          !=subscription.subscription.subscriber_id.stagename
           each user in performance.users
             if user.is_crew && user.members.indexOf(subscription.subscription.subscriber_id._id)!=-1
-              !=subscription.subscription.subscriber_id.stagename+" | "+user.stagename
-            else
-              !=subscription.subscription.subscriber_id.stagename
+              !=" | "+user.stagename
         if subscription.subscription.subscriber_id.addressesFormatted && subscription.subscription.subscriber_id.addressesFormatted.length
           h3!=subscription.subscription.subscriber_id.addresses.map(item => {return item.country}).join(", ")
