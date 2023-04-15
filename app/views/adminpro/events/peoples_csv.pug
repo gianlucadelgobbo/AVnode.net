@@ -124,8 +124,9 @@ table.table.table-fixed
                   td(style="white-space: nowrap;")
                     !=pack.options_name
                   td(style="white-space: nowrap;")
-                    if pack.option
-                      !=pack.option
+                    - console.log(subscription.subscription.packages[subscription.subscription.packages.map(item => {return item.name}).indexOf(pack.name)])
+                    if subscription.subscription.packages[subscription.subscription.packages.map(item => {return item.name}).indexOf(pack.name)]
+                      !=subscription.subscription.packages[subscription.subscription.packages.map(item => {return item.name}).indexOf(pack.name)].option
                     else
                       .badge.badge-danger="MISSING "+pack.options_name
                   td.text-right
