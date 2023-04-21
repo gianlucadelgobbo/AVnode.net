@@ -1,20 +1,19 @@
 const router = require('../../router')();
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Event = mongoose.model('EventShow');
 const ObjectId = Schema.ObjectId;
 const User = mongoose.model('User');
 const Performance = mongoose.model('Performance');
 const Category = mongoose.model('Category');
-const Event = mongoose.model('Event');
-const Footage = mongoose.model('Footage');
-const Playlist = mongoose.model('Playlist');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
+
 const News = mongoose.model('News');
 const axios = require('axios');
-const fs = require('fs');
+//const fs = require('fs');
 const config = require('getconfig');
-const sharp = require('sharp');
+//const sharp = require('sharp');
 
 const logger = require('../../../utilities/logger');
 
