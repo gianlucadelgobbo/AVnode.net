@@ -43,6 +43,23 @@ const logger = require('../../../utilities/logger');
 } */
 
 //db.users.updateMany( {}, { $set: {"stats.date": new Date(new Date().getTime()-(86400000*2))}} )
+db.users.find( {email:null,is_crew:false} ).forEach(function(u) {
+  printjson("https://avnode.net/"+u.slug);
+  u.email = u.slug+"@mailinator.com";
+  u.emails = {
+    "email": u.slug+"@mailinator.com",
+    "mailinglists" : {
+      "flxer" : false,
+      "flyer" : false,
+      "livevisuals" : false,
+      "updates" : false
+    },
+    "is_public" : false,
+    "is_confirmed" : true,
+    "is_primary" : true
+  };
+  db.users.save(u)
+})
 const query = {
   //$or:[{"stats.date": {$exists: false}}, {"stats.date": {$lt: new Date(new Date().getTime()-86400000)}}],
   "stats.date": {$lt: new Date(new Date().getTime()-86400000)},
