@@ -1,12 +1,10 @@
 extends ../../../layout_admin
+block topmenu
+  include ../topmenu
 block content
   .container.mb-2
+    b="Users to update: "
+    !=data.usertoupdate
     form(action=formUrl, method="post")
-      textarea(name="q").form-control.mb-2
-        if body && body.q
-          !=body.q
-        else 
-          !='["3dmotion","4youreye"]'
-      .text-right
-        button.btn.btn-primary(type="submit")="SUBMIT"
-  pre=JSON.stringify(data, null, 2)
+      button.btn.btn-primary(type="submit")="SUBMIT"
+  pre=JSON.stringify(data.results, null, 2)

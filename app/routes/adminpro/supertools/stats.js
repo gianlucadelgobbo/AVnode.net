@@ -1,5 +1,6 @@
 
 const router = require('../../router')();
+const helpers = require('../../admin/api/helpers.js');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
@@ -14,7 +15,7 @@ const config = require('getconfig');
 
 const logger = require('../../../utilities/logger');
 
-router.unflatten = function( array, parent, tree ){
+/* router.unflatten = function( array, parent, tree ){
 
   tree = typeof tree !== 'undefined' ? tree : [];
   parent = typeof parent !== 'undefined' ? parent : { _id: 0 };
@@ -39,37 +40,69 @@ router.unflatten = function( array, parent, tree ){
   logger.debug(tree);
 
   return tree;
-}
+} */
 
+//db.users.updateMany( {}, { $set: {"stats.date": new Date(new Date().getTime()-(86400000*2))}} )
+const query = {
+  //$or:[{"stats.date": {$exists: false}}, {"stats.date": {$lt: new Date(new Date().getTime()-86400000)}}],
+  "stats.date": {$lt: new Date(new Date().getTime()-86400000)},
+  //"stats.date": {$exists: false},
+  $or:[
+    {"performances.0":{"$exists": true}},
+    {"events.0":{"$exists": true}},
+    {"news.0":{"$exists": true}},
+    {"galleries.0":{"$exists": true}},
+    {"videos.0":{"$exists": true}},
+    {"news.0":{"$exists": true}}
+  ]
+};
 router.get('/usersstatsupdate', (req, res) => {
-  res.render('adminpro/supertools/stats', {
-    title: 'Users Update',
-    
-    currentUrl: req.originalUrl,
-    body: {q:'[{"slug":"gianlucadelgobbo"},{"slug":"liz"}]'},
-    //data: catO,
-    script: false
+  console.log()
+  User.count(query).
+  lean().
+  exec((err, count) => {
+    console.log(count)
+    res.render('adminpro/supertools/stats', {
+      title: 'Users Update Statistics',
+      
+      currentUrl: req.originalUrl,
+      body: req.body,
+      data: {usertoupdate:count},
+      script: false
+    });
   });
 
 });
 
 router.post('/usersstatsupdate', (req, res) => {
-  let query = JSON.parse('{"q": '+req.body.q+'}').q;
-  logger.debug(query);
-  var promises = [];
-  for (item in query) promises.push(router.setStatsAndActivity(query[item]));
-  Promise.all(
-    promises
-  ).then( (results) => {
-    res.render('adminpro/supertools/stats', {
-      title: 'Users Update',
-      
-      currentUrl: req.originalUrl,
-      body: req.body,
-      data: results,
-      script: false
+  User.find(query).
+  lean().
+  select({slug:100}).
+  limit(400).
+  exec((err, qq) => {
+    console.log(qq)
+    //let query = JSON.parse('{"q": '+req.body.q+'}').q;
+    logger.debug(qq);
+    var promises = [];
+    for (item in qq) promises.push(helpers.setStatsAndActivity(qq[item]));
+    //for (item in qq) console.log(query[item])
+    Promise.all(
+      promises
+    ).then( (results) => {
+      User.count(query).
+      lean().
+      exec((err, count) => {
+        res.render('adminpro/supertools/stats', {
+          title: 'Users Update',
+          
+          currentUrl: req.originalUrl,
+          body: req.body,
+          data: {usertoupdate:count,results:results},
+          script: false
+        });
+      })
     });
-  });
+  })
 });
 
 

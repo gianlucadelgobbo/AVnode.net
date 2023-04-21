@@ -53,6 +53,7 @@ const userSchema = new Schema({
   is_public: { type: Boolean, default: true },
   createdAt: Date,
   stats: {
+    date: Date,
     crews: Number,
     members: Number,
     events: Number,
