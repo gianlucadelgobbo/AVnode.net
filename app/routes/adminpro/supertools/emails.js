@@ -27,7 +27,7 @@ router.get('/allemails', (req, res) => {
   select({name: 1, slug: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
   sort({name: 1}).
   exec((err, results) => {
-    logger.debug(results);
+    console.log(results);
     let mailinglists = [];
     let conta = 0;
     let fatto = 0;
