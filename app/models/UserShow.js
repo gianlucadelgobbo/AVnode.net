@@ -19,8 +19,8 @@ const adminsez = 'profile';
 const userSchema = new Schema({
   old_id: String,
 
-  stagename: { type: String, /*unique: true, TODO TO CHECK*/ required: [true, 'STAGE_NAME_IS_REQUIRED'], minlength: [1, 'STAGE_NAME_IS_TOO_SHORT'], maxlength: [50, 'STAGE_NAME_IS_TOO_LONG'] },
-  slug: { type: String, unique: true, trim: true, required: [true, 'PROFILE_URL_IS_REQUIRED'], minlength: [1, 'PROFILE_URL_IS_TOO_SHORT'], maxlength: [50, 'PROFILE_URL_IS_TOO_LONG'] ,
+  stagename: { type: String, /*unique: true, TODO TO CHECK*/ required: [true, 'STAGE_NAME_IS_REQUIRED'], minlength: [1, 'STAGE_NAME_IS_TOO_SHORT'], maxlength: [100, 'STAGE_NAME_IS_TOO_LONG'] },
+  slug: { type: String, unique: true, trim: true, required: [true, 'PROFILE_URL_IS_REQUIRED'], minlength: [1, 'PROFILE_URL_IS_TOO_SHORT'], maxlength: [100, 'PROFILE_URL_IS_TOO_LONG'] ,
     validate: [(slug) => {
       var re = /^[a-z0-9-_]+$/;
       return re.test(slug)
