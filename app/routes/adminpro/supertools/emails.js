@@ -23,7 +23,7 @@ const logger = require('../../../utilities/logger');
 
 router.get('/allemails', (req, res) => {
   logger.debug('/adminpro/supertools/emails');
-  User.find({email:{$exists:true}, "emails.email":{$exists:true}, is_crew:false}).
+  User.find({}).
   select({name: 1, slug: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
   sort({name: 1}).
   exec((err, results) => {
