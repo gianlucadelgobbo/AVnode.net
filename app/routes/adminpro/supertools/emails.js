@@ -26,7 +26,7 @@ router.get('/allemails', (req, res) => {
   User.find({email:{$exists:true}, 'emails.email': {$exists:true}, is_crew:false}).
   lean().
   select({name: 1, slug: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
-  sort({stagename: 1}).
+  //sort({stagename: 1}).
   exec((err, results) => {
     console.log(err);
     console.log(results);
