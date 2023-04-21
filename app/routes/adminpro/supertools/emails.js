@@ -1,19 +1,20 @@
 const router = require('../../router')();
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Event = mongoose.model('EventShow');
-const ObjectId = Schema.ObjectId;
 const User = mongoose.model('User');
 const Performance = mongoose.model('Performance');
 const Category = mongoose.model('Category');
+const Event = mongoose.model('Event');
+const Footage = mongoose.model('Footage');
+const Playlist = mongoose.model('Playlist');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
-
 const News = mongoose.model('News');
 const axios = require('axios');
 //const fs = require('fs');
 const config = require('getconfig');
 //const sharp = require('sharp');
+//const ObjectId = Schema.ObjectId;
 
 const logger = require('../../../utilities/logger');
 
@@ -22,10 +23,12 @@ const logger = require('../../../utilities/logger');
 
 router.get('/allemails', (req, res) => {
   logger.debug('/adminpro/supertools/emails');
-  User.find({}).
+  User.find({email:{$exists:true}, 'emails.email': {$exists:true}, is_crew:false}).
+  lean().
   select({name: 1, slug: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
   sort({name: 1}).
   exec((err, results) => {
+    console.log(err);
     console.log(results);
     let mailinglists = [];
     let conta = 0;
