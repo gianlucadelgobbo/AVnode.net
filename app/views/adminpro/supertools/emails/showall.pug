@@ -15,6 +15,7 @@ block content
       td Mailinglists
     if data
       each user, index in data
+        - if (user.Surname == "Bordonaro")     console.log(user);
         tr
           td=index+skip+1
           td

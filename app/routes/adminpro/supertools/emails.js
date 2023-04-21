@@ -29,7 +29,7 @@ router.get('/allemails', (req, res) => {
   //sort({stagename: 1}).
   exec((err, results) => {
     console.log(err);
-    console.log(results);
+    //console.log(results);
     let mailinglists = [];
     let conta = 0;
     let fatto = 0;
@@ -39,6 +39,8 @@ router.get('/allemails', (req, res) => {
     });
     
     results.forEach(function(e) {
+      //if (e.email == "alberto.bordonaro@gmail.com")     console.log(e);
+
       /* if (e.emails.filter(item => item.email=e.email).length===0 && e.activity==0) {
         logger.debug("e.emails.filter(item => item.email=e.email).length");
         logger.debug(e.emails.filter(item => item.email=e.email).length);
@@ -68,12 +70,14 @@ router.get('/allemails', (req, res) => {
       }
 
       e.emails.forEach(function(ee) {
-        email.email = ee.email;
+        var copy = JSON.parse(JSON.stringify(email));
+        copy.email = ee.email;
         let topics = [];
 
         for (const mailinglist in ee.mailinglists) if (ee.mailinglists[mailinglist]) topics.push(mailinglist);
-        email.Topics = topics.join(',');
-        mailinglists.push(email);
+        copy.Topics = topics.join(',');
+        //if (e.email == "alberto.bordonaro@gmail.com")     console.log(copy);
+        mailinglists.push(copy);
         conta++;
 
         if (conta === fatto) {
