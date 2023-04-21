@@ -19,7 +19,7 @@ const adminsez = 'profile';
 const userSchema = new Schema({
   old_id: String,
 
-  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 100,
+  slug: { type: String, unique: true, trim: true, required: true, minlength: 2, maxlength: 50,
     validate: [(slug) => {
       var re = /^[a-z0-9-_]+$/;
       return re.test(slug)
