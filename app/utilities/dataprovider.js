@@ -1305,7 +1305,7 @@ dataprovider.list = (req, res, section, model) => {
       res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
     } else {
       //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
-      const query = Object.assign({}, config.sections[section].categoriesQueries[filter]);
+      let query = Object.assign({}, config.sections[section].categoriesQueries[filter]);
       if (req.query.country ) {
         query["addresses.country"] = new RegExp(req.query.country, "i");
       }

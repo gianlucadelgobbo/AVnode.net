@@ -10,16 +10,24 @@ if messages.errors
         if Object.keys(error.msg).length
           ul.mb-0
             for item in error.msg
-              for err in item
-                if err instanceof Object && err.length
-                  for err2 in err
-                    if err2.message
-                      li!=err2.message
-                else
-                  if err.message
-                    li!=err.message
+              if item instanceof Object && item.length
+                for err in item
+                  if err instanceof Object && err.length
+                    for err2 in err
+                      if err2.message
+                        li!=err2.message
+                  else
+                    if err.message
+                      li!=err.message
+              else
+                if item
+                  li!=item
         else if error.msg.message
           div!=error.msg.message
+        else if errors.msg.message
+          div!=errors.msg.message
+        else if errors.message
+          div!=errors.message
         else
           div!=error.msg
 

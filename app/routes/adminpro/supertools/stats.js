@@ -42,12 +42,9 @@ const logger = require('../../../utilities/logger');
   return tree;
 } */
 
-//db.users.updateMany( {}, { $set: {"stats.date": new Date(new Date().getTime()-(86400000*2))}} )
 
 const query = {
-  //$or:[{"stats.date": {$exists: false}}, {"stats.date": {$lt: new Date(new Date().getTime()-86400000)}}],
   "stats.date": {$lt: new Date(new Date().getTime()-86400000)},
-  //"stats.date": {$exists: false},
   $or:[
     {"performances.0":{"$exists": true}},
     {"events.0":{"$exists": true}},

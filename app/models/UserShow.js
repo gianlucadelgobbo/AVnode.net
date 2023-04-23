@@ -18,6 +18,32 @@ const adminsez = 'profile';
 
 const userSchema = new Schema({
   old_id: String,
+  is_crew: Boolean,
+  is_partner: Boolean,
+  partner_owner: [{
+    "owner": { type: Schema.ObjectId, ref: 'User' },
+    "delegate": String,
+    "is_selecta": Boolean,
+    "is_satellite": Boolean,
+    "is_event": Boolean,
+    "is_active": Boolean
+  }],
+  partners: [{
+    "partner": { type: Schema.ObjectId, ref: 'User' },
+    "delegate": String,
+    "categories": [{ type: Schema.ObjectId, ref: 'Category' }],
+    "is_selecta": {type: Boolean, default: false},
+    "is_satellite": {type: Boolean, default: false},
+    "is_event": {type: Boolean, default: false},
+    "is_active": {type: Boolean, default: false}
+  }],
+  /* partner_owner: [{ type: Schema.ObjectId, ref: 'User' }],
+  partners: [{ type: Schema.ObjectId, ref: 'User' }], */
+  partner_data: {},
+  user_type : Number,
+  activity: Number, // BL TODO frontend, issue #5, added
+  activity_as_performer: Number,
+  activity_as_organization: Number,
 
   stagename: { type: String, /*unique: true, TODO TO CHECK*/ required: [true, 'STAGE_NAME_IS_REQUIRED'], minlength: [1, 'STAGE_NAME_IS_TOO_SHORT'], maxlength: [100, 'STAGE_NAME_IS_TOO_LONG'] },
   slug: { type: String, unique: true, trim: true, required: [true, 'PROFILE_URL_IS_REQUIRED'], minlength: [1, 'PROFILE_URL_IS_TOO_SHORT'], maxlength: [100, 'PROFILE_URL_IS_TOO_LONG'] ,
@@ -28,13 +54,8 @@ const userSchema = new Schema({
   },
   username: { type: String, /*unique: true TODO TO CHECK*/},
   email: { type: String, /*unique: true TODO TO CHECK*/ },
-  is_crew: Boolean,
-  user_type : Number,
   image: MediaImage,
   teaserImage: MediaImage,
-  activity: Number, // BL TODO frontend, issue #5, added
-  activity_as_performer: Number,
-  activity_as_organization: Number,
 //  file: { file: String },
   name: String,
   surname: String,
