@@ -156,7 +156,7 @@ block content
                                 i.icon-link.mr-2
                               !=social.url
 
-      if data.members && data.members.length
+      if data.members && data.members.length && !data.hide_members
         .members
           h2!=global.__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
           ul
