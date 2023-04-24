@@ -51,6 +51,17 @@ h1 a:hover {
   color: $color2;
 }
 
+.color3 {
+  color: $color3;
+}
+
+.color4 {
+  color: $color4;
+}
+
+.disabled {
+  color: $color4!importnat;
+}
 main {
   background-color: transparent;
   overflow: hidden;

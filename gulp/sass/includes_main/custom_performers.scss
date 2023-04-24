@@ -126,15 +126,17 @@ section.performer_news_wrapper {
   height: 0;
 }
  */
-
 .performer_item_title {
   color: $color3;
-  font-weight: 700;
   text-transform: none;
+  font-weight: 700;
   font-size: 18px;
 }
-.performer_item_title:hover {
+a .performer_item_title {
   color: $color2;
+}
+a .performer_item_title:hover {
+  color: $color3;
 }
 
 /* performer page */

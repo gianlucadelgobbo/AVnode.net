@@ -44,6 +44,7 @@ const userSchema = new Schema({
   activity: Number, // BL TODO frontend, issue #5, added
   activity_as_performer: Number,
   activity_as_organization: Number,
+  hide_members: { type: Boolean, default: false },
 
   stagename: { type: String, /*unique: true, TODO TO CHECK*/ required: [true, 'STAGE_NAME_IS_REQUIRED'], minlength: [1, 'STAGE_NAME_IS_TOO_SHORT'], maxlength: [100, 'STAGE_NAME_IS_TOO_LONG'] },
   slug: { type: String, unique: true, trim: true, required: [true, 'PROFILE_URL_IS_REQUIRED'], minlength: [1, 'PROFILE_URL_IS_TOO_SHORT'], maxlength: [100, 'PROFILE_URL_IS_TOO_LONG'] ,

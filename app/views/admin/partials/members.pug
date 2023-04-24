@@ -1,5 +1,6 @@
 .form-group
-	label.h4.labelField=__("Members")
+	label.h4.labelField
+		!=__("Members")
 	#members
 		.alert.d-none
 		each member, i in data.members
@@ -8,6 +9,10 @@
 					i.icon-trash
 				!=" | "
 				!=member.stagename
+		#hide_members_cnt.form-check.mb-3.mt-3
+			input.form-check-input(type='checkbox' id='hide_members' name='hide_members' value='true' checked=data.hide_members ? "checked" : undefined)
+			label.labelField(for='hide_members')=__("Hide Members on public pages")
+
 	.row
 		.col-md-6.offset-md-3
 			.input-group.autocomplete_members

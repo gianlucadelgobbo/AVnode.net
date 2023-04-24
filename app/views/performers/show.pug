@@ -134,7 +134,7 @@ block content
               .col-sm-6
                 img.img-fluid(src="/images/logo_avnode_symbol.svg")
 
-  if data.members && data.members.length
+  if data.members && data.members.length && !data.hide_members
     section#members.performer_crew_wrapper
       .container
         .row

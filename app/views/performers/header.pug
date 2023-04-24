@@ -39,7 +39,11 @@ include ../partials/modals/modalContact
                     a(href="/"+data.slug+"/crews")!=global.__('Crews')+" (<span>"+data.stats.crews+"</span>)"    
                 if data.stats.members
                   li.list-inline-item
-                    a(href="/"+data.slug+"/members")!=global.__('Members')+" (<span>"+data.stats.members+"</span>)"    
+                    if !data.hide_members
+                      a(href="/"+data.slug+"/members")!=global.__('Members')+" (<span>"+data.stats.members+"</span>)"
+                    else
+                      span.disabled!=global.__('Members')+" (<span>"+data.stats.members+"</span>)"
+
           div.performer_stats_wrapper
             if data.stats
               ul.performer_stats_list.performer_stats_list_2.list-inline
