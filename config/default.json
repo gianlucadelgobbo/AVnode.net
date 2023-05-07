@@ -271,6 +271,9 @@
             "is_public": 1,
             "abouts": 1,
             "addresses": 1,
+            "activity": 1,
+            "activity_as_performer": 1,
+            "activity_as_organization": 1,
             "web": 1,
             "social": 1
           },
@@ -4614,6 +4617,7 @@
       "list_fields": {
         "stagename":1,
         "slug":1,
+        "is_public":1,
         "createdAt": 1,
         "updatedAt": 1,
         "image":1,

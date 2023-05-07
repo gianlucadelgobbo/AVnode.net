@@ -340,6 +340,10 @@ router.setStatsAndActivitySingle = function(query) {
         delete e.performances_only;
         delete e.learningslearnings;
         e.stats.date = Date.now();
+        if (e.activity_as_organization || e.activity_as_performer || e.activity) {
+          e.is_public = true;
+        }
+
         logger.debug(e);
         e.save((err) => {
           if (err) {

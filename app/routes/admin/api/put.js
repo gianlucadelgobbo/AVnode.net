@@ -108,7 +108,8 @@ router.putData = (req, res, view) => {
                 logger.debug(data.users);
                 logger.debug('MEMBERS ?');
                 logger.debug(data.members);
-                var query = {_id: {$in:data.users || data.members}};
+                var query = {_id: {$in:data.users || data.members || data._id}};
+                logger.debug(query);
                 Promise.all(
                   [helpers.setStatsAndActivity(query)]
                 ).then( (results) => {

@@ -1,0 +1,68 @@
+extends ../../../layout_admin
+block content
+  form(action="users" method="post")
+    button.btn.btn-primary(type="submit")=__("Users")
+  - var strfullall = ""
+  - var strfullcountry = ""
+  - var strfulllocality = ""
+  table.table.table-fixed
+    tr
+      td N
+      td Stagename
+      td Name
+      td Surname
+      td Email
+      td City
+      td Country
+      td Mailinglists
+    if data
+      each user, index in data
+        - if (user.Surname == "Bordonaro")     console.log(user);
+        tr
+          td=index+skip+1
+          td
+            if !user.Stagename 
+              span.badge.badge-danger MISSING
+            else
+              a(href="/admin/profile/"+user.avnode_id+"/public")
+                !=user.Stagename
+          td
+            if !user.Name 
+              span.badge.badge-danger MISSING
+            else
+              !=user.Name
+          td
+            if !user.Surname 
+              span.badge.badge-danger MISSING
+            else
+              !=user.Surname
+          td
+            if !user.email 
+              span.badge.badge-danger MISSING
+            else
+              a.badge.badge-danger.forceEmailChange(href="#" data-id=user.avnode_id data-oldemail=user.email)
+                !="FORCE CHANGE"
+              a(href="/admin/profile/"+user.avnode_id+"/emails")
+                !=user.email
+          td
+            if !user.City 
+              span.badge.badge-danger MISSING
+            else
+              !=user.City
+          td
+            if !user.Country 
+              span.badge.badge-danger MISSING
+            else
+              !=user.Country
+          td
+            if !user.Topics 
+              span.badge.badge-danger MISSING
+            else
+              !=user.Topics
+  
+  //  pre=strfullall
+    hr
+    pre=strfullcountry
+    hr
+    pre=strfulllocality
+    pre=JSON.stringify(data, null, 2)

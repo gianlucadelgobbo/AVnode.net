@@ -19,6 +19,7 @@ const stats =       require('./supertools/stats');
 const localesgen =  require('./supertools/localesgen');
 const vjtv =        require('./vjtv/index');
 const emailqueue =  require('./emailqueue/index');
+const consolidate = require('./supertools/consolidate');
 
 const logger = require('../../utilities/logger');
 
@@ -71,6 +72,7 @@ router.use('/organizations', organizations);
 router.use('/partners', partners);
 router.use('/emailqueue', emailqueue);
 
+router.use('/supertools/consolidate', consolidate);
 router.use('/supertools/wpimport', wpimport);
 router.use('/supertools/addresses', addresses);
 router.use('/supertools/files', files);
