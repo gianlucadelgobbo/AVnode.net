@@ -4687,6 +4687,7 @@
           "select": {
             "title": 1,
             "slug": 1,
+            "is_public": 1,
             "stats": 1,
             "schedule": 1,
             "categories": 1,
@@ -4792,6 +4793,7 @@
             "stagename": 1,
             "slug": 1,
             "stats": 1,
+            "is_public": 1,
             "image": 1,
             "organizationData.logo": 1
           },
@@ -5382,6 +5384,7 @@
           "select": {
             "stagename": 1,
             "slug": 1,
+            "is_public": 1,
             "createdAt": 1,
             "updatedAt": 1,
             "stats": 1,
@@ -5405,6 +5408,7 @@
           "stagename": 1,
           "abouts": 1,
           "is_crew": 1,
+          "is_public": 1,
           "slug": 1,
           "stats": 1,
           "addresses": 1,
@@ -5421,6 +5425,7 @@
           "select": {
             "stagename": 1,
             "slug": 1,
+            "is_public": 1,
             "createdAt": 1,
             "updatedAt": 1,
             "stats": 1,
@@ -5523,6 +5528,7 @@
           "select": {
             "title": 1,
             "slug": 1,
+            "is_public": 1,
             "stats": 1,
             "schedule": 1,
             "categories": 1,
@@ -5543,7 +5549,7 @@
             "stats": 1,
             "image.file": 1
           },
-          "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},
+          "populate": { "path": "users", "select": "stagename image is_public organizationData.logo", "model": "UserShow"},
           "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "News"
         }, {
@@ -5556,7 +5562,7 @@
             "stats": 1,
             "media": 1
           },
-          "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},
+          "populate": { "path": "users", "select": "stagename image is_public organizationData.logo", "model": "UserShow"},
           "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Footage"
         }, {
