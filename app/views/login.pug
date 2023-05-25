@@ -5,11 +5,6 @@ block content
     .row
       .col-md-6.offset-md-3
         .pb-5
-          .alert.alert-info
-            img.card-img-top.img-fluid(src="/images/logoFLxER_X.svg", style="display: inline-block;vertical-align: middle;max-width: 50px;", alt="FLxER Logo")
-            !=global.__('Are you a FLxER User?')
-            !=" "
-            a(href="/flxerlogin")=global.__('Please login here')
           form(method='post')
             input(type='hidden', name='_csrf', value=_csrf)
             input(type='hidden', name='returnTo', value=returnTo)

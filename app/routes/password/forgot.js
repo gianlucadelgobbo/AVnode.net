@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
       throw err;
     }
     if (user === null) {
-      req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: __('User not found.')}}})}`});
+      req.flash('errors', {msg: {errors: {email: { message: __('User not found.')}}}});
       res.redirect('/password/forgot');
     } else {
       const token = uuid.v4();

@@ -9,9 +9,10 @@ if messages.errors
             div!=error.msg
         if Object.keys(error.msg).length
           ul.mb-0
-            for item in error.msg
-              if item instanceof Object && item.length
-                for err in item
+            for item in Object.keys(error.msg.errors)
+              li!=error.msg.errors[item].message
+              //-if error.msg.errors[item] instanceof Object && item.length
+                for err in error.msg.errors[item]
                   if err instanceof Object && err.length
                     for err2 in err
                       if err2.message
@@ -19,9 +20,9 @@ if messages.errors
                   else
                     if err.message
                       li!=err.message
-              else
-                if item
-                  li!=item
+                else
+                  if item
+                    li!=item
         else if error.msg.message
           div!=error.msg.message
         else if errors.msg.message
