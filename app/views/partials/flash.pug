@@ -6,8 +6,14 @@ if messages.errors
       for error in messages.errors
         if error instanceof Object
           if (typeof error.msg === 'string' || error.msg instanceof String)
-            - //error.msg = JSON.parse(error.msg)
-            div!=error.msg
+            - console.log("stocazzo")
+            - console.log(error)
+            - error.msg = JSON.parse(error.msg)
+            - console.log("stocazzo2")
+            - console.log(error.msg)
+            //-div!=error.msg
+        - console.log("error")
+        - console.log(Object.keys(error.msg))
         if Object.keys(error.msg).length
           ul.mb-0
             - console.log(error)
