@@ -2,21 +2,14 @@ if messages.errors
   .container.mt-3
     .alert.alert-danger
       h4=global.__("ERROR")
-      - console.log(messages)
       for error in messages.errors
         if error instanceof Object
           if (typeof error.msg === 'string' || error.msg instanceof String)
-            - console.log("stocazzo")
-            - console.log(error)
             - error.msg = JSON.parse(error.msg)
-            - console.log("stocazzo2")
-            - console.log(error.msg)
             //-div!=error.msg
-        - console.log("error")
-        - console.log(Object.keys(error.msg))
         if Object.keys(error.msg).length
           ul.mb-0
-            - console.log(error)
+            //- console.log(error)
             for item in Object.keys(error.msg.errors)
               li!=error.msg.errors[item].message
               //-if error.msg.errors[item] instanceof Object && item.length
