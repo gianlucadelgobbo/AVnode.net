@@ -2,7 +2,7 @@
 module.exports = {
   apps : [{
     name: "avnode.net en",
-    max_memory_restart: "2G",
+    max_memory_restart: "4G",
     script: "index.js",
     log_file: "/sites/logs/node_en_avnode_net-combined.log",
     out_file: "/sites/logs/node_en_avnode_net-out.log",
@@ -11,6 +11,7 @@ module.exports = {
       "public",
       "warehouse",
       "glacier",
+      "node_modules",
       "locales"
     ],
     "args": "-lang en",
@@ -27,7 +28,7 @@ module.exports = {
     }
   },{
     name: "avnode.net be",
-    max_memory_restart: "2G",
+    max_memory_restart: "4G",
     script: "index.js",
     log_file: "/sites/logs/node_be_avnode_net-combined.log",
     out_file: "/sites/logs/node_be_avnode_net-out.log",
@@ -52,7 +53,7 @@ module.exports = {
     }
   },{
     name: "avnode.net de",
-    max_memory_restart: "2G",
+    max_memory_restart: "4G",
     script: "index.js",
     log_file: "/sites/logs/node_de_avnode_net-combined.log",
     out_file: "/sites/logs/node_de_avnode_net-out.log",
@@ -77,7 +78,7 @@ module.exports = {
     }
   },{
     name: "avnode.net es",
-    max_memory_restart: "2G",
+    max_memory_restart: "4G",
     script: "index.js",
     log_file: "/sites/logs/node_es_avnode_net-combined.log",
     out_file: "/sites/logs/node_es_avnode_net-out.log",
@@ -102,7 +103,7 @@ module.exports = {
     }
   },{
     name: "avnode.net fr",
-    max_memory_restart: "2G",
+    max_memory_restart: "4G",
     script: "index.js",
     log_file: "/sites/logs/node_fr_avnode_net-combined.log",
     out_file: "/sites/logs/node_fr_avnode_net-out.log",
@@ -127,7 +128,7 @@ module.exports = {
     }
   },{
     name: "avnode.net el",
-    max_memory_restart: "2G",
+    max_memory_restart: "4G",
     script: "index.js",
     log_file: "/sites/logs/node_el_avnode_net-combined.log",
     out_file: "/sites/logs/node_el_avnode_net-out.log",
@@ -152,7 +153,7 @@ module.exports = {
     }
   },{
     name: "avnode.net hu",
-    max_memory_restart: "2G",
+    max_memory_restart: "4G",
     script: "index.js",
     log_file: "/sites/logs/node_hu_avnode_net-combined.log",
     out_file: "/sites/logs/node_hu_avnode_net-out.log",
@@ -177,7 +178,7 @@ module.exports = {
     }
   },{
     name: "avnode.net it",
-    max_memory_restart: "2G",
+    max_memory_restart: "4G",
     script: "index.js",
     log_file: "/sites/logs/node_it_avnode_net-combined.log",
     out_file: "/sites/logs/node_it_avnode_net-out.log",
@@ -202,7 +203,7 @@ module.exports = {
     }
   },{
     name: "avnode.net pl",
-    max_memory_restart: "2G",
+    max_memory_restart: "4G",
     script: "index.js",
     log_file: "/sites/logs/node_pl_avnode_net-combined.log",
     out_file: "/sites/logs/node_pl_avnode_net-out.log",
@@ -227,7 +228,7 @@ module.exports = {
     }
   },{
     name: "avnode.net pt",
-    max_memory_restart: "2G",
+    max_memory_restart: "4G",
     script: "index.js",
     log_file: "/sites/logs/node_pt_avnode_net-combined.log",
     out_file: "/sites/logs/node_pt_avnode_net-out.log",
@@ -252,7 +253,7 @@ module.exports = {
     }
   },{
     name: "avnode.net ru",
-    max_memory_restart: "2G",
+    max_memory_restart: "4G",
     script: "index.js",
     log_file: "/sites/logs/node_ru_avnode_net-combined.log",
     out_file: "/sites/logs/node_ru_avnode_net-out.log",
