@@ -67,7 +67,7 @@ module.exports = {
     "args": "-lang de",
     time: true,
     instances: 1,
-    exec_mode: "cluster_mode" or cluster_mode,
+    exec_mode: "cluster_mode",
     autorestart: true,
     watch: true,
     watch_options: {
