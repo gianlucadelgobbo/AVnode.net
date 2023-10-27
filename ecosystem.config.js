@@ -17,7 +17,7 @@ module.exports = {
     "args": "-lang en",
     time: true,
     instances: 1,
-    exec_mode: "fork",
+    exec_mode: "cluster_mode",
     autorestart: true,
     watch: true,
     watch_options: {
@@ -42,7 +42,7 @@ module.exports = {
     "args": "-lang be",
     time: true,
     instances: 1,
-    exec_mode: "fork",
+    exec_mode: "cluster_mode",
     autorestart: true,
     watch: true,
     watch_options: {
@@ -67,7 +67,7 @@ module.exports = {
     "args": "-lang de",
     time: true,
     instances: 1,
-    exec_mode: "fork",
+    exec_mode: "cluster_mode" or cluster_mode,
     autorestart: true,
     watch: true,
     watch_options: {
@@ -92,7 +92,7 @@ module.exports = {
     "args": "-lang es",
     time: true,
     instances: 1,
-    exec_mode: "fork",
+    exec_mode: "cluster_mode",
     autorestart: true,
     watch: true,
     watch_options: {
@@ -117,7 +117,7 @@ module.exports = {
     "args": "-lang fr",
     time: true,
     instances: 1,
-    exec_mode: "fork",
+    exec_mode: "cluster_mode",
     autorestart: true,
     watch: true,
     watch_options: {
@@ -142,7 +142,7 @@ module.exports = {
     "args": "-lang el",
     time: true,
     instances: 1,
-    exec_mode: "fork",
+    exec_mode: "cluster_mode",
     autorestart: true,
     watch: true,
     watch_options: {
@@ -167,7 +167,7 @@ module.exports = {
     "args": "-lang hu",
     time: true,
     instances: 1,
-    exec_mode: "fork",
+    exec_mode: "cluster_mode",
     autorestart: true,
     watch: true,
     watch_options: {
@@ -192,7 +192,7 @@ module.exports = {
     "args": "-lang it",
     time: true,
     instances: 1,
-    exec_mode: "fork",
+    exec_mode: "cluster_mode",
     autorestart: true,
     watch: true,
     watch_options: {
@@ -217,7 +217,7 @@ module.exports = {
     "args": "-lang pl",
     time: true,
     instances: 1,
-    exec_mode: "fork",
+    exec_mode: "cluster_mode",
     autorestart: true,
     watch: true,
     watch_options: {
@@ -242,7 +242,7 @@ module.exports = {
     "args": "-lang pt",
     time: true,
     instances: 1,
-    exec_mode: "fork",
+    exec_mode: "cluster_mode",
     autorestart: true,
     watch: true,
     watch_options: {
@@ -267,7 +267,7 @@ module.exports = {
     "args": "-lang ru",
     time: true,
     instances: 1,
-    exec_mode: "fork",
+    exec_mode: "cluster_mode",
     autorestart: true,
     watch: true,
     watch_options: {
