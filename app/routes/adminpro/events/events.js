@@ -1265,7 +1265,7 @@ router.get('/:event/technical-riders', (req, res) => {
                         let program = JSON.parse(JSON.stringify(data.program[a]));
                         program.schedule = data.program[a].schedule[b];
                         data.program[a].performance.duration = duration/days;
-                        if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.program[a] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program)  
+                        if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room])  
                           data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
                       }
                     }
