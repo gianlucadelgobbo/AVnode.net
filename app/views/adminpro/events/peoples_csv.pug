@@ -71,6 +71,11 @@ table.table.table-fixed
                   !=" "
                   .badge.badge-danger MISSING MOBILE
               td
+                !=subscription.subscription.subscriber_id.name
+              td
+                if subscription.subscription.subscriber_id.mobile && subscription.subscription.subscriber_id.mobile[0]
+                  !=subscription.subscription.subscriber_id.mobile[0].url
+              td
                 !=subscription.subscription.subscriber_id.name+" "+subscription.subscription.subscriber_id.surname+" AKA "+subscription.subscription.subscriber_id.stagename
                 if subscription.subscription.freezed
                   !=" "
