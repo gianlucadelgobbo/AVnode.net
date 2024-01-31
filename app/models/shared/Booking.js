@@ -19,7 +19,7 @@ const Booking = new Schema({
 
 Booking.virtual('boxDate').get(function () {
   let boxDate;
-  if (this.schedule && this.schedule.length) {
+  if (this.schedule && this.schedule.length && this.schedule[0].starttime) {
     const lang = global.getLocale();
     const startdate = new Date(new Date(this.schedule[0].starttime).setUTCHours(0,0,0,0));
     const enddate = new Date(new Date(this.schedule[this.schedule.length-1].endtime).setUTCHours(0,0,0,0));
