@@ -1,4 +1,5 @@
-table.table.table-fixed
+table.table
+  //table.table.table-fixed
   - var call = !get.call || get.call=="none" ? 0 : get.call
   - var sums = {wepay:0,cash:0,total:0}
   - console.log(call)
@@ -9,7 +10,13 @@ table.table.table-fixed
       th.table-firstcolumn-ID="ID"
       th(style="width: 135px;")="Status"
       th="Submission"
-      th="Person"
+      th="name"
+      th="surname"
+      th="stagename"
+      th="email"
+      th="mobile"
+      th="gender"
+      th="addressesFormatted"
       if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
         th="Hotel"
         th="Room"
@@ -73,22 +80,27 @@ table.table.table-fixed
               td
                 !=subscription.subscription.subscriber_id.name
               td
-                if subscription.subscription.subscriber_id.mobile && subscription.subscription.subscriber_id.mobile[0]
-                  !=subscription.subscription.subscriber_id.mobile[0].url
+                !=subscription.subscription.subscriber_id.surname
               td
-                !=subscription.subscription.subscriber_id.name+" "+subscription.subscription.subscriber_id.surname+" AKA "+subscription.subscription.subscriber_id.stagename
+                !=subscription.subscription.subscriber_id.stagename
                 if subscription.subscription.freezed
                   !=" "
                   .badge.badge-danger WRONG FREEZED?
-                br
+              td
                 !='<a href="mailto:'+subscription.subscription.subscriber_id.email+'">'+subscription.subscription.subscriber_id.email+'</a>'
-                br
-                !='Gender: '
+              td
+                if subscription.subscription.subscriber_id.mobile && subscription.subscription.subscriber_id.mobile.length
+                  !=subscription.subscription.subscriber_id.mobile.map((subscription) => {if (subscription.url) return subscription.url;})
+                else
+                  !=" "
+                  .badge.badge-danger MISSING MOBILE
+              td
                 if subscription.subscription.subscriber_id.gender
                   !=subscription.subscription.subscriber_id.gender
                 else
                   !=" "
                   .badge.badge-danger MISSING GENDER
+              td
                 if subscription.subscription.subscriber_id.addressesFormatted && subscription.subscription.subscriber_id.addressesFormatted.length
                   br
                   !=subscription.subscription.subscriber_id.addressesFormatted.join(", ")
@@ -181,6 +193,12 @@ table.table.table-fixed
     tr
       th.table-firstcolumn-ID="ID"
       th(style="width: 135px;")="Status"
+      th=""
+      th=""
+      th=""
+      th=""
+      th=""
+      th=""
       th=""
       th=""
       if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
