@@ -16,7 +16,8 @@ table.table
       th="email"
       th="mobile"
       th="gender"
-      th="addressesFormatted"
+      th="country"
+      th="city"
       if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
         th="Hotel"
         th="Room"
@@ -78,6 +79,7 @@ table.table
                   !=" "
                   .badge.badge-danger MISSING MOBILE
               td
+                - console.log(subscription.subscription.subscriber_id)
                 !=subscription.subscription.subscriber_id.name
               td
                 !=subscription.subscription.subscriber_id.surname
@@ -101,9 +103,11 @@ table.table
                   !=" "
                   .badge.badge-danger MISSING GENDER
               td
-                if subscription.subscription.subscriber_id.addressesFormatted && subscription.subscription.subscriber_id.addressesFormatted.length
-                  br
-                  !=subscription.subscription.subscriber_id.addressesFormatted.join(", ")
+                if subscription.subscription.subscriber_id.addresses && subscription.subscription.subscriber_id.addresses.length
+                  !=subscription.subscription.subscriber_id.addresses.map((item)=>{return item.country}).join(", ")
+              td
+                if subscription.subscription.subscriber_id.addresses && subscription.subscription.subscriber_id.addresses.length
+                  !=subscription.subscription.subscriber_id.addresses.map((item)=>{return item.locality}).join(", ")
               if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
                   - var option = "0";
                   - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
@@ -121,8 +125,8 @@ table.table
                 - packexists = subscription.subscription.packages.map(item => {return item.name}).indexOf(pack.name)!==-1
                 if packexists
 
-                  - console.log(subscription.subscription.packages.map(item => {return item.name}))
-                  - console.log(packexists)
+                  //- console.log(subscription.subscription.packages.map(item => {return item.name}))
+                  //- console.log(packexists)
                   - if (!packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name]) packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.wepay ? " WE PAY" : ""), price:pack.price, count: 0}
                   - if (!packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name]) packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.cash ? " CASH" : ""), price:pack.price, count: 0}
                   - if (pack.options_name && !packagespackages["options"][pack.options_name]) packagespackages["options"][pack.options_name] = {}
@@ -193,6 +197,7 @@ table.table
     tr
       th.table-firstcolumn-ID="ID"
       th(style="width: 135px;")="Status"
+      th=""
       th=""
       th=""
       th=""
