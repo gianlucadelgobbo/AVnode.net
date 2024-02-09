@@ -5,7 +5,7 @@ table.table.table-fixed
       th(style="width: 135px;")="Status"
       th="Submission"
       th="Person"
-      if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 OR get['subscriptions.packages.name'].indexOf("Full subscription") !== -1)
+      if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 || get['subscriptions.packages.name'].indexOf("Full subscription") !== -1)
         th(style="width: 165px;")="Accommodation"
       th="Packages"
       - for(let a=0;a<=data.daysN;a++)
@@ -46,7 +46,7 @@ table.table.table-fixed
                 - if (emailsbypackages.subscribers.indexOf(str)==-1) emailsbypackages.subscribers.push(str)
                 - var option = "0";
                 - for (var b=0;b<subscription.subscription.packages.length;b++) {
-                -   if ((subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 OR subscription.subscription.packages[b].name.indexOf("Full subscription") !== -1) && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
+                -   if ((subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 || subscription.subscription.packages[b].name.indexOf("Full subscription") !== -1) && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
                 - } 
                 -   if (!emailsbypackages[option]) emailsbypackages[option] = []
                 -   emailsbypackages[option].push(str)
@@ -90,12 +90,12 @@ table.table.table-fixed
                   br
                   !=subscription.subscription.subscriber_id.mobile.map((subscription) => {return subscription.url+' '+'<a href="https://web.whatsapp.com/send?phone='+subscription.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
                   pre=subscription.subscription.subscriber_id
-              if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 OR get['subscriptions.packages.name'].indexOf("Full subscription") !== -1) 
+              if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 || get['subscriptions.packages.name'].indexOf("Full subscription") !== -1) 
                 td
                   - var option = "0";
-                  - for (var b=0;b<subscription.subscription.packages.length;b++) if ((subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 OR subscription.subscription.packages[b].name.indexOf("Full subscription") !== -1) && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
+                  - for (var b=0;b<subscription.subscription.packages.length;b++) if ((subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 || subscription.subscription.packages[b].name.indexOf("Full subscription") !== -1) && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
                   - var option_value = "";
-                  - for (var b=0;b<subscription.subscription.packages.length;b++) if ((subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 OR subscription.subscription.packages[b].name.indexOf("Full subscription") !== -1) && subscription.subscription.packages[b].option_value) option_value = subscription.subscription.packages[b].option_value
+                  - for (var b=0;b<subscription.subscription.packages.length;b++) if ((subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 || subscription.subscription.packages[b].name.indexOf("Full subscription") !== -1) && subscription.subscription.packages[b].option_value) option_value = subscription.subscription.packages[b].option_value
                   if data.hotels && data.hotels.length
                     select.option_selected_hotel.form-control.form-control-sm.mr-sm-2(name='packages.option_selected_hotel', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id, data-package_name=get['subscriptions.packages.name'])
                       option(value='0') Hotel
@@ -174,7 +174,7 @@ table.table.table-fixed
                 td(style="border-right: 2px solid #dee2e6;background-color:"+present+";color:"+present)=present=="#FF0000" ? "X" : ""
     tr
       td(colspan=3)
-      if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 OR get['subscriptions.packages.name'].indexOf("Full subscription") !== -1)
+      if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 || get['subscriptions.packages.name'].indexOf("Full subscription") !== -1)
         td
       td(colspan=2)
         
