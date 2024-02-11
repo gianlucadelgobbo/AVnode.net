@@ -347,7 +347,6 @@ userSchema.pre('save', function (next) {
   if (this.crews) {
     this.stats.crews = this.crews.length;
   }
-  console.log(this)
   if (this.members && this.members.length) {
     if (this.stats) this.stats.members = this.members.length;
     let addressesO = {};
