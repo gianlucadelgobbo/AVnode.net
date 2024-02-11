@@ -343,6 +343,7 @@ userSchema.pre('validate', function (next) {
 });
 userSchema.pre('save', function (next) {
   console.log("userSchema.pre('save'")
+  console.log(this.stagename)
 
   if (this.crews) {
     this.stats.crews = this.crews.length;
