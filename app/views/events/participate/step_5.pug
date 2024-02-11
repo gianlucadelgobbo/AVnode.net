@@ -1,6 +1,6 @@
 // Packages
 - for (var c=0;c<call.subscriptions.length;c++)
-  - console.log(call.subscriptions[c])
+  //- console.log(call.subscriptions[c])
   if call.subscriptions[c].subscriber_id
     if call.subscriptions[c].freezed
       .row
@@ -16,6 +16,8 @@
 
     else 
       - for (var b=0;b<dett.organizationsettings.call.calls[call.index].packages.length;b++)
+        - console.log(b)
+        - console.log(dett.organizationsettings.call.calls[call.index].packages[b])
         if dett.organizationsettings.call.calls[call.index].packages[b].personal
           .row
             .col-1

@@ -342,6 +342,8 @@ userSchema.pre('validate', function (next) {
   }
 });
 userSchema.pre('save', function (next) {
+  console.log("userSchema.pre('save'")
+
   if (this.crews) {
     this.stats.crews = this.crews.length;
   }
@@ -354,6 +356,7 @@ userSchema.pre('save', function (next) {
           if (!addressesO[this.members[a].addresses[b].locality+this.members[a].addresses[b].country]) addressesO[this.members[a].addresses[b].locality+this.members[a].addresses[b].country] = this.members[a].addresses[b]
     let addresses = Object.values(addressesO);
     if (addresses.length) this.addresses = addresses;
+    console.log(this.addresses)
     next();
   } else {
     next();
