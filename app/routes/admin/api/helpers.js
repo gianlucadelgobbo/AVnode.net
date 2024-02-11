@@ -57,7 +57,7 @@ router.getLanguages = (req, res) => {
 
 router.setStatsAndActivity = function(query) {
   logger.debug('setStatsAndActivity');
-  //logger.debug(query);
+  logger.debug(query);
   return new Promise(function (resolve, reject) {
     //let query = JSON.parse('{"q": '+req.body.q+'}').q;
     Models['User'].
@@ -219,7 +219,7 @@ router.setStatsAndActivitySingle = function(query) {
       logger.debug(myids);
       Promise.all([
         Models['User'].find({"members": {$in: myids}/* , "is_public": true */}).select("_id"),
-        Models['User'].find({"crews": {$in: myids}/* , "is_public": true */}).select("_id"),
+        Models['User'].find({"crews": {$in: myids}/* , "is_public": true */}).select("addresses"),
         Models['Event'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
         Models['Event'].find({"partners.users": {$in: myids}, "is_public": true}).select("_id"),
         Models['Performance'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
@@ -344,7 +344,19 @@ router.setStatsAndActivitySingle = function(query) {
           e.is_public = true;
         }
 
-        logger.debug(e);
+        logger.debug("membersmembersmembersmembersmembersmembers");
+        logger.debug(members);
+        if (members.length) {
+          let addressesO = {};
+          for(let a=0;a<members.length;a++)
+            if (members[a].addresses && members[a].addresses.length)
+              for(let b=0;b<members[a].addresses.length;b++) 
+                if (!addressesO[members[a].addresses[b].locality+members[a].addresses[b].country]) addressesO[members[a].addresses[b].locality+members[a].addresses[b].country] = members[a].addresses[b]
+          let addresses = Object.values(addressesO);
+          if (addresses.length) e.addresses = addresses;
+          logger.debug(addresses);
+        }
+
         e.save((err) => {
           if (err) {
             setTimeout(function() {

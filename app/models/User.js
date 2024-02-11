@@ -342,22 +342,11 @@ userSchema.pre('validate', function (next) {
   }
 });
 userSchema.pre('save', function (next) {
-  console.log("userSchema.pre('save'")
-  console.log(this.stagename)
-
   if (this.crews) {
     this.stats.crews = this.crews.length;
   }
   if (this.members && this.members.length) {
     if (this.stats) this.stats.members = this.members.length;
-    let addressesO = {};
-    for(let a=0;a<this.members.length;a++)
-      if (this.members[a].addresses && this.members[a].addresses.length)
-        for(let b=0;b<this.members[a].addresses.length;b++) 
-          if (!addressesO[this.members[a].addresses[b].locality+this.members[a].addresses[b].country]) addressesO[this.members[a].addresses[b].locality+this.members[a].addresses[b].country] = this.members[a].addresses[b]
-    let addresses = Object.values(addressesO);
-    if (addresses.length) this.addresses = addresses;
-    console.log(this.addresses)
     next();
   } else {
     next();
