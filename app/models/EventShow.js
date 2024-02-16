@@ -135,6 +135,7 @@ const eventSchema = new Schema({
   partners: [partnershipSchema],
   program: [programSchema],
   program_freezed: {},
+  data_freezed: {},
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   type: { type: Schema.ObjectId, ref: 'Category' },
   partnership_type: { type: Schema.ObjectId, ref: 'Category' },
@@ -186,7 +187,7 @@ const eventSchema = new Schema({
 }); */
 
 eventSchema.virtual('advanced').get(function (req) {
-  //logger.debug("virtual advanced");
+  
   //let programmebydayvenue = [];
   let performers = {
     performersN: 0,
@@ -201,6 +202,7 @@ eventSchema.virtual('advanced').get(function (req) {
   let actsN = [];
   let advanced = {}
   if (!this.is_freezed) {
+    logger.debug("EventShow: virtual advanced --> not freezed");
     advanced.menu = [];
     //
     let programmebydayvenueObj = {};
@@ -335,6 +337,8 @@ eventSchema.virtual('advanced').get(function (req) {
       advanced.programmebydayvenue = programmebydayvenue;
     }
   } else {
+    logger.debug("EventShow: virtualAdvanced --> is_freezed");
+    // console.log(this.program_freezed)
     advanced = this.program_freezed
   }
   return advanced;
@@ -420,7 +424,6 @@ eventSchema.virtual('about').get(function (req) {
   }
 });
 
-
 eventSchema.virtual('aboutFull').get(function (req) {
   let about = __('Text is missing');
   let aboutA = [];
@@ -492,6 +495,7 @@ eventSchema.virtual('subtitle').get(function (req) {
 
 
 eventSchema.virtual('imageFormats').get(function () {
+
   let imageFormats = {};
   for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
     imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
@@ -670,7 +674,7 @@ eventSchema.virtual('fullSchedule').get(function (req) {
       }
       boxDates.push(eventSchema.boxDateCreator(starttime, endtime, boxVenue));
     }
-    logger.debug(boxDates);
+    // logger.debug(boxDates);
 
     return boxDates;
   }

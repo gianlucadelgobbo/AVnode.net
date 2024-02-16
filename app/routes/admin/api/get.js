@@ -2712,31 +2712,88 @@ router.removeVideo = (req, res) => {
 
 router.eventGetFreezed = (req, res) => {
   console.log("eventGetFreezed")
-  var populate = [
+  // aggiunti tech_arts tech_reqs
+var populate = [
+    //Advanced
     { 
-      "path": "program.performance", "select": "id title image slug duration price paypal users is_public stats abouts galleries videos bookings", "model": "Performance",  
-      "populate": [
+        "path": "program.performance", "select": "id title image slug duration price is_public paypal users stats abouts galleries videos bookings tech_arts tech_reqs", "model": "Performance",  
+        "populate": [
         { "path": "users", "select": "stagename slug stats addresses members organizationData gender image abouts web social performances", "model": "UserShow"/* , "populate": [
-          { "path": "performances", "select": "title slug image users", "model": "Performance", "populate": [
+            { "path": "performances", "select": "title slug image users", "model": "Performance", "populate": [
             { "path": "users", "select": "stagename slug stats addresses members organizationData gender image abouts web social performances", "model": "UserShow"},
             { "path": "bookings", "populate":{ "path": "performance", "select": "title slug image users", "model": "Performance"}}
-          ]}
+            ]}
         ] */},
         { "path": "bookings", "populate":{ "path": "performance", "select": "title slug image users", "model": "Performance"}},
-        { "path": "galleries", "select": "title slug image medias", "model": "Gallery"},
+        // { "path": "galleries", "select": "title slug image medias", "model": "Gallery"},
         { "path": "videos", "select": "title slug image media", "model": "Video"},
         { "path": "type", "select": "name slug", "model": "Category"},
         { "path": "tecnique", "select": "name slug", "model": "Category"},
         { "path": "genre", "select": "name slug", "model": "Category"}
-      ]
+        ]
     },
-    { "path": "program.schedule.categories", "select": "name"}
-  ];
-  //console.log()
+    {"path": "program.schedule.categories", "select": "name"},
+    //Galleries
+    {"path": "galleries", "select": "title slug image stats", "model": "Gallery"}, 
+    // Videos
+    {"path": "videos", "select": "title slug image stats media", "model": "Video", 
+        "populate": [
+            { "path": "users", "select": "stagename organizationData image", "model": "UserShow"},
+        ]
+    },
+    // Partner
+    {"path": "partners", "select": "title slug image", "model": "Partner"},
+    {"path": "partners.category","select": "name","model": "Category"},
+    {"path": "partners.users","select": "slug image organizationData.logo stagename web","model": "UserShow"},
+    {"path": "users","select": "slug image organizationData.logo stagename web","model": "UserShow"}
+];
+//   Models.EventShow.
+//       //find({"users": req.params.id}).
+//       findOne({_id: req.params.id}).
+//       select({title: 1, slug: 1, program: 1, is_freezed: 1, program_freezed: 1, galleries: 1, videos: 1, partners: 1}).
+//       populate(populate).
+//       //sort({title: 1}).
+//       //select({stagename: 1, createdAt: 1, crews:1}).
+//       //exec((err, events) => {
+//       exec((err, event) => {
+//         console.log("program_freezed")
+//         // console.log(event.galleries);
+//         console.log("program_freezed")
+//        /*  console.log("program_freezed")
+//         console.log(event.is_freezed)
+//         console.log(event.advanced.performers) */
+//         //event.is_freezed = true;
+//         //2event.program_freezed = JSON.parse(JSON.stringify(event.advanced));
+//         /* event.program_freezed.programmenotscheduled.forEach(function (item) {
+//           item.id = item._id;
+//           delete item._id;
+//         }); */
+//         console.log(event)
+//         const data = {
+//             advanced: event?.advanced,
+//             galleries: event?.galleries
+//         }
+//         Models.EventShow.findOneAndUpdate({_id: req.params.id}, {program_freezed: JSON.parse(JSON.stringify(event.advanced))}, {upsert: true, useFindAndModify: false}, function(err, doc1) {
+//           if (err) {
+//             res.status(404).send({ message: err });
+//           } else {
+//             res.send({ message: __("FREEZING SUCCESS"), doc1: doc1});
+//             // Models.EventShow.findOneAndUpdate({_id: req.params.id}, {is_freezed: true}, {upsert: true, useFindAndModify: false}, function(err, doc2) {
+//             //   if (err) {
+//             //     res.status(404).send({ message: err });
+//             //   } else {
+//             //     res.send({ message: __("FREEZING SUCCESS"), doc1: doc1, doc2: doc2 });
+//             //   }
+//             // });
+//           }
+//           // saved!
+//         });
+//       });
   Models.EventShow.findOneAndUpdate({_id: req.params.id}, {is_freezed: false}, {upsert: true, useFindAndModify: false}, function(err, doc) {
     if (err) {
       res.status(404).send({ message: err });
     } else {
+        // console.log(doc)
       Models.EventShow.
       //find({"users": req.params.id}).
       findOne({_id: req.params.id}).
@@ -2747,7 +2804,7 @@ router.eventGetFreezed = (req, res) => {
       //exec((err, events) => {
       exec((err, event) => {
         console.log("program_freezed")
-        console.log(event.advanced.menu);
+        console.log('galleries',event);
         console.log("program_freezed")
        /*  console.log("program_freezed")
         console.log(event.is_freezed)
@@ -2758,16 +2815,22 @@ router.eventGetFreezed = (req, res) => {
           item.id = item._id;
           delete item._id;
         }); */
-
-        Models.EventShow.findOneAndUpdate({_id: req.params.id}, {program_freezed: JSON.parse(JSON.stringify(event.advanced))}, {upsert: true, useFindAndModify: false}, function(err, doc) {
+        console.log
+        const freezedData = {
+            videos: event?.videos,
+            galleries: event?.galleries,
+            users: event?.users,
+            partners: event?.partners
+        }
+        Models.EventShow.findOneAndUpdate({_id: req.params.id}, {program_freezed: JSON.parse(JSON.stringify(event?.advanced)), data_freezed: JSON.parse(JSON.stringify(freezedData))}, {upsert: true, useFindAndModify: false}, function(err, doc1) {
           if (err) {
             res.status(404).send({ message: err });
           } else {
-            Models.EventShow.findOneAndUpdate({_id: req.params.id}, {is_freezed: true}, {upsert: true, useFindAndModify: false}, function(err, doc) {
+            Models.EventShow.findOneAndUpdate({_id: req.params.id}, {is_freezed: true}, {upsert: true, useFindAndModify: false}, function(err, doc2) {
               if (err) {
                 res.status(404).send({ message: err });
               } else {
-                res.send({ message: __("FREEZING SUCCESS") });
+                res.send({ message: __("FREEZING SUCCESS"), event: event, doc1: doc1, doc2: doc2 });
               }
             });
           }

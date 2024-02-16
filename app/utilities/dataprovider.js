@@ -209,17 +209,19 @@ for(var b=0;b<countries.length;b++){
 }
 */
 dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
-  /* logger.debug("populate");
-  logger.debug(populate);
-  logger.debug("req.query");
-  logger.debug(req.query);
-  logger.debug("subsection");
-  logger.debug(subsection);
-  logger.debug("slug");
-  logger.debug(req.params.slug);
-  logger.debug("model");
-  logger.debug(model); */
+    logger.debug('FetchShow:', section, subsection)
+//   logger.debug("populate");
+//   logger.debug(populate);
+//   logger.debug("req.query");
+//   logger.debug(req.query);
+//   logger.debug("subsection");
+//   logger.debug(subsection);
+//   logger.debug("slug");
+//   logger.debug(req.params.slug);
+//   logger.debug("model");
+//   logger.debug(model);
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
+    logger.debug('First if fetchShow')
     if (req.query.crews) {
       select.crews = 1;
       model.
@@ -299,7 +301,9 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
       });
     }
   } else {
+    logger.debug('First else fetchShow')
     if (subsection === "program") {
+        logger.debug('fetchShow: subsection === "program"')
       if (req.params.performance) {
         for(let a=0; a<populate.length;a++) {
           if (populate[a].path==="program.performance") {
@@ -366,6 +370,8 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
       }
     }
     if (subsection === "performers") {
+        logger.debug('fetchShow: subsection === "performers"')
+
       if (req.params.performer) {
         for(let a=0; a<populate.length;a++) {
           if (populate[a].path==="program.performance") {
@@ -402,6 +408,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
       }
     }
     if (section === "performances") {
+        logger.debug('fetchShow: section === "performances"')
       if (req.params.gallery || req.params.video) {
         for(let a=0; a<populate.length;a++) {
           if (populate[a].path==="galleries") {
@@ -488,11 +495,11 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }
       }
     }
-    logger.debug("BINGOOOOO");
-    logger.debug(select);
-    logger.debug({slug: req.params.sub ? req.params.sub : req.params.slug});
-    logger.debug("model");
-    logger.debug(model);
+    // logger.debug("");
+    // logger.debug(select);
+    // logger.debug({slug: req.params.sub ? req.params.sub : req.params.slug});
+    logger.debug("model", model, req.params.sub, req.params.slug)
+    // logger.debug(model);
     model.
     findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
     // lean({ virtuals: true }).
@@ -500,11 +507,26 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     populate(populate).
     select(select).
     exec((err, ddd) => {
-      logger.debug(err);
+        console.log('IS FREEZ',ddd.is_freezed);
       let data;
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};
-      if (data && data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
+    //   console.log(data.partners[0].users)
+        /* 
+        Handlign event galleries - videos - partners 
+        Getting data from freezed datas
+        */
+    //    console.log(data)
+      if(data?.is_freezed && section == "events") {
+            data.galleries = data?.data_freezed?.galleries
+            data.videos = data?.data_freezed?.videos
+            data.partners = data?.data_freezed?.partners
+            data.users = data?.data_freezed?.users
+            console.log('ENTRA')
+            
+        //   console.log('GALLERIES',data.galleries_freezed)
+        }
+      if (data?.organizationsettings?.call?.calls?.length) {
         data.participate = true;
       }
       if (output && data) {
@@ -566,7 +588,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }
         res.advanced.programmenotscheduled = undefined;
       }
-
+      // Performance page get data from advanced therefore there is no need to add further changes
       if (res && res.advanced && res.advanced.programmebydayvenue && req.params.performance) {
         for(let a=0; a<res.advanced.programmebydayvenue.length;a++) {
           for(let b=0; b<res.advanced.programmebydayvenue[a].rooms.length;b++) {
@@ -636,7 +658,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         delete res.partnerships;
         //logger.debug(res.partnerships);
       }
-      //logger.debug("fetchShow END");
+      logger.debug("fetchShow END");
       cb(err, res);
       //cb(err, data);
     });
@@ -743,8 +765,8 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
       }
     }
   } else if (data && data.title) {
-    logger.debug("subsection");
-    logger.debug(subsection);
+    // logger.debug("subsection");
+    // logger.debug(subsection);
     if (subsection != "show" && !data.performer && !data.performance) {
       jsonld["@type"] = "ItemList";
       jsonld.itemListElement = [];
@@ -820,7 +842,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
         if (data.performer.social) for(let a=0;a<data.performer.social.length;a++) jsonld.sameAs.push(data.performer.social[a].url);
       }
       if (data.performer.addresses && data.performer.addresses.length) {
-        logger.debug(data.addresses);
+        // logger.debug(data.addresses);
         jsonld.address = {
           "@type": "PostalAddress",
           "addressLocality": data.performer.addresses[0].locality,
@@ -973,7 +995,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
     jsonld.image = data.imageFormats.large; */
   }
 
-  logger.debug(jsonld);
+//   logger.debug(jsonld);
   return jsonld;
 };
 
@@ -1030,6 +1052,7 @@ dataprovider.makeTextPlainToRich = (str) => {
 }
 
 dataprovider.addCat = (req, populate, cb) => {
+    logger.debug("addCat")
   if (req.params.type) {
     Category.
     findOne({slug: req.params.type}).
@@ -1045,14 +1068,14 @@ dataprovider.addCat = (req, populate, cb) => {
 dataprovider.show = (req, res, section, subsection, model) => {
   //logger.debug(section);
   //logger.debug(subsection);
-  //logger.debug(config.sections[section]);
+//   logger.debug(config.sections[section]);
   let populate = JSON.parse(JSON.stringify(config.sections[section][subsection].populate));
   //logger.debug("populate PRE");
   //logger.debug(populate);
   dataprovider.addCat(req, populate, (populate, type) => {
     for(let item in populate) {
       if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
-      
+
       if (populate[item].model === 'UserShow') populate[item].model = UserShow;
       if (populate[item].model === 'Performance') populate[item].model = Performance;
       if (populate[item].model === 'Event') populate[item].model = Event;
@@ -1087,15 +1110,15 @@ dataprovider.show = (req, res, section, subsection, model) => {
     //logger.debug(populate[0].match);
     const select = config.sections[section][subsection].select;
     const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
-
     dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
-      //logger.debug("fetchShow END");
-      //logger.debug(data);
+      logger.debug("End fetchShow dataprovider");
       if (err || !data || data === null) {
         res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
       } else {
         // MAP
+        // ADD LOCATIONS TO DATA --> don't know the difference
         if (data && data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
+            logger.debug("AFTER FETCHSHOW --> first if")
           const locations = data.schedule.map(obj =>{
             if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
               var rObj = {
@@ -1122,6 +1145,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           //data.schedule = undefined;
         }
         if (data && data.addresses && data.addresses.length) {
+            logger.debug("AFTER FETCHSHOW --> second if")
           const locations = data.addresses.map(obj =>{
             if (obj && obj.geometry && obj.geometry.lat && obj.geometry.lng) {
               var rObj = {
@@ -1147,6 +1171,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         // MAP END
 
         if (data && data.medias && req.params.img) {
+            logger.debug("AFTER FETCHSHOW MAP--> first if")
           for (let item in data.medias) {
             if (data.medias[item].slug===req.params.img) {
               if (!req.session[data._id+"#IMG:"+data.medias[item].slug]) {
@@ -1171,6 +1196,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
             data.liked = true;
           }
         } else if (data && data.galleries && data.galleries[0] && data.galleries[0].medias && req.params.img) {
+            logger.debug("AFTER FETCHSHOW MAP-->  else if")
           for (let item in data.galleries[0].medias) {
             if (data.galleries[0].medias[item].slug===req.params.img) {
               if (!req.session[data.galleries[0]._id+"#IMG:"+data.galleries[0].medias[item].slug]) {
@@ -1195,7 +1221,10 @@ dataprovider.show = (req, res, section, subsection, model) => {
             data.liked = true;
           }
         } else {
+            logger.debug("AFTER FETCHSHOW MAP-->  else -->model:", model)
+            // UPDATE STATS VISIT FOR EVENT
           if (!req.session[data._id]) {
+            logger.debug("AFTER FETCHSHOW MAP-->  else -->!req.session[data._id]", model)
             req.session[data._id] = true;
             if (!data.stats) data.stats = {};
             data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
@@ -1210,12 +1239,14 @@ dataprovider.show = (req, res, section, subsection, model) => {
         }
         data.pages = [];
         if (total>0) {
+            logger.debug("AFTER FETCHSHOW MAP-->  otal>0")
           let limit = req.query.limit ? parseInt(req.query.limit) : config.sections[section].limit;
           let link = '/' + data.slug + '/' + subsection + '/page/';
           let page = (req.params.page ? parseFloat(req.params.page) : 1);
           skip = (page - 1) * limit;
           data.pages = helper.getPagination(link, skip, limit, total, "/"); 
         }
+        // console.log(data)
         /* let editable = false;
         if (req.user && req.user._id) {
           if (req.user.is_admin) {

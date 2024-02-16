@@ -7,6 +7,7 @@ const section = 'events';
 const logger = require('../../utilities/logger');
 
 router.get('/', (req, res) => {
+    logger.debug('events')
   dataprovider.show(req, res, section, 'show', Model);
 });
 
