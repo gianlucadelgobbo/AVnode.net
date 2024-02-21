@@ -62,7 +62,7 @@ const userSchema = new Schema({
   surname: String,
   gender: String,
   lang: String, // BL TODO navigator or user.settings or subdomain language
-  is_public: Boolean,
+  is_public: { type: Boolean, default: true },
   createdAt: Date,
   stats: {
     crews: Number,

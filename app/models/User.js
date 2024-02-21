@@ -507,6 +507,13 @@ userSchema.pre('save', function (next) {
   }
 });
 
+userSchema.pre('save', function (next) {
+  if (this.activity || this.activity_as_organization || this.activity_as_performer) {
+    this.is_public = true;
+  }
+  next();
+});
+
 /*userSchema.virtual('originalpassword').get(function () {
   return this.password;
 });*/
