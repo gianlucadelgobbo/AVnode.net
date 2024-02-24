@@ -11,7 +11,7 @@ block content
           li.nav-item.mb-2
             a.nav-link(href=index>call.step ? '' : '?step='+index, class=call.step==index ? "active" : index>call.step ? "disabled" : "")
               !=(index+1)+". "
-              span.d-none.d-md-inline.d-lg-inline.d-xl-inline=val
+              span.d-none.d-md-inline.d-lg-inline.d-xl-inline=val.label
       if msg
         include ../partials/msg
       - if (dett.subtitle)
@@ -33,31 +33,32 @@ block content
                 sup
                   a.btn-primary.btn-sm(href='#' data-labelfield='Learning Title' data-title='Add Learning' data-param='title' data-user=user._id data-sez='performances')=global.__("New Learning")
               else 
-                !=participateMenu[call.step]
+                !=participateMenu[call.step].label
                 !=" "
                 sup
                   a.btn-primary.btn-sm(href='#' data-labelfield='Performance Name' data-title='Add Performance' data-user=user._id data-param='title' data-sez='performances')=global.__("New Performance")
           else 
-            h2.mb-3=participateMenu[call.step]
-          case call.step
-            when 0
-              include participate/step_0
-            when 1
-              include participate/step_1
-            when 2
-              include participate/step_2
-            when 3
-              include participate/step_3
-            when 4
-              include participate/step_4
-            when 5
-              include participate/step_5
-            when 6
-              include participate/step_6
-            when 7
-              include participate/step_7
+            h2.mb-3=participateMenu[call.step].label
+          
+          case participateMenu[parseInt(call.step)].slug
+            when "calls"
+              include participate/step_calls
+            when "terms"
+              include participate/step_terms
+            when "performance"
+              include participate/step_performance
+            when "topics"
+              include participate/step_topics
+            when "availability"
+              include participate/step_availability
+            when "packages"
+              include participate/step_packages
+            when "summary"
+              include participate/step_summary
+            when "submit"
+              include participate/step_submit
             default
-              include participate/step_0
+              include participate/step_calls
           if call.step < 7 && (button!==false) 
             .text-right
               input.btn.btn-lg.btn-primary(type="submit" value=global.__("NEXT")+" >>")

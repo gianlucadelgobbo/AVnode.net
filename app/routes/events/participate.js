@@ -8,27 +8,28 @@ const dataprovider = require('../../utilities/dataprovider');
 
 const logger = require('../../utilities/logger');
 
-const participateMenu = [
-  __('Active calls'),           // 0
-  __('Terms'),   // 1
-  __('Performance'),  // 2
-  __('Topics'),       // 3
-  __('Availability'),           // 4
-  __('Packages'),               // 5
-  __('Summary'),                // 6
-  __('Submit')                  // 7
+var participateMenu = [
+  {label:__('Active Calls'),slug:"calls"},        // 0
+  {label:__('Terms'),slug:"terms"},               // 1
+  {label:__('Artwork'),slug:"performance"},       // 2
+  {label:__('Topics'),slug:"topics"},             // 3
+  {label:__('Availability'),slug:"availability"}, // 4
+  {label:__('Packages'),slug:"packages"},         // 5
+  {label:__('Summary'),slug:"summary"},           // 6
+  {label:__('Submit'),slug:"submit"}              // 7
 ];
+var slugsMenu = participateMenu.map(item =>{return item.slug})
 
 router.get('/', (req, res) => {
   logger.debug("GETGETGETGETGET");
   //delete req.session.call;
-  logger.debug(req.session.call);
+  logger.debug("req.session.call");
+  //logger.debug(req.session.call);
   Event.
   findOne({slug: req.params.slug}).
   //select({slug: 1}).
   populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
   exec((err, data) => {
-    logger.debug(data.organizationsettings.call);
     /*let ids = [];
     if (req.user) ids = [req.user._id].concat(req.user.crews);
     //logger.debug(performances);
@@ -49,7 +50,24 @@ router.get('/', (req, res) => {
       req.session.call.step = parseInt(req.query.step);
     }
     const msg = null;
-  
+    if (req.session.call.index!==undefined) {
+      slugsMenu = participateMenu.map(item =>{return item.slug})
+      /* logger.debug(data.organizationsettings.call.calls[req.session.call.index]);
+      logger.debug("slugsMenu");
+      logger.debug(slugsMenu.indexOf('topics'));
+      data.organizationsettings.call.calls[req.session.call.index].topics = []
+      data.organizationsettings.call.calls[req.session.call.index].availability = false
+      data.organizationsettings.call.calls[req.session.call.index].packages = [] */
+      if (!data.organizationsettings.call.calls[req.session.call.index].topics.length && slugsMenu.indexOf('topics')!==-1) participateMenu.splice(slugsMenu.indexOf('topics'), 1)
+      slugsMenu = participateMenu.map(item =>{return item.slug})
+      if (!data.organizationsettings.call.calls[req.session.call.index].availability && slugsMenu.indexOf('availability')!==-1) participateMenu.splice(slugsMenu.indexOf('availability'), 1)
+      slugsMenu = participateMenu.map(item =>{return item.slug})
+      if (!data.organizationsettings.call.calls[req.session.call.index].packages.length && slugsMenu.indexOf('packages')!==-1) participateMenu.splice(slugsMenu.indexOf('packages'), 1)
+      slugsMenu = participateMenu.map(item =>{return item.slug})
+      logger.debug(participateMenu);
+      logger.debug(slugsMenu);
+    }
+
     res.render('events/participate', {
       title: data.title,
       //canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
@@ -82,7 +100,24 @@ router.post('/', (req, res) => {
         //logger.debug('routes/events/participate err:' + err);
         return next(err);
       }
-      /*
+      if (req.session.call.index!==undefined) {
+        slugsMenu = participateMenu.map(item =>{return item.slug})
+        /* logger.debug(data.organizationsettings.call.calls[req.session.call.index]);
+        logger.debug("slugsMenu");
+        logger.debug(slugsMenu.indexOf('topics'));
+        data.organizationsettings.call.calls[req.session.call.index].topics = []
+        data.organizationsettings.call.calls[req.session.call.index].availability = false
+        data.organizationsettings.call.calls[req.session.call.index].packages = [] */
+        if (!data.organizationsettings.call.calls[req.session.call.index].topics.length && slugsMenu.indexOf('topics')!==-1) participateMenu.splice(slugsMenu.indexOf('topics'), 1)
+        slugsMenu = participateMenu.map(item =>{return item.slug})
+        if (!data.organizationsettings.call.calls[req.session.call.index].availability && slugsMenu.indexOf('availability')!==-1) participateMenu.splice(slugsMenu.indexOf('availability'), 1)
+        slugsMenu = participateMenu.map(item =>{return item.slug})
+        if (!data.organizationsettings.call.calls[req.session.call.index].packages.length && slugsMenu.indexOf('packages')!==-1) participateMenu.splice(slugsMenu.indexOf('packages'), 1)
+        slugsMenu = participateMenu.map(item =>{return item.slug})
+        logger.debug(participateMenu);
+        logger.debug(slugsMenu);
+      }
+            /*
       logger.debug('session.call');
       logger.debug(req.session.call);
       logger.debug('data.organizationsettings.call:');
@@ -94,9 +129,10 @@ router.post('/', (req, res) => {
       logger.debug("msg");
       logger.debug(msg);
       if (data && typeof req.body.step!='undefined') {
-        //logger.debug(req.user);
-        switch (parseInt(req.body.step)) {
-          case 0 :
+        logger.debug(participateMenu[parseInt(req.body.step)]);
+        
+        switch (participateMenu[parseInt(req.body.step)].slug) {
+          case 'calls' :
             logger.debug('case 0');
             if (!req.user.name) {
               if (!msg || !msg.e) msg = {e:[]};
@@ -123,7 +159,7 @@ router.post('/', (req, res) => {
                 let ids = [req.user._id].concat(req.user.crews);
                 myasync = false;
                 dataprovider.getPerformanceByIds(req, ids, (err, performances) =>{
-                  logger.debug(performances);
+                  //logger.debug(performances);
                 
                   let admitted = {};
                   var admittedCat = data.organizationsettings.call.calls[req.body.index].admitted.map(a => a._id.toString());
@@ -145,7 +181,7 @@ router.post('/', (req, res) => {
                   }
                   logger.debug('performances '+performances.length);
                   logger.debug('admitted '+admittedA.length);
-                  logger.debug(admitted);
+                  //logger.debug(admitted);
                   req.session.call.index = parseInt(req.body.index);
                   if (admittedA.length) {
                     req.session.call.step = parseInt(req.body.step)+1;
@@ -176,7 +212,7 @@ router.post('/', (req, res) => {
               }  
             }
             break;
-          case 1 :
+          case 'terms' :
             logger.debug('case 1');  
             if (data && req.body.accept=='1' && req.body.confirm_personal_data=='1') {
               req.session.call.step++;
@@ -191,7 +227,7 @@ router.post('/', (req, res) => {
               }
             }
             break;
-          case 2 :
+          case 'performance' :
             if (data && typeof req.body.performance!='undefined') {
               req.session.call.step = parseInt(req.body.step)+1;
               req.session.call.performance = parseInt(req.body.performance);
@@ -252,7 +288,7 @@ router.post('/', (req, res) => {
               msg = {e:[{name:'accept',m:__('Please select a performance to go forward')}]}
             }
             break;
-          case 3 :
+          case 'topics' :
             if (data && req.body.topics && req.body.topics.length) {
               req.session.call.step = parseInt(req.body.step)+1;
               req.session.call.topics = req.body.topics;
@@ -260,7 +296,7 @@ router.post('/', (req, res) => {
               msg = {e:[{name:'accept',m:__('Please select at least 1 topic to go forward')}]}
             }
             break;
-          case 4 :
+          case 'availability' :
             logger.debug("req.body.subscriptions");
             logger.debug(req.body.subscriptions);
             logger.debug(req.body.subscriptions.filter(item => item.subscriber_id));
@@ -295,7 +331,7 @@ router.post('/', (req, res) => {
               msg = {e:[{name:'accept',m:__('Please select at least 1 person to go forward')}]};
             }
             break;
-          case 5 :
+          case 'packages' :
             if (data && req.body.subscriptions && req.body.subscriptions.length) {
               for (var a=0; a<req.body.subscriptions.length; a++) {
                 if (req.body.subscriptions[a].packages && req.body.subscriptions[a].packages !== 'null' && req.session.call.subscriptions[a].freezed != 'true'){
@@ -312,7 +348,7 @@ router.post('/', (req, res) => {
               msg = {e:[{name:'accept',m:__('Please select at least 1 package to go forward')}]}
             }
             break;
-          case 6 :
+          case 'summary' :
             myasync = false;
             // SAVE
             //logger.debug('req.session.call.index');
