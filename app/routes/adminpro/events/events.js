@@ -223,7 +223,7 @@ router.get('/:event/orders', (req, res) => {
             data.programmebydayvenue = {}
             for(let a=0;a<event.schedule.length;a++) {
               let date = new Date(event.schedule[a].starttime);  // dateStr you get from mongodb
-              if (date.getUTCHours()<10) date = new Date(event.schedule[a].starttime-(24*60*60*1000));
+              if (date.getUTCHours()<12) date = new Date(event.schedule[a].starttime-(24*60*60*1000));
               let d = ('0'+date.getUTCDate()).substr(-2);
               let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
               let y = date.getUTCFullYear();
@@ -255,7 +255,7 @@ router.get('/:event/orders', (req, res) => {
                     if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
                       if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
                         let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-                        if (date.getUTCHours()<10) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
+                        if (date.getUTCHours()<12) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
                         let d = ('0'+date.getUTCDate()).substr(-2);
                         let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                         let y = date.getUTCFullYear();
@@ -1048,7 +1048,7 @@ router.get('/:event/program', (req, res) => {
           data.programmebydayvenue = {}
           for(let a=0;a<event.schedule.length;a++) {
             let date = new Date(event.schedule[a].starttime);  // dateStr you get from mongodb
-            if (date.getUTCHours()<10) date = new Date(event.schedule[a].starttime-(24*60*60*1000));
+            if (date.getUTCHours()<12) date = new Date(event.schedule[a].starttime-(24*60*60*1000));
             let d = ('0'+date.getUTCDate()).substr(-2);
             let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
             let y = date.getUTCFullYear();
@@ -1081,7 +1081,7 @@ router.get('/:event/program', (req, res) => {
                   if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
                     if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
                       let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-                      if (date.getUTCHours()<10) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
+                      if (date.getUTCHours()<12) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
                       let d = ('0'+date.getUTCDate()).substr(-2);
                       let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                       let y = date.getUTCFullYear();
@@ -1216,7 +1216,7 @@ router.get('/:event/technical-riders', (req, res) => {
           data.programmebydayvenue = {}
           for(let a=0;a<event.schedule.length;a++) {
             let date = new Date(event.schedule[a].starttime);  // dateStr you get from mongodb
-            if (date.getUTCHours()<10) date = new Date(event.schedule[a].starttime-(24*60*60*1000));
+            if (date.getUTCHours()<12) date = new Date(event.schedule[a].starttime-(24*60*60*1000));
             let d = ('0'+date.getUTCDate()).substr(-2);
             let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
             let y = date.getUTCFullYear();
@@ -1248,7 +1248,7 @@ router.get('/:event/technical-riders', (req, res) => {
                   if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
                     if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
                       let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-                      if (date.getUTCHours()<10) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
+                      if (date.getUTCHours()<12) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
                       let d = ('0'+date.getUTCDate()).substr(-2);
                       let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                       let y = date.getUTCFullYear();
@@ -1348,7 +1348,7 @@ router.get('/:event/technical-riders', (req, res) => {
           data.programmebydayvenue = {}
           for(let a=0;a<event.schedule.length;a++) {
             let date = new Date(event.schedule[a].starttime);  // dateStr you get from mongodb
-            if (date.getUTCHours()<10) date = new Date(event.schedule[a].starttime-(24*60*60*1000));
+            if (date.getUTCHours()<12) date = new Date(event.schedule[a].starttime-(24*60*60*1000));
             let d = ('0'+date.getUTCDate()).substr(-2);
             let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
             let y = date.getUTCFullYear();
@@ -1380,7 +1380,7 @@ router.get('/:event/technical-riders', (req, res) => {
                   if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
                     if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
                       let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-                      if (date.getUTCHours()<10) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
+                      if (date.getUTCHours()<12) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
                       let d = ('0'+date.getUTCDate()).substr(-2);
                       let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                       let y = date.getUTCFullYear();

@@ -186,6 +186,7 @@ const eventSchema = new Schema({
 }); */
 
 eventSchema.virtual('advanced').get(function (req) {
+  console.log("advancedadvancedadvancedadvancedadvancedadvancedadvancedadvancedadvancedadvancedadvancedadvanced")
   //logger.debug("virtual advanced");
   //let programmebydayvenue = [];
   let performers = {
@@ -241,7 +242,7 @@ eventSchema.virtual('advanced').get(function (req) {
                 ret = true;
                 if ((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
                   let date = new Date(this.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-                  if (date.getUTCHours()<10) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
+                  if (date.getUTCHours()<12) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
                   let d = ('0'+date.getUTCDate()).substr(-2);
                   let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                   let y = date.getUTCFullYear();
@@ -262,6 +263,9 @@ eventSchema.virtual('advanced').get(function (req) {
                   programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
                 } else {
                   var days = Math.floor((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
+                  console.log("daysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdays")
+                  console.log(this.program[a].performance.title)
+                  console.log(days)
                   for(let c=0;c<days;c++){
                     let date = new Date((this.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
                     let d = ('0'+date.getUTCDate()).substr(-2);
@@ -273,6 +277,7 @@ eventSchema.virtual('advanced').get(function (req) {
                       date: newdate,
                       rooms: {}
                     };
+
                     if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room] = {
                       venue: this.program[a].schedule[b].venue.name,
                       room: this.program[a].schedule[b].venue.room,
@@ -282,6 +287,7 @@ eventSchema.virtual('advanced').get(function (req) {
                     clone.schedule = this.program[a].schedule[b];
                     //if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) 
                     programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
+                    console.log(programmebydayvenueObj[y+"-"+m+"-"+d])
                   }
                 }
               }
