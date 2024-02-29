@@ -242,7 +242,7 @@ eventSchema.virtual('advanced').get(function (req) {
                 ret = true;
                 if ((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
                   let date = new Date(this.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-                  if (date.getUTCHours()<12) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
+                  if (date.getUTCHours()<8) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
                   let d = ('0'+date.getUTCDate()).substr(-2);
                   let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                   let y = date.getUTCFullYear();
