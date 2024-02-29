@@ -242,7 +242,7 @@ eventSchema.virtual('advanced').get(function (req) {
                 ret = true;
                 if ((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
                   let date = new Date(this.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-                  if (date.getUTCHours()<8) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
+                  if (date.getUTCHours()<10) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
                   let d = ('0'+date.getUTCDate()).substr(-2);
                   let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                   let y = date.getUTCFullYear();
@@ -265,6 +265,8 @@ eventSchema.virtual('advanced').get(function (req) {
                   var days = Math.floor((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
                   console.log("daysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdaysdays")
                   console.log(this.program[a].performance.title)
+                  console.log(this.program[a].schedule[b].endtime)
+                  console.log(this.program[a].schedule[b].starttime)
                   console.log(days)
                   for(let c=0;c<days;c++){
                     let date = new Date((this.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
