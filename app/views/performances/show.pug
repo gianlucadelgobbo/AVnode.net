@@ -118,6 +118,7 @@ block content
               .performance_events_wrapper
                 h3.mt-3=global.__('Events')  
                 each booking in data.bookings
+                  if booking.schedule.length && booking.event && booking.event.slug
                   .performance_event_wrapper
                     .performance_event_image.mt-2
                       a(href="/events/"+booking.event.slug)
