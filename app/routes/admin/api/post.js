@@ -21,9 +21,11 @@ const Models = {
 const logger = require('../../../utilities/logger');
 
 router.postData = (req, res) => {
-  logger.debug('req.body');
+  logger.debug("postData");
+  logger.debug("req.body");
+  logger.debug('');
   logger.debug(req.body);
-  logger.debug('req.params');
+  logger.debug("req.params");
   logger.debug(req.params);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms.new) {
     logger.debug('BINGO');
@@ -114,13 +116,23 @@ router.postData = (req, res) => {
                             } else {
                               logger.debug("save ancestor success");
                               logger.debug(data);
+                              logger.debug("stocazzooooooooooo");
                               logger.debug(data);
-                              res.json(data);                    
+                              var cloneData = JSON.parse(JSON.stringify(data));
+
+                              if (req.body.admitted) cloneData.admitted = req.body.admitted
+                              res.json(cloneData);                    
                             }
                           });
                         });
                       } else {
-                        res.json(data);                    
+                        logger.debug("stocazzo");
+                        logger.debug(req.body.admitted);
+                        var cloneData = JSON.parse(JSON.stringify(data));
+
+                        if (req.body.admitted) cloneData.admitted = req.body.admitted;
+                        logger.debug(cloneData);
+                        res.json(cloneData);                    
                       }
                       /* select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
                       const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
@@ -222,6 +234,7 @@ router.cancelSubscription = (req, res) => {
 }
 
 router.editSubscriptionSave = (req, res) => {
+  logger.debug("editSubscriptionSave");
   logger.debug("req.body");
   logger.debug(req.body);
   Models.Program.findOne({_id: req.body.program})
@@ -718,6 +731,7 @@ router.deleteContacts = (req, res) => {
 
 
 router.updatePartnerships = (req, res) => {
+  logger.debug("updatePartnerships");
   logger.debug("req.body");
   logger.debug(req.body);
   Models.Event

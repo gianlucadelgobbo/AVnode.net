@@ -632,6 +632,7 @@ router.getMessageActs = (req, res) => {
       res.json(data);
     } else {
       //logger.debug(query);
+      logger.debug("getMessageActs");
       logger.debug("req.body");
       logger.debug(req.body);
       if (req.body.subject) {
@@ -900,6 +901,7 @@ router.getMessagePeoples = (req, res) => {
       res.json(data);
     } else {
       //logger.debug(query);
+      logger.debug("getMessagePeoples");
       logger.debug("req.body");
       logger.debug(req.body);
       if (req.body.subject) {

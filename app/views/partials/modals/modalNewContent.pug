@@ -10,6 +10,10 @@
         .row
           .col-md-12
             form
+              if (dett && dett.organizationsettings && dett.organizationsettings.call && dett.organizationsettings.call.calls && call.index!=undefined && dett.organizationsettings.call.calls[call.index] && dett.organizationsettings.call.calls[call.index].admitted)
+                - var admitted = dett.organizationsettings.call.calls[call.index].admitted.map((item) =>{return item._id.toString()})
+                - for(var item in admitted)
+                  input(type="text" name="admitted[]" value=admitted[item])
               dl.row
                 dt.col-sm-2
                   .labelfield Crew Name

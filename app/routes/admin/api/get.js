@@ -845,6 +845,7 @@ router.addPartnersEventToQueque = (req, res, data, cb) => {
 
 router.getEmailqueue = (req, res) => {
   logger.debug('/mailer/'+req.params.id);
+  logger.debug("getEmailqueue");
   logger.debug("req.body");
   var ids = req.user.crews.map(item => {return item._id});
   logger.debug(ids);

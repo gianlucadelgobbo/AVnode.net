@@ -55,11 +55,10 @@ const query = {
   ]
 };
 router.get('/usersstatsupdate', (req, res) => {
-  console.log()
   User.count(query).
   lean().
   exec((err, count) => {
-    console.log(count)
+    //console.log(count)
     res.render('adminpro/supertools/stats', {
       title: 'Users Update Statistics',
       

@@ -17,7 +17,7 @@ const Models = {
 const logger = require('../../../utilities/logger');
 
 router.putData = (req, res, view) => {
-  logger.debug('putData');
+  logger.debug("putData");
   logger.debug(req.body);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     if (req.body.mediastr) {

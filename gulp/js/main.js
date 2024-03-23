@@ -135,9 +135,9 @@ $(document).ready(function(){
     })
     .done(function(data) {
       if ($('.id').val()){
-        window.location.href = "/admin/"+$('.newsez').val()+"/"+data._id+"/public";
+        window.location.href = "/admin/"+$('.newsez').val()+"/"+data._id+"/public/"+(data.admitted ? "?admitted="+data.admitted.join() : "");
       } else {
-        window.location.href = "/admin/"+sez+"/"+data._id+"/public";
+        window.location.href = "/admin/"+sez+"/"+data._id+"/public/"+(data.admitted ? "?admitted="+data.admitted.join() : "");
       }
     })
     .fail(function(err) {
