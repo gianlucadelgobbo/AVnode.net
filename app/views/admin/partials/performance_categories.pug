@@ -1,15 +1,15 @@
 .form-group
 	.row
 		.col-md-4
-			- console.log("data.admitted")
-			- console.log(get)
-			- if (query.admitted) var admitted = query.admitted.split(",")
-			- console.log(admitted)
+			//- //console.log("data.admitted")
+			//- //console.log(get)
+			- if (query && query.admitted) var admitted = query.admitted.split(",")
+			//- console.log(admitted)
 			#types
 				label.labelField=__("Type")
 				each typee in config.types.children
 					if (admitted)
-						- console.log(typee._id.toString())
+						//- console.log(typee._id.toString())
 						if (admitted.indexOf(typee._id.toString())!==-1)
 							.form-check
 								input.form-check-input(type="radio" name="type" id=typee._id value=typee._id checked=(data.type && typee._id.toString()==data.type._id.toString()) || (admitted && admitted.legth == 1) ? "checked" : undefined)
