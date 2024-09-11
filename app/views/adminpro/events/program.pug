@@ -30,6 +30,7 @@ block content
     tbody
       tr
         - var cols = 0
+        - console.log(data.days)
         each day in data.programmebydayvenue
           if Object.keys(day.rooms).length > cols
             - cols = Object.keys(day.rooms).length < 3 ? Object.keys(day.rooms).length : 3

@@ -1011,10 +1011,12 @@ router.get('/:event/program', (req, res) => {
           for(let a=0;a<schedule.length;a++) {
             let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
             let endday = new Date(new Date(schedule[a].endtime).setUTCHours(0)).getTime();
-            console.log("stocazzo")
-            console.log(endday)
-            while (dayday<endday) {
-              console.log(dayday)
+            //console.log("stocazzo464655")
+            //console.log(daysdays)
+            //console.log(dayday)
+            //console.log(endday)
+            while (dayday<=endday) {
+              //console.log(dayday)
               if (daysdays.indexOf(dayday)===-1) {
                 daysdays.push(dayday);
               }                           
@@ -1100,7 +1102,7 @@ router.get('/:event/program', (req, res) => {
                       }
                     } else {
                       var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
-                      logger.debug("stocazzo");
+                      logger.debug("stocazzooooooo");
                       logger.debug(data.program[a].performance._id);
                       logger.debug(data.program[a].performance.title);
                       logger.debug(data.program[a].schedule.length);
