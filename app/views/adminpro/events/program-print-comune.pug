@@ -52,7 +52,7 @@ block content
       - data.program = data.program.sort(function(a,b){
       -   // Turn your strings into dates, and then subtract them
       -   // to get a value that is either negative, positive, or zero.
-      -   return new Date(a.schedule[0].starttime) - new Date(b.schedule[0].starttime);
+      -   if (a.schedule[0] && b.schedule[0]) return new Date(a.schedule[0].starttime) - new Date(b.schedule[0].starttime);
       - });
       each item, index in data.program
         if item.schedule && item.schedule.length && item.schedule[0].boxDate
