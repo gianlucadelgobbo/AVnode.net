@@ -7,10 +7,35 @@ footer.footer_site
           a(href='/', title='AVnode')
             img.logo_footer.media-object(src='/images/logo_avnode.svg', alt='AVnode.net', itemprop='logo', width="150", height="150")
           br
-          strong.d-none(itemprop='name') AVnode
+          | a project of Stichting AVnode and Fyer ner media
           br
-          | a project of Stichting AVnode
           br
+          strong(itemprop='name') Fyer ner media
+          span(itemprop='location', itemscope='', itemtype='http://schema.org/Place')
+            span(itemprop='address', itemscope='', itemtype='http://schema.org/PostalAddress')
+              span(itemprop='streetAddress') Via del Verano 39
+              span(itemprop='postalCode') 00196
+              br
+              span(itemprop='addressLocality') Rome
+              | &nbsp;
+              span(itemprop='addressCountry') Italy
+            span.d-none(itemprop='geo', itemscope='', itemtype='http://schema.org/GeoCoordinates')
+              span(itemprop='latitude') 41.899316
+              | ,
+              span(itemprop='longitude') 12.520403
+            br
+          | VAT N° 
+          span(itemprop='vatID') IT06589171005
+          br
+          a(itemprop='email', title='Write to Fyer', href='mailto:info@flyer.it') info@flyer.it
+          br.d-none
+          a.d-none(itemprop='url', title='Fyer Web Site', href='https://flyer.it') https://flyer.it
+          br
+          br
+
+
+
+          strong(itemprop='name') Stichting AVnode
           span(itemprop='location', itemscope='', itemtype='http://schema.org/Place')
             span(itemprop='address', itemscope='', itemtype='http://schema.org/PostalAddress')
               span(itemprop='streetAddress') Arondeusstraat 7
@@ -61,6 +86,8 @@ footer.footer_site
             a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', rel="noopener", href='https://t.me/avnode', title='', data-original-title='AVnode Channel on Telegram ')
               i.icon-telegram-plane.about_button
               span.sr-only Telegram Channel
+        img(src="/images/regionelazio_logo.svg" width="250" height="63" style="position: absolute;bottom: 60px;right: 0;")
+        br
         img(src="/images/eu_logo.svg" width="250" height="63" style="position: absolute;bottom: 0;right: 0;")
     .text-center.small
       !=__("Technical support by")
