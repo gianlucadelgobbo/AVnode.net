@@ -26,6 +26,10 @@ block content
 								th(data-sortable="true")=__("Date")
 						tbody
 							- var events = data.events
+							each event in events
+								- if (!event.schedule) event.schedule = []
+								- if (!event.schedule[0]) event.schedule = [{}]
+								- if (!event.schedule[0].endtime) event.schedule = [{endtime: now()}]
 							- events.sort(function(a, b) {
 							-  var keyA = new Date(a.schedule[0].endtime);
 							-  var keyB = new Date(b.schedule[0].endtime);
