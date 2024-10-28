@@ -29,7 +29,7 @@ block content
 							each event in events
 								- if (!event.schedule) event.schedule = []
 								- if (!event.schedule[0]) event.schedule = [{}]
-								- if (!event.schedule[0].endtime) event.schedule = [{endtime: now()}]
+								- if (!event.schedule[0].endtime) event.schedule = [{endtime: new Date()}]
 							- events.sort(function(a, b) {
 							-  var keyA = new Date(a.schedule[0].endtime);
 							-  var keyB = new Date(b.schedule[0].endtime);
