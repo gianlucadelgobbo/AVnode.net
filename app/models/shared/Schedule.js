@@ -72,7 +72,7 @@ Schedule.virtual('boxDateFull').get(function () {
         boxDateA.push(boxDateTMP);
       }*/
       boxDate = boxDateA.join("<br />");
-      boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
+      boxDate+= "<br />"+moment.utc(this.starttime).format('HH:mm');
       boxDate+= " > "+moment.utc(this.endtime).format('HH:mm');
     } else {
       boxDate = moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
