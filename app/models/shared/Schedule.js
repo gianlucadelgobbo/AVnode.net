@@ -55,14 +55,25 @@ Schedule.virtual('boxDateFull').get(function () {
     const days = Math.ceil((end-start)/(24*60*60*1000))
     if (days > 1) {
       let boxDateA = []
-      for(let a=0;a<=days-1;a++) {
+      let boxDateTMP = "";
+      let a=0
+      boxDateTMP = "From: "+moment.utc((new Date(this.starttime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
+      boxDateA.push(boxDateTMP);
+
+      boxDateTMP = "";
+      a<=days-1
+      boxDateTMP = "To: "+moment.utc((new Date(this.starttime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
+      boxDateA.push(boxDateTMP);
+      /*for(let a=0;a<=days-1;a++) {
         let boxDateTMP = "";
         boxDateTMP = moment.utc((new Date(this.starttime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
         boxDateTMP+= " | "+moment.utc(this.starttime).format('HH:mm');
         boxDateTMP+= " > "+moment.utc(this.endtime).format('HH:mm');
         boxDateA.push(boxDateTMP);
-      }
+      }*/
       boxDate = boxDateA.join("<br />");
+      boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
+      boxDate+= " > "+moment.utc(this.endtime).format('HH:mm');
     } else {
       boxDate = moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
       boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
