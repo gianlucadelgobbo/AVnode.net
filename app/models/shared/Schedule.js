@@ -62,7 +62,7 @@ Schedule.virtual('boxDateFull').get(function () {
 
       boxDateTMP = "";
       a<=days-1
-      boxDateTMP = "To: "+moment.utc((new Date(this.starttime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
+      boxDateTMP = "To: "+moment.utc((new Date(this.endtime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
       boxDateA.push(boxDateTMP);
       /*for(let a=0;a<=days-1;a++) {
         let boxDateTMP = "";
