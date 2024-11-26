@@ -257,7 +257,7 @@ router.editSubscriptionSave = (req, res) => {
               console.log("---------")
               console.log(performance.bookings[a].event)
               console.log(program.event)
-              if (performance.bookings[a].event.toString()===program.event.toString()) {
+              if (performance.bookings[a].event && performance.bookings[a].event.toString()===program.event.toString()) {
                 performance.bookings[a].schedule = program.schedule;
               }
             }
