@@ -79,6 +79,7 @@ const callSchema = new Schema({
   admitted: [{ type: Schema.ObjectId, ref: 'Category' }],
   excerpt: String,
   terms: String,
+  availability: Boolean,
   packages: [Package],
   topics: [{
     name: String,

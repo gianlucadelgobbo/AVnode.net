@@ -789,5 +789,13 @@
 	"The list of Crews by": "The list of Crews by",
 	"Active Calls": "Active Calls",
 	"Artwork": "Artwork",
-	"New Artwork": "New Artwork"
+	"New Artwork": "New Artwork",
+	"Please select at least 1 option for the packages": "Please select at least 1 option for the packages",
+	"Please select at least 1 option for the required packages:": "Please select at least 1 option for the required packages:",
+	"At least one of the following option is required: ": "At least one of the following option is required: ",
+	"Please select at least 1 of the required packages:": "Please select at least 1 of the required packages:",
+	"per person/per day": "per person/per day",
+	"days": "days",
+	"Total": "Total",
+	"day": "day"
 }

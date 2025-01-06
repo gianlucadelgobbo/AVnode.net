@@ -16,8 +16,6 @@
 
     else 
       - for (var b=0;b<dett.organizationsettings.call.calls[call.index].packages.length;b++)
-        - console.log(b)
-        - console.log(dett.organizationsettings.call.calls[call.index].packages[b])
         if dett.organizationsettings.call.calls[call.index].packages[b].personal
           .row
             .col-1
@@ -27,13 +25,22 @@
                   input(id="package"+c+"_"+b,    type="checkbox", checked="checked", disabled="disabled")
                   input(name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="hidden")
 
+                else if dett.organizationsettings.call.calls[call.index].packages[b].alternative
+                  input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + dett.organizationsettings.call.calls[call.index].packages[b].alternative_id + "][id]", value=b,    type="radio", checked=b===0 ? "checked" : undefined)
                 else
                   input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="checkbox", checked=checked ? "checked" : undefined)
             .col-11
               .row
                 .col-md-9
                     label(for="package"+c+"_"+b)
-                      h3!="<b>"+dett.organizationsettings.call.calls[call.index].packages[b].name + "</b> " + global.__("for") + " " + call.subscriptions[c].stagename + (dett.organizationsettings.call.calls[call.index].packages[b].requested ? " ("+global.__("Required")+")" : "")
+                      h3
+                        if dett.organizationsettings.call.calls[call.index].packages[b].alternative
+                          !="["+dett.organizationsettings.call.calls[call.index].packages[b].alternative_name+"] "
+                        !="<b>"+dett.organizationsettings.call.calls[call.index].packages[b].name + "</b> " + global.__("for") + " " + call.subscriptions[c].stagename + (dett.organizationsettings.call.calls[call.index].packages[b].requested ? " ("+global.__("Required")+")" : "")
+                      if dett.organizationsettings.call.calls[call.index].packages[b].alternative
+                        p
+                          small!="<b>"+global.__("At least one of the following option is required: ")+ "<u> " + dett.organizationsettings.call.calls[call.index].packages[b].alternative_name + "</u></b>"
+
                       !=dett.organizationsettings.call.calls[call.index].packages[b].description
                       - if (dett.organizationsettings.call.calls[call.index].packages[b].allow_options)
                         h3=dett.organizationsettings.call.calls[call.index].packages[b].options_name

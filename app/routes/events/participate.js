@@ -60,11 +60,14 @@ router.get('/', (req, res) => {
       data.organizationsettings.call.calls[req.session.call.index].packages = [] */
       if (!data.organizationsettings.call.calls[req.session.call.index].topics.length && slugsMenu.indexOf('topics')!==-1) participateMenu.splice(slugsMenu.indexOf('topics'), 1)
       slugsMenu = participateMenu.map(item =>{return item.slug})
+      
       if (!data.organizationsettings.call.calls[req.session.call.index].availability && slugsMenu.indexOf('availability')!==-1) participateMenu.splice(slugsMenu.indexOf('availability'), 1)
       slugsMenu = participateMenu.map(item =>{return item.slug})
       if (!data.organizationsettings.call.calls[req.session.call.index].packages.length && slugsMenu.indexOf('packages')!==-1) participateMenu.splice(slugsMenu.indexOf('packages'), 1)
       slugsMenu = participateMenu.map(item =>{return item.slug})
+      logger.debug("participateMenu");
       logger.debug(participateMenu);
+      logger.debug(data.organizationsettings.call.calls[req.session.call.index].availability);
       logger.debug(slugsMenu);
     }
 
@@ -114,10 +117,8 @@ router.post('/', (req, res) => {
         slugsMenu = participateMenu.map(item =>{return item.slug})
         if (!data.organizationsettings.call.calls[req.session.call.index].packages.length && slugsMenu.indexOf('packages')!==-1) participateMenu.splice(slugsMenu.indexOf('packages'), 1)
         slugsMenu = participateMenu.map(item =>{return item.slug})
-        logger.debug(participateMenu);
-        logger.debug(slugsMenu);
       }
-            /*
+      /*
       logger.debug('session.call');
       logger.debug(req.session.call);
       logger.debug('data.organizationsettings.call:');
@@ -336,12 +337,36 @@ router.post('/', (req, res) => {
               for (var a=0; a<req.body.subscriptions.length; a++) {
                 if (req.body.subscriptions[a].packages && req.body.subscriptions[a].packages !== 'null' && req.session.call.subscriptions[a].freezed != 'true'){
                   req.session.call.subscriptions[a].packages = req.body.subscriptions[a].packages;
-                  for (var b=0; b<req.body.subscriptions[a].packages.length; b++) {
-                    if (data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].allow_options && !req.body.subscriptions[a].packages[b].option ){
-                      msg = {e:[{name:'accept',m:__('Please select at least 1 option of all the packages')+" "+data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].name}]}
+                  var alternative = []
+                  var alternative_find = false
+                  for (var c=0; c<data.organizationsettings.call.calls[req.session.call.index].packages.length; c++) {
+                    if (data.organizationsettings.call.calls[req.session.call.index].packages[c].alternative) {
+                      alternative_find = true;
+                      if (alternative.indexOf(data.organizationsettings.call.calls[req.session.call.index].packages[c].alternative_name)===-1) {
+                        alternative.push(data.organizationsettings.call.calls[req.session.call.index].packages[c].alternative_name)
+                      }
                     }
                   }
-                }
+                  console.log("stocazzissimo")
+                  console.log(req.body.subscriptions[a].packages)
+                  console.log(alternative)
+                  for (var b=0; b<req.body.subscriptions[a].packages.length; b++) {
+                    if (alternative_find && alternative.indexOf(data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].alternative_name)!==-1){
+                      alternative.splice(alternative.indexOf(data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].alternative_name))
+                    }
+                    console.log(alternative)
+                    if (data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].allow_options && !req.body.subscriptions[a].packages[b].option ){
+                      msg = {e:[{name:'accept',m:__('Please select at least 1 option for the packages')+" "+data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].name}]}
+                    }
+                  }
+                  if (alternative.length){
+                    if (msg && msg.e) {
+                      msg.e.push({name:'accept',m:__('Please select at least 1 of the required packages:')+" "+alternative.join(", ")})
+                    } else {
+                      msg = {e:[{name:'accept',m:__('Please select at least 1 of the required packages:')+" "+alternative.join(", ")}]}
+                    }
+                  }
+              }
               }
               if (!msg) req.session.call.step = parseInt(req.body.step)+1;
             } else {

@@ -59,7 +59,7 @@ table.table.text-white
       .text-right
         b=global.__('Reference Mobile')
     td=user.mobile.map(function(item) {return item.url}).join(", ")
-  if call.availability
+  //-if call.subscriptions
     tr
       th(scope="row")
         .text-right
@@ -78,7 +78,9 @@ table.table.text-white
                 - var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 - var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                 li= days[d.getDay()] + " " + d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear()
-  if call.packages
+  - console.log("call")
+  - console.log(call)
+  if call.subscriptions
     tr
       th(scope="row")
         .text-right
