@@ -206,9 +206,7 @@ block content
                   h2!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
                   ul.list-unstyled.mb-5
                     each item in data.performances
-                      - console.log("stocazzo 2")
                       - item.bookings = item.bookings.filter(obj => obj.event !== undefined);           
-                      - console.log(item)
                       li.media.mt-3.pt-3
                         if !get.hideImages
                           .page-break
@@ -630,9 +628,7 @@ block content
                   h2!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
                   ul.list-unstyled.mb-5
                     each item in data.performances
-                      - console.log("stocazzo 1")
-                      - console.log(item)
-                      - item.bookings = item.bookings.filter(obj => !(event in obj));           
+                      - item.bookings = item.bookings.filter(obj => obj.event !== undefined);           
                       li.media.mt-3.pt-3
                         if !get.hideImages
                           .page-break
