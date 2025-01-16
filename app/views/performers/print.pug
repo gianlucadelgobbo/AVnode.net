@@ -206,7 +206,7 @@ block content
                   h2!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
                   ul.list-unstyled.mb-5
                     each item in data.performances                
-                      - item.bookings = array.filter(obj => !(event in obj));           
+                      - item.bookings = item.bookings.filter(obj => !(event in obj));           
                       li.media.mt-3.pt-3
                         if !get.hideImages
                           .page-break
@@ -628,7 +628,7 @@ block content
                   h2!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
                   ul.list-unstyled.mb-5
                     each item in data.performances
-                      - item.bookings = array.filter(obj => !(event in obj));           
+                      - item.bookings = item.bookings.filter(obj => !(event in obj));           
                       li.media.mt-3.pt-3
                         if !get.hideImages
                           .page-break
