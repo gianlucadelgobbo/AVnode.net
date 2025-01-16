@@ -207,7 +207,7 @@ block content
                   ul.list-unstyled.mb-5
                     each item in data.performances
                       - console.log("stocazzo 2")
-                      - item.bookings = item.bookings.filter(obj => obj.event === undefined);           
+                      - item.bookings = item.bookings.filter(obj => obj.event !== undefined);           
                       - console.log(item)
                       li.media.mt-3.pt-3
                         if !get.hideImages
