@@ -207,8 +207,8 @@ block content
                   ul.list-unstyled.mb-5
                     each item in data.performances
                       - console.log("stocazzo 2")
-                      - console.log(item)
                       - item.bookings = item.bookings.filter(obj => !(event in obj));           
+                      - console.log(item)
                       li.media.mt-3.pt-3
                         if !get.hideImages
                           .page-break
