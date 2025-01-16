@@ -233,6 +233,7 @@ block content
                                   !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug
                           if !get.hideBookings && item.bookings && item.bookings.length
                             u.mb-2.mt-3!='Bookings'
+                            - console.log(b.event)
                             - item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
                             if get.hideImages
                               ul
@@ -654,6 +655,7 @@ block content
                                   !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug
                           if !get.hideBookings && item.bookings && item.bookings.length
                             u.mb-2.mt-3!='Bookings'
+                            - console.log(b.event)
                             - item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
                             if get.hideImages
                               ul
