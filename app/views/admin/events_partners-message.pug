@@ -71,10 +71,11 @@ block content
         ol
           each group in data.partners
             each item, index in group.users
+              - console.log(item)
               if item
                 - item.to_html = ""
                 - item.cc_html = []
-                if item.organizationData && item.organizationData.contacts && item.organizationData.contacts[0] && item.organizationData.contacts[0].email && body && (body.exclude ? body.exclude.indexOf(item.partner._id.toString())===-1 : true)
+                if item.organizationData && item.organizationData.contacts && item.organizationData.contacts[0] && item.organizationData.contacts[0].email && body && (body.exclude ? body.exclude.indexOf(item._id.toString())===-1 : true)
                   each contact, cindex in item.organizationData.contacts
                     - if (cindex===0)
                       - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
