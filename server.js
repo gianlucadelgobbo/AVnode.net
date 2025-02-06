@@ -8,7 +8,6 @@ const path = require("path");
 const MongoStore = require("connect-mongo")(session);
 const flash = require("express-flash");
 //const expressStatusMonitor = require('express-status-monitor');
-const sass = require("node-sass-middleware");
 const moment = require("moment");
 
 // Require mongoose models once!
@@ -229,19 +228,20 @@ app.use(function onerror(err, req, res, next) {
   }
 });
 */
-const webpack = require("webpack");
-const webpackConfig = require("./webpack.config");
-const compiler = webpack(webpackConfig);
-app.use(
-  require("webpack-dev-middleware")(compiler, {
-    noInfo: true,
-    publicPath: webpackConfig.output.publicPath
-  })
-);
-app.use(
-  require("webpack-hot-middleware")(compiler, {
-    log: console.log
-  })
-);
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const webpackConfig = require('./webpack.config');
+
+if (process.env.NODE_ENV === 'development') {
+  const compiler = webpack(webpackConfig);
+  
+  app.use(webpackDevMiddleware(compiler, {
+    publicPath: '/js/',
+    stats: 'minimal'
+  }));
+  
+  app.use(webpackHotMiddleware(compiler));
+}
 
 module.exports = app;

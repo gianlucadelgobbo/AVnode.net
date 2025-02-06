@@ -1361,12 +1361,10 @@ export const renderTimePicker = ({
       <label>{placeholder}</label>
       <TimePicker
         className={className}
-        onTimeChange={input.onChange}
-        time={moment(input.value).format("HH:mm")}
-        timeMode={timeMode}
-        theme="classic"
-        withoutIcon={withoutIcon}
-        colorPalette="dark"
+        onChange={input.onChange}
+        value={input.value ? moment(input.value).format("HH:mm") : null}
+        disableClock={true}
+        format="HH:mm"
       />
       {meta.error && meta.touched && (
         <span className="error-message">

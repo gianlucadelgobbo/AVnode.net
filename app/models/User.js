@@ -15,7 +15,7 @@ const AddressPrivate = require('./shared/AddressPrivate');
 const Link = require('./shared/Link');
 const OrganizationData = require('./shared/OrganizationData');
 
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcryptjs');
 
 const adminsez = 'profile';
 
@@ -298,12 +298,12 @@ userSchema.pre('save', function (next) {
   }
 });
 
-userSchema.pre('save', function (next) {
-  let user = this;
-  if (!user.isModified('password') || user.hashed) { if (user.hashed) delete user.hashed; return next(); }
+userSchema.pre('save', function save(next) {
+  const user = this;
+  if (!user.isModified('password')) { return next(); }
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err); }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
+    bcrypt.hash(user.password, salt, (err, hash) => {
       if (err) { return next(err); }
       user.password = hash;
       next();

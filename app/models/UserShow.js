@@ -1,5 +1,5 @@
 const config = require('getconfig');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
