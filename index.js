@@ -9,12 +9,14 @@ const options = {
     version: '1',
     strict: true,
     deprecationErrors: true
-  }
+  },
+  authSource: 'admin'
 };
 
 (async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, options);
+    const mongoUri = process.env.MONGODB_URI || 'mongodb://root:example@mongo:27017/yourdb?authSource=admin';
+    await mongoose.connect(mongoUri, options);
     console.log('Connesso con successo al database MongoDB');
     app.listen(app.get('port'), () => {
       console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
