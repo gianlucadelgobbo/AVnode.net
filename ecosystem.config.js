@@ -1,5 +1,5 @@
 //pm2 deploy ecosystem.config.js production setup
-module.exports = {
+export default {
   apps : [{
     name: "avnode.net en",
     max_memory_restart: "4G",

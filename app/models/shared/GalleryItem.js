@@ -1,8 +1,9 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
+import config from 'getconfig';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-adminsez = "galleries";
+const adminsez = "galleries";
+
 
 const GalleryItem = new Schema({
   url: String,
@@ -55,4 +56,4 @@ GalleryItem.virtual('imageFormats').get(function () {
   return imageFormats;
 });
 
-module.exports = GalleryItem;
+export default GalleryItem;

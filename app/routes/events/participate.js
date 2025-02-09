@@ -1,12 +1,14 @@
-const router = require('../router')();
-const mongoose = require('mongoose');
+import createRouter from "../router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 const Event = mongoose.model('Event');
 const Program = mongoose.model('Program');
-const dataprovider = require('../../utilities/dataprovider');
+import dataprovider from '../../utilities/dataprovider.js';
 
-const logger = require('../../utilities/logger');
+import { info, debugLog, error } from '../../utilities/logger.js';
+
 
 var participateMenu = [
   {label:__('Active Calls'),slug:"calls"},        // 0
@@ -21,10 +23,10 @@ var participateMenu = [
 var slugsMenu = participateMenu.map(item =>{return item.slug})
 
 router.get('/', (req, res) => {
-  logger.debug("GETGETGETGETGET");
+  debugLog("GETGETGETGETGET");
   //delete req.session.call;
-  logger.debug("req.session.call");
-  //logger.debug(req.session.call);
+  debugLog("req.session.call");
+  //debugLog(req.session.call);
   Event.
   findOne({slug: req.params.slug}).
   //select({slug: 1}).
@@ -32,7 +34,7 @@ router.get('/', (req, res) => {
   exec((err, data) => {
     /*let ids = [];
     if (req.user) ids = [req.user._id].concat(req.user.crews);
-    //logger.debug(performances);
+    //debugLog(performances);
     if (err || data === null) {
       //return next(err);
     }
@@ -52,9 +54,9 @@ router.get('/', (req, res) => {
     const msg = null;
     if (req.session.call.index!==undefined) {
       slugsMenu = participateMenu.map(item =>{return item.slug})
-      /* logger.debug(data.organizationsettings.call.calls[req.session.call.index]);
-      logger.debug("slugsMenu");
-      logger.debug(slugsMenu.indexOf('topics'));
+      /* debugLog(data.organizationsettings.call.calls[req.session.call.index]);
+      debugLog("slugsMenu");
+      debugLog(slugsMenu.indexOf('topics'));
       data.organizationsettings.call.calls[req.session.call.index].topics = []
       data.organizationsettings.call.calls[req.session.call.index].availability = false
       data.organizationsettings.call.calls[req.session.call.index].packages = [] */
@@ -65,10 +67,10 @@ router.get('/', (req, res) => {
       slugsMenu = participateMenu.map(item =>{return item.slug})
       if (!data.organizationsettings.call.calls[req.session.call.index].packages.length && slugsMenu.indexOf('packages')!==-1) participateMenu.splice(slugsMenu.indexOf('packages'), 1)
       slugsMenu = participateMenu.map(item =>{return item.slug})
-      logger.debug("participateMenu");
-      logger.debug(participateMenu);
-      logger.debug(data.organizationsettings.call.calls[req.session.call.index].availability);
-      logger.debug(slugsMenu);
+      debugLog("participateMenu");
+      debugLog(participateMenu);
+      debugLog(data.organizationsettings.call.calls[req.session.call.index].availability);
+      debugLog(slugsMenu);
     }
 
     res.render('events/participate', {
@@ -86,28 +88,28 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  logger.debug(req.session.call);
+  debugLog(req.session.call);
   if ((req.session.call && req.session.call.saved) || !req.body || !req.session.call) {
     if (req.body && req.body.step) delete req.body.step;
     delete req.session.call;
     res.redirect((req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]);
   } else {
     let myasync = true;
-    logger.debug('POSTPOSTPOSTPOSTPOST');
-    //logger.debug('fetchEvent'+req.params.slug);  
+    debugLog('POSTPOSTPOSTPOSTPOST');
+    //debugLog('fetchEvent'+req.params.slug);  
     Event.
     findOne({slug: req.params.slug}).
     populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
     exec((err, data) => {
       if (err || data === null) {
-        //logger.debug('routes/events/participate err:' + err);
+        //debugLog('routes/events/participate err:' + err);
         return next(err);
       }
       if (req.session.call.index!==undefined) {
         slugsMenu = participateMenu.map(item =>{return item.slug})
-        /* logger.debug(data.organizationsettings.call.calls[req.session.call.index]);
-        logger.debug("slugsMenu");
-        logger.debug(slugsMenu.indexOf('topics'));
+        /* debugLog(data.organizationsettings.call.calls[req.session.call.index]);
+        debugLog("slugsMenu");
+        debugLog(slugsMenu.indexOf('topics'));
         data.organizationsettings.call.calls[req.session.call.index].topics = []
         data.organizationsettings.call.calls[req.session.call.index].availability = false
         data.organizationsettings.call.calls[req.session.call.index].packages = [] */
@@ -119,22 +121,22 @@ router.post('/', (req, res) => {
         slugsMenu = participateMenu.map(item =>{return item.slug})
       }
       /*
-      logger.debug('session.call');
-      logger.debug(req.session.call);
-      logger.debug('data.organizationsettings.call:');
-      logger.debug(data.organizationsettings.call);
-      logger.debug('req.body');
-      logger.debug(req.body.subscriptions);
+      debugLog('session.call');
+      debugLog(req.session.call);
+      debugLog('data.organizationsettings.call:');
+      debugLog(data.organizationsettings.call);
+      debugLog('req.body');
+      debugLog(req.body.subscriptions);
       */
       let msg
-      logger.debug("msg");
-      logger.debug(msg);
+      debugLog("msg");
+      debugLog(msg);
       if (data && typeof req.body.step!='undefined') {
-        logger.debug(participateMenu[parseInt(req.body.step)]);
+        debugLog(participateMenu[parseInt(req.body.step)]);
         
         switch (participateMenu[parseInt(req.body.step)].slug) {
           case 'calls' :
-            logger.debug('case 0');
+            debugLog('case 0');
             if (!req.user.name) {
               if (!msg || !msg.e) msg = {e:[]};
               msg.e.push({name:'index', m:__('Warning: You have no name available. Please add your name in your profile and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+__("ADD NOW")+"</a>"});
@@ -160,7 +162,7 @@ router.post('/', (req, res) => {
                 let ids = [req.user._id].concat(req.user.crews);
                 myasync = false;
                 dataprovider.getPerformanceByIds(req, ids, (err, performances) =>{
-                  //logger.debug(performances);
+                  //debugLog(performances);
                 
                   let admitted = {};
                   var admittedCat = data.organizationsettings.call.calls[req.body.index].admitted.map(a => a._id.toString());
@@ -177,26 +179,26 @@ router.post('/', (req, res) => {
                   }
                   let admittedA = [];
                   for (let perf in admitted) {
-                    logger.debug(admitted[perf].type);
+                    debugLog(admitted[perf].type);
                     admittedA.push(admitted[perf]);
                   }
-                  logger.debug('performances '+performances.length);
-                  logger.debug('admitted '+admittedA.length);
-                  //logger.debug(admitted);
+                  debugLog('performances '+performances.length);
+                  debugLog('admitted '+admittedA.length);
+                  //debugLog(admitted);
                   req.session.call.index = parseInt(req.body.index);
                   if (admittedA.length) {
                     req.session.call.step = parseInt(req.body.step)+1;
                     req.session.call.admitted = admittedA;
                   } else {
                     msg = {e:[{name:'index', m:__('Warning: You need at least one performance of this types to participate to the call selected: <b>'+ data.organizationsettings.call.calls[req.body.index].admitted.map(a => a.name.toString()).join(", ") +'</b>. Please create a performance and come back.')+" <a href=\"/admin/performances\">"+__("CREATE YOUR PERFORMANCE NOW")+"</a>"}]};
-                    logger.debug('STOCAZZO 1');
-                    logger.debug(msg);
+                    debugLog('STOCAZZO 1');
+                    debugLog(msg);
                   }
                   if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
                     res.json(data);
                   } else {
-                    logger.debug('STOCAZZO ');
-                    logger.debug(msg);
+                    debugLog('STOCAZZO ');
+                    debugLog(msg);
                     res.render('events/participate', {
                       title: data.title,
                       canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
@@ -214,7 +216,7 @@ router.post('/', (req, res) => {
             }
             break;
           case 'terms' :
-            logger.debug('case 1');  
+            debugLog('case 1');  
             if (data && req.body.accept=='1' && req.body.confirm_personal_data=='1') {
               req.session.call.step++;
             } else {
@@ -234,11 +236,11 @@ router.post('/', (req, res) => {
               req.session.call.performance = parseInt(req.body.performance);
               let perfpeoples = [];
               let allsubscriptions = [];
-              logger.debug("req.session.call.admitted[req.session.call.performance].users");
-              //logger.debug(req.session.call.admitted[req.session.call.performance].users);
+              debugLog("req.session.call.admitted[req.session.call.performance].users");
+              //debugLog(req.session.call.admitted[req.session.call.performance].users);
               for (var b=0;b<req.session.call.admitted[req.session.call.performance].users.length;b++) {
                 if (req.session.call.admitted[req.session.call.performance].users[b].members && req.session.call.admitted[req.session.call.performance].users[b].members.length){
-                  //logger.debug(call.admitted[call.performance].users[b].members);
+                  //debugLog(call.admitted[call.performance].users[b].members);
                   for (var c=0;c<req.session.call.admitted[req.session.call.performance].users[b].members.length;c++) {
                     perfpeoples.push(req.session.call.admitted[req.session.call.performance].users[b].members[c]._id);
                     allsubscriptions.push({subscriber_id: req.session.call.admitted[req.session.call.performance].users[b].members[c]._id,stagename: req.session.call.admitted[req.session.call.performance].users[b].members[c].stagename});
@@ -248,19 +250,19 @@ router.post('/', (req, res) => {
                   allsubscriptions.push({subscriber_id: req.session.call.admitted[req.session.call.performance].users[b]._id,stagename: req.session.call.admitted[req.session.call.performance].users[b].stagename});
                 }          
               }
-              logger.debug("perfpeoples");
-              logger.debug({"subscriptions.subscriber_id":{$in:perfpeoples}});
+              debugLog("perfpeoples");
+              debugLog({"subscriptions.subscriber_id":{$in:perfpeoples}});
               myasync = false;
               Program.find({"subscriptions.subscriber_id":{$in:perfpeoples}, event: req.session.call.event._id}).
               lean().
               exec((err, subscriptions) => {
-                logger.debug("subscriptions");
-                logger.debug(subscriptions.count);
+                debugLog("subscriptions");
+                debugLog(subscriptions.count);
                 let subscriptionsfound = [];
                 for (var b=0;b<subscriptions.length;b++) {
                   subscriptionsfound = subscriptionsfound.concat(subscriptions[b].subscriptions);
-                  //logger.debug(subscriptions[b].subscriptions);
-                  //logger.debug(subscriptionsfound);
+                  //debugLog(subscriptions[b].subscriptions);
+                  //debugLog(subscriptionsfound);
                 }
                 for (var b=0;b<allsubscriptions.length;b++) {
                   for (var d=0;d<subscriptionsfound.length;d++) {
@@ -273,8 +275,8 @@ router.post('/', (req, res) => {
                 }
                 for (var b=0;b<allsubscriptions.length;b++) if (!allsubscriptions[b].freezed) delete allsubscriptions[b].subscriber_id;
                 req.session.call.subscriptions = allsubscriptions;
-                logger.debug("allsubscriptions");
-                //logger.debug(allsubscriptions);
+                debugLog("allsubscriptions");
+                //debugLog(allsubscriptions);
                 res.render('events/participate', {
                   title: data.title,
                   canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
@@ -298,10 +300,10 @@ router.post('/', (req, res) => {
             }
             break;
           case 'availability' :
-            logger.debug("req.body.subscriptions");
-            logger.debug(req.body.subscriptions);
-            logger.debug(req.body.subscriptions.filter(item => item.subscriber_id));
-            logger.debug(req.body.subscriptions.filter(item => item.subscriber_id).length);
+            debugLog("req.body.subscriptions");
+            debugLog(req.body.subscriptions);
+            debugLog(req.body.subscriptions.filter(item => item.subscriber_id));
+            debugLog(req.body.subscriptions.filter(item => item.subscriber_id).length);
             if (data && req.body.subscriptions && req.body.subscriptions.length && req.body.subscriptions.filter(item => item.subscriber_id).length) {
               let days_check = true;
               for (var a=0; a<req.body.subscriptions.length; a++) {
@@ -376,9 +378,9 @@ router.post('/', (req, res) => {
           case 'summary' :
             myasync = false;
             // SAVE
-            //logger.debug('req.session.call.index');
-            //logger.debug(req.session.call.index);
-            logger.debug(req.session.call.admitted[req.session.call.performance]);
+            //debugLog('req.session.call.index');
+            //debugLog(req.session.call.index);
+            debugLog(req.session.call.admitted[req.session.call.performance]);
             req.session.call.save = {
               event:        req.session.call.event._id,
               call:         req.session.call.index,
@@ -407,9 +409,9 @@ router.post('/', (req, res) => {
                 req.session.call.save.subscriptions.push(sub);
               }
             }
-            //logger.debug('req.session.call.save');
-            //logger.debug(req.session.call.save);
-            //logger.debug(req.session.call.save);
+            //debugLog('req.session.call.save');
+            //debugLog(req.session.call.save);
+            //debugLog(req.session.call.save);
             Program.create(req.session.call.save, function (err, sub) {
               if (err) {
                 msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
@@ -496,17 +498,17 @@ router.post('/', (req, res) => {
         msg = {e:[{name:'index', m:__('Unknow error')}]};
       }
   /*
-      logger.debug("req.user");
-      logger.debug(req.user);
+      debugLog("req.user");
+      debugLog(req.user);
    */
       if (myasync) {
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {
-          logger.debug('JUST BEFORE RENDER');
-          //logger.debug(req.session.call.step);
-          //logger.debug(req.session.call);  
-          logger.debug(msg);
+          debugLog('JUST BEFORE RENDER');
+          //debugLog(req.session.call.step);
+          //debugLog(req.session.call);  
+          debugLog(msg);
           res.render('events/participate', {
             title: data.title,
             canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
@@ -569,8 +571,8 @@ exports.get = function get(req, res) {
             if (config.sections[pathArray[1]] && config.sections[pathArray[1]].subsections && config.sections[pathArray[1]].subsections[pathArray[3]]) {
               DB[config.sections[pathArray[1]].coll].findOne({permalink:pathArray[2]}, function(e, dett) {
                 if (dett) {
-                  logger.debug("GETGETGETGETGETGET");
-                  logger.debug(req.session.call);
+                  debugLog("GETGETGETGETGETGET");
+                  debugLog(req.session.call);
 
                   if (!req.session.call){
                     req.session.call = {
@@ -628,10 +630,10 @@ exports.post = function post(req, res) {
           case 4 :
             if (config.sections[pathArray[1]] && config.sections[pathArray[1]].subsections && config.sections[pathArray[1]].subsections[pathArray[3]]) {
               DB[config.sections[pathArray[1]].coll].findOne({permalink:pathArray[2]}, function(e, dett) {
-                logger.debug("POSTPOSTPOSTPOSTPOST");
-                logger.debug(req.body);
-                logger.debug(req.body.step);
-                logger.debug(typeof req.body.step);
+                debugLog("POSTPOSTPOSTPOSTPOST");
+                debugLog(req.body);
+                debugLog(req.body.step);
+                debugLog(typeof req.body.step);
                 if (dett && typeof req.body.step!='undefined') {
                   var msg;
                   switch (parseInt(req.body.step)) {
@@ -706,7 +708,7 @@ exports.post = function post(req, res) {
                       }
                       break;
                   }
-                  logger.debug(req.session.call);
+                  debugLog(req.session.call);
                   if (output=="json") {
                     res.send(result);
                   } else if (output=="xml") {
@@ -736,4 +738,4 @@ exports.post = function post(req, res) {
 };
 */
 
-module.exports = router;
+export default router;

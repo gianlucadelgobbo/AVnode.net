@@ -1,13 +1,16 @@
-const router = require('../router')();
-const dataprovider = require('../../utilities/dataprovider');
+import createRouter from "../router.js";
+const router = createRouter();
+import dataprovider from '../../utilities/dataprovider.js';
 
-const Model = require('mongoose').model('Footage');
+import mongoose from 'mongoose';
+const Model = mongoose.model('Footage');
 const section = 'footage';
 
-const logger = require('../../utilities/logger');
+import { info, debugLog, error } from '../../utilities/logger.js';
+
 
 router.get('/', (req, res) => {
   dataprovider.show(req, res, section, 'show', Model);
 });
 
-module.exports = router;
+export default router;

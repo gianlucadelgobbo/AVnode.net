@@ -1,10 +1,13 @@
-const router = require('./router')();
+import createRouter from "./router.js";
+const router = createRouter();
 
-router.get('/', (req, res) => {
-  req.session.destroy(function (err) {
-    req.logout();
-    res.redirect(req.get('Referrer'));
+router.get('/', (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    req.session.destroy(() => {
+      res.redirect(req.get('Referrer') || '/login');
+    });
   });
 });
 
-module.exports = router;
+export default router;

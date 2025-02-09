@@ -1,4 +1,5 @@
-const Schema = require('mongoose').Schema;
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
 const Link = new Schema({
   txt: String, // removed { type: String, unique: true },
@@ -26,4 +27,4 @@ Link.virtual('label').get(function () {
   }
 });
 
-module.exports = Link;
+export default Link;

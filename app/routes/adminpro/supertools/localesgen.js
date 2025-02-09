@@ -1,9 +1,11 @@
-const router = require('../../router')();
-const mongoose = require('mongoose');
-const jsonfile = require('jsonfile');
-const config = require('getconfig');
+import createRouter from "../../router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
+import jsonfile from 'jsonfile';
+import config from 'getconfig';
 
-const logger = require('../../../utilities/logger');
+import { info, debugLog, error } from '../../../utilities/logger.js';
+
 
 router.get('/', (req, res) => {
   res.render('adminpro/supertools/localesgen/index', {
@@ -43,8 +45,8 @@ router.post('/', (req, res) => {
     promises
   ).then( (resultsPromise) => {
     setTimeout(function() {
-      logger.debug('resultsPromise');
-      logger.debug(resultsPromise);
+      debugLog('resultsPromise');
+      debugLog(resultsPromise);
       res.render('adminpro/supertools/localesgen/index', {
         title: 'Locales Generator',
         currentUrl: req.originalUrl,
@@ -68,4 +70,4 @@ router.writeData =(file, data) =>{
   });
 }
 
-module.exports = router;
+export default router;

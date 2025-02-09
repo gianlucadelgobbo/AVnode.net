@@ -1,4 +1,5 @@
-const Schema = require('mongoose').Schema;
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
 const Address = new Schema({
   postal_code: String,
@@ -26,5 +27,5 @@ Address.virtual('mapUrl').get(function () {
   }
   return url;
 });
-module.exports = Address;
+export default Address;
 

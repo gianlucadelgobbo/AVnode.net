@@ -1,11 +1,16 @@
-const router = require('../router')();
-const mongoose = require('mongoose');
+import createRouter from "../router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
 const User = mongoose.model('User');
 
-const uuid = require('uuid');
-const moment = require('moment');
-const mailer = require('../../utilities/mailer');
-const _ = require('lodash');
+import { v4 as uuidv4 } from 'uuid';
+
+const setIdentifier = () => {
+  return uuidv4();
+};
+import moment from 'moment';
+import { mySendMailer } from '../../utilities/mailer.js';
+import _ from 'lodash';
 
 router.get('/', (req, res) => {
   res.render('password/forgot', {
@@ -23,7 +28,7 @@ router.post('/', (req, res) => {
       req.flash('errors', {msg: {errors: {email: { message: __('User not found.')}}}});
       res.redirect('/password/forgot');
     } else {
-      const token = uuid.v4();
+      const token = setIdentifier();
       const expiresInHours = _.parseInt(process.env.PASSWORD_RESET_EXPIRES);
       user.passwordResetToken = token;
       user.passwordResetExpires = moment().add(expiresInHours, 'hours').toDate();
@@ -33,7 +38,7 @@ router.post('/', (req, res) => {
           req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: __('Password not generated, please retry.')}}})}`});
           res.redirect('/password/forgot');
         } else {
-          mailer.mySendMailer({
+          mySendMailer({
             template: 'reset-password',
             message: {
               to: user.email
@@ -68,4 +73,4 @@ router.post('/', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

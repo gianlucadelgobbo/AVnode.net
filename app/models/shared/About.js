@@ -1,4 +1,5 @@
-const Schema = require('mongoose').Schema;
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
 const About = new Schema({
   lang: String, // removed { type: String, unique: true },
@@ -6,4 +7,4 @@ const About = new Schema({
   is_primary: { type: Boolean, default: false }
 },{ _id : false });
 
-module.exports = About;
+export default About;

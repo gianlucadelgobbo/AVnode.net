@@ -1,12 +1,14 @@
-const router = require('../../router')();
-const mongoose = require('mongoose');
+import createRouter from "../../router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const Video = mongoose.model('Video');
 const Vjtv = mongoose.model('Vjtv');
 const Category = mongoose.model('Category');
 const User = mongoose.model('User');
 
-const logger = require('../../../utilities/logger');
+import { info, debugLog, error } from '../../../utilities/logger.js';
+
 
 router.get('/generator', (req, res) => {
   let month = [];
@@ -19,7 +21,7 @@ router.get('/generator', (req, res) => {
   }}]).
   exec((err, days) => {
     if (req.query.day || req.query.month) {
-      logger.debug("eccomi");
+      debugLog("eccomi");
       Video.
       find({"categories.0":{$exists:true},"media.externalurl":{$exists:false},"media.duration": {$gt:60000}, "media.encoded": 1}).
       sort({createdAt: 1}).
@@ -46,12 +48,12 @@ router.get('/generator', (req, res) => {
           lastdate = new Date(Date.UTC(parseInt(pieces[0]), parseInt(pieces[1])-1, 1));
           lastdate = new Date(lastdate.setUTCDate(lastdate.getUTCDate()-1));
         }
-        /* logger.debug("date");
-        logger.debug(date);
-        logger.debug("enddate");
-        logger.debug(enddate);
-        logger.debug("lastdate");
-        logger.debug(lastdate); */
+        /* debugLog("date");
+        debugLog(date);
+        debugLog("enddate");
+        debugLog(enddate);
+        debugLog("lastdate");
+        debugLog(lastdate); */
         var query = {programming: { $lt: date, $gt: lastdate}};
         Vjtv.
         find(query).
@@ -72,18 +74,18 @@ router.get('/generator', (req, res) => {
           if (last.length) {
 
             var vjdjsets_ids = vjdjsets.map(item => {return item._id.toString()});
-/*             logger.debug("vjdjsets_ids");
-            logger.debug(vjdjsets_ids);
-            logger.debug("last");
-            logger.debug(last);
+/*             debugLog("vjdjsets_ids");
+            debugLog(vjdjsets_ids);
+            debugLog("last");
+            debugLog(last);
  */            contavjdjsets = 0;
             while(contavjdjsets == 0 && last>=0) {
-/*               logger.debug("contavjdjsets");
-              logger.debug(last);
-              logger.debug(lasts[last].video._id.toString());
+/*               debugLog("contavjdjsets");
+              debugLog(last);
+              debugLog(lasts[last].video._id.toString());
 */              
-              logger.debug("lasts");
-              logger.debug(lasts[last]);
+              debugLog("lasts");
+              debugLog(lasts[last]);
               contavjdjsets = vjdjsets_ids.indexOf(lasts[last].video._id.toString())!==-1 ? vjdjsets_ids.indexOf(lasts[last].video._id.toString()) : 0
               last--
             }
@@ -91,9 +93,9 @@ router.get('/generator', (req, res) => {
             var docs_ids = docs.map(item => {return item._id.toString()})
             contadocs = 0;
             while(contadocs == 0 && last>=0) {
-/*               logger.debug("contadocs");
-              logger.debug(last);
-              logger.debug(lasts[last].video._id.toString());
+/*               debugLog("contadocs");
+              debugLog(last);
+              debugLog(lasts[last].video._id.toString());
  */              contadocs = docs_ids.indexOf(lasts[last].video._id.toString())!==-1 ? docs_ids.indexOf(lasts[last].video._id.toString()) : 0
               last--
             }
@@ -101,56 +103,56 @@ router.get('/generator', (req, res) => {
             var performances_ids = performances.map(item => {return item._id.toString()})
             contaperformances = 0;
             while(contaperformances == 0 && last>=0) {
-              /* logger.debug("contaperformances");
-              logger.debug(last);
-              logger.debug(lasts[last].video._id.toString()); */
+              /* debugLog("contaperformances");
+              debugLog(last);
+              debugLog(lasts[last].video._id.toString()); */
               contaperformances = performances_ids.indexOf(lasts[last].video._id.toString())!==-1 ? performances_ids.indexOf(lasts[last].video._id.toString()) : 0
               last--
             }
             last = lasts.length-1;
             var video_ids = video.map(item => {return item._id.toString()});
-            //logger.debug(video_ids);
+            //debugLog(video_ids);
             contavideo = 0;
-            //logger.debug(lasts);
+            //debugLog(lasts);
             while(contavideo == 0 && last>=0) {
-              /* logger.debug("contavideo");
-              logger.debug(lasts[last].video._id.toString());
-              logger.debug(video_ids.indexOf(lasts[last].video._id.toString()));
-              logger.debug(last); */
+              /* debugLog("contavideo");
+              debugLog(lasts[last].video._id.toString());
+              debugLog(video_ids.indexOf(lasts[last].video._id.toString()));
+              debugLog(last); */
               contavideo = video_ids.indexOf(lasts[last].video._id.toString())!==-1 ? video_ids.indexOf(lasts[last].video._id.toString()) : 0
               last--
             }
           }
 
-          /* logger.debug("contavjdjsets");
-          logger.debug(contavjdjsets);
-          logger.debug("contadocs");
-          logger.debug(contadocs);
-          logger.debug("contaperformances");
-          logger.debug(contaperformances);
-          logger.debug("contavideo");
-          logger.debug(contavideo); */
+          /* debugLog("contavjdjsets");
+          debugLog(contavjdjsets);
+          debugLog("contadocs");
+          debugLog(contadocs);
+          debugLog("contaperformances");
+          debugLog(contaperformances);
+          debugLog("contavideo");
+          debugLog(contavideo); */
           let milliseconds;
           let dailyTime;
-          //logger.debug("dailyTime");
+          //debugLog("dailyTime");
           if (contavjdjsets>0) {
             dailyTime = -date.getTime();
-            /* logger.debug(dailyTime);
-            logger.debug(lasts[lasts.length-1]);
-            logger.debug(lasts[lasts.length-1].programming);
-            logger.debug(lasts[lasts.length-1].programming.getTime()); */
+            /* debugLog(dailyTime);
+            debugLog(lasts[lasts.length-1]);
+            debugLog(lasts[lasts.length-1].programming);
+            debugLog(lasts[lasts.length-1].programming.getTime()); */
             milliseconds = new Date(lasts[lasts.length-1].programming).getTime()+lasts[lasts.length-1].video.media.duration;
-            //logger.debug(milliseconds);
+            //debugLog(milliseconds);
             dailyTime+=milliseconds;
-            //logger.debug(dailyTime);
+            //debugLog(dailyTime);
           } else {
             milliseconds = date.getTime();
             dailyTime = 0;
           }
-          /* logger.debug("dailyTime");
-          logger.debug(dailyTime);
-          logger.debug("milliseconds");
-          logger.debug(milliseconds); */
+          /* debugLog("dailyTime");
+          debugLog(dailyTime);
+          debugLog("milliseconds");
+          debugLog(milliseconds); */
           const enddatemilliseconds = enddate.getTime()
 
           var item;
@@ -227,18 +229,18 @@ router.get('/generator', (req, res) => {
             }
           }
           var query = {programming: { $lt: enddate, $gt: date}};
-          logger.debug(query);
+          debugLog(query);
           Vjtv
           .deleteMany(query, function (err, results) {
-            /* logger.debug(query);
-            logger.debug(results);
-            logger.debug(month.length); */
-            logger.debug(query);
-            logger.debug("month[0]");
-            logger.debug(month[1]);
+            /* debugLog(query);
+            debugLog(results);
+            debugLog(month.length); */
+            debugLog(query);
+            debugLog("month[0]");
+            debugLog(month[1]);
             Vjtv
             .create(month, function (err, created) {
-              //logger.debug("createok");
+              //debugLog("createok");
               /* var pieces = req.query.month.split("-");
               var date = new Date(pieces[0], parseInt(pieces[1])-1, 1, 0, 0,0,0);
               // 1 Month
@@ -251,9 +253,9 @@ router.get('/generator', (req, res) => {
               .sort({programming: 1})
               .populate([{path: "video", model: "Video", select: {title: 1, slug: 1, createdAt: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
               .exec((err, data) => {
-                logger.debug("data[0]");
-                logger.debug(data[0]);
-                //logger.debug("adminpro");
+                debugLog("data[0]");
+                debugLog(data[0]);
+                //debugLog("adminpro");
                 if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
                   res.json(data);
                 } else {
@@ -294,4 +296,4 @@ router.get('/', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

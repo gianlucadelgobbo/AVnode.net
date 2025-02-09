@@ -1,6 +1,7 @@
-const router = require('./router')();
-const page = require('./pages/show');
+import createRouter from "./router.js";
+const router = createRouter();
+import page from "./pages/show.js";
 
 router.use('/', page);
   
-module.exports = router;
+export default router;

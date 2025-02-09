@@ -1,14 +1,16 @@
-const router = require('../../router')();
-const mongoose = require('mongoose');
-const config = require('getconfig');
+import createRouter from "../../router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
+import config from 'getconfig';
 
-const logger = require('../../../utilities/logger');
+import { info, debugLog, error } from '../../../utilities/logger.js';
+
 
 // V > db.events.findOne({"schedule.venue.location.locality":{$exists: true}},{schedule:1});
 // V {"addresses.country": "Italy", "addresses.locality":{$in: ["Rome","Roma"]}},{addresses:1}
 
 router.get('/', (req, res) => {
-  logger.debug('/adminpro/supertools/');
+  debugLog('/adminpro/supertools/');
   res.render('adminpro/supertools/home', {
     title: 'SUPER Tools',
     sez: 'adminpro/supertools/home',
@@ -18,4 +20,4 @@ router.get('/', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

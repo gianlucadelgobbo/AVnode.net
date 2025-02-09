@@ -1,14 +1,14 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
+import config from 'getconfig';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-//const indexPlugin = require('../utilities/elasticsearch/Performance');
-const helper = require('../utilities/helper');
+//import indexPlugin from '../utilities/elasticsearch/Performance.js';
+import helper from '../utilities/helper.js';;
 
-const About = require('./shared/About');
-const MediaImage = require('./shared/MediaImage');
-const Booking = require('./shared/Booking');
-const moment = require('moment');
-const uniqueValidator = require('mongoose-unique-validator');
+import About from './shared/About.js';
+import MediaImage from './shared/MediaImage.js';
+import Booking from './shared/Booking.js';
+import moment from 'moment';
+
 
 const adminsez = 'performances';
 function ignoreEmpty (val) {
@@ -171,8 +171,7 @@ performanceSchema.pre('validate', function(next) {
  */
 
 //performanceSchema.plugin(indexPlugin());
-performanceSchema.plugin(uniqueValidator);
 
 const Performance = mongoose.model('Performance', performanceSchema);
 
-module.exports = Performance;
+export default Performance;

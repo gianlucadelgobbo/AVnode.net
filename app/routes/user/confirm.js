@@ -1,6 +1,7 @@
-const router = require('../router')();
+import createRouter from "../router.js";
+const router = createRouter();
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const User = mongoose.model('User');
 
 // confirm signup
@@ -47,4 +48,4 @@ router.get('/email/:uuid', (req, res, next) => {
   });
 });
 
-module.exports = router;
+export default router;

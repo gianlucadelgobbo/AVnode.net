@@ -1,5 +1,5 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('react')) :
+    typeof exports === 'object' && typeof module !== 'undefined' ? export default factory(require('react')) :
     typeof define === 'function' && define.amd ? define(['react'], factory) :
     (global = global || self, global.Lightgallery = factory(global.React));
 }(this, (function (React) { 'use strict';

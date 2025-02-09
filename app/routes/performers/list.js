@@ -1,11 +1,14 @@
-const config = require('getconfig');
-const router = require('../router')();
-const dataprovider = require('../../utilities/dataprovider');
+import config from 'getconfig';
+import createRouter from '../router.js';
+const router = createRouter();
+import dataprovider from '../../utilities/dataprovider.js';
 
-const Model = require('mongoose').model('UserShow');
+import mongoose from 'mongoose';
+const Model = mongoose.model('UserShow');
 const section = 'performers';
 
-const logger = require('../../utilities/logger');
+import { info, debugLog, error } from '../../utilities/logger.js';
+
 
 router.get('/:filter/:sorting/:page', (req, res) => {
   dataprovider.list(req, res, section, Model);
@@ -29,4 +32,4 @@ router.get('/', (req, res) => {
   dataprovider.list(req, res, section, Model);
 });
 
-module.exports = router;
+export default router;

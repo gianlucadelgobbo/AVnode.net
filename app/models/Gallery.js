@@ -1,11 +1,11 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
+import config from 'getconfig';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const MediaImage = require('./shared/MediaImage');
-const GalleryItem = require('./shared/GalleryItem');
-const About = require('./shared/About');
-const uniqueValidator = require('mongoose-unique-validator');
+import MediaImage from './shared/MediaImage.js';
+import GalleryItem from './shared/GalleryItem.js';
+import About from './shared/About.js';
+
 
 const adminsez = 'galleries';
 
@@ -90,8 +90,7 @@ gallerySchema.virtual('imageFormats').get(function () {
         next
     );
 }); */
-gallerySchema.plugin(uniqueValidator);
 
 const Gallery = mongoose.model('Gallery', gallerySchema);
 
-module.exports = Gallery;
+export default Gallery;

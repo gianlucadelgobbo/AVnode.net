@@ -1,8 +1,9 @@
-const router = require('../../router')();
-let config = require('getconfig');
-let helpers = require('./helpers');
+import createRouter from "../../router.js";
+const router = createRouter();
+import config from 'getconfig';
+import helpers from './helpers.js';
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const Models = {
   'User': mongoose.model('User'),
@@ -14,11 +15,12 @@ const Models = {
   'Playlist': mongoose.model('Playlist'),
   'Video': mongoose.model('Video')
 }
-const logger = require('../../../utilities/logger');
+import { info, debugLog, error } from '../../../utilities/logger.js';
+
 
 router.putData = (req, res, view) => {
-  logger.debug("putData");
-  logger.debug(req.body);
+  debugLog("putData");
+  debugLog(req.body);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     if (req.body.mediastr) {
       if (!req.body.medias) req.body.medias = [];
@@ -27,7 +29,7 @@ router.putData = (req, res, view) => {
       } else {
         req.body.medias[0] = JSON.parse(req.body.mediastr)
       }
-      logger.debug(req.body);
+      debugLog(req.body);
       delete req.body.mediastr;
     }
     const id = req.params.id;
@@ -40,11 +42,11 @@ router.putData = (req, res, view) => {
           //if (select.is_public)
           req.body.is_public = req.body.is_public ? req.body.is_public : false;
           let put = {};
-          logger.debug('Data');
-          logger.debug(data);
-          logger.debug('select');
-          logger.debug(select);
-          logger.debug(Object.keys(select));
+          debugLog('Data');
+          debugLog(data);
+          debugLog('select');
+          debugLog(select);
+          debugLog(Object.keys(select));
           const selectkeys = Object.keys(select);
           for(var k in selectkeys) {
             if (req.body[selectkeys[k]]!==undefined) {
@@ -59,10 +61,10 @@ router.putData = (req, res, view) => {
               put.schedule[s].endtime = new Date(Date.UTC(tmp[0],tmp[1]-1,tmp[2],tmp[3],tmp[4]));
             }
           }
-          logger.debug('putputputputputput');
-          logger.debug(put);
-          logger.debug('DataDataDataDataDataData');
-          logger.debug(data);
+          debugLog('putputputputputput');
+          debugLog(put);
+          debugLog('DataDataDataDataDataData');
+          debugLog(data);
           Object.assign(data, put);
           if (data.medias && data.medias.length){
             data.medias = req.body.medias
@@ -78,16 +80,16 @@ router.putData = (req, res, view) => {
             if (req.user.stagename) data.stagename = req.user.stagename;
             if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].locality) data.addresses = req.user.addresses;
           } */
-          logger.debug('putDataputDataputDataputDataputDataputData');
-          logger.debug(data);
+          debugLog('putDataputDataputDataputDataputDataputData');
+          debugLog(data);
           if (helpers.editable(req, data, id)) {
-            logger.debug('savesavesavesavesavesavesavesave');
+            debugLog('savesavesavesavesavesavesavesave');
             data.save((err) => {
               if (err) {
                 if (view == "json") {
-                  logger.debug(err);
-                  logger.debug("view");
-                  logger.debug(view);
+                  debugLog(err);
+                  debugLog("view");
+                  debugLog(view);
                   res.status(400).send({ message: `${JSON.stringify(err)}` });
                 } else {
                   for (e in err.errors) err.errors[e].message = __(err.errors[e].message)
@@ -104,17 +106,17 @@ router.putData = (req, res, view) => {
                   });
                 }
               } else {
-                logger.debug('USERS ?');
-                logger.debug(data.users);
-                logger.debug('MEMBERS ?');
-                logger.debug(data.members);
+                debugLog('USERS ?');
+                debugLog(data.users);
+                debugLog('MEMBERS ?');
+                debugLog(data.members);
                 var inin = []
                 if (data.members) {
                   inin = [...data.members]
                   inin.push(data._id)
                 }
                 var query = {_id: {$in:data.users || inin || data._id}};
-                logger.debug(query);
+                debugLog(query);
                 Promise.all(
                   [helpers.setStatsAndActivity(query)]
                 ).then( (results) => {
@@ -228,4 +230,4 @@ router.putData = (req, res, view) => {
     res.status(404).send({ message: `API_NOT_FOUND` });
   }
 }
-module.exports = router;
+export default router;

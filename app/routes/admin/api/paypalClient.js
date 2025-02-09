@@ -53,4 +53,4 @@ async function prettyPrint(jsonData, pre=""){
     return pretty;
 }
 
-module.exports = {client: client, prettyPrint:prettyPrint};
+export default {client: client, prettyPrint:prettyPrint};

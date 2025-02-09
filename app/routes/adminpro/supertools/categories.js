@@ -1,9 +1,11 @@
-const router = require('../../router')();
-const mongoose = require('mongoose');
+import createRouter from "../../router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
 const Category = mongoose.model('Category');
-const config = require('getconfig');
+import config from 'getconfig';
 
-const logger = require('../../../utilities/logger');
+import { info, debugLog, error } from '../../../utilities/logger.js';
+
 
 router.unflatten = function( array, parent, tree ){
 
@@ -11,10 +13,10 @@ router.unflatten = function( array, parent, tree ){
   parent = typeof parent !== 'undefined' ? parent : { _id: 0 };
 
   var children = array.filter(child => child.ancestor == parent._id || !child.ancestor);
-  logger.debug("children");
-  logger.debug(children);
-  logger.debug("parent");
-  logger.debug(parent);
+  debugLog("children");
+  debugLog(children);
+  debugLog("parent");
+  debugLog(parent);
 
   if( children.length!==0  ){
       if( parent._id == 0 ){
@@ -23,11 +25,11 @@ router.unflatten = function( array, parent, tree ){
          parent['children'] = children;
       }
       for(let child in children){ 
-        logger.debug(child);
+        debugLog(child);
         router.unflatten( array, child ) 
       }                    
   }
-  logger.debug(tree);
+  debugLog(tree);
 
   return tree;
 }
@@ -87,4 +89,4 @@ router.get('/dbcheck', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

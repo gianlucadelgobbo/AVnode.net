@@ -1,8 +1,8 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
+import config from 'getconfig';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-const moment = require('moment');
-const momentDurationFormatSetup = require('moment-duration-format');
+import moment from 'moment';
+import momentDurationFormatSetup from 'moment-duration-format';
 
 const Media = new Schema({
   title: String,
@@ -50,4 +50,4 @@ Media.virtual('filesizeHR').get(function (req) {
   }
 });
 
-module.exports = Media;
+export default Media;

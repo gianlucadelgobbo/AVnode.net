@@ -1,4 +1,5 @@
-const Schema = require('mongoose').Schema;
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
 const MediaImage = new Schema({
   file: String,
@@ -10,4 +11,4 @@ const MediaImage = new Schema({
   width: Number,
   height: Number
 });
-module.exports = MediaImage;
+export default MediaImage;

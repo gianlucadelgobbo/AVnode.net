@@ -1,6 +1,7 @@
-const router = require('./router')();
-const list = require('./performers/list');
+import createRouter from "./router.js";
+const router = createRouter();
+import list from './performers/list.js';
 
 router.use('/', list);
   
-module.exports = router;
+export default router;

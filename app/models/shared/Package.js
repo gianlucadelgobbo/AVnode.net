@@ -1,4 +1,5 @@
-const Schema = require('mongoose').Schema;
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
 const Package = new Schema({
   name: String,
@@ -35,4 +36,4 @@ Package.virtual('price_formatted').get(function () {
   return this.price;
 });
 
-module.exports = Package;
+export default Package;

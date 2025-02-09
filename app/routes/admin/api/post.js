@@ -1,10 +1,18 @@
-const router = require('../../router')();
-let config = require('getconfig');
-const moment = require('moment');
-const helpers = require('./helpers');
+import createRouter from "../../router.js";
+const router = createRouter();
 
-const mongoose = require('mongoose');
-const axios = require('axios');
+import config from 'getconfig';
+import moment from 'moment';
+import helpers from './helpers.js';
+
+import mongoose from 'mongoose';
+import axios from 'axios';
+
+//import TG from 'telegram-bot-api'
+import { mySendMailer } from '../../../utilities/mailer.js';
+import https from 'https';
+import querystring from 'querystring';
+import { gMailer } from '../../../utilities/gmailer.js';
 
 const Models = {
   'User': mongoose.model('User'),
@@ -18,24 +26,24 @@ const Models = {
   'Video': mongoose.model('Video'),
   'Order': mongoose.model('Order')
 }
-const logger = require('../../../utilities/logger');
+import { info, debugLog, error } from '../../../utilities/logger.js';
 
-router.postData = (req, res) => {
-  logger.debug("postData");
-  logger.debug("req.body");
-  logger.debug('');
-  logger.debug(req.body);
-  logger.debug("req.params");
-  logger.debug(req.params);
+export const postData = (req, res) => {
+  debugLog("postData");
+  debugLog("req.body");
+  debugLog('');
+  debugLog(req.body);
+  debugLog("req.params");
+  debugLog(req.params);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms.new) {
-    logger.debug('BINGO');
+    debugLog('BINGO');
     let select = Object. assign({}, config.cpanel[req.params.sez].forms.new.select);
     let selectaddon = config.cpanel[req.params.sez].forms.new.selectaddon;
     let post = {};
 
     helpers.myExternalUrl(req, (err) => {
-      logger.debug("myExternalUrl result");
-      logger.debug(req.body);
+      debugLog("myExternalUrl result");
+      debugLog(req.body);
       if (req.params.sez == "videos" && req.body.media && req.body.media.externalurl) {
         select.image = 1;
         select.media = 1;
@@ -44,12 +52,12 @@ router.postData = (req, res) => {
       }
       helpers.mySlugify(Models[config.cpanel[req.params.sez].model], req.body.stagename ? req.body.stagename : req.body.title, (slug) => {
         req.body.slug = slug;
-        logger.debug("slug");
-        logger.debug(slug);
+        debugLog("slug");
+        debugLog(slug);
         //for (const item in select) if(req.body[item]) post[item] = req.body[item];
         // db.users.updateOne({slug:'gianlucadelgobbo'},{$unset: {oldpassword:""}});
-        logger.debug('select');
-        logger.debug(select);
+        debugLog('select');
+        debugLog(select);
         for (const item in select) if(req.body[item]) {
           post[item] = req.body[item];
         }
@@ -65,14 +73,14 @@ router.postData = (req, res) => {
         if (req.params.ancestor && req.params.id) {
           post[req.params.ancestor] = [req.params.id];
         }
-        logger.debug('postpostpostpostpostpost');
-        logger.debug(post);
+        debugLog('postpostpostpostpostpost');
+        debugLog(post);
   
         Models[config.cpanel[req.params.sez].model]
         .create(post, (err, data) => {
           if (!err) {
-            logger.debug('create success');
-            logger.debug(data);
+            debugLog('create success');
+            debugLog(data);
             var id;
             if (req.params.sez==="partners") {
               id = post.partner_owner[0].owner;
@@ -81,8 +89,8 @@ router.postData = (req, res) => {
             }
             Models['User']
             .findById(id, req.params.sez, (err, user) => {
-              logger.debug('findById user');
-              logger.debug(user);
+              debugLog('findById user');
+              debugLog(user);
               if (!err) {
                 if (user) {
                   if (req.params.sez==="partners") {
@@ -93,16 +101,16 @@ router.postData = (req, res) => {
                     });                
                   } else {
                     user[req.params.sez].push(data._id);
-                    logger.debug('save user');
-                    logger.debug(user);
+                    debugLog('save user');
+                    debugLog(user);
                   }
                   user.save((err) => {
                     if (err) {
-                      logger.debug('save user err');
-                      logger.debug(err);
+                      debugLog('save user err');
+                      debugLog(err);
                       res.status(400).send(err);
                     } else {
-                      logger.debug('save user success 1');
+                      debugLog('save user success 1');
                       if (req.params.ancestor && req.params.id) {
                         Models[config.cpanel[req.params.ancestor].model]
                         .findById(req.params.id)
@@ -110,14 +118,14 @@ router.postData = (req, res) => {
                           ancestor[req.params.sez].push(data._id);
                           ancestor.save((err) => {
                             if (err) {
-                              logger.debug('save ancestor err');
-                              logger.debug(err);
+                              debugLog('save ancestor err');
+                              debugLog(err);
                               res.status(400).send(err);
                             } else {
-                              logger.debug("save ancestor success");
-                              logger.debug(data);
-                              logger.debug("stocazzooooooooooo");
-                              logger.debug(data);
+                              debugLog("save ancestor success");
+                              debugLog(data);
+                              debugLog("stocazzooooooooooo");
+                              debugLog(data);
                               var cloneData = JSON.parse(JSON.stringify(data));
 
                               if (req.body.admitted) cloneData.admitted = req.body.admitted
@@ -126,12 +134,12 @@ router.postData = (req, res) => {
                           });
                         });
                       } else {
-                        logger.debug("stocazzo");
-                        logger.debug(req.body.admitted);
+                        debugLog("stocazzo");
+                        debugLog(req.body.admitted);
                         var cloneData = JSON.parse(JSON.stringify(data));
 
                         if (req.body.admitted) cloneData.admitted = req.body.admitted;
-                        logger.debug(cloneData);
+                        debugLog(cloneData);
                         res.json(cloneData);                    
                       }
                       /* select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
@@ -147,8 +155,8 @@ router.postData = (req, res) => {
                         } else {
                           let send = {_id: data._id};
                           for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
-                          logger.debug('sendsendsendsendsendsendsend');
-                          logger.debug(send);
+                          debugLog('sendsendsendsendsendsendsend');
+                          debugLog(send);
                           res.json(send);
                         }
                       }); */
@@ -162,8 +170,8 @@ router.postData = (req, res) => {
               }
             });
           } else {
-            logger.debug('create err');
-            logger.debug(err);
+            debugLog('create err');
+            debugLog(err);
             res.status(400).send(err);
           }
         });
@@ -176,8 +184,8 @@ router.postData = (req, res) => {
   }
 }
 
-router.cancelSubscription = (req, res) => {
-  logger.debug(req.body);
+export const cancelSubscription = (req, res) => {
+  debugLog(req.body);
   var err = [];
   Models.Program
   .findOne({_id: req.body.id/* , members:req.user.id */},'_id, event performance', (err, sub) => {
@@ -185,42 +193,42 @@ router.cancelSubscription = (req, res) => {
       err.push(err);
       res.json(err);
     } else {
-      logger.debug("sub.event");
-      logger.debug(sub.event);
-      logger.debug("sub.performance");
-      logger.debug(sub.performance);
+      debugLog("sub.event");
+      debugLog(sub.event);
+      debugLog("sub.performance");
+      debugLog(sub.performance);
       Models.Event
       .findOne({_id: sub.event, "program.subscription_id": req.body.id},'_id, program', (err, event) => {
         if (err) {
           err.push(err);
           res.json(err);
         } else {
-          logger.debug("event.program");
-          logger.debug(event.program.length);
+          debugLog("event.program");
+          debugLog(event.program.length);
           event.program.forEach((program, index) => {
             if (program.subscription_id == req.body.id) {
               event.program.splice(index, 1);
             }
           });
-          logger.debug(event.program.length);
+          debugLog(event.program.length);
           Models.Performance
           .findOne({_id: sub.performance},'_id, bookings', (err, performance) => {
             if (err) {
               err.push(err);
               res.json(err);
             } else {
-              logger.debug("performance.bookings.length");
-              logger.debug(performance.bookings);
+              debugLog("performance.bookings.length");
+              debugLog(performance.bookings);
               performance.bookings.forEach((booking, index) => {
                 if (booking.subscription_id == req.body.id) {
                   performance.bookings.splice(index, 1);
                 }
               });
-              logger.debug(performance.bookings.length);
+              debugLog(performance.bookings.length);
               event.save(function(err){
                 performance.save(function(err){
                   sub.remove(function(err){
-                    logger.debug("SUCCESSO!!!");
+                    debugLog("SUCCESSO!!!");
                     res.json(true);
                   });
                 });  
@@ -233,10 +241,10 @@ router.cancelSubscription = (req, res) => {
   });
 }
 
-router.editSubscriptionSave = (req, res) => {
-  logger.debug("editSubscriptionSave");
-  logger.debug("req.body");
-  logger.debug(req.body);
+export const editSubscriptionSave = (req, res) => {
+  debugLog("editSubscriptionSave");
+  debugLog("req.body");
+  debugLog(req.body);
   Models.Program.findOne({_id: req.body.program})
   .exec((err, program) => {
     if (req.body.schedule!=undefined) {
@@ -252,23 +260,23 @@ router.editSubscriptionSave = (req, res) => {
         } else {
           Models.Performance.findOne({_id: program.performance})
           .exec((err, performance) => {
-            logger.debug({_id: program.performance});
+            debugLog({_id: program.performance});
             for(var a=0;a<performance.bookings.length;a++){
               if (performance.bookings[a].event && performance.bookings[a].event.toString()===program.event.toString()) {
                 performance.bookings[a].schedule = program.schedule;
               }
             }
-            logger.debug(performance.bookings);
+            debugLog(performance.bookings);
             performance.save(function(err){
               Models.Event.findOne({"program.subscription_id": req.body.program})
               .exec((err, event) => {
-                logger.debug(event.program);
+                debugLog(event.program);
                 for(var a=0;a<event.program.length;a++){
                   if (event.program[a].subscription_id.toString()===req.body.program.toString()) {
                     event.program[a].schedule = program.schedule;
                   }
                 }
-                logger.debug(event.program);
+                debugLog(event.program);
                 event.save(function(err){
                   if (err) {
                     res.json(err);
@@ -303,8 +311,8 @@ router.editSubscriptionSave = (req, res) => {
             tmpPack[0].option = subscriptions[item].packages[pack].option;
             subscriptions[item].packages[pack] = tmpPack[0];
           }
-          logger.debug("subscriptions[item].packages");
-          logger.debug(subscriptions[item].packages);  
+          debugLog("subscriptions[item].packages");
+          debugLog(subscriptions[item].packages);  
         }
       }
       for (var item=0;item<program.subscriptions.length;item++) {
@@ -348,8 +356,8 @@ router.editSubscriptionSave = (req, res) => {
     }
   });
 }
-router.shareOnTelegram = (req, res) => {
-  const TG = require('telegram-bot-api')
+
+export const shareOnTelegram = (req, res) => {
 
   const api = new TG({
       token: process.env.TG_API
@@ -368,14 +376,14 @@ router.shareOnTelegram = (req, res) => {
     res.json(value);
   })
 }
-
-router.setReordered = (req, res) => {
-  logger.debug(req.body);
+/**/
+export const setReordered = (req, res) => {
+  debugLog(req.body);
   Models[req.body.model]
   .findOne({_id: req.body.id}, (err, item) => {
     if (item) {
       item[req.body.link] = req.body.obj;
-      logger.debug(item[req.body.link]);
+      debugLog(item[req.body.link]);
       item.save(err => {
         res.json({err: err});
       });
@@ -384,13 +392,13 @@ router.setReordered = (req, res) => {
     }
   });
 }
-router.setVideoCategory = (req, res) => {
-  logger.debug(req.body);
+export const setVideoCategory = (req, res) => {
+  debugLog(req.body);
   Models.Video
   .findOne({_id: req.body.id},'_id, categories', (err, video) => {
     if (video) {
       video.categories = req.body.categories;
-      logger.debug(video);
+      debugLog(video);
       video.save(err => {
         res.json({err: err});
       });
@@ -399,13 +407,13 @@ router.setVideoCategory = (req, res) => {
     }
   });
 }
-router.setVideoExclude = (req, res) => {
-  logger.debug(req.body);
+export const setVideoExclude = (req, res) => {
+  debugLog(req.body);
   Models.Video
   .findOne({_id: req.body.id},'_id', (err, video) => {
     if (video) {
       video.vjtv_exclude = req.body.vjtv_exclude;
-      logger.debug(video);
+      debugLog(video);
       video.save(err => {
         res.json({err: err});
       });
@@ -415,8 +423,8 @@ router.setVideoExclude = (req, res) => {
   });
 }
 
-router.editSubscription = (req, res) => {
-  logger.debug(req.body);
+export const editSubscription = (req, res) => {
+  debugLog(req.body);
   let populate = [
     { "path": "event", "select": "title slug schedule organizationsettings", "model": "Event", "populate":[{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]},
     { "path": "performance", "select": "title slug users duration abouts image bookings", "model": "Performance", "populate": [{"path": "users", "select": "stagename addresses image abouts members", "populate": [{"path": "members", "select": "stagename addresses image abouts", "model": "UserShow"}], "model": "UserShow"},{"path": "type", "select": "name", "model": "Category"},{"path": "tecnique", "select": "name", "model": "Category"},{"path": "genre", "select": "name", "model": "Category"}]},
@@ -428,7 +436,7 @@ router.editSubscription = (req, res) => {
   .findOne({_id: req.body.id/* , members:req.user.id */})
   .populate(populate)
   .exec((err, sub) => {
-    logger.debug(sub);
+    debugLog(sub);
     let daysdays = [];
     let schedule = JSON.parse(JSON.stringify(sub.event.schedule));
     for(let a=0;a<schedule.length;a++) {
@@ -448,15 +456,15 @@ router.editSubscription = (req, res) => {
     for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[global.getLocale()].weekdaydaymonthyear)});
     
     res.render('adminpro/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
-      logger.debug(err);
-      logger.debug("sub");
+      debugLog(err);
+      debugLog("sub");
       res.json(body);
     });
   });
 }
 
-router.editSubscriptionPrice = (req, res) => {
-  logger.debug(req.body);
+export const editSubscriptionPrice = (req, res) => {
+  debugLog(req.body);
   Models.Program
   .findOne({_id: req.body.id/* , members:req.user.id */})
   .select({schedule: 1})
@@ -467,8 +475,8 @@ router.editSubscriptionPrice = (req, res) => {
   });
 }
 
-router.editSubscriptionCost = (req, res) => {
-  logger.debug(req.body);
+export const editSubscriptionCost = (req, res) => {
+  debugLog(req.body);
   Models.Program
   .findOne({_id: req.body.id/* , members:req.user.id */})
   .select({fee: 1, technical_cost: 1, accommodation_cost: 1, transfer_cost: 1})
@@ -479,12 +487,12 @@ router.editSubscriptionCost = (req, res) => {
   });
 }
 
-router.linkPartner = (req, res) => {
-  logger.debug(req.body);
+export const linkPartner = (req, res) => {
+  debugLog(req.body);
   Models.User
   .findOne({_id: req.body.id, is_crew: true},'_id partner_owner', (err, partner) => {
-    logger.debug("eq.body");
-    logger.debug(err || partner);
+    debugLog("eq.body");
+    debugLog(err || partner);
     if (partner) {
       if (!partner.partner_owner || partner.partner_owner.map(item => {return item.owner;}).indexOf(req.body.partner_owner)===-1) {
         if (!partner.partner_owner) partner.partner_owner = [];
@@ -496,8 +504,8 @@ router.linkPartner = (req, res) => {
               if (!owner.partners || owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)===-1) {
                 if (!owner.partners) owner.partners = [];
                 owner.partners.push({partner: req.body.id, delegate: req.body.delegate, "is_active":true, "is_selecta":true});
-                logger.debug("owner.partners");
-                logger.debug(owner.partners);
+                debugLog("owner.partners");
+                debugLog(owner.partners);
                 owner.save(err => {
                   res.json({err: err});
                 });
@@ -513,18 +521,18 @@ router.linkPartner = (req, res) => {
         Models.User
         .findOne({_id: req.body.partner_owner, is_crew: true},'_id partners', (err, owner) => {
           if (owner) {
-            logger.debug("owner");
+            debugLog("owner");
             if (!owner.partners || owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)===-1) {
               if (!owner.partners) owner.partners = [];
               owner.partners.push({partner: req.body.id, delegate: req.body.delegate, "is_active":true, "is_selecta":true});
-              logger.debug("owner.partners");
-              logger.debug(owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id));
+              debugLog("owner.partners");
+              debugLog(owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id));
               owner.save(err => {
                 res.json({err: err});
               });
             } else {
-              logger.debug({err: "Partner already in"});
-              logger.debug(owner.partners[owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)]);
+              debugLog({err: "Partner already in"});
+              debugLog(owner.partners[owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)]);
               res.status(400).json({err: "Partner already in"});
             }
           } else {
@@ -538,22 +546,22 @@ router.linkPartner = (req, res) => {
   });
 }
 
-router.unlinkPartner = (req, res) => {
-  logger.debug("unlinkPartner");
-  logger.debug(req.body);
+export const unlinkPartner = (req, res) => {
+  debugLog("unlinkPartner");
+  debugLog(req.body);
   Models.User
   .findOne({_id: req.body.owner, /* is_crew: true,  */"partners.partner": req.body.id},'_id event partners', (err, user) => {
-    logger.debug(user.partners.length);
+    debugLog(user.partners.length);
     if (user && user.partners && user.partners.length) {
       user.partners.splice(user.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id), 1);
-      logger.debug(user.partners.length);
+      debugLog(user.partners.length);
       user.save(err => {
         Models.User
         .findOne({_id: req.body.id, /* is_crew: true,  */"partner_owner.owner": req.body.owner},'_id event partner_owner', (err, partner) => {
-          logger.debug(partner.partner_owner.length);
+          debugLog(partner.partner_owner.length);
           if (partner && partner.partner_owner && partner.partner_owner.length) {
             partner.partner_owner.splice(partner.partner_owner.map(item => {return item.owner.toString();}).indexOf(req.body.owner), 1);
-            logger.debug(partner.partner_owner.length);
+            debugLog(partner.partner_owner.length);
             partner.save(err => {
               res.json({err: err});
             });
@@ -567,9 +575,9 @@ router.unlinkPartner = (req, res) => {
     }
   });
 }
-router.setStatus = (req, res) => {
-  logger.debug('/partners/status/');
-  logger.debug(req.body);
+export const setStatus = (req, res) => {
+  debugLog('/partners/status/');
+  debugLog(req.body);
   if (!req.body || !req.body.owner || !req.body.id || !req.body.name || req.body.value === undefined) {
     res.status(400).send("NO DATA");
   } else {
@@ -578,25 +586,25 @@ router.setStatus = (req, res) => {
     .select({partners:1})
     .exec((err, user) => {
       if (err || !user) {
-        logger.debug('user err');
-        logger.debug(err);
+        debugLog('user err');
+        debugLog(err);
         res.status(400).send(err);
       } else {
         for (var a=0;a<user.partners.length;a++) {
           if (user.partners[a].partner._id.toString() === req.body.id) {
             user.partners[a][req.body.name] = req.body.value;
-            logger.debug(user.partners[a]);
+            debugLog(user.partners[a]);
           }
         }
         user.save((err) => {
-          logger.debug(err);
+          debugLog(err);
           if (err) {
-            logger.debug('save user err');
-            logger.debug(err);
+            debugLog('save user err');
+            debugLog(err);
             res.status(400).send(err);
           } else {
-            logger.debug("save user success 2");
-            logger.debug(req.body);
+            debugLog("save user success 2");
+            debugLog(req.body);
             res.json(req.body);                    
           }
         });
@@ -606,9 +614,9 @@ router.setStatus = (req, res) => {
   }
 }
 
-router.setCategories = (req, res) => {
-  logger.debug('/partners/categories/');
-  logger.debug(req.body);
+export const setCategories = (req, res) => {
+  debugLog('/partners/categories/');
+  debugLog(req.body);
   if (!req.body || !req.body.owner || !req.body.id || !req.body.category || req.body.value === undefined) {
     res.status(400).send("NO DATA");
   } else {
@@ -617,8 +625,8 @@ router.setCategories = (req, res) => {
     .select({partners:1})
     .exec((err, user) => {
       if (err || !user) {
-        logger.debug('user err');
-        logger.debug(err);
+        debugLog('user err');
+        debugLog(err);
         res.status(400).send(err);
       } else {
         for (var a=0;a<user.partners.length;a++) {
@@ -626,23 +634,23 @@ router.setCategories = (req, res) => {
             if (req.body.value==="true") {
               user.partners[a].categories.push(req.body.category)
             } else {
-              logger.debug("req.body.category");
-              logger.debug(req.body.category);
-              logger.debug(user.partners[a].categories.map(item => {return item.toString()}));
+              debugLog("req.body.category");
+              debugLog(req.body.category);
+              debugLog(user.partners[a].categories.map(item => {return item.toString()}));
               user.partners[a].categories.splice(user.partners[a].categories.map(item => {return item.toString()}).indexOf(req.body.category))
             }
-            logger.debug(user.partners[a].categories);
+            debugLog(user.partners[a].categories);
           }
         }
         user.save((err) => {
-          logger.debug(err);
+          debugLog(err);
           if (err) {
-            logger.debug('save user err');
-            logger.debug(err);
+            debugLog('save user err');
+            debugLog(err);
             res.status(400).send(err);
           } else {
-            logger.debug("save user success 3");
-            //logger.debug(req.body);
+            debugLog("save user success 3");
+            //debugLog(req.body);
             res.json(req.body);                    
           }
         });
@@ -652,24 +660,24 @@ router.setCategories = (req, res) => {
   }
 }
 
-router.addContacts = (req, res) => {
-  logger.debug('/partners/contacts/add/');
-  logger.debug(req.body);
+export const addContacts = (req, res) => {
+  debugLog('/partners/contacts/add/');
+  debugLog(req.body);
   Models.User.
   findOne({_id: req.body.crew})
   .exec((err, user) => {
   //select({stagename: 1, createdAt: 1, crews:1}).
     if (err || !user) {
-      logger.debug('user err');
-      logger.debug(err);
+      debugLog('user err');
+      debugLog(err);
       res.status(400).send(err);
     } else {
       delete req.body.crew;
       if (req.body.index) {
         user.organizationData.contacts.splice(req.body.index, 1, req.body);
       } else {
-        logger.debug(user);
-        logger.debug("useruseruseruseruseruseruseruseruseruseruseruser");
+        debugLog(user);
+        debugLog("useruseruseruseruseruseruseruseruseruseruseruser");
         delete req.body.index;
         delete req.body.stagename;
         if (!user.organizationData) user.organizationData = {};
@@ -679,16 +687,16 @@ router.addContacts = (req, res) => {
           user.organizationData.contacts.push(req.body);
         }
       };
-      logger.debug(user.organizationData.contacts[0]);
+      debugLog(user.organizationData.contacts[0]);
       user.save((err) => {
-        logger.debug(err);
+        debugLog(err);
         if (err) {
-          logger.debug('save user err');
-          logger.debug(err);
+          debugLog('save user err');
+          debugLog(err);
           res.status(400).send(err);
         } else {
-          logger.debug("save user success 4");
-          logger.debug(user.organizationData.contacts);
+          debugLog("save user success 4");
+          debugLog(user.organizationData.contacts);
           res.json(user.organizationData.contacts);                    
         }
       });
@@ -696,32 +704,32 @@ router.addContacts = (req, res) => {
   });
 }
 
-router.deleteContacts = (req, res) => {
-  logger.debug('/partners/contacts/deleteContacts/');
-  logger.debug(req.body);
+export const deleteContacts = (req, res) => {
+  debugLog('/partners/contacts/deleteContacts/');
+  debugLog(req.body);
   Models.User.
   findOne({_id: req.body.id})
   .exec((err, user) => {
   //select({stagename: 1, createdAt: 1, crews:1}).
-    logger.debug('stocazzo');
-    logger.debug(user);
+    debugLog('stocazzo');
+    debugLog(user);
     if (err || !user) {
-      logger.debug('user err');
-      logger.debug(err);
+      debugLog('user err');
+      debugLog(err);
       res.status(400).send(err);
     } else {
-      logger.debug(req.body.index);
+      debugLog(req.body.index);
       user.organizationData.contacts.splice(req.body.index, 1);
-      logger.debug(user.organizationData.contacts);   
+      debugLog(user.organizationData.contacts);   
       user.save((err) => {
-        logger.debug(err);
+        debugLog(err);
         if (err) {
-          logger.debug('save user err');
-          logger.debug(err);
+          debugLog('save user err');
+          debugLog(err);
           res.status(400).send(err);
         } else {
-          logger.debug("save user success 5");
-          logger.debug(user.organizationData.contacts);
+          debugLog("save user success 5");
+          debugLog(user.organizationData.contacts);
           res.json(user.organizationData.contacts);                    
         }
       });
@@ -730,10 +738,10 @@ router.deleteContacts = (req, res) => {
 }
 
 
-router.updatePartnerships = (req, res) => {
-  logger.debug("updatePartnerships");
-  logger.debug("req.body");
-  logger.debug(req.body);
+export const updatePartnerships = (req, res) => {
+  debugLog("updatePartnerships");
+  debugLog("req.body");
+  debugLog(req.body);
   Models.Event
   .findOne({_id: req.body.event},'partnerships', (err, event) => {
     event.partners = req.body.partnerships;
@@ -764,10 +772,10 @@ router.updatePartnerships = (req, res) => {
   });
 }
 
-router.updateProgram = (req, res) => {
-  logger.debug("updateProgram");
-  logger.debug("req.body");
-  logger.debug(req.body);
+export const updateProgram = (req, res) => {
+  debugLog("updateProgram");
+  debugLog("req.body");
+  debugLog(req.body);
   var performances = [];
   var programIDS = [];
   var program = [];
@@ -777,8 +785,8 @@ router.updateProgram = (req, res) => {
   if (req.body.tobescheduled && req.body.tobescheduled.length) {
     for (var a=0;a<req.body.tobescheduled.length;a++) {
       var index = programIDS.indexOf(req.body.tobescheduled[a]._id);
-      logger.debug("req.body.tobescheduled[a]");
-      logger.debug(req.body.tobescheduled[a]);
+      debugLog("req.body.tobescheduled[a]");
+      debugLog(req.body.tobescheduled[a]);
       if (index===-1) {
         programIDS.push(req.body.tobescheduled[a]._id);
         program.push(req.body.tobescheduled[a]);
@@ -790,8 +798,8 @@ router.updateProgram = (req, res) => {
   if (req.body.data && req.body.data.length) {
     for (var a=0;a<req.body.data.length;a++) {
       var index = programIDS.indexOf(req.body.data[a]._id);
-      logger.debug("req.body.data[a]");
-      logger.debug(req.body.data[a]);
+      debugLog("req.body.data[a]");
+      debugLog(req.body.data[a]);
       if (index===-1) {
         programIDS.push(req.body.data[a]._id);
         program.push(req.body.data[a]);
@@ -804,14 +812,14 @@ router.updateProgram = (req, res) => {
   for (var a=0;a<program.length;a++) {
     eventProgram.push({subscription_id: program[a]._id, performance: program[a].performance, schedule: !program[a].schedule ? [] : program[a].schedule});
     if (program[a].performance.toString() == "60ef195282f94366b0a464d2") {
-      logger.debug("60ef195282f94366b0a464d260ef195282f94366b0a464d2");
-      logger.debug(program[a]._id);
-      logger.debug(program[a].schedule);
+      debugLog("60ef195282f94366b0a464d260ef195282f94366b0a464d2");
+      debugLog(program[a]._id);
+      debugLog(program[a].schedule);
     }
     promises.push(Models.Program.findOneAndUpdate({_id: program[a]._id}, { $set: { schedule: !program[a].schedule ? [] : program[a].schedule }}, {upsert: true, useFindAndModify: false}));
   }
-  logger.debug("eventProgram");
-  logger.debug(eventProgram);
+  debugLog("eventProgram");
+  debugLog(eventProgram);
   Promise.all(
     promises
   ).then( (resultsPromise) => {
@@ -835,9 +843,9 @@ router.updateProgram = (req, res) => {
         } else {
           resultsPromisePerf[a].bookings = [{event:req.body.event,schedule: program[a].schedule}];
         }
-        logger.debug("resultsPromisePerf[a].bookings")
-        logger.debug(resultsPromisePerf[a].title)
-        logger.debug(req.body.event)
+        debugLog("resultsPromisePerf[a].bookings")
+        debugLog(resultsPromisePerf[a].title)
+        debugLog(req.body.event)
         promisesPerfSave.push(Models.Performance.updateOne({_id:resultsPromisePerf[a]._id}, resultsPromisePerf[a]));
       }
       Promise.all(
@@ -872,9 +880,9 @@ order: order,
 details: details,
 data: data
 */
-router.contact = (req, res) => {
-  logger.debug("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body");
-  logger.debug(req.body);
+export const contact = (req, res) => {
+  debugLog("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body");
+  debugLog(req.body);
   if (req.body.user) {
     let message = {};
 
@@ -884,8 +892,8 @@ router.contact = (req, res) => {
     .populate([{ "path": "members", "select": "stagename name surname email", "model": "User"}])
     .exec((err, user) => {
       if (!user.is_banned) {
-        logger.debug(user);
-        logger.debug(err);
+        debugLog(user);
+        debugLog(err);
         message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
         let messagetext = "FROM\n";
         messagetext+= "Stagename: "+req.user.stagename+"\n";
@@ -902,9 +910,8 @@ router.contact = (req, res) => {
         }
         messagetext+= "Link: http://"+req.headers.host+"/"+user.slug+"\n\n---------\n";
         messagetext+= req.body.message+"\n--------------";
-        logger.debug(messagetext);
-        const mailer = require('../../../utilities/mailer');
-        mailer.mySendMailer({
+        debugLog(messagetext);
+       mySendMailer({
           template: 'bookingRequest',
           message: message,
           locals: {
@@ -923,7 +930,7 @@ router.contact = (req, res) => {
           } else {
             message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
             if (user.is_crew) {
-              logger.debug("crew")
+              debugLog("crew")
               for (var b=0;b<user.members.length;b++) {
                 if (!message.to) {
                   message.to = user.members[b].stagename+" <"+user.members[b].email+">";
@@ -933,7 +940,7 @@ router.contact = (req, res) => {
                 }
                 }
             } else {
-              logger.debug("single")
+              debugLog("single")
               if (!message.to) {
                 message.to = user.stagename+" <"+user.email+">";
               } else {
@@ -942,7 +949,7 @@ router.contact = (req, res) => {
               }
             }
             messagetext = "Dear "+user.stagename+",\nwe got this message, are you interested?\n\n---------\n"+req.body.message+"\n--------------";
-            mailer.mySendMailer({
+           mySendMailer({
               template: 'bookingRequest',
               message: message,
               locals: {
@@ -974,9 +981,9 @@ router.contact = (req, res) => {
   }
 }
 
-router.forceEmailChange = (req, res) => {
-  logger.debug("forceEmailChange");
-  logger.debug(req.body);
+export const forceEmailChange = (req, res) => {
+  debugLog("forceEmailChange");
+  debugLog(req.body);
   if (req.body._id) {
     let message = {};
 
@@ -984,8 +991,8 @@ router.forceEmailChange = (req, res) => {
     .findOne({_id: req.body._id})
     .select({stagename: 1, slug:1, name:1, surname:1, email: 1, emails:1})
     .exec((err, user) => {
-      logger.debug(user);
-      logger.debug(user.emails.map((item)=>{return item.email}).indexOf(req.body.oldemail));
+      debugLog(user);
+      debugLog(user.emails.map((item)=>{return item.email}).indexOf(req.body.oldemail));
       const newemail = req.body.email
       const emailindex = user.emails.map((item)=>{return item.email}).indexOf(req.body.oldemail)
       const deaultmailinglists = { flxer: false, flyer: false, livevisuals: true, updates: true };
@@ -994,12 +1001,12 @@ router.forceEmailChange = (req, res) => {
       var sendytopics = keys.filter(function(key) {
           return deaultmailinglists[key]
       });
-      logger.debug(sendytopics);
+      debugLog(sendytopics);
       if (emailindex == -1 && user.email != req.body.oldemail) {
         res.json({errors:{message:"Email not Found"}});
       } else {
         if (emailindex != -1) {
-          logger.debug(user.emails[emailindex].mailinglists);
+          debugLog(user.emails[emailindex].mailinglists);
           user.emails[emailindex].email = newemail;
           user.emails[emailindex].mailinglists = deaultmailinglists;
         }
@@ -1025,12 +1032,9 @@ router.forceEmailChange = (req, res) => {
         if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
         Models.User.updateOne({_id:user._id}, { emails: user.emails, email: user.email })
         .exec((err, user) => {
-          logger.debug("formData");
-          logger.debug(formData);
-        
-          var https = require('https');
-          var querystring = require('querystring');
-          
+          debugLog("formData");
+          debugLog(formData);
+                  
           // form data
           var postData = querystring.stringify(formData);
       
@@ -1049,8 +1053,8 @@ router.forceEmailChange = (req, res) => {
         });
       }
      /*  if (!is_banned) {
-        logger.debug(user);
-        logger.debug(err);
+        debugLog(user);
+        debugLog(err);
         message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
         let messagetext = "FROM\n";
         messagetext+= "Stagename: "+req.user.stagename+"\n";
@@ -1067,9 +1071,9 @@ router.forceEmailChange = (req, res) => {
         }
         messagetext+= "Link: http://"+req.headers.host+"/"+user.slug+"\n\n---------\n";
         messagetext+= req.body.message+"\n--------------";
-        logger.debug(messagetext);
+        debugLog(messagetext);
         const mailer = require('../../../utilities/mailer');
-        mailer.mySendMailer({
+       mySendMailer({
           template: 'bookingRequest',
           message: message,
           locals: {
@@ -1088,7 +1092,7 @@ router.forceEmailChange = (req, res) => {
           } else {
             message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
             if (user.is_crew) {
-              logger.debug("crew")
+              debugLog("crew")
               for (var b=0;b<user.members.length;b++) {
                 if (!message.to) {
                   message.to = user.members[b].stagename+" <"+user.members[b].email+">";
@@ -1098,7 +1102,7 @@ router.forceEmailChange = (req, res) => {
                 }
                 }
             } else {
-              logger.debug("single")
+              debugLog("single")
               if (!message.to) {
                 message.to = user.stagename+" <"+user.email+">";
               } else {
@@ -1107,7 +1111,7 @@ router.forceEmailChange = (req, res) => {
               }
             }
             messagetext = "Dear "+user.stagename+",\nwe got this message, are you interested?\n\n---------\n"+req.body.message+"\n--------------";
-            mailer.mySendMailer({
+           mySendMailer({
               template: 'bookingRequest',
               message: message,
               locals: {
@@ -1138,8 +1142,8 @@ router.forceEmailChange = (req, res) => {
 
 
 
-router.bookingRequest = (req, res) => {
-  logger.debug(req.body);
+export const bookingRequest = (req, res) => {
+  debugLog(req.body);
   if (req.body.perf) {
     let message = {};
 
@@ -1148,8 +1152,8 @@ router.bookingRequest = (req, res) => {
     .select({title: 1, slug: 1})
     .populate([{ "path": "users", "select": "is_crew stagename name surname email", "model": "User", "populate": { "path": "members", "select": "stagename name surname email", "model": "User"}}])
     .exec((err, perf) => {
-      logger.debug(perf.users);
-      logger.debug(err);
+      debugLog(perf.users);
+      debugLog(err);
       message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
       let messagetext = "";
       messagetext+= "Stagename: "+req.user.stagename+"\n";
@@ -1160,9 +1164,8 @@ router.bookingRequest = (req, res) => {
       messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n\n---------\n";
       messagetext+= "Performance: http://"+req.headers.host+"/"+perf.slug+"\n\n---------\n";
       messagetext+= req.body.request+"\n--------------";
-      logger.debug(messagetext);
-      const mailer = require('../../../utilities/mailer');
-      mailer.mySendMailer({
+      debugLog(messagetext);
+     mySendMailer({
         template: 'bookingRequest',
         message: message,
         locals: {
@@ -1183,7 +1186,7 @@ router.bookingRequest = (req, res) => {
           message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
           for (var a=0;a<perf.users.length;a++) {
             if (perf.users[a].is_crew) {
-              logger.debug("crew")
+              debugLog("crew")
               for (var b=0;b<perf.users[a].members.length;b++) {
                 if (!message.to) {
                   message.to = perf.users[a].members[b].stagename+" <"+perf.users[a].members[b].email+">";
@@ -1193,7 +1196,7 @@ router.bookingRequest = (req, res) => {
                 }
                 }
             } else {
-              logger.debug("single")
+              debugLog("single")
               if (!message.to) {
                 message.to = perf.users[a].stagename+" <"+perf.users[a].email+">";
               } else {
@@ -1203,7 +1206,7 @@ router.bookingRequest = (req, res) => {
             }
           }
           messagetext = "Dear "+perf.users[0].stagename+",\nwe got this booking request, are you interested?\n\n---------\n"+req.body.request+"\n--------------";
-          mailer.mySendMailer({
+         mySendMailer({
             template: 'bookingRequest',
             message: message,
             locals: {
@@ -1231,8 +1234,8 @@ router.bookingRequest = (req, res) => {
   }
 }
 
-router.updateSubscription = (req, res) => {
-  //logger.debug("updateSubscription");
+export const updateSubscription = (req, res) => {
+  //debugLog("updateSubscription");
 
 /*   const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
 
@@ -1241,7 +1244,7 @@ router.updateSubscription = (req, res) => {
   const payPalClient = require('./paypalClient');
   
   // 2. Set up your server to receive a call from the client
-  module.exports = async function handleRequest(req, res) {
+  export default async function handleRequest(req, res) {
   
     // 2a. Get the order ID from the request body
     const orderID = req.body.orderID;
@@ -1322,25 +1325,24 @@ router.updateSubscription = (req, res) => {
       });
     });
   } else if (req.body.id && req.body.status) {
-    const gmailer = require('../../../utilities/gmailer');
     Models.Program
     .findOne({_id: req.body.id/* , members:req.user.id */})
     .select({schedule: 1, call: 1, event: 1})
     .populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
     .exec((err, sub) => {
-      //logger.debug(sub);
+      //debugLog(sub);
       Models.Event
       .findOne({_id: sub.event})
       .select({program: 1, organizationsettings: 1})
       .exec((err, event) => {
-        /* logger.debug(event.organizationsettings.call.calls[sub.call].email);
+        /* debugLog(event.organizationsettings.call.calls[sub.call].email);
         event.program.forEach((program, index) => {
-          logger.debug(program);
+          debugLog(program);
           if (program.subscription_id == req.body.id) {
             //event.program[index].schedule.status = req.body.status;
             program.status = req.body.status;
           }
-          logger.debug(program);
+          debugLog(program);
         }); */
         const status = {
           "5c38c57d9d426a9522c15ba5": "to be evaluated" ,
@@ -1353,9 +1355,9 @@ router.updateSubscription = (req, res) => {
         const old_status_name = sub.status.name;
         sub.status = req.body.status;
         sub.save(function(err){
-          //logger.debug("sub.save");
-          //logger.debug(sub.call);
-          //logger.debug(sub.status);
+          //debugLog("sub.save");
+          //debugLog(sub.call);
+          //debugLog(sub.status);
           //event.save(function(err){
             if(!err) {
               if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
@@ -1376,17 +1378,17 @@ router.updateSubscription = (req, res) => {
                   subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
                   text: email
                 };
-                //logger.debug("pre gMailer")
-                gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-                  //logger.debug("gMailer");
-                  //logger.debug(err);
-                  //logger.debug("gMailer");
-                  //logger.debug(result);
+                //debugLog("pre gMailer")
+                gMailer({auth:auth, mail:mail}, function (err, result){
+                  //debugLog("gMailer");
+                  //debugLog(err);
+                  //debugLog("gMailer");
+                  //debugLog(result);
                   if (err) {
-                    logger.debug("Email sending failure");
+                    debugLog("Email sending failure");
                     res.json({error: true, msg: "Email sending failure", err: err});
                   } else {
-                    logger.debug("Email sending OK");
+                    debugLog("Email sending OK");
                     res.json({error: false, msg: "Email sending success"});
                   }
                 });
@@ -1405,7 +1407,7 @@ router.updateSubscription = (req, res) => {
   }
 }
 
-router.updateSendy = function (req, res) {
+export const updateSendy = function (req, res) {
   let err = [];
   /*let conta = 0;
   let emailwithmailinglists = user.emails.filter(item => item.mailinglists);
@@ -1429,12 +1431,9 @@ router.updateSendy = function (req, res) {
     if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].country) formData.Country = req.req.user.addresses[0].country;
     if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lat) formData.LATITUDE = req.user.addresses[0].geometry.lat;
     if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lng) formData.LONGITUDE = req.user.addresses[0].geometry.lng;
-    logger.debug("formData");
-    logger.debug(formData);
+    debugLog("formData");
+    debugLog(formData);
   
-    var https = require('https');
-    var querystring = require('querystring');
-    
     // form data
     var postData = querystring.stringify(formData);
     
@@ -1466,7 +1465,7 @@ router.updateSendy = function (req, res) {
     
     // req error
     req.on('error', function (err) {
-      logger.debug(err);
+      debugLog(err);
     });
     
     //send request witht the postData form
@@ -1475,12 +1474,12 @@ router.updateSendy = function (req, res) {
 
     axios.post('https://ml.avnode.net/subscribe', formData)
     .then((response) => {
-        logger.debug("Newsletter");
-        logger.debug(response);
+        debugLog("Newsletter");
+        debugLog(response);
         res.json({message:"User is saved"});
     });
-    //logger.debug(mailinglists.join(','));  }
+    //debugLog(mailinglists.join(','));  }
   //}
 }
 
-module.exports = router;
+export default router;

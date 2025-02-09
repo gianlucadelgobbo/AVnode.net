@@ -1,322 +1,166 @@
-const router = require('../../router')();
-const config = require('getconfig');
+import createRouter from "../../router.js";
+const router = createRouter();
 
-const get = require('./get');
-const put = require('./put');
-const post = require('./post');
-const ssh = require('./ssh');
-const upload = require('./upload');
+import config from 'getconfig';
+import get from './get.js';
+import put from './put.js';
+import * as post from './post.js';
+import ssh from './ssh.js';
+import upload from './upload.js';
+import { info, debugLog as debug, error } from '../../../utilities/logger.js'; // Logger
 
-const logger = require('../../../utilities/logger');
-
+// Debugging Route (Only in DEBUG mode)
 if (process.env.DEBUG) {
   router.get('/config', (req, res) => {
-    res.render('json', {data: require('getconfig').cpanel});
+    res.render('json', { data: config.cpanel });
   });
 }
 
-router.get('/stream-stop', (req, res) => {
-  ssh.streamStop(req, res);
-});
+// SSH Routes
+router.get('/stream-stop', ssh.streamStop);
+router.get('/stream-update-and-restart', ssh.streamUpdateAndRestart);
+router.get('/stream-restart', ssh.streamRestart);
 
-router.get('/stream-update-and-restart', (req, res) => {
-  ssh.streamUpdateAndRestart(req, res);
-});
+// Utilities
+router.get('/loggeduser', (req, res) => res.json(req.user));
+router.get('/countries', get.getCountries);
+router.get('/removeAddress', get.removeAddress);
+router.get('/getmembers/:q', get.getMembers);
+router.get('/getauthors/:q', get.getAuthors);
+router.get('/getperformances/:q', get.getPerformances);
+router.get('/getgalleries/:q', get.getGalleries);
+router.get('/getvideos/:q', get.getVideos);
+router.get('/setstatsandactivity/:id', get.setStatsAndActivity);
 
-router.get('/stream-restart', (req, res) => {
-  ssh.streamRestart(req, res);
-});
-
-// UTILITIES
-
-router.get('/loggeduser', (req, res) => {
-  res.json(req.user);
-});
-
-router.get('/countries', (req, res) => {
-  get.getCountries(req, res);
-});
-
-router.get('/removeAddress', (req, res)=>{
-  get.removeAddress(req, res);
-});
-
-router.get('/getmembers/:q', (req, res)=>{
-  get.getMembers(req, res);
-});
-
-router.get('/getauthors/:q', (req, res)=>{
-  get.getAuthors(req, res);
-});
-
-router.get('/getperformances/:q', (req, res)=>{
-  get.getPerformances(req, res);
-});
-
-router.get('/getgalleries/:q', (req, res)=>{
-  get.getGalleries(req, res);
-});
-
-router.get('/getvideos/:q', (req, res)=>{
-  get.getVideos(req, res);
-});
-
-router.get('/setstatsandactivity/:id', (req, res)=>{
-  get.setStatsAndActivity(req, res);
-});
-
+// Profile Routes
 router.get('/profile/:form', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';
   get.getData(req, res, "json");
 });
 
-router.get('/:sez/:id/delete', (req, res) => {
-  get.getDelete(req, res);
-});
-
-router.get('/:sez/:id/duplicate', (req, res) => {
-  get.getDuplicate(req, res);
-});
-
-router.get('/getcategories/:rel/slug/:q', (req, res)=>{
-  get.getCategories(req, res);
-});
-
-router.get('/profile/public/slugs/:slug', (req, res)=>{
+router.get('/profile/public/slugs/:slug', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';
   get.getSlug(req, res);
 });
 
-router.get('/profile/emails/verify/:email', (req, res)=>{
+router.get('/profile/emails/verify/:email', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';
-  get.sendEmailVericaition(req, res);
+  get.sendEmailVerification(req, res);
 });
 
-router.get('/profile/emails/email/:email', (req, res)=>{
-  get.getEmail(req, res);
-});
+router.get('/profile/emails/email/:email', get.getEmail);
 
-router.post('/forceemailchange', (req, res)=>{
-  post.forceEmailChange(req, res);
-});
+// Generic GET Routes
+router.get('/:sez/:id/delete', get.getDelete);
+router.get('/:sez/:id/duplicate', get.getDuplicate);
+router.get('/getcategories/:rel/slug/:q', get.getCategories);
+router.get('/:sez/new/slugs/:slug', get.getSlug);
+router.get('/:sez/:id/public/slugs/:slug', get.getSlug);
 
-router.get('/:sez/new/slugs/:slug', (req, res)=>{
-  get.getSlug(req, res);
-});
+// Membership & User Relationships
+router.get('/crews/:id/members/add/:member', get.addMember);
+router.get('/crews/:id/members/remove/:member', get.removeMember);
+router.get('/:sez/:id/users/add/:user', get.addUser);
+router.get('/:sez/:id/users/remove/:user', get.removeUser);
 
-router.get('/:sez/:id/public/slugs/:slug', (req, res)=>{
-  get.getSlug(req, res);
-});
-
-router.get('/crews/:id/members/add/:member', (req, res)=>{
-  get.addMember(req, res);
-});
-
-router.get('/crews/:id/members/remove/:member', (req, res)=>{
-  get.removeMember(req, res);
-});
-
-router.get('/:sez/:id/users/add/:user', (req, res)=>{
-  get.addUser(req, res);
-});
-
-router.get('/:sez/:id/users/remove/:user', (req, res)=>{
-  get.removeUser(req, res);
-});
-
-router.get('/galleries/:id/mediaremove/:image', (req, res)=>{
+// Gallery & Media Management
+router.get('/galleries/:id/mediaremove/:image', (req, res) => {
   req.params.sez = 'galleries';
   get.removeImage(req, res);
 });
-
-router.get('/playlists/:id/footageremove/:footage', (req, res)=>{
+router.get('/playlists/:id/footageremove/:footage', (req, res) => {
   req.params.sez = 'playlists';
   get.removeFootage(req, res);
 });
 
-router.get('/events/:id/getfreezed', (req, res)=>{
-  get.eventGetFreezed(req, res);
-});
+// Event & Performance Management
+router.get('/events/:id/getfreezed', get.eventGetFreezed);
+router.get('/events/:id/performance/add/:performance', get.eventAddPerformance);
+router.get('/events/:id/performance/remove/:performance', get.eventRemovePerformance);
+router.get('/performances/:id/event/add/:event', get.performanceAddEvent);
+router.get('/performances/:id/event/remove/:event', get.performanceRemoveEvent);
 
-router.get('/events/:id/performance/add/:performance', (req, res)=>{
-  get.eventAddPerformance(req, res);
-});
+// Media Associations
+router.get('/:sez/:id/gallery/add/:gallery', get.addGallery);
+router.get('/:sez/:id/gallery/remove/:gallery', get.removeGallery);
+router.get('/:sez/:id/video/add/:video', get.addVideo);
+router.get('/:sez/:id/video/remove/:video', get.removeVideo);
 
-router.get('/events/:id/performance/remove/:performance', (req, res)=>{
-  get.eventRemovePerformance(req, res);
-});
-
-router.get('/performances/:id/event/add/:event', (req, res)=>{
-  get.performanceAddEvent(req, res);
-});
-
-router.get('/performances/:id/event/remove/:event', (req, res)=>{
-  get.performanceRemoveEvent(req, res);
-});
-
-router.get('/:sez/:id/gallery/add/:gallery', (req, res)=>{
-  get.addGallery(req, res);
-});
-
-router.get('/:sez/:id/gallery/remove/:gallery', (req, res)=>{
-  get.removeGallery(req, res);
-});
-
-router.get('/:sez/:id/video/add/:video', (req, res)=>{
-  get.addVideo(req, res);
-});
-
-router.get('/:sez/:id/video/remove/:video', (req, res)=>{
-  get.removeVideo(req, res);
-});
-
-router.get('/:sez/:id/:form/', (req, res) => {
-  if (req.params.sez == "performances" && req.params.form == "public") {
-    req.params.rel = "performances";
-    req.params.q = "type";
-    get.getPerfCategories(req, res, (types) => {
+// Profile & Subscription Routes
+router.get('/:sez/:id/:form/', async (req, res) => {
+  try {
+    if (req.params.sez === "performances" && req.params.form === "public") {
+      req.params.rel = "performances";
+      
+      req.params.q = "type";
+      const types = await get.getPerfCategories(req, res);
       config.types = types;
+
       req.params.q = "genre";
-      get.getPerfCategories(req, res, (genres) => {
-        config.genres = genres;
-        get.getData(req, res, "json");
-      });
-    });
-  } else if (req.params.sez == "profile" && req.params.form == "subscriptions") {
-    get.getSubscriptions(req, res);
-  } else {
-    get.getData(req, res, "json");
+      const genres = await get.getPerfCategories(req, res);
+      config.genres = genres;
+
+      get.getData(req, res, "json");
+    } else if (req.params.sez === "profile" && req.params.form === "subscriptions") {
+      get.getSubscriptions(req, res);
+    } else {
+      get.getData(req, res, "json");
+    }
+  } catch (err) {
+    error("Error fetching data:", err);
+    res.status(500).send("Internal Server Error");
   }
 });
 
+// Redirects for Profile & Subscriptions
 router.get('/:sez', (req, res) => {
-  if (req.params.sez == "profile") {
-    res.redirect("/admin/api/profile/"+req.user.id+"/public")
-  } else if (req.params.sez == "subscriptions") {
-    res.redirect("/admin/api/subscriptions/"+req.user.id+"/public")
+  if (req.params.sez === "profile") {
+    res.redirect(`/admin/api/profile/${req.user.id}/public`);
+  } else if (req.params.sez === "subscriptions") {
+    res.redirect(`/admin/api/subscriptions/${req.user.id}/public`);
   } else {
     req.params.id = req.user.id;
     get.getList(req, res, "json");
   }
 });
 
+// Catch-All for 404
 router.get('/*', (req, res) => {
-  res.status(404).send({ message: `API_NOT_FOUND` });
+  res.status(404).send({ message: "API_NOT_FOUND" });
 });
 
-
-
-
-
-
-
-router.post('/setvideocategory', (req, res)=>{
-  post.setVideoCategory(req, res);
-});
-
-router.post('/reordered', (req, res)=>{
-  post.setReordered(req, res);
-});
-
-router.post('/shareontelegram', (req, res)=>{
-  post.shareOnTelegram(req, res);
-});
-
-router.post('/setvideoexclude', (req, res)=>{
-  post.setVideoExclude(req, res);
-});
-
-router.post('/programupdate', (req, res)=>{
-  post.updateProgram(req, res);
-});
-
-router.post('/subscriptionupdate', (req, res)=>{
-  post.updateSubscription(req, res);
-});
-
-router.post('/cancelsubscription', (req, res)=>{
-  post.cancelSubscription(req, res);
-});
-
-router.post('/editsubscription', (req, res)=>{
-  post.editSubscription(req, res);
-});
-
-router.post('/editsubscriptionprice', (req, res)=>{
-  post.editSubscriptionPrice(req, res);
-});
-
-router.post('/editsubscriptioncost', (req, res)=>{
-  post.editSubscriptionCost(req, res);
-});
-
-router.post('/editsubscriptionsave', (req, res)=>{
-  post.editSubscriptionSave(req, res);
-});
-router.post('/bookingrequest', (req, res)=>{
-  post.bookingRequest(req, res);
-});
-router.post('/contact', (req, res)=>{
-  post.contact(req, res);
-});
-
-router.post('/:ancestor/:id/:sez/new', (req, res) => {
-  post.postData(req, res);
-});
-
-router.post('/partnershipsupdate', (req, res) => {
-  post.updatePartnerships(req, res);
-});
-
-router.post('/partner/unlink/', (req, res) => {
-  post.unlinkPartner(req, res);
-});
-
-router.post('/partner/link/', (req, res) => {
-  post.linkPartner(req, res);
-});
-
-router.post('/:sez/new/', (req, res) => {
-  post.postData(req, res);
-});
-
-router.post('/partners/status/', (req, res) => {
-  post.setStatus(req, res);
-});
-
-router.post('/partners/categories/', (req, res) => {
-  post.setCategories(req, res);
-});
-
-router.post('/partners/contacts/add/', (req, res) => {
-  post.addContacts(req, res);
-});
-
-router.post('/partners/contacts/delete/', (req, res) => {
-  post.deleteContacts(req, res);
-});
-
-router.post('/profile/emails/updateSendy', (req, res)=>{
-  post.updateSendy(req, res);
-});
-
-router.post('/galleries/:id/medias', (req, res) => {
-  upload.galleryAddImages(req, res);
-});
-
-router.post('/:sez/:id/image', (req, res) => {
-  upload.setImage(req, res);
-});
-
-router.post('/:sez/:id/video', (req, res) => {
-  upload.setVideo(req, res);
-});
-
+// POST Routes
+router.post('/setvideocategory', post.setVideoCategory);
+router.post('/reordered', post.setReordered);
+router.post('/shareontelegram', post.shareOnTelegram);
+router.post('/setvideoexclude', post.setVideoExclude);
+router.post('/programupdate', post.updateProgram);
+router.post('/subscriptionupdate', post.updateSubscription);
+router.post('/cancelsubscription', post.cancelSubscription);
+router.post('/editsubscription', post.editSubscription);
+router.post('/editsubscriptionprice', post.editSubscriptionPrice);
+router.post('/editsubscriptioncost', post.editSubscriptionCost);
+router.post('/editsubscriptionsave', post.editSubscriptionSave);
+router.post('/bookingrequest', post.bookingRequest);
+router.post('/contact', post.contact);
+router.post('/:ancestor/:id/:sez/new', post.postData);
+router.post('/partnershipsupdate', post.updatePartnerships);
+router.post('/partner/unlink/', post.unlinkPartner);
+router.post('/partner/link/', post.linkPartner);
+router.post('/:sez/new/', post.postData);
+router.post('/partners/status/', post.setStatus);
+router.post('/partners/categories/', post.setCategories);
+router.post('/partners/contacts/add/', post.addContacts);
+router.post('/partners/contacts/delete/', post.deleteContacts);
+router.post('/profile/emails/updateSendy', post.updateSendy);
+router.post('/galleries/:id/medias', upload.galleryAddImages);
+router.post('/:sez/:id/image', upload.setImage);
+router.post('/:sez/:id/video', upload.setVideo);
 router.post('/:sez/:id/:form/', (req, res) => {
-  if (req.params.sez == "performances" && req.params.form == "public") {
+  if (req.params.sez === "performances" && req.params.form === "public") {
     req.params.rel = "performances";
     req.params.q = "type";
     get.getPerfCategories(req, res, (types) => {
@@ -332,9 +176,9 @@ router.post('/:sez/:id/:form/', (req, res) => {
   }
 });
 
+// Catch-All for 404 on POST
 router.post('/*', (req, res) => {
-  res.status(404).send({ message: `API_NOT_FOUND` });
+  res.status(404).send({ message: "API_NOT_FOUND" });
 });
 
-
-module.exports = router;
+export default router;

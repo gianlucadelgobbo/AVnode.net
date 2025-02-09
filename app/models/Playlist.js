@@ -1,12 +1,12 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
+import config from 'getconfig';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-//const indexPlugin = require('../utilities/elasticsearch/Playlist');
-const helper = require('../utilities/helper');
+//import indexPlugin from '../utilities/elasticsearch/Playlist.js';
+import helper from '../utilities/helper.js';
 
-const About = require('./shared/About');
-const Media = require('./shared/Media');
-const uniqueValidator = require('mongoose-unique-validator');
+import About from './shared/About.js';
+import Media from './shared/Media.js';
+
 
 const adminsez = 'playlists';
 
@@ -109,8 +109,7 @@ playlistSchema.pre('remove', function(next) {
 });
 
 //playlistSchema.plugin(indexPlugin());
-playlistSchema.plugin(uniqueValidator);
 
 const Playlist = mongoose.model('Playlist', playlistSchema);
 
-module.exports = Playlist;
+export default Playlist;

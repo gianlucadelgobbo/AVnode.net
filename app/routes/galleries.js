@@ -1,9 +1,10 @@
-const router = require('./router')();
-const list = require('./galleries/list');
-const show = require('./galleries/show');
+import createRouter from "./router.js";
+const router = createRouter();
+import list from './galleries/list.js';
+import show from './galleries/show.js';
 
 router.use('/:slug/img/:img', show);
 router.use('/:slug', show);
 router.use('/', list);
 
-module.exports = router;
+export default router;

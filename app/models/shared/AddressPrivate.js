@@ -1,4 +1,5 @@
-const Schema = require('mongoose').Schema;
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
 const AddressPrivate = new Schema({
   //slug: String, // removed { type: String, unique: true },
@@ -27,4 +28,4 @@ AddressPrivate.virtual('mapUrl').get(function () {
   }
   return url;
 });
-module.exports = AddressPrivate;
+export default AddressPrivate;

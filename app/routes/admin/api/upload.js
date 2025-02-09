@@ -1,16 +1,21 @@
-const config = require("getconfig");
-const multer = require("multer");
-const uuid = require("uuid");
-const mime = require("mime");
-const fs = require("fs");
-const path = require("path");
-const imageUtil = require("../../../utilities/image");
-const progress = require('progress-stream');
-let helpers = require('./helpers');
+import config from "getconfig";
+import multer from "multer";
+import { v4 as uuidv4 } from 'uuid';
+const setIdentifier = () => {
+  return uuidv4();
+};
+
+import mime from "mime";
+import fs from 'fs';
+import path from "path";
+import imageUtil from "../../../utilities/image.js";
+import progress from 'progress-stream';
+import helpers from './helpers.js';
+import { info, debugLog, error } from "../../../utilities/logger.js";
 
 
-const mongoose = require("mongoose");
- const Models = {
+import mongoose from 'mongoose';
+const Models = {
   User: mongoose.model("User"),
   Performance: mongoose.model("Performance"),
   Event: mongoose.model("Event"),
@@ -21,7 +26,6 @@ const mongoose = require("mongoose");
   Video: mongoose.model("Video")
 };
 
-const logger = require("../../../utilities/logger");
 
 const upload = {};
 
@@ -38,18 +42,18 @@ upload.getServerpath = storage => {
 };
 
 upload.uploader = (req, res, options, done) => {
-  logger.debug("upload.uploader");
-  logger.debug(req.params.sez);
-  logger.debug(req.params.form);
-  logger.debug(req.files);
-  logger.debug(options.maxsize);
+  debugLog("upload.uploader");
+  debugLog(req.params.sez);
+  debugLog(req.params.form);
+  debugLog(req.files);
+  debugLog(options.maxsize);
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      logger.debug(upload.getServerpath(options.storage));
+      debugLog(upload.getServerpath(options.storage));
       cb(null, upload.getServerpath(options.storage));
     },
     filename: (req, file, cb) => {
-      cb(null, `${uuid.v4()}.${mime.getExtension(file.mimetype)}`);
+      cb(null, `${setIdentifier()}.${mime.getExtension(file.mimetype)}`);
     }
   });
   var p = progress();
@@ -62,16 +66,16 @@ upload.uploader = (req, res, options, done) => {
     fileFilter: function(req, file, cb) {
       const extnameok = options.fileext.indexOf(path.extname(file.originalname).toLowerCase().replace(".", "") ) !== -1;
       const mimetypeok = options.filetypes.indexOf(file.mimetype) !== -1;;
-      logger.debug("file.mimetype");
-      logger.debug(file.mimetype);
-      logger.debug("options.filetypes");
-      logger.debug(options.filetypes);
-      logger.debug(options.filetypes.indexOf(file.mimetype));
+      debugLog("file.mimetype");
+      debugLog(file.mimetype);
+      debugLog("options.filetypes");
+      debugLog(options.filetypes);
+      debugLog(options.filetypes.indexOf(file.mimetype));
       if (mimetypeok && extnameok) {
-        logger.debug("mime ok");
+        debugLog("mime ok");
         cb(null, true);
       } else {
-        logger.debug( __("File upload only supports the following filetypes") + ": " + options.fileext.join(", "));
+        debugLog( __("File upload only supports the following filetypes") + ": " + options.fileext.join(", "));
         const e = [{
           "fieldname":"image",
           "err": __("File upload only supports the following filetypes") + ": " + options.fileext.join(", ")
@@ -83,22 +87,22 @@ upload.uploader = (req, res, options, done) => {
   req.pipe(p);
   p.headers = req.headers;
   p.on('progress', (progress) => {
-    logger.debug('progress:', progress.percentage);
+    debugLog('progress:', progress.percentage);
   });
 
   const up = multerupload.fields([options.fields]);
 
   up(p, res, (err, r) => {
-    logger.debug(err);
-    logger.debug("p.files");
-    logger.debug(p.files);
-    logger.debug(options.fields.name);
+    debugLog(err);
+    debugLog("p.files");
+    debugLog(p.files);
+    debugLog(options.fields.name);
     done(err, p);
 
     /* // if (err instanceof multer.MulterError) {
     if (err) {
-      logger.debug("upload err");
-      logger.debug(err);
+      debugLog("upload err");
+      debugLog(err);
       done(true, { image: [err] });
     } else if (!options) {
       done(true, { image: [{
@@ -108,42 +112,42 @@ upload.uploader = (req, res, options, done) => {
     } else if (p.files && p.files[options.fields.name] && p.files[options.fields.name].length) {
 
       if (options.filetypes.indexOf("image/jpeg") !== -1) {
-        logger.debug("checksizer");
+        debugLog("checksizer");
         imageUtil.checksizer(
           p.files[options.fields.name],
           options,
           req,
           (files_checked) => {
-            logger.debug("checksizer 2");
-            logger.debug(files_checked);
+            debugLog("checksizer 2");
+            debugLog(files_checked);
             //var r = err | files;
             if (files_checked.map(item => {return item.err ? true : false}).indexOf(true)!==-1){
               //p.files[options.fields.name] = err.err ? [err] : err;
-              logger.debug("p.files");
-              logger.debug(p.files);
-              logger.debug(files_checked);
-              logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR");
+              debugLog("p.files");
+              debugLog(p.files);
+              debugLog(files_checked);
+              debugLog("ERRORERRORERRORERRORERRORERRORERRORERRORERROR");
               done(true, files_checked);
             } else {
                imageUtil.resizer(
                 files_checked,
                 options,
                 (files_resized) => {
-                  logger.debug(`imageUtil.resizer`);
-                  logger.debug(files_resized);
-                  logger.debug(`imageUtil.resizer end`);
-                  //logger.debug(files.map(item => {return item.err ? true : false}).indexOf(true)!==-1);
+                  debugLog(`imageUtil.resizer`);
+                  debugLog(files_resized);
+                  debugLog(`imageUtil.resizer end`);
+                  //debugLog(files.map(item => {return item.err ? true : false}).indexOf(true)!==-1);
 
                   if (files_resized.map(item => {return item.err ? true : false}).indexOf(true)===-1) {
                     //var e = {errors:{}}
                     //e.errors[options.fields.name] = err.err ? [err] : err; 
-                    logger.debug(`stocazzo`);
+                    debugLog(`stocazzo`);
                     //err = err.err ? [err] : err;
                     done(true, files_resized);
                   } else {
                     let put = {};
                     if (['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
-                      logger.debug("galleries/medias");
+                      debugLog("galleries/medias");
                       put.medias = [];
                       for (let a = 0; a < files_resized.length; a++) {
                         //if (!files_resized[a].err) {
@@ -178,7 +182,7 @@ upload.uploader = (req, res, options, done) => {
                           height: files_resized[0].height
                         };
                       } else {
-                        logger.debug("E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO ");
+                        debugLog("E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO ");
                         console.log("E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO E SUCCESSO ");
                         put[options.fields.name] = [];
                         for (let a = 0; a < files_resized.length; a++) {
@@ -200,9 +204,9 @@ upload.uploader = (req, res, options, done) => {
                         }
                       }
                     }
-                    logger.debug("SALVAAAAAAAAA");
+                    debugLog("SALVAAAAAAAAA");
                     //var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
-                    logger.debug(put);
+                    debugLog(put);
                     done(false , put);
                   }
                 }
@@ -243,9 +247,9 @@ upload.uploader = (req, res, options, done) => {
             }
           }
         }
-        logger.debug("SALVAAAAAAAAA");
+        debugLog("SALVAAAAAAAAA");
         var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
-        logger.debug(error);
+        debugLog(error);
         done(error, error ? p.files : put);
       }
     } else {
@@ -257,49 +261,49 @@ upload.uploader = (req, res, options, done) => {
 upload.setImage = (req, res) => {
   const options = config.cpanel[req.params.sez].forms.image.components.image.config;
   upload.uploader(req, res, options, (err, p) => {
-    logger.debug(err);
-    logger.debug("p.files");
-    logger.debug(p.files);
-    logger.debug(options.fields.name);
+    debugLog(err);
+    debugLog("p.files");
+    debugLog(p.files);
+    debugLog(options.fields.name);
 
     // if (err instanceof multer.MulterError) {
     if (err) {
-      logger.debug("Upload ERROR");
-      logger.debug(err);
+      debugLog("Upload ERROR");
+      debugLog(err);
       res.status(500).send(err);
     } else if (p.files && p.files[options.fields.name] && p.files[options.fields.name].length) {
-      logger.debug("Upload SUCCESS");
-      logger.debug("checksizer");
+      debugLog("Upload SUCCESS");
+      debugLog("checksizer");
       imageUtil.checksizer(
         p.files[options.fields.name],
         options,
         req,
         (files_checked) => {
-          logger.debug("checksizer 2");
-          logger.debug(files_checked.map(item => {return item.err ? true : false}));
+          debugLog("checksizer 2");
+          debugLog(files_checked.map(item => {return item.err ? true : false}));
           //var r = err | files;
           if (files_checked.map(item => {return item.err ? true : false}).indexOf(false)===-1){
             //p.files[options.fields.name] = err.err ? [err] : err;
-            logger.debug("p.files");
-            logger.debug(p.files);
-            logger.debug(files_checked);
-            logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR 1");
+            debugLog("p.files");
+            debugLog(p.files);
+            debugLog(files_checked);
+            debugLog("ERRORERRORERRORERRORERRORERRORERRORERRORERROR 1");
             res.send(files_checked);
           } else {
             imageUtil.resizer(
               files_checked,
               options,
               (files_resized) => {
-                logger.debug(`imageUtil.resizer`);
-                logger.debug(files_resized);
-                logger.debug(`imageUtil.resizer end`);
-                //logger.debug(files.map(item => {return item.err ? true : false}).indexOf(true)!==-1);
-                logger.debug(files_resized.map(item => {return item.err ? true : false}));
+                debugLog(`imageUtil.resizer`);
+                debugLog(files_resized);
+                debugLog(`imageUtil.resizer end`);
+                //debugLog(files.map(item => {return item.err ? true : false}).indexOf(true)!==-1);
+                debugLog(files_resized.map(item => {return item.err ? true : false}));
 
                 if (files_resized.map(item => {return item.err ? true : false}).indexOf(true)!==-1) {
                   //var e = {errors:{}}
                   //e.errors[options.fields.name] = err.err ? [err] : err; 
-                  logger.debug(`stocazzo`);
+                  debugLog(`stocazzo`);
                   //err = err.err ? [err] : err;
                   res.send(files_resized);
                 } else {
@@ -315,9 +319,9 @@ upload.setImage = (req, res) => {
                     width: files_resized[0].width,
                     height: files_resized[0].height
                   };
-                  logger.debug("SALVAAAAAAAAA");
+                  debugLog("SALVAAAAAAAAA");
                   //var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
-                  logger.debug(put);
+                  debugLog(put);
                   const id = req.params.id;
                   Models[config.cpanel[req.params.sez].model]
                   .findOne({_id:id}, function(err, doc) {
@@ -352,15 +356,15 @@ upload.setImage = (req, res) => {
 upload.setVideo = (req, res) => {
   const options = config.cpanel[req.params.sez].forms.video.components.media.config;
   upload.uploader(req, res, options, (err, p) => {
-    logger.debug(err);
-    logger.debug("p.files");
-    logger.debug(p.files);
-    logger.debug(options.fields.name);
+    debugLog(err);
+    debugLog("p.files");
+    debugLog(p.files);
+    debugLog(options.fields.name);
 
     // if (err instanceof multer.MulterError) {
     if (err) {
-      logger.debug("Upload ERROR");
-      logger.debug(err);
+      debugLog("Upload ERROR");
+      debugLog(err);
       res.status(500).send({ message: `${JSON.stringify(err)}` });
     } else if (p.files && p.files[options.fields.name] && p.files[options.fields.name].length) {
       let put = {};
@@ -375,8 +379,8 @@ upload.setVideo = (req, res) => {
         //width: p.files[options.fields.name][0].width,
         //height: p.files[options.fields.name][0].height
       };
-      logger.debug("SALVAAAAAAAAA");
-      logger.debug(put);
+      debugLog("SALVAAAAAAAAA");
+      debugLog(put);
       const id = req.params.id;
       Models[config.cpanel[req.params.sez].model]
       .findOneAndUpdate({_id:id}, put, {upsert: false, useFindAndModify: false}, function(err, doc) {
@@ -422,57 +426,57 @@ upload.galleryAddImages = (req, res) => {
     }
   }
   upload.uploader(req, res, options, (err, p) => {
-    logger.debug(err);
-    logger.debug("p.files");
-    logger.debug(p.files);
-    logger.debug(options.fields.name);
+    debugLog(err);
+    debugLog("p.files");
+    debugLog(p.files);
+    debugLog(options.fields.name);
 
     // if (err instanceof multer.MulterError) {
     if (err) {
-      logger.debug("Upload ERROR");
-      logger.debug(err);
+      debugLog("Upload ERROR");
+      debugLog(err);
       res.status(500).send(err);
     } else if (p.files && p.files[options.fields.name] && p.files[options.fields.name].length) {
-      logger.debug("Upload SUCCESS");
-      logger.debug("checksizer");
+      debugLog("Upload SUCCESS");
+      debugLog("checksizer");
       imageUtil.checksizer(
         p.files[options.fields.name],
         options,
         req,
         (files_checked) => {
-          logger.debug("checksizer DONE");
-          logger.debug(files_checked);
+          debugLog("checksizer DONE");
+          debugLog(files_checked);
           //var r = err | files;
           if (files_checked.map(item => {return item.err ? true : false}).indexOf(false)===-1){
             //p.files[options.fields.name] = err.err ? [err] : err;
-            logger.debug("p.files");
-            logger.debug(p.files);
-            logger.debug(files_checked);
-            logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR 2");
+            debugLog("p.files");
+            debugLog(p.files);
+            debugLog(files_checked);
+            debugLog("ERRORERRORERRORERRORERRORERRORERRORERRORERROR 2");
             res.send(files_checked);
           } else {
             imageUtil.resizer(
               files_checked,
               options,
               (files_resized) => {
-                logger.debug(`imageUtil.resizer`);
-                logger.debug(files_resized);
-                logger.debug(`imageUtil.resizer end`);
-                //logger.debug(files.map(item => {return item.err ? true : false}).indexOf(true)!==-1);
+                debugLog(`imageUtil.resizer`);
+                debugLog(files_resized);
+                debugLog(`imageUtil.resizer end`);
+                //debugLog(files.map(item => {return item.err ? true : false}).indexOf(true)!==-1);
 
                 /* if (files_resized.map(item => {return item.err ? true : false}).indexOf(true)===-1) {
                   //var e = {errors:{}}
                   //e.errors[options.fields.name] = err.err ? [err] : err; 
-                  logger.debug(`stocazzo`);
+                  debugLog(`stocazzo`);
                   //err = err.err ? [err] : err;
                   res.send(files_resized);
                 } else { */
                   let put = {};
-                  logger.debug("galleries/medias");
+                  debugLog("galleries/medias");
                   put.medias = [];
-                  logger.debug("SALVAAAAAAAAA");
+                  debugLog("SALVAAAAAAAAA");
                   //var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
-                  logger.debug(put);
+                  debugLog(put);
                   const id = req.params.id;
                   Models.Gallery
                   .findById(id, "medias image", (err, data) => {
@@ -498,19 +502,19 @@ upload.galleryAddImages = (req, res) => {
                             data.medias.push(ins);
                           }
                         }
-                        logger.debug('savesavesavesavesavesavesavesave');
+                        debugLog('savesavesavesavesavesavesavesave');
                         data.medias.forEach((item)=>{
                           if (item && item.imageFormats) delete item.imageFormats
                         });
-                        logger.debug(data.medias);
+                        debugLog(data.medias);
                         data.save((err) => {
                           if (err) {
-                            logger.debug(err);
-                            logger.debug("view");
+                            debugLog(err);
+                            debugLog("view");
                             res.status(400).send({ message: `${JSON.stringify(err)}` });
                         } else {
-                            logger.debug('USERS ?');
-                            logger.debug(data.users);
+                            debugLog('USERS ?');
+                            debugLog(data.users);
                             var query = {_id: {$in:data.users || data.members}};
                             Promise.all(
                               [helpers.setStatsAndActivity(query)]
@@ -563,4 +567,4 @@ upload.galleryAddImages = (req, res) => {
 } */
 }
 
-module.exports = upload;
+export default upload;

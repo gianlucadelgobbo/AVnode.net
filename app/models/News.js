@@ -1,16 +1,16 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
+import config from 'getconfig';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-const moment = require('moment');
-const helper = require('../utilities/helper');
-const uniqueValidator = require('mongoose-unique-validator');
+import moment from 'moment';
+import helper from '../utilities/helper.js';
 
-//const indexPlugin = require('../utilities/elasticsearch/News');
 
-const About = require('./shared/About');
-const Link = require('./shared/Link');
-const MediaImage = require('./shared/MediaImage');
-const Media = require('./shared/Media');
+//const indexPlugin from '../utilities/elasticsearch/News');
+
+import About from './shared/About.js';
+import Link from './shared/Link.js';
+import MediaImage from './shared/MediaImage.js';
+import Media from './shared/Media.js';
 
 const adminsez = 'news';
 
@@ -77,7 +77,7 @@ newsSchema.virtual('about').get(function (req) {
         about = "["+__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
-    str = about;
+    let str = about;
     str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
     str = helper.linkify(str);
@@ -158,8 +158,7 @@ newsSchema.virtual('creation_dateFormatted').get(function () {
 
 
 //newsSchema.plugin(indexPlugin());
-newsSchema.plugin(uniqueValidator);
 
 const News = mongoose.model('News', newsSchema);
 
-module.exports = News;
+export default News;

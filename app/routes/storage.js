@@ -1,8 +1,10 @@
-const router = require('./router')();
-const mongoose = require('mongoose');
+import createRouter from "./router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
 const Asset = mongoose.model('Asset');
 const getStorageFolder = require('../utilities/asset/helper').getStorageFolder;
-const logger = require('../utilities/logger'); 
+import { info, debugLog, error } from '../utilities/logger.js';
+ 
 
 router.get('/:identifier/', ({params}, res) => {
   const options = {
@@ -23,4 +25,4 @@ router.get('/:identifier/', ({params}, res) => {
   });
 });
 
-module.exports = router;
+export default router;

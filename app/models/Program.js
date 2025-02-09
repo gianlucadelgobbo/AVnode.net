@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-const uniqueValidator = require('mongoose-unique-validator');
-const moment = require('moment');
 
-const Schedule = require('./shared/Schedule');
-const Package = require('./shared/Package');
+import moment from 'moment';
+
+import Schedule from './shared/Schedule.js';
+import Package from './shared/Package.js';
 
 const subSchema = new Schema({
   subscriber_id: { type: Schema.ObjectId, ref: 'User' },
@@ -68,8 +68,6 @@ subSchema.virtual('daysFormatted').get(function () {
   }
 });
 
-programSchema.plugin(uniqueValidator);
-
 const Program = mongoose.model('Program', programSchema);
 
-module.exports = Program;
+export default Program;

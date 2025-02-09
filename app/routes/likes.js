@@ -1,6 +1,7 @@
-const router = require('./router')();
-const like = require('./likes/like');
+import createRouter from "./router.js";
+const router = createRouter();
+import like from './likes/like.js';
 
 router.use('/', like);
   
-module.exports = router;
+export default router;

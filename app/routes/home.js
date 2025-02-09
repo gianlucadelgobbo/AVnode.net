@@ -1,14 +1,16 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
-const router = require('./router')();
+import config from 'getconfig';
+import mongoose from 'mongoose';
+import createRouter from "./router.js";
+const router = createRouter();
 
 const EventShow = mongoose.model('EventShow');
 const Performance = mongoose.model('Performance');
 const News = mongoose.model('News');
 
-const dataprovider = require('../utilities/dataprovider');
+import dataprovider from '../utilities/dataprovider.js';
 
-const logger = require('../utilities/logger');
+import { info, debugLog, error } from '../utilities/logger.js';
+
 
 router.get('/', (req, res) => {
 
@@ -23,6 +25,7 @@ router.get('/', (req, res) => {
     const limit = 3;
     const skip = 0;
     const sorting = config.sections[section].ordersQueries[config.sections[section].orders[0]];
+
   
     dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
       homedata.events = data;
@@ -48,6 +51,8 @@ router.get('/', (req, res) => {
         const skip = 0;
         const sorting = config.sections[section].ordersQueries[config.sections[section].orders[0]]
       
+        console.log("stocazzo")
+        console.log(req.session)
         dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
           homedata.news = data;
           homedata.stats.news = total;
@@ -63,6 +68,7 @@ router.get('/', (req, res) => {
               title: __('Welcome to AVnode network'),
               subtitle: __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
               data: homedata,
+              session: req.session,
               canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
               jsonld: {
                 "@context": "http://schema.org",
@@ -88,4 +94,4 @@ router.get('/', (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

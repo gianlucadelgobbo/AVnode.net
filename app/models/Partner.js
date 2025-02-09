@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-const uniqueValidator = require('mongoose-unique-validator');
+
 
 const PartnerSchema = new Schema({
   /*
@@ -82,8 +82,7 @@ PartnerSchema.virtual('daysFormatted').get(function () {
   }
 });
 
-PartnerSchema.plugin(uniqueValidator);
 
 const Partner = mongoose.model('Partner', PartnerSchema);
 
-module.exports = Partner;
+export default Partner;

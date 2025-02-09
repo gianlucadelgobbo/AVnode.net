@@ -1,6 +1,7 @@
-const Schema = require('mongoose').Schema;
-const MediaImage = require('./MediaImage');
-const Link = require('./Link');
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
+import MediaImage from './MediaImage.js';
+import Link from './Link.js';
 
 const OrganizationData = new Schema({
   name: String,
@@ -75,4 +76,4 @@ const OrganizationData = new Schema({
   }]
 },{ _id : false });
 
-module.exports = OrganizationData;
+export default OrganizationData;

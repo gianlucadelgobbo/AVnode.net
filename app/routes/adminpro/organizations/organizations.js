@@ -1,5 +1,6 @@
-const router = require('../../router')();
-const mongoose = require('mongoose');
+import createRouter from "../../router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const User = mongoose.model('User');
 const ObjectId = Schema.ObjectId;
@@ -9,11 +10,12 @@ const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const Program = mongoose.model('Program');
 
-const fs = require('fs');
-const config = require('getconfig');
-const sharp = require('sharp');
+import fs from 'fs';
+import config from 'getconfig';
+import sharp from 'sharp';
 
-const logger = require('../../../utilities/logger');
+import { info, debugLog, error } from '../../../utilities/logger.js';
+
 
 const populate_program = [
   { 
@@ -66,7 +68,7 @@ const status = [
 ];
 
 router.get('/', (req, res) => {
-  logger.debug('/organizations');
+  debugLog('/organizations');
   let results = {};
   const myids = req.user.crews.concat([req.user._id.toString()]);
   User.
@@ -78,7 +80,7 @@ router.get('/', (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data.crews);
     } else {
-      logger.debug(data);
+      debugLog(data);
       res.render('adminpro/organizations/home', {
         title: 'Organizations',
         currentUrl: req.originalUrl,
@@ -90,7 +92,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:event', (req, res) => {
-  logger.debug('/organizations/'+req.params.event);
+  debugLog('/organizations/'+req.params.event);
   let data = {};
   User.
   findOne({"_id": req.params.event}).
@@ -102,7 +104,7 @@ router.get('/:event', (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);
     } else {
-      logger.debug(data);
+      debugLog(data);
       res.render('adminpro/organizations/dett', {
         title: 'Events: '+data.event.title,
         currentUrl: req.originalUrl,
@@ -115,8 +117,8 @@ router.get('/:event', (req, res) => {
 });
 
 router.get('/:event/acts', (req, res) => {
-  logger.debug('/organizations/'+req.params.event+'/acts');
-  logger.debug(req.query)
+  debugLog('/organizations/'+req.params.event+'/acts');
+  debugLog(req.query)
   let data = {};
   User.
   findOne({"_id": req.params.event}).
@@ -131,13 +133,13 @@ router.get('/:event/acts', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
-      logger.debug(query);
+      debugLog(query);
       Program.
       find(query).
       //select({title: 1, organizationsettings: 1}).
       populate(populate_program).
       exec((err, program) => {
-        logger.debug(program);
+        debugLog(program);
         if (err) {
           res.json(err);
         } else {
@@ -165,8 +167,8 @@ router.get('/:event/acts', (req, res) => {
 });
 
 router.get('/:event/peoples', (req, res) => {
-  logger.debug('/organizations/'+req.params.event+'/peoples');
-  logger.debug(req.query)
+  debugLog('/organizations/'+req.params.event+'/peoples');
+  debugLog(req.query)
   let data = {};
   User.
   findOne({"_id": req.params.event}).
@@ -181,14 +183,14 @@ router.get('/:event/peoples', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
-      logger.debug(query);
+      debugLog(query);
       Program.
       find(query).
       //select({title: 1, organizationsettings: 1}).
       populate(populate_program).
       exec((err, program) => {
 
-        logger.debug(program);
+        debugLog(program);
         if (err) {
           res.json(err);
         } else {
@@ -229,7 +231,7 @@ router.get('/:event/peoples', (req, res) => {
 });
 
 router.get('/:event/program', (req, res) => {
-  logger.debug('/organizations/'+req.params.event+'/program');
+  debugLog('/organizations/'+req.params.event+'/program');
 
   let data = {};
   User.
@@ -273,4 +275,4 @@ router.get('/:event/program', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

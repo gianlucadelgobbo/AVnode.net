@@ -1,15 +1,16 @@
+import mongoose from 'mongoose';
+
 const dataprovider = {};
 
-const config = require('getconfig');
-const helper = require('./helper');
-const helpers = require('../routes/admin/api/helpers');
+import config from 'getconfig';
+import helper from './helper.js';
+import helpers from '../routes/admin/api/helpers.js';
 
-const mongoose = require('mongoose');
-const UserShow = mongoose.model('UserShow');
+
+const UserShow = mongoose.models.UserShow;
 const Event = mongoose.model('Event');
 const EventShow = mongoose.model('EventShow');
 const Footage = mongoose.model('Footage');
-// const Crew = mongoose.model('Crew');
 const Performance = mongoose.model('Performance');
 const Category = mongoose.model('Category');
 const Playlist = mongoose.model('Playlist');
@@ -17,7 +18,7 @@ const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
 
-const logger = require('./logger');
+import { info, debugLog, error } from './logger.js';
 
 var countries = [
   'Afghanistan',
@@ -208,25 +209,26 @@ for(var b=0;b<countries.length;b++){
   }
 }
 */
-dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
-  /* logger.debug("populate");
-  logger.debug(populate);
-  logger.debug("req.query");
-  logger.debug(req.query);
-  logger.debug("subsection");
-  logger.debug(subsection);
-  logger.debug("slug");
-  logger.debug(req.params.slug);
-  logger.debug("model");
-  logger.debug(model); */
+dataprovider.fetchShow = async (req, section, subsection, model, populate, select, output, cb) => {
+  /* debugLog("populate");
+  debugLog(populate);
+  debugLog("req.query");
+  debugLog(req.query);
+  debugLog("subsection");
+  debugLog(subsection);
+  debugLog("slug");
+  debugLog(req.params.slug);
+  debugLog("model");
+  debugLog(model); */
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
     if (req.query.crews) {
-      select.crews = 1;
-      model.
-      findOne({slug: req.params.slug}).
-      populate(populate).
-      select(select).
-      exec((err, data) => {
+      try {
+        select.crews = 1;    
+        const data = await model.
+        findOne({slug: req.params.slug}).
+        populate(populate).
+        select(select).
+        exec();
         var meandcrews = data.crews;
         meandcrews.push(data._id);
         let submodel = (subsection == "performances" ? Performance : EventShow);
@@ -240,27 +242,29 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         const newpopulate = populate.filter(pop => pop.path == subsection)[0].populate;
         const limit = populate.filter(pop => pop.path == subsection)[0].options.limit;
         const sort = populate.filter(pop => pop.path == subsection)[0].options.sort;
-        //logger.debug("newselect");
-        //logger.debug(newselect);
-        //logger.debug(submodel);
-        //logger.debug(sort);
+        //debugLog("newselect");
+        //debugLog(newselect);
+        //debugLog(submodel);
+        //debugLog(sort);
         //const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
-        submodel.
-        countDocuments(query, (err, d) => {
-          submodel.
+        try {
+          const total = await submodel.countDocuments(query);
+          const sub = await submodel.
           find(query).
           populate(newpopulate).
           select(newselect).
           sort(sort).
           limit(limit).
-          exec((err, sub) => {
-            let datadata = JSON.parse(JSON.stringify(data));
-            datadata[subsection] = sub;
-            const total = d;
-            cb(err, datadata, total);
-          });
-        });
-      });
+          exec();
+          let datadata = JSON.parse(JSON.stringify(data));
+          datadata[subsection] = sub;
+          cb(null, datadata, total);
+        } catch (err) {
+          cb(err);
+        }
+      } catch (err) {
+        cb(err);
+      }
     } else {
       const nolimit = JSON.parse(JSON.stringify(populate));
       delete nolimit[0].options;
@@ -269,34 +273,39 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
           if (populate[a].options && populate[a].options.limit) populate[a].options.limit = parseInt(req.query.limit);
         }
       }
-      model.
-      findOne({slug: req.params.slug}).
-      lean({ virtuals: false }).
-      // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
-      populate(nolimit).
-      select("_id").
-      exec((err, d) => {
-        logger.debug(d);
-        const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
-        model.
+      try {
+        const d = await model.
         findOne({slug: req.params.slug}).
-        // lean({ virtuals: true }).
+        lean({ virtuals: false }).
         // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
-        populate(populate).
-        select(select).
-        exec((err, data) => {
+        populate(nolimit).
+        select("_id").
+        exec()
+        try {
+          const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
+          const data = await model.
+          findOne({slug: req.params.slug}).
+          // lean({ virtuals: true }).
+          // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
+          populate(populate).
+          select(select).
+          exec()
           /* const res = Object.assign(select, data);
-          //logger.debug(select);
-          //logger.debug(Object.keys(res));
+          //debugLog(select);
+          //debugLog(Object.keys(res));
           cb(err, res, total); */
-          //logger.debug("res.partnershipaaaaaaab");
+          //debugLog("res.partnershipaaaaaaab");
           if(data && data.partnerships && data.partnerships_ordered) {
             delete data.partnerships;
-            //logger.debug(data.partnerships);
+            //debugLog(data.partnerships);
           }
-          cb(err, data, total);
-        });
-      });
+          cb(null, data, total);
+        } catch (err) {
+          res.json(err);
+        }
+      } catch (err) {
+        res.json(err);
+      }
     }
   } else {
     if (subsection === "program") {
@@ -357,7 +366,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
       if (req.params.day) {
         /*
         const date = new Date(req.params.day);
-        //logger.debug(date);
+        //debugLog(date);
         select['program.schedule.date.$'] = date;
         populate.push({
           "path": "program.schedule",
@@ -488,19 +497,20 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }
       }
     }
-    logger.debug("BINGOOOOO");
-    logger.debug(select);
-    logger.debug({slug: req.params.sub ? req.params.sub : req.params.slug});
-    logger.debug("model");
-    logger.debug(model);
-    model.
-    findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
-    // lean({ virtuals: true }).
-    // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
-    populate(populate).
-    select(select).
-    exec((err, ddd) => {
-      logger.debug(err);
+    /* debugLog("BINGOOOOO");
+    debugLog(select);
+    debugLog({slug: req.params.sub ? req.params.sub : req.params.slug});
+    debugLog("model");
+    debugLog(model); */
+    try {
+
+      const ddd = await model.
+      findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
+      // lean({ virtuals: true }).
+      // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
+      populate(populate).
+      select(select).
+      exec()
       let data;
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};
@@ -599,13 +609,13 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         res.advanced.programmenotscheduled = undefined;
       }
       if (res && res.advanced && res.advanced.performers && res.advanced.performers.performers && req.params.performer) {
-        //logger.debug("BINGOOOOO");
+        //debugLog("BINGOOOOO");
         for(let a=0; a<res.advanced.performers.performers.length;a++) {
           if (res.advanced.performers.performers[a].slug===req.params.performer) {
             res.performer = res.advanced.performers.performers[a];
           }
         }
-        //logger.debug(res.performer);
+        //debugLog(res.performer);
         if (res.performer) {
           //console.log("res.performer.performances")
           //console.log(res.performer.performances)
@@ -631,34 +641,43 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }
         delete res.advanced.performers;
       }
-      //logger.debug("res.partnershipaaaaaaa");
+      //debugLog("res.partnershipaaaaaaa");
       if(res && res.partnerships && res.partnerships_ordered) {
         delete res.partnerships;
-        //logger.debug(res.partnerships);
+        //debugLog(res.partnerships);
       }
-      //logger.debug("fetchShow END");
-      cb(err, res);
+      //debugLog("fetchShow END");
+      cb(null, res);
       //cb(err, data);
-    });
+    } catch (err) {
+      cb(err);
+    }
   }
-
 };
 
-dataprovider.getPerformanceByIds = (req, ids, cb) => {
-  Performance.find({'users':{$in: ids}}).
-  populate({path: 'type', select: 'name'}).
-  populate({path: 'users', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
-  select({ title: 1, categories: 1 }).
-  exec((err, data) => {
-    //for (var item in data) //logger.debug(data[item].users);  
-    cb(err, data);
-  });
+dataprovider.getPerformanceByIds = async (req, ids, cb) => {
+  try {
+    const data = await Performance.find({ users: { $in: ids } })
+      .populate({ path: "type", select: "name" })
+      .populate({
+        path: "users",
+        select: "stagename slug members",
+        populate: { path: "members", select: "stagename slug" },
+      })
+      .select({ title: 1, categories: 1 })
+      .lean(); // Optimize query by skipping Mongoose model conversion
+
+    return cb(null, data);
+  } catch (err) {
+    console.error(`🔥 Error in getPerformanceByIds:`, err);
+    return cb(err, null);
+  }
 };
 
 /* dataprovider.getEmailById = (id, cb) => {
   UserShow.findOne({'_id':id}, "email",(err, data) => {
-    //logger.debug("getEmailById");  
-    //logger.debug(data);  
+    //debugLog("getEmailById");  
+    //debugLog(data);  
     cb(err, data);
   });
 }; */
@@ -743,8 +762,8 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
       }
     }
   } else if (data && data.title) {
-    logger.debug("subsection");
-    logger.debug(subsection);
+    //debugLog("subsection");
+    //debugLog(subsection);
     if (subsection != "show" && !data.performer && !data.performance) {
       jsonld["@type"] = "ItemList";
       jsonld.itemListElement = [];
@@ -820,7 +839,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
         if (data.performer.social) for(let a=0;a<data.performer.social.length;a++) jsonld.sameAs.push(data.performer.social[a].url);
       }
       if (data.performer.addresses && data.performer.addresses.length) {
-        logger.debug(data.addresses);
+        //debugLog(data.addresses);
         jsonld.address = {
           "@type": "PostalAddress",
           "addressLocality": data.performer.addresses[0].locality,
@@ -830,7 +849,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
     } else if (subsection == "program" && data.performance) {
       if (data.performance.bookings && data.performance.bookings.length) {
         for(let a=0;a<data.performance.bookings.length;a++) {
-          //logger.debug(data.performance.bookings[a]);
+          //debugLog(data.performance.bookings[a]);
           if(data.performance.bookings[a].event._id.toString()==data._id.toString()) {
             jsonld.startDate = data.performance.bookings[a].schedule[0].starttime;
             jsonld.location = {
@@ -973,46 +992,72 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
     jsonld.image = data.imageFormats.large; */
   }
 
-  logger.debug(jsonld);
+  //debugLog(jsonld);
   return jsonld;
 };
 
-dataprovider.fetchRandomPerformance = (model, query, select, populate, limit, skip, sorting, cb) => {
+dataprovider.fetchRandomPerformance = async (model, query, select, populate, limit, skip, sorting, cb) => {
   query.is_public = true;
-  Performance.countDocuments(query, function(error, total) {
-    var random = Math.floor(Math.random() * total)
-    Performance.find(query)
+  try {
+    const total = await model.countDocuments(query);
+    
+    if (total === 0) {
+      return cb(null, [], total); // Call cb with empty data if no records found
+    }
+
+    const random = Math.floor(Math.random() * total);
+    
+    const data = await model.find(query)
     .skip(random)
     .populate(populate)
     .limit(1)
     .select(select)
-    .exec(function(err, data) {
-      cb(err, data, total);
-    });
-  });
+    .exec();
+    cb(null, data, total); // Always call cb
+  } catch (err) {
+    console.error(`🔥 Error in fetchRandomPerformance (${model.modelName}):`, err);
+    cb(err, null, null); // Pass error to callback
+  }
 };
 
-dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting, cb) => {
-  query.is_public = true;
-  /* 
-  logger.debug("BINGOOOOO");
-  logger.debug(query);
-  logger.debug(select);
-  logger.debug(sorting);
-  */
-  model.countDocuments(query, function(error, total) {
-    model.find(query)
-    .populate(populate)
-    .select(select)
-    .limit(limit)
-    .skip(skip)
-    .sort(sorting)
-    /*.select(config.sections[section].list_fields)*/
-    .exec(function(err, data) {
-      cb(err, data, total);
-    });
-  });
+
+
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dataprovider.fetchLists = async (model, query, select, populate, limit, skip, sorting, cb) => {
+  try {
+    query.is_public = true;
+    
+    // Log the function call for debugging
+    debugLog(`[${__filename}] fetchLists called with model: ${model.modelName}`);
+
+    // Use Promises instead of callback
+    const total = await model.countDocuments(query);
+    debugLog(total)
+
+    const data = await model.find(query)
+      .populate(populate)
+      .select(select)
+      .limit(limit)
+      .skip(skip)
+      .sort(sorting)
+      .exec();
+
+    cb(null, data, total);
+  } catch (err) {
+    // 🔥 Enhanced Error Logging with File Name
+    error(`🔥 ERROR in fetchLists at [${__filename}]: ${err.message}`);
+    error(err.stack);
+
+    cb(err);
+  }
 };
+
 
 dataprovider.makeTextPlainToRich = (str) => {
   str=str.replace('"','&quot;');
@@ -1029,26 +1074,33 @@ dataprovider.makeTextPlainToRich = (str) => {
   return str;	
 }
 
-dataprovider.addCat = (req, populate, cb) => {
-  if (req.params.type) {
-    Category.
-    findOne({slug: req.params.type}).
-    exec((err, cat) => {
-      if (cat && populate[0].match) populate[0].match.type = cat._id;
-      cb(populate, cat)
-    });
-  } else {
-    cb(populate)
+dataprovider.addCat = async (req, populate, cb) => {
+  try {
+    if (req.params.type) {
+      const cat = await Category.findOne({ slug: req.params.type }).lean(); // Use lean() for performance
+
+      if (cat && populate[0].match) {
+        populate[0].match.type = cat._id;
+      }
+
+      return cb(populate, cat);
+    } else {
+      return cb(populate);
+    }
+  } catch (err) {
+    console.error(`🔥 Error in addCat:`, err);
+    return cb(populate, null); // Ensure callback is always called, even on error
   }
-}
+};
+
 
 dataprovider.show = (req, res, section, subsection, model) => {
-  //logger.debug(section);
-  //logger.debug(subsection);
-  //logger.debug(config.sections[section]);
+  //debugLog(section);
+  //debugLog(subsection);
+  //debugLog(config.sections[section]);
   let populate = JSON.parse(JSON.stringify(config.sections[section][subsection].populate));
-  //logger.debug("populate PRE");
-  //logger.debug(populate);
+  //debugLog("populate PRE");
+  //debugLog(populate);
   dataprovider.addCat(req, populate, (populate, type) => {
     for(let item in populate) {
       if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
@@ -1083,14 +1135,14 @@ dataprovider.show = (req, res, section, subsection, model) => {
         }
       }
     }
-    //logger.debug("populate AFTER");
-    //logger.debug(populate[0].match);
+    //debugLog("populate AFTER");
+    //debugLog(populate[0].match);
     const select = config.sections[section][subsection].select;
     const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
 
     dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
-      //logger.debug("fetchShow END");
-      //logger.debug(data);
+      //debugLog("fetchShow END");
+      //debugLog(data);
       if (err || !data || data === null) {
         res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
       } else {
@@ -1117,8 +1169,8 @@ dataprovider.show = (req, res, section, subsection, model) => {
               if (locations[item]) data.locations.push(locations[item]);
             }
           }
-          //logger.debug("locations");
-          //logger.debug(locations);
+          //debugLog("locations");
+          //debugLog(locations);
           //data.schedule = undefined;
         }
         if (data && data.addresses && data.addresses.length) {
@@ -1199,8 +1251,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
             req.session[data._id] = true;
             if (!data.stats) data.stats = {};
             data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
-            model.updateOne({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
-            });
+            model.updateOne({_id:data._id},{"stats.visits":data.stats.visits});
           }  
           if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
             data.liked = false;
@@ -1213,7 +1264,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           let limit = req.query.limit ? parseInt(req.query.limit) : config.sections[section].limit;
           let link = '/' + data.slug + '/' + subsection + '/page/';
           let page = (req.params.page ? parseFloat(req.params.page) : 1);
-          skip = (page - 1) * limit;
+          let skip = (page - 1) * limit;
           data.pages = helper.getPagination(link, skip, limit, total, "/"); 
         }
         /* let editable = false;
@@ -1227,7 +1278,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           }
         } */
         if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
-          //logger.debug("fetchShow END");
+          //debugLog("fetchShow END");
           res.json(data);
           /* if (process.env.DEBUG) {
             res.render('json', {data: data});
@@ -1320,7 +1371,7 @@ dataprovider.list = (req, res, section, model) => {
         } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
           if (data.length) {
             /* var dates = data.map(item => {return item.updatedAt}).sort().reverse()[0];
-            //logger.debug(dates);
+            //debugLog(dates);
             let lastmod = new Date();
             lastmod.setHours( lastmod.getHours() -2 );
             lastmod.setMinutes(0); */
@@ -1367,7 +1418,6 @@ dataprovider.list = (req, res, section, model) => {
       });
     }
   }
-
 };
 
-module.exports = dataprovider;
+export default dataprovider;

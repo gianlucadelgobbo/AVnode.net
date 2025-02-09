@@ -1,12 +1,14 @@
-const router = require('../router')();
-const axios = require('axios');
+import createRouter from "../router.js";
+const router = createRouter();
+import axios from 'axios';
 
-const logger = require('../../utilities/logger');
+import { info, debugLog, error } from '../../utilities/logger.js';
+
 
 router.get('/', (req, res, next) => {
   axios.get('https://cms.avnode.net/'+global.getLocale()+'/wp-json/wp/v2/mypages'+req.baseUrl)
   .then((body) => {
-    logger.debug(body)
+    debugLog(body)
     res.render('pages/show', {
       title: body.data.post_title,
       data: body.data
@@ -16,4 +18,4 @@ router.get('/', (req, res, next) => {
   });
 });
 
-module.exports = router;
+export default router;

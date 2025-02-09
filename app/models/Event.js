@@ -1,21 +1,22 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
+import config from 'getconfig';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-const moment = require('moment');
-const uniqueValidator = require('mongoose-unique-validator');
+import moment from 'moment';
 
-//const indexPlugin = require('../utilities/elasticsearch/Event');
 
-const About = require('./shared/About');
-const MediaImage = require('./shared/MediaImage');
-const Link = require('./shared/Link');
-const Venue = require('./shared/Venue');
-const Schedule = require('./shared/Schedule');
-const Program = require('./Program');
-const Package = require('./shared/Package');
+//const indexPlugin from '../utilities/elasticsearch/Event');
+
+import About from './shared/About.js';
+import MediaImage from './shared/MediaImage.js';
+import Link from './shared/Link.js';
+import Venue from './shared/Venue.js';
+import Schedule from './shared/Schedule.js';
+import Program from './Program.js';
+import Package from './shared/Package.js';
 
 const adminsez = 'events';
-const logger = require('../utilities/logger');
+import { info, debugLog, error } from '../utilities/logger.js';
+
 
 const datevenueSchema = new Schema({
   starttime: Date,
@@ -117,7 +118,7 @@ const eventSchema = new Schema({
       return re.test(slug)
     }, 'EVENT_URL_IS_NOT_VALID']
   },
-  subtitles: [About],
+  subtitles: [],
   image: MediaImage,
   //teaserImage: MediaImage,
   //file: { file: String },
@@ -231,11 +232,8 @@ eventSchema.virtual('imageFormats').get(function () {
   return imageFormats;
 });
 
-
-eventSchema.plugin(uniqueValidator);
-
 //eventSchema.plugin(indexPlugin());
 
 const Event = mongoose.model('Event', eventSchema);
 
-module.exports = Event;
+export default Event;

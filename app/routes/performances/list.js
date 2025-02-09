@@ -1,11 +1,14 @@
-const config = require('getconfig');
-const router = require('../router')();
-const dataprovider = require('../../utilities/dataprovider');
+import createRouter from '../router.js'; // ✅ Import the router function
+const router = createRouter(); // ✅ Create an Express Router instance
 
-const Model = require('mongoose').model('Performance');
+import config from 'getconfig';
+import dataprovider from '../../utilities/dataprovider.js';
+
+import mongoose from 'mongoose';
+const Model = mongoose.model('Performance');
 const section = 'performances';
 
-const logger = require('../../utilities/logger');
+import { info, debugLog, error } from '../../utilities/logger.js';
 
 router.get('/:filter/:sorting/:page', (req, res) => {
   dataprovider.list(req, res, section, Model);
@@ -29,4 +32,4 @@ router.get('/', (req, res) => {
   dataprovider.list(req, res, section, Model);
 });
 
-module.exports = router;
+export default router;

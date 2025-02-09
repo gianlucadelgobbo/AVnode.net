@@ -1,5 +1,6 @@
-const router = require('../../router')();
-const mongoose = require('mongoose');
+import createRouter from "../../router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const User = mongoose.model('User');
 const Performance = mongoose.model('Performance');
@@ -10,19 +11,20 @@ const Playlist = mongoose.model('Playlist');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
-const axios = require('axios');
-//const fs = require('fs');
-const config = require('getconfig');
-//const sharp = require('sharp');
+import axios from 'axios';
+//import fs from 'fs';
+import config from 'getconfig';
+//import sharp from 'sharp';
 //const ObjectId = Schema.ObjectId;
 
-const logger = require('../../../utilities/logger');
+import { info, debugLog, error } from '../../../utilities/logger.js';
+
 
 // V > db.events.findOne({"schedule.venue.location.locality":{$exists: true}},{schedule:1});
 // V {"addresses.country": "Italy", "addresses.locality":{$in: ["Rome","Roma"]}},{addresses:1}
 
 router.get('/allemails', (req, res) => {
-  logger.debug('/adminpro/supertools/emails');
+  debugLog('/adminpro/supertools/emails');
   User.find({email:{$exists:true}, 'emails.email': {$exists:true}, is_crew:false}).
   lean().
   select({name: 1, slug: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
@@ -42,11 +44,11 @@ router.get('/allemails', (req, res) => {
       //if (e.email == "alberto.bordonaro@gmail.com")     console.log(e);
 
       /* if (e.emails.filter(item => item.email=e.email).length===0 && e.activity==0) {
-        logger.debug("e.emails.filter(item => item.email=e.email).length");
-        logger.debug(e.emails.filter(item => item.email=e.email).length);
-        logger.debug(e.email);
-        logger.debug(e.emails);
-        logger.debug(e.slug);
+        debugLog("e.emails.filter(item => item.email=e.email).length");
+        debugLog(e.emails.filter(item => item.email=e.email).length);
+        debugLog(e.email);
+        debugLog(e.emails);
+        debugLog(e.slug);
       } */
       let email = {
         list: 'AXRGq2Ftn2Fiab3skb5E892g',
@@ -98,7 +100,7 @@ router.get('/updateSendy', (req, res) => {
   const limit = 50;
   const skip = req.query.skip ? parseFloat(req.query.skip) : 0;
 
-  logger.debug('/adminpro/supertools/emails');
+  debugLog('/adminpro/supertools/emails');
   User.find({email:{$exists:true}, "emails.email":{$exists:true}, is_crew:false}).
   select({name: 1, slug: 1, old_id: 1, activity: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
   lean().
@@ -116,7 +118,7 @@ router.get('/updateSendy', (req, res) => {
       });
       
       results.forEach(function(e) {
-        logger.debug(e);
+        debugLog(e);
         let email = {
           list: 'AXRGq2Ftn2Fiab3skb5E892g',
           api_key: process.env.SENDYAPIKEY,
@@ -143,14 +145,14 @@ router.get('/updateSendy', (req, res) => {
   
           for (const mailinglist in ee.mailinglists) if (ee.mailinglists[mailinglist]) topics.push(mailinglist);
           email.Topics = topics.join(',');
-          //logger.debug(email);
+          //debugLog(email);
           //email.mailinglists = ee.mailinglists;
           mailinglists.push(email);
   
           axios.post('https://ml.avnode.net/subscribe', {email})
           .then((response) => {
             conta++;
-            logger.debug(response);
+            debugLog(response);
             if (conta === fatto) {
               res.render('adminpro/supertools/emails/showall', {
                 title: 'Emails',
@@ -183,7 +185,7 @@ router.get('/mailinator', (req, res) => {
   lean().
   //sort('name').
   exec((err, results) => {
-    logger.debug(results);
+    debugLog(results);
     let mailinglists = [];
     let conta = 0;
     let fatto = 0;
@@ -194,11 +196,11 @@ router.get('/mailinator', (req, res) => {
     
     results.forEach(function(e) {
       /* if (e.emails.filter(item => item.email=e.email).length===0 && e.activity==0) {
-        logger.debug("e.emails.filter(item => item.email=e.email).length");
-        logger.debug(e.emails.filter(item => item.email=e.email).length);
-        logger.debug(e.email);
-        logger.debug(e.emails);
-        logger.debug(e.slug);
+        debugLog("e.emails.filter(item => item.email=e.email).length");
+        debugLog(e.emails.filter(item => item.email=e.email).length);
+        debugLog(e.email);
+        debugLog(e.emails);
+        debugLog(e.slug);
       } */
       let email = {
         list: 'AXRGq2Ftn2Fiab3skb5E892g',
@@ -245,4 +247,4 @@ router.get('/mailinator', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

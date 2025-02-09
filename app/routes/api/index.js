@@ -1,18 +1,21 @@
-const config = require('getconfig');
-const router = require('../router')();
-//const dataprovider = require('../../utilities/dataprovider');
-const fs = require("fs");
+import config from 'getconfig';
+import createRouter from "../router.js";
+const router = createRouter();
+//import dataprovider from '../../utilities/dataprovider.js';
+import fs from 'fs';
+import imageUtil from '../../utilities/image.js';
 
-const imageUtil = require("../../utilities/image");
+import mongoose from 'mongoose';
 
-const Footage = require('mongoose').model('Footage');
-const Video = require('mongoose').model('Video');
-const Order = require('mongoose').model('Order');
-const Event = require('mongoose').model('Event');
-const Vjtv = require('mongoose').model('Vjtv');
-const Emailqueue = require('mongoose').model('Emailqueue');
+const Footage = mongoose.model('Footage');
+const Video = mongoose.model('Video');
+const Order = mongoose.model('Order');
+const Event = mongoose.model('Event');
+const Vjtv = mongoose.model('Vjtv');
+const Emailqueue = mongoose.model('Emailqueue');
 
-const logger = require('../../utilities/logger');
+import { info, debugLog, error } from '../../utilities/logger.js';
+
 
 router.post('/emailqueue', (req, res) => {
   Emailqueue
@@ -38,11 +41,11 @@ router.post('/emailqueue', (req, res) => {
         const gmailer = require('../../utilities/gmailer');
         gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
           if (err) {
-            logger.debug("Email sending failure");
-            logger.debug(err);
+            debugLog("Email sending failure");
+            debugLog(err);
             res.json({error: true, msg: "Email sending failure", id: req.body.id, err: err});
           } else {
-            logger.debug("Email sending OK");
+            debugLog("Email sending OK");
             emailqueue.messages_sent.push(emailqueue.messages_tosend[0]);
             emailqueue.messages_tosend = emailqueue.messages_tosend.splice(1, emailqueue.messages_tosend.length)
             emailqueue.save((err) => {
@@ -55,7 +58,7 @@ router.post('/emailqueue', (req, res) => {
           }
         });
       } else {
-        logger.debug("Email sending completed");
+        debugLog("Email sending completed");
         res.json({error: false, msg: "Email sending completed", id: req.body.id});
       }
     }
@@ -98,13 +101,13 @@ router.get('/tobeencoded/:sez', (req, res) => {
 });
 
 router.get('/setdurationandsize/:sez/:id/', (req, res) => {
-  logger.debug('/setencodingstatus/:sez/:id/');
-  logger.debug("existsSync");
+  debugLog('/setencodingstatus/:sez/:id/');
+  debugLog("existsSync");
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
   Model
   .findOne({_id:req.params.id})
   .exec((err, data) => {
-    logger.debug(data);
+    debugLog(data);
     //data.media.file = "/public/1f575e4c-7cd5-4609-a0cc-75b3b301c6f3.mp4";
     if (err) {
       res.status(500).send({ message: `${JSON.stringify(err)}` });
@@ -114,8 +117,8 @@ router.get('/setdurationandsize/:sez/:id/', (req, res) => {
       } else { */
         if (fs.existsSync(global.appRoot+data.media.file)) {
           data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
-          logger.debug("ffprobe");
-          logger.debug(global.appRoot+data.media.file);
+          debugLog("ffprobe");
+          debugLog(global.appRoot+data.media.file);
       
           var ffprobe = require('ffprobe');
           var ffprobeStatic = require('ffprobe-static');
@@ -148,8 +151,8 @@ router.get('/setdurationandsize/:sez/:id/', (req, res) => {
 });
 
 router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
-  logger.debug('/setencodingstatus/:sez/:id/:encoding');
-  logger.debug(req.params.encoding);
+  debugLog('/setencodingstatus/:sez/:id/:encoding');
+  debugLog(req.params.encoding);
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
   if (req.params.encoding == 1) {
     Model
@@ -158,27 +161,27 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
       if (err) {
         res.status(500).send({ message: `${JSON.stringify(err)}` });
       } else {
-        logger.debug(data.media.original);
+        debugLog(data.media.original);
         const ext = data.media.original.substring(data.media.original.lastIndexOf(".")+1);
         data.media.file = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "/").replace("/glacier/", "/warehouse/")+"_"+ext+".mp4";
         data.media.preview = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "_previews/")+"_"+ext+".png";
         data.is_public = 1;
         data.media.encoded = req.params.encoding;
-        logger.debug(global.appRoot+data.media.preview);
-        logger.debug(global.appRoot+data.media.file);
+        debugLog(global.appRoot+data.media.preview);
+        debugLog(global.appRoot+data.media.file);
         if (fs.existsSync(global.appRoot+data.media.file)) {
           data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
           const options = config.cpanel[req.params.sez].forms.video.components.media.config;
-          logger.debug("data.media.filesize");
-          logger.debug(data.media.filesize);
-          logger.debug(imageUtil);
-          logger.debug(imageUtil.resizer);
+          debugLog("data.media.filesize");
+          debugLog(data.media.filesize);
+          debugLog(imageUtil);
+          debugLog(imageUtil.resizer);
 
           imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (files_resized) => {
-            logger.debug("files_resized");
-            logger.debug(files_resized);
+            debugLog("files_resized");
+            debugLog(files_resized);
             if (files_resized.map(item => {return item.err ? true : false}).indexOf(true)!==-1) {
-              logger.debug("Image resize ERROR: info undefined");
+              debugLog("Image resize ERROR: info undefined");
               res.json(files_resized);
             } else {
               data.media.encoded = req.params.encoding;
@@ -219,30 +222,29 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
     });
   }
 });
-
-var cors = require('cors')
+import cors from 'cors';
 var corsOptions = {
   origin: 'https://liveperformersmeeting.net',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
-  logger.debug("updateTransation");
-  logger.debug(req.body);
+  debugLog("updateTransation");
+  debugLog(req.body);
 
   const gmailer = require('../../utilities/gmailer');
   Order
   .create(req.body, (err, data) => {
-    logger.debug("req.body.event");
-    logger.debug(req.body);
+    debugLog("req.body.event");
+    debugLog(req.body);
     if(!err) {
       if (req.body.event) {
-        logger.debug(req.body.event);
+        debugLog(req.body.event);
         Event
         .findOne({"_id":req.body.event})
         .select({title:1, organizationsettings:1})
         .exec((err, event) => {
-          logger.debug("event.organizationsettings.email");
-          logger.debug(event.organizationsettings.email);
+          debugLog("event.organizationsettings.email");
+          debugLog(event.organizationsettings.email);
           if (err) {
             res.status(500).send({ message: `${JSON.stringify(err)}` });
           } else {
@@ -263,21 +265,21 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
               subject: __("Payment Confirm") + " | " + event.title,
               text: email
             };
-            logger.debug("pre gMailer")
-            logger.debug(auth)
-            logger.debug(mail)
+            debugLog("pre gMailer")
+            debugLog(auth)
+            debugLog(mail)
             gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-              /* logger.debug("gMailer");
-              logger.debug(err);
-              logger.debug("gMailer");
-              logger.debug(result);
+              /* debugLog("gMailer");
+              debugLog(err);
+              debugLog("gMailer");
+              debugLog(result);
               res.json({res:result}); */
               if (err) {
-                logger.debug("Email sending failure");
-                logger.debug(err);
+                debugLog("Email sending failure");
+                debugLog(err);
                 res.json({error: true, msg: "Email sending failure", err: err});
               } else {
-                logger.debug("Email sending OK");
+                debugLog("Email sending OK");
                 res.json({error: false, msg: "Email sending success"});
               }
             });
@@ -291,7 +293,7 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
 });
 
 router.get('/getprogramsdays', (req, res) => {
-  logger.debug("getprograms");
+  debugLog("getprograms");
   Vjtv.
   aggregate([
     {"$group":{
@@ -305,16 +307,16 @@ router.get('/getprogramsdays', (req, res) => {
 });
 
 router.get('/getprograms', (req, res) => {
-  logger.debug("getprograms");
+  debugLog("getprograms");
   //req.body.month = "2020-03";
-  logger.debug(req.query);
+  debugLog(req.query);
   if(req.query.day) {
     var pieces = req.query.day.split("-");
     var date = new Date(Date.UTC(parseInt(pieces[0]), parseInt(pieces[1])-1, parseInt(pieces[2]), 0, 0,0,0));
   } else {
     var date = new Date();
   }
-  logger.debug(date);
+  debugLog(date);
   // 1 Month
   //var start = new Date(new Date(date.getFullYear(), date.getMonth(), 1, 0, 0,0,0).getTime()+offset);
   //var end = new Date(new Date(date.getFullYear(), date.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset);
@@ -331,8 +333,8 @@ router.get('/getprograms', (req, res) => {
   var start = date;
   var end = new Date(date.getTime()+day);
 
-  logger.debug(start);
-  logger.debug(end);
+  debugLog(start);
+  debugLog(end);
   Vjtv
   .find({programming: { $lt: end, $gt: start}})
   //.select(select)
@@ -387,15 +389,15 @@ router.get('/getprograms', (req, res) => {
 });
   
 router.get('/getprograms2', (req, res) => {
-  logger.debug("getprograms2");
+  debugLog("getprograms2");
   //req.body.month = "2020-03";
-  logger.debug(req.query);
+  debugLog(req.query);
   if(req.query.start && req.query.end) {
     var start = new Date(new Date(req.query.start).getTime()-(new Date(req.query.start).getTimezoneOffset()*60*1000));
     var end = new Date(new Date(req.query.end).getTime()-(new Date(req.query.end).getTimezoneOffset()*60*1000));
   } else {
     var date = new Date();
-    logger.debug(date);
+    debugLog(date);
     // 1 Month
     //var start = new Date(new Date(date.getFullYear(), date.getMonth(), 1, 0, 0,0,0).getTime()+offset);
     //var end = new Date(new Date(date.getFullYear(), date.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset);
@@ -413,8 +415,8 @@ router.get('/getprograms2', (req, res) => {
     var end = new Date(date.getTime()+day);
   }
 
-  logger.debug(start);
-  logger.debug(end);
+  debugLog(start);
+  debugLog(end);
   Vjtv
   .find({programming: { $lt: end, $gt: start}})
   //.select(select)
@@ -451,8 +453,8 @@ router.get('/getprograms2', (req, res) => {
 });
     
 router.get('/getcurrentprogram', (req, res) => {
-  logger.debug("getcurrentprogram");
-  logger.debug(req.query);
+  debugLog("getcurrentprogram");
+  debugLog(req.query);
   if(req.query.day) {
     var pieces = req.query.day.split("-");
     var date = new Date(Date.UTC(parseInt(pieces[0]), parseInt(pieces[1])-1, parseInt(pieces[2]), 0, 0,0,0));
@@ -513,4 +515,4 @@ router.get('/getcurrentprogram', (req, res) => {
   });
 });
   
-module.exports = router;
+export default router;

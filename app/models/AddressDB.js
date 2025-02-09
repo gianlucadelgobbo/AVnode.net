@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const AddressDBschema = new Schema({
@@ -14,4 +14,4 @@ const AddressDBschema = new Schema({
 
 const AddressDB = mongoose.model('AddressDB', AddressDBschema);
 
-module.exports = AddressDB;
+export default AddressDB;

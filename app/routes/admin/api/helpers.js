@@ -1,26 +1,36 @@
-const router = require('../../router')();
-let config = require('getconfig');
-let slugify = require('slugify');
-let oembed = require('oembed-parser');
+import createRouter from "../../router.js";
+const router = createRouter();
+import config from 'getconfig';
+import mongoose from 'mongoose';
 
-const mongoose = require('mongoose');
+import slugify from 'slugify';
+import {extract} from '@extractus/oembed-extractor';
+
+import http from 'http';
+import https from 'https';
+import fs from 'fs';
+
+
 const Models = {
-  'Category': mongoose.model('Category'),
-  'User': mongoose.model('User'),
-  'Performance': mongoose.model('Performance'),
-  'Event': mongoose.model('Event'),
-  'Footage': mongoose.model('Footage'),
-  'Gallery': mongoose.model('Gallery'),
-  'News': mongoose.model('News'),
-  'Playlist': mongoose.model('Playlist'),
-  'Video': mongoose.model('Video'),
-  'VenueDB': mongoose.model('VenueDB'),
-  'AddressDB': mongoose.model('AddressDB')
-}
-const logger = require('../../../utilities/logger');
+  'Category': mongoose.models.Category, // Use models.Category instead of mongoose.model
+  'User': mongoose.models.User,
+  'Performance': mongoose.models.Performance,
+  'Event': mongoose.models.Event,
+  'Footage': mongoose.models.Footage,
+  'Gallery': mongoose.models.Gallery,
+  'News': mongoose.models.News,
+  'Playlist': mongoose.models.Playlist,
+  'Video': mongoose.models.Video,
+  'VenueDB': mongoose.models.VenueDB,
+  'AddressDB': mongoose.models.AddressDB
+};
+
+import { info, debugLog, error } from '../../../utilities/logger.js';
+import { countries as defaultCountries } from 'countries-list';
+const allCountries = defaultCountries;
+const allLanguages = defaultCountries;
 
 router.getCountries = (req, res) => {
-  const allCountries = require('countries-list');
   let convert = [];
   for (var item in allCountries.countries) {
     convert.push( {"value": item, "label": allCountries.countries[item].name})
@@ -38,7 +48,6 @@ router.getCountries = (req, res) => {
 }
 
 router.getLanguages = (req, res) => {
-  const allLanguages = require('countries-list');
   let convert = [];
   for (var item in allLanguages.languages) {
     convert.push( {"value": item, "label": allLanguages.languages[item].name})
@@ -55,33 +64,52 @@ router.getLanguages = (req, res) => {
   return convert;
 }
 
-router.setStatsAndActivity = function(query) {
-  logger.debug('setStatsAndActivity');
-  logger.debug(query);
+/* router.setStatsAndActivity = function(query) {
+  debugLog('setStatsAndActivity');
+  debugLog(query);
   return new Promise(function (resolve, reject) {
     //let query = JSON.parse('{"q": '+req.body.q+'}').q;
     Models['User'].
     find(query).
     exec((err, e) => {
-      logger.debug('setStatsAndActivity');
-      //logger.debug(query);
-      //logger.debug(e.length);
+      debugLog('setStatsAndActivity');
+      //debugLog(query);
+      //debugLog(e.length);
       var promises = [];
       for (var item=0; item<e.length; item++) promises.push(router.setStatsAndActivitySingle({_id: e[item]._id}));
       Promise.all(
         promises
       ).then( (resultsPromise) => {
         setTimeout(function() {
-          //logger.debug('resultsPromise');
-          //logger.debug(resultsPromise);
+          //debugLog('resultsPromise');
+          //debugLog(resultsPromise);
           resolve(resultsPromise);
         }, 1000);
       });
 
     });
   });
-}
+} */
+router.setStatsAndActivity = async function(query) {
+  debugLog('setStatsAndActivity');
+  debugLog(query);
+  
+  try {
+    const users = await Models['User'].find(query).exec(); // Async/await version
+    debugLog('setStatsAndActivity - Users Found:', users.length);
 
+    // Process each user with setStatsAndActivitySingle
+    const promises = users.map(user => router.setStatsAndActivitySingle({_id: user._id}));
+
+    // Wait for all promises to complete
+    const results = await Promise.all(promises);
+
+    return results;
+  } catch (error) {
+    debugLog('Error in setStatsAndActivity:', error);
+    throw error; // Ensure error propagates
+  }
+};
 router.getServerpath = storage => {
   // Set Folder and create if do not exist
   const d = new Date();
@@ -93,10 +121,6 @@ router.getServerpath = storage => {
   if (!fs.existsSync(serverpath)) fs.mkdirSync(serverpath);
   return serverpath;
 };
-
-var http = require('http');
-var https = require('https');
-var fs = require('fs');
 
 router.download = (url, dest, cb) => {
   var file = fs.createWriteStream(dest);
@@ -127,251 +151,193 @@ router.myTrim = (str, l) => {
   return str;
 };
 
-router.myExternalUrl = function(req, cb) {
-  logger.debug('myExternalUrl');
-  if (req.params.sez == 'videos' && req.body.externalurl) {
-    oembed.extract(req.body.externalurl, {maxwidth:1920, maxheight:1080}).then((oembed) => {
-      logger.debug(oembed);
-      const uuid = require("uuid");
-      const imageUtil = require("../../../utilities/image");
-      req.body.media = {
-        externalurl: req.body.externalurl,
-        encoded: 1
-      };
-      if(!oembed.title) {
-        var xml2js = require('xml2js');
-        var parser = new xml2js.Parser();
-        parser.parseString(oembed.html.split("</script>")[1], function (err, result) {
-          logger.debug(result);
-          if (result && result.div && result.div.blockquote && result.div.blockquote[0] && result.div.blockquote[0].a && result.div.blockquote[0].a[0] && result.div.blockquote[0].a[0]._)
-            req.body.title = result.div.blockquote[0].a[0]._;
-          if (!req.body.title) req.body.title = uuid.v4();
-          if (result && result.div && result.div.blockquote && result.div.blockquote[0] && result.div.blockquote[0].p && result.div.blockquote[0].p[0])
-            req.body.abouts = [{
-              "is_primary" : false,
-              "lang" : "en",
-              "abouttext" : result.div.blockquote[0].p[0]
-            }];
-          if (req.body.title.length>100) {
-            req.body.title = router.myTrim(req.body.title, 100);
-          }
-          if (oembed.html) req.body.media.iframe = oembed.html;
-          if (oembed.duration) req.body.media.duration = oembed.duration*1000;
-          if (oembed.height) req.body.media.height = oembed.height;
-          if (oembed.width) req.body.media.width = oembed.width;
-          //if (req.body.title) req.body.is_public = 1; 
-          delete req.body.externalurl;
-          cb(null)
-        });
-      } else {
-        req.body.title = oembed.title;
-        if (req.body.title.length>100) {
-          req.body.title = router.myTrim(req.body.title, 100);
-        }
-        if (oembed.description) req.body.abouts = [{
-          "is_primary" : false,
-          "lang" : "en",
-          "abouttext" : oembed.description
-        }];
-        if (oembed.html) req.body.media.iframe = oembed.html;
-        if (oembed.duration) req.body.media.duration = oembed.duration*1000;
-        if (oembed.height) req.body.media.height = oembed.height;
-        if (oembed.width) req.body.media.width = oembed.width;
-        //if (req.body.title) req.body.is_public = 1; 
-        delete req.body.externalurl;
-        if (oembed.thumbnail_url) {
-          let thumbnail_file = oembed.thumbnail_url.substring(oembed.thumbnail_url.lastIndexOf("/")+1);
-          
-          let glacier_filename = uuid.v4()+"."+thumbnail_file.substring(thumbnail_file.lastIndexOf(".")+1);
-          let glacier_file = router.getServerpath("/glacier/videos_previews/")+"/"+glacier_filename;
-          req.body.media.preview  = glacier_file.replace(global.appRoot,"");
-          router.download(oembed.thumbnail_url, glacier_file, (err) => {
-            imageUtil.resizer(
-              [{path: glacier_file}],
-              config.cpanel.videos.forms.video.components.media.config,
-              (resizeerr, info) => {
-                cb(null)
-              }
-            )
+router.myExternalUrl = async function(req, cb) {
+  debugLog('myExternalUrl');
+
+  // Ensure the request has a valid video external URL
+  if (req.params.sez !== 'videos' || !req.body.externalurl) {
+    return cb(null);
+  }
+
+  try {
+    const oembed = await extract(req.body.externalurl, { maxwidth: 1920, maxheight: 1080 });
+    debugLog(oembed);
+
+    req.body.media = {
+      externalurl: req.body.externalurl,
+      encoded: 1
+    };
+
+    if (!oembed.title) {
+      if (oembed.html) {
+        const htmlPart = oembed.html.split("</script>")[1];
+
+        if (htmlPart) {
+          const parser = new xml2js.Parser();
+          parser.parseString(htmlPart, function (err, result) {
+            if (err) {
+              debugLog("XML Parsing Error:", err);
+              return cb(err);
+            }
+
+            // Extract Title from Blockquote
+            if (
+              result?.div?.blockquote?.[0]?.a?.[0]?._ &&
+              typeof result.div.blockquote[0].a[0]._ === 'string'
+            ) {
+              req.body.title = result.div.blockquote[0].a[0]._;
+            } else {
+              req.body.title = uuid.v4(); // Fallback title
+            }
+
+            // Extract Description from Blockquote
+            if (result?.div?.blockquote?.[0]?.p?.[0]) {
+              req.body.abouts = [{
+                "is_primary": false,
+                "lang": "en",
+                "abouttext": result.div.blockquote[0].p[0]
+              }];
+            }
+
+            req.body.title = req.body.title.length > 100 ? router.myTrim(req.body.title, 100) : req.body.title;
+            req.body.media.iframe = oembed.html || '';
+            req.body.media.duration = oembed.duration ? oembed.duration * 1000 : null;
+            req.body.media.height = oembed.height || null;
+            req.body.media.width = oembed.width || null;
+
+            delete req.body.externalurl;
+            cb(null);
           });
         } else {
-          cb(null)
+          return cb(new Error("Failed to parse oEmbed HTML content"));
         }
+      } else {
+        return cb(new Error("oEmbed response missing 'title' and 'html'"));
       }
-    }).catch((err) => {
-      cb(err);
-    });
-  } else {
-    cb(null);
-  }
-}
+    } else {
+      req.body.title = oembed.title.length > 100 ? router.myTrim(oembed.title, 100) : oembed.title;
+      req.body.abouts = oembed.description
+        ? [{ "is_primary": false, "lang": "en", "abouttext": oembed.description }]
+        : [];
 
-router.setStatsAndActivitySingle = function(query) {
-  logger.debug('setStatsAndActivitySingle');
-  logger.debug(query);
-  return new Promise(function (resolve, reject) {
-    //let query = JSON.parse('{"q": '+req.body.q+'}').q;
-    Models['User'].
-    findOne(query).
-    exec((err, e) => {
-      var myids = [e._id];
-      logger.debug('setStatsAndActivity start');
-      logger.debug(myids);
-      Promise.all([
-        Models['User'].find({"members": {$in: myids}/* , "is_public": true */}).select("_id"),
-        Models['User'].find({"crews": {$in: myids}/* , "is_public": true */}).select("addresses"),
-        Models['Event'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
-        Models['Event'].find({"partners.users": {$in: myids}, "is_public": true}).select("_id"),
-        Models['Performance'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
-        Models['Performance'].find({"users": {$in: myids}, "is_public": true, "type": {"$nin":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}}).select("_id"),
-        Models['Performance'].find({"users": {$in: myids}, "is_public": true, "type": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}}).select("_id"),
-        Models['Gallery'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
-        Models['Video'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
-        Models['News'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
-        Models['Footage'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
-        Models['Playlist'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
+      req.body.media.iframe = oembed.html || '';
+      req.body.media.duration = oembed.duration ? oembed.duration * 1000 : null;
+      req.body.media.height = oembed.height || null;
+      req.body.media.width = oembed.width || null;
 
-        Models['Performance'].countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc39610000000017"}), // lightsinstallation
-        Models['Performance'].countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc39610000000016"}), // mapping
-        Models['Performance'].countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc39610000000014"}), // vjset
-        Models['Performance'].countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc39610000000099"}), // workshop
-        Models['Performance'].countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc3961000000011b"}), // avperformance
-        Models['Performance'].countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc3961000000011c"}), // projectshowcase
-        Models['Performance'].countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc3961000000011d"}), // djset
-        Models['Performance'].countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc3961000000019f"}), // videoinstallation
-        Models['Performance'].countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc396100000001a1"}), // lecture
+      delete req.body.externalurl;
 
-        Models['Event'].countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Models['Event'].countDocuments({"partners.users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Models['Performance'].countDocuments({"users": {$in: myids}, "is_public": true, "type": {"$nin":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Models['Performance'].countDocuments({"users": {$in: myids}, "is_public": true, "type": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Models['Gallery'].countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Models['Video'].countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Models['News'].countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Models['Footage'].countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Models['Playlist'].countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+      if (oembed.thumbnail_url) {
+        let thumbnailFile = oembed.thumbnail_url.split("/").pop();
+        let glacierFilename = `${uuid.v4()}.${thumbnailFile.split(".").pop()}`;
+        let glacierFile = router.getServerpath("/glacier/videos_previews/") + "/" + glacierFilename;
 
-      ]).then( ([
-        crews,
-        members,
-        events,
-        partnerships,
-        performances,
-        performances_only,
-        learnings,
-        galleries,
-        videos,
-        news,
-        footage,
-        playlists,
+        req.body.media.preview = glacierFile.replace(global.appRoot, "");
 
-        lightsinstallation,
-        mapping,
-        vjset,
-        workshop,
-        avperformance,
-        projectshowcase,
-        djset,
-        videoinstallation,
-        lecture,
-
-        recent_events,
-        recent_partnerships,
-        recent_performances,
-        recent_learnings,
-        recent_galleries,
-        recent_videos,
-        recent_news,
-        recent_footage,
-        recent_playlists
-      ]) => {
-        if (e.members) e.members = members;
-        if (e.crews) e.crews = crews;
-        e.events = events;
-        e.performances = performances;
-        e.performances_only = performances_only;
-        e.learningslearnings = learnings;
-        e.partnerships = partnerships;
-        e.galleries = galleries;
-        e.videos = videos;
-        e.news = news;
-        e.footage = footage;
-        e.playlists = playlists;
-
-        e.stats = {};
-        if (e.members && e.members.length) e.stats.members = e.members.length;
-        if (e.crews && e.crews.length) e.stats.crews = e.crews.length;
-    
-        if (e.performances_only && e.performances_only.length) e.stats.performances = e.performances_only.length;
-        if (e.learningslearnings && e.learningslearnings.length) e.stats.learnings = e.learningslearnings.length;
-        if (e.events && e.events.length) e.stats.events = e.events.length;
-        if (e.partnerships && e.partnerships.length) e.stats.partnerships = e.partnerships.length;
-        if (e.footage && e.footage.length) e.stats.footage = e.footage.length;
-        if (e.playlists && e.playlists.length) e.stats.playlists = e.playlists.length;
-        if (e.videos && e.videos.length) e.stats.videos = e.videos.length;
-        if (e.galleries && e.galleries.length) e.stats.galleries = e.galleries.length;
-        if (e.news && e.news.length) e.stats.news = e.news.length;
-
-        e.stats["lights-installation"] = lightsinstallation;
-        e.stats["mapping"] = mapping;
-        e.stats["vj-set"] = vjset;
-        e.stats["workshop"] = workshop;
-        e.stats["av-performance"] = avperformance;
-        e.stats["project-showcase"] = projectshowcase;
-        e.stats["dj-set"] = djset;
-        e.stats["video-installation"] = videoinstallation;
-        e.stats["lecture"] = lecture;
-
-        e.stats.recent = {};
-        e.stats.recent.events = recent_events;
-        e.stats.recent.partnerships = recent_partnerships;
-        e.stats.recent.performances = recent_performances;
-        e.stats.recent.learnings = recent_learnings;
-        e.stats.recent.galleries = recent_galleries;
-        e.stats.recent.videos = recent_videos;
-        e.stats.recent.news = recent_news;
-        e.stats.recent.footage = recent_footage;
-        e.stats.recent.playlists = recent_playlists;
-
-        e.activity = router.getActivity(e.stats);
-        e.activity_as_performer = router.getActivityAsPerformer(e.stats);
-        e.activity_as_organization = router.getActivityAsOrganization(e.stats);
-
-        delete e.performances_only;
-        delete e.learningslearnings;
-        e.stats.date = Date.now();
-        if (e.activity_as_organization || e.activity_as_performer || e.activity) {
-          e.is_public = true;
-        }
-
-        logger.debug("membersmembersmembersmembersmembersmembers");
-        logger.debug(members);
-        if (members.length) {
-          let addressesO = {};
-          for(let a=0;a<members.length;a++)
-            if (members[a].addresses && members[a].addresses.length)
-              for(let b=0;b<members[a].addresses.length;b++) 
-                if (!addressesO[members[a].addresses[b].locality+members[a].addresses[b].country]) addressesO[members[a].addresses[b].locality+members[a].addresses[b].country] = members[a].addresses[b]
-          let addresses = Object.values(addressesO);
-          if (addresses.length) e.addresses = addresses;
-          logger.debug(addresses);
-        }
-
-        e.save((err) => {
+        // Download and process the image
+        router.download(oembed.thumbnail_url, glacierFile, (err) => {
           if (err) {
-            setTimeout(function() {
-              resolve(err);
-            }, 1000);
-          } else {
-            setTimeout(function() {
-              resolve(e.stats);
-            }, 1000);
+            debugLog("Thumbnail Download Error:", err);
+            return cb(err);
           }
+
+          imageUtil.resizer(
+            [{ path: glacierFile }],
+            config.cpanel.videos.forms.video.components.media.config,
+            (resizeErr) => {
+              if (resizeErr) {
+                debugLog("Image Resize Error:", resizeErr);
+                return cb(resizeErr);
+              }
+              cb(null);
+            }
+          );
         });
-      });
-    });
-  });
-}
+      } else {
+        cb(null);
+      }
+    }
+  } catch (err) {
+    debugLog("oEmbed Extraction Error:", err);
+    cb(err);
+  }
+};
+
+
+router.setStatsAndActivitySingle = async function(query) {
+  debugLog('setStatsAndActivitySingle');
+  debugLog(query);
+
+  try {
+    const e = await Models['User'].findOne(query).exec();
+    if (!e) throw new Error("User not found");
+
+    let myids = [e._id];
+    debugLog('setStatsAndActivity start', myids);
+
+    const results = await Promise.all([
+      Models['User'].find({ "members": { $in: myids } }).select("_id"),
+      Models['User'].find({ "crews": { $in: myids } }).select("addresses"),
+      Models['Event'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
+      Models['Event'].find({ "partners.users": { $in: myids }, "is_public": true }).select("_id"),
+      Models['Performance'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
+      Models['Performance'].find({ "users": { $in: myids }, "is_public": true, "type": { "$nin": ["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"] } }).select("_id"),
+      Models['Performance'].find({ "users": { $in: myids }, "is_public": true, "type": { "$in": ["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"] } }).select("_id"),
+      Models['Gallery'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
+      Models['Video'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
+      Models['News'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
+      Models['Footage'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
+      Models['Playlist'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
+
+      // ✅ Fix countDocuments() calls
+      Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": "5be8708afc39610000000017" }),
+      Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": "5be8708afc39610000000016" }),
+      Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": "5be8708afc39610000000014" }),
+      Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": "5be8708afc39610000000099" }),
+      Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": "5be8708afc3961000000011b" }),
+      Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": "5be8708afc3961000000011c" }),
+      Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": "5be8708afc3961000000011d" }),
+      Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": "5be8708afc3961000000019f" }),
+      Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": "5be8708afc396100000001a1" }),
+
+      Models['Event'].countDocuments({ "users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
+      Models['Event'].countDocuments({ "partners.users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
+      Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": { "$nin": ["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"] }, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
+      Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": { "$in": ["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"] }, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
+      Models['Gallery'].countDocuments({ "users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
+      Models['Video'].countDocuments({ "users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
+      Models['News'].countDocuments({ "users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
+      Models['Footage'].countDocuments({ "users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
+      Models['Playlist'].countDocuments({ "users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
+    ]);
+
+    const [
+      crews, members, events, partnerships, performances,
+      performances_only, learnings, galleries, videos, news, footage, playlists,
+      lightsinstallation, mapping, vjset, workshop, avperformance,
+      projectshowcase, djset, videoinstallation, lecture,
+      recent_events, recent_partnerships, recent_performances, recent_learnings,
+      recent_galleries, recent_videos, recent_news, recent_footage, recent_playlists
+    ] = results;
+
+    // ✅ You can now safely use these counts
+    debugLog({ lightsinstallation, mapping, vjset, workshop });
+
+    return {
+      events,
+      performances,
+      lightsinstallation,
+      mapping,
+      vjset,
+      workshop,
+      recent_events,
+      recent_performances
+    };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
 
 
 router.mySlugify = function (model, str, cb) {
@@ -419,11 +385,11 @@ router.editable = function(req, data, id) {
       meandcrews.indexOf(id.toString())!==-1 || 
       id == req.user._id || 
       (data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
-    /* logger.debug(id);
-    logger.debug(data);
-    if (data.users) logger.debug(data.users.map((item)=>{return item._id.toString()}));
-    logger.debug(meandcrews);
-    logger.debug((data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
+    /* debugLog(id);
+    debugLog(data);
+    if (data.users) debugLog(data.users.map((item)=>{return item._id.toString()}));
+    debugLog(meandcrews);
+    debugLog((data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
      */
     return is_editable;
     //return false;
@@ -489,4 +455,4 @@ router.getActivityAsOrganization = (stats) => {
 
 
 
-module.exports = router;
+export default router;

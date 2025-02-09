@@ -1,12 +1,12 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
+import config from 'getconfig';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-//const indexPlugin = require('../utilities/elasticsearch/Video');
-const helper = require('../utilities/helper');
+//const indexPlugin from '../utilities/elasticsearch/Video.js';
+import helper from '../utilities/helper.js';
 
-const About = require('./shared/About');
-const Media = require('./shared/Media');
-const uniqueValidator = require('mongoose-unique-validator');
+import About from './shared/About.js';
+import Media from './shared/Media.js';
+
 
 const adminsez = 'videos';
 
@@ -111,8 +111,7 @@ videoSchema.virtual('description').get(function (req) {
 }); */
 
 //videoSchema.plugin(indexPlugin());
-videoSchema.plugin(uniqueValidator);
 
 const Video = mongoose.model('Video', videoSchema);
 
-module.exports = Video;
+export default Video;

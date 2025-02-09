@@ -11,7 +11,7 @@
  */
 
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('global/window'), require('global/document')) :
+  typeof exports === 'object' && typeof module !== 'undefined' ? export default factory(require('global/window'), require('global/document')) :
   typeof define === 'function' && define.amd ? define(['global/window', 'global/document'], factory) :
   (global.videojs = factory(global.window,global.document));
 }(this, (function (window$1,document) {
@@ -6954,7 +6954,7 @@
   }
 
   var trim_1 = createCommonjsModule(function (module, exports) {
-    exports = module.exports = trim;
+    exports = export default trim;
 
     function trim(str) {
       return str.replace(/^\s*|\s*$/g, '');
@@ -9930,7 +9930,7 @@
     // VTTRegion in Node since we likely want the capability to convert back and
     // forth between JSON. If we don't then it's not that big of a deal since we're
     // off browser.
-    var vttjs = module.exports = {
+    var vttjs = export default {
       WebVTT: vtt,
       VTTCue: vttcue,
       VTTRegion: vttregion
@@ -27039,7 +27039,7 @@
       };
       /* jshint ignore:start */
 
-      module.exports = URLToolkit;
+      export default URLToolkit;
     })(commonjsGlobal);
     /* jshint ignore:end */
 
@@ -28724,7 +28724,7 @@
       };
       /* jshint ignore:start */
 
-      module.exports = URLToolkit;
+      export default URLToolkit;
     })(commonjsGlobal$1);
     /* jshint ignore:end */
 

@@ -1,4 +1,5 @@
-const Schema = require('mongoose').Schema;
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
 const Citizenship = new Schema({
   label: String, // removed { type: String, unique: true },
@@ -15,4 +16,4 @@ const Citizenship = new Schema({
   }
 });
 
-module.exports = Citizenship;
+export default Citizenship;

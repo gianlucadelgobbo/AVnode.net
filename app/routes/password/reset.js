@@ -1,5 +1,6 @@
-const router = require('../router')();
-const mongoose = require('mongoose');
+import createRouter from "../router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
 const User = mongoose.model('User');
 
 router.get('/:token', (req, res) => {
@@ -43,4 +44,4 @@ router.post('/', (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,8 +1,10 @@
-const router = require('./router')();
-const list = require('./crews/list');
-const show = require('./crews/show');
+import createRouter from './router.js';
+import list from './crews/list.js';
+import show from './crews/show.js';
+
+const router = createRouter();
 
 router.use('/:slug', show);
 router.use('/', list);
 
-module.exports = router;
+export default router;

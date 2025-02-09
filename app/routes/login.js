@@ -1,14 +1,16 @@
-const router = require('./router')();
-const passport = require('../utilities/passport');
+import createRouter from "./router.js";
+const router = createRouter();
+import { passport, isAuthenticated } from '../utilities/passport.js';
 
-const logger = require('../utilities/logger');
-const mongoose = require('mongoose');
+import { info, debugLog, error } from '../utilities/logger.js';
+
+import mongoose from 'mongoose';
 const User = mongoose.model('User');
 
 
 router.get('/', (req, res) => {
   var returnTo = req.query.returnTo ? req.query.returnTo : req.session.returnTo ? req.session.returnTo : "/";
-  logger.debug('passport.loginredirect GET req:' + returnTo);
+  debugLog('passport.loginredirect GET req:' + returnTo);
   if (req.user) {
     return res.redirect (returnTo);
   }
@@ -24,18 +26,18 @@ router.get('/', (req, res) => {
 //validationConfig.validate()
 router.post('/', (req, res, next) => {
   const returnTo = req.session.returnTo ? req.session.returnTo : req.body.returnTo ? req.body.returnTo : "/";
-  logger.debug("req.body login");
-  /* logger.debug(req.body);
-  logger.debug(req.params);
-  logger.debug(req.query);
+  debugLog("req.body login");
+  /* debugLog(req.body);
+  debugLog(req.params);
+  debugLog(req.query);
 
-  logger.debug('passport.loginredirect req:' + req.body.returnTo);
+  debugLog('passport.loginredirect req:' + req.body.returnTo);
   
-  logger.debug('passport.authenticate req:' + JSON.stringify(req.body.email)); */
+  debugLog('passport.authenticate req:' + JSON.stringify(req.body.email)); */
 
   passport.authenticate('local', (err, user, info) => {
     if (err) {
-      logger.debug('passport.authenticate error:' + JSON.stringify(err));
+      debugLog('passport.authenticate error:' + JSON.stringify(err));
       if (req.body.api=="1") {
         res.send(err);
       } else {
@@ -43,7 +45,7 @@ router.post('/', (req, res, next) => {
       }
     }
     if (!user) {
-      logger.debug('passport.authenticate !user:' + JSON.stringify(info));
+      debugLog('passport.authenticate !user:' + JSON.stringify(info));
       if (req.body.api=="1") {
         res.status(500).send(info);
       } else {
@@ -53,7 +55,7 @@ router.post('/', (req, res, next) => {
     } else {
       req.logIn(user, (err) => {
         if (err) {
-          logger.debug('passport.authenticate req.logIn error:' + JSON.stringify(err));
+          debugLog('passport.authenticate req.logIn error:' + JSON.stringify(err));
           if (req.body.api=="1") {
             res.status(500).send(err);
           } else {
@@ -61,8 +63,8 @@ router.post('/', (req, res, next) => {
           }
         }
         delete req.session.returnTo;
-        logger.info('passport.authenticate auth success');
-        logger.info(returnTo);
+        debugLog('passport.authenticate auth success');
+        debugLog(returnTo);
         if (req.body.api=="1") {
           res.send(true);
         } else {
@@ -74,7 +76,7 @@ router.post('/', (req, res, next) => {
   })(req, res, next);
 });
 
-module.exports = router;
+export default router;
 
 /*
 const Joi = require('joi');

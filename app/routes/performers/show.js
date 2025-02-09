@@ -1,10 +1,11 @@
-const router = require("../router")();
-const dataprovider = require("../../utilities/dataprovider");
+import createRouter from "../router.js";
+const router = createRouter();
+import dataprovider from "../../utilities/dataprovider.js";
 
-const Model = require("mongoose").model("UserShow");
+import mongoose from "mongoose";
+
+const Model = mongoose.model("UserShow");
 const section = "performers";
-
-const logger = require("../../utilities/logger");
 
 router.get("/", (req, res) => {
   dataprovider.show(req, res, section, "show", Model);
@@ -122,4 +123,4 @@ router.get("/*", (req, res) => {
   res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
 });
 
-module.exports = router;
+export default router;

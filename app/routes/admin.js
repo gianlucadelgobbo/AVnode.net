@@ -1,7 +1,8 @@
-const router = require('./router')();
+import createRouter from "./router.js";
+const router = createRouter();
 
-const index = require('./admin/index');
+import index from './admin/index.js';
 
 router.use('/', index);
 
-module.exports = router;
+export default router;

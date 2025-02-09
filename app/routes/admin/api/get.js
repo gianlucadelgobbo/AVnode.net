@@ -1,8 +1,9 @@
-const router = require('../../router')();
-let config = require('getconfig');
-let helpers = require('./helpers');
+import createRouter from "../../router.js";
+const router = createRouter();
+import config  from 'getconfig';
+import helpers from './helpers.js';
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Models = {
   'Category': mongoose.model('Category'),
   'User': mongoose.model('User'),
@@ -19,8 +20,15 @@ const Models = {
   'Program': mongoose.model('Program'),
   'Emailqueue': mongoose.model('Emailqueue')
 }
-const logger = require('../../../utilities/logger');
-const { __ } = require('i18n');
+import { info, debugLog, error } from '../../../utilities/logger.js';
+import pkg from 'i18n';
+const { __ } = pkg;
+import { v4 as uuidv4 } from 'uuid';
+
+const setIdentifier = () => {
+  return uuidv4();
+};
+
 const partners_categories = [
   {
     "_id" : ("5be8708afc396100000001e8"),
@@ -77,9 +85,9 @@ const partners_categories = [
 ];
 
 router.getDuplicate = (req, res) => {
-  logger.debug("getDuplicate");
-  logger.debug(req.params);
-  logger.debug(req.query);
+  debugLog("getDuplicate");
+  debugLog(req.params);
+  debugLog(req.query);
   // http://localhost:8006/admin/api/events/5c41c8a06b32ec637f343e1a/duplicate?title=bella&slug=bella&exclude=partners,schedule,call,program,galleries,videos
   if (config.cpanel[req.params.sez] && req.params.id) {
     if (req.query.title && req.query.slug) {
@@ -125,7 +133,7 @@ router.getDuplicate = (req, res) => {
                       newrec.partners.forEach(function (item) {
                         partners = partners.concat(item.users);
                       });
-                      logger.debug(partners);
+                      debugLog(partners);
                       results.User = await Models["User"].updateMany( {_id: { $in: partners}}, { $push: {partnerships: [newrec._id] } });                      
                     }
                     if (exclude.indexOf("videos")===-1) {
@@ -142,7 +150,7 @@ router.getDuplicate = (req, res) => {
                 /* if (req.query.delete!="1") {
                   res.json(data);
                 } else {
-                  logger.debug("getDelete 2");
+                  debugLog("getDelete 2");
                   let results = {};
                   switch (req.params.sez) {
                     case "galleries" :
@@ -174,7 +182,7 @@ router.getDuplicate = (req, res) => {
                       });
                     break;
                     case "performances" :
-                      logger.debug("getDelete 3");
+                      debugLog("getDelete 3");
                       if ((!data.bookings || !data.bookings.length) && (!data.galleries || !data.galleries.length) && (!data.videos || !data.videos.length)) {
                         results.Performance = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
                         results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {performances: [data._id] } });
@@ -187,7 +195,7 @@ router.getDuplicate = (req, res) => {
                           res.json(results);
                         });
                       } else {
-                        logger.debug("getDelete 4");
+                        debugLog("getDelete 4");
                         let errors = [];
                         if (data.bookings && data.bookings.length) errors.push({error:"Performace is booked and can not be deleted", bookings: data.bookings});
                         if (data.galleries && data.galleries.length) errors.push({error:"Performace own galleries and can not be deleted", galleries: data.galleries});
@@ -196,7 +204,7 @@ router.getDuplicate = (req, res) => {
                       }
                     break;
                     case "profile" :
-                      logger.debug("getDelete 3");
+                      debugLog("getDelete 3");
                       if (data.members && data.members.length) {
                         results.Crew = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
                         results.User = await Models["User"].updateMany( {_id: { $in: data.members}}, { $pullAll: {crews: [data._id] } });
@@ -209,7 +217,7 @@ router.getDuplicate = (req, res) => {
                           res.json(results);
                         });
                       } else {
-                        logger.debug("getDelete 4");
+                        debugLog("getDelete 4");
                         let errors = [];
                         if (data.bookings && data.bookings.length) errors.push({error:"Performace is booked and can not be deleted", bookings: data.bookings});
                         if (data.galleries && data.galleries.length) errors.push({error:"Performace own galleries and can not be deleted", galleries: data.galleries});
@@ -238,9 +246,9 @@ router.getDuplicate = (req, res) => {
 }
 
 router.getDelete = (req, res) => {
-  logger.debug("getDelete");
-  logger.debug(req.params.sez);
-  logger.debug(config.cpanel[req.params.sez].model);
+  debugLog("getDelete");
+  debugLog(req.params.sez);
+  debugLog(config.cpanel[req.params.sez].model);
   if (config.cpanel[req.params.sez] && req.params.id) {
       const id = req.params.id;
       Models[config.cpanel[req.params.sez].model]
@@ -256,7 +264,7 @@ router.getDelete = (req, res) => {
             if (req.query.delete!="1") {
               res.json(data);
             } else {
-              logger.debug("getDelete 2");
+              debugLog("getDelete 2");
               let results = {};
               switch (req.params.sez) {
                 case "galleries" :
@@ -299,7 +307,7 @@ router.getDelete = (req, res) => {
                   });
                 break;
                 case "performances" :
-                  logger.debug("getDelete 3");
+                  debugLog("getDelete 3");
                   if ((!data.bookings || !data.bookings.length) && (!data.galleries || !data.galleries.length) && (!data.videos || !data.videos.length)) {
                     results.Performance = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
                     results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {performances: [data._id] } });
@@ -312,7 +320,7 @@ router.getDelete = (req, res) => {
                       res.json(results);
                     });
                   } else {
-                    logger.debug("getDelete 4");
+                    debugLog("getDelete 4");
                     let errors = [];
                     if (data.bookings && data.bookings.length) errors.push({error:__("Performace is booked and can not be deleted"), bookings: data.bookings});
                     if (data.galleries && data.galleries.length) errors.push({error:__("Performace own galleries and can not be deleted"), galleries: data.galleries});
@@ -321,7 +329,7 @@ router.getDelete = (req, res) => {
                   }
                 break;
                 case "events" :
-                  logger.debug("getDelete events");
+                  debugLog("getDelete events");
                   if ((!data.program || !data.program.length) && (!data.galleries || !data.galleries.length) && (!data.videos || !data.videos.length)) {
                     results.Event = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
                     results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {performances: [data._id] } });
@@ -334,7 +342,7 @@ router.getDelete = (req, res) => {
                       res.json(results);
                     });
                   } else {
-                    logger.debug("getDelete 4");
+                    debugLog("getDelete 4");
                     let errors = [];
                     if (data.schedule && data.schedule.length) errors.push({error:__("Event have a program and can not be deleted"), bookings: data.bookings});
                     if (data.galleries && data.galleries.length) errors.push({error:__("Event own galleries and can not be deleted"), galleries: data.galleries});
@@ -344,9 +352,9 @@ router.getDelete = (req, res) => {
                 break;
                 case "profile" :
                   if (!data.activity || data.activity === 0) {
-                    logger.debug("getDelete 3");
+                    debugLog("getDelete 3");
                     if (data.is_crew == 1) {
-                      logger.debug("getDelete 4");
+                      debugLog("getDelete 4");
                       results.Crew = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
                       if (data.members && data.members.length) results.User = await Models["User"].updateMany( {_id: { $in: data.members}}, { $pullAll: {crews: [data._id] } });
                       var promises = [];
@@ -359,7 +367,7 @@ router.getDelete = (req, res) => {
                         res.json(results);
                       });
                     } else if (data.is_crew == 0) {
-                      logger.debug("getDelete 6");
+                      debugLog("getDelete 6");
                       results.User = await Models["User"].deleteOne( {_id: data._id});
                       var promises = [];
                       Promise.all(
@@ -369,13 +377,13 @@ router.getDelete = (req, res) => {
                         res.json(results);
                       });
                     } else {
-                      logger.debug("getDelete 7");
+                      debugLog("getDelete 7");
                       let errors = [];
                       if (data.videos && data.videos.length) errors.push({error:"Error", videos: data.videos});
                       res.json(errors);
                     }
                   } else {
-                    logger.debug("getDelete 8");
+                    debugLog("getDelete 8");
                     let errors = [];
                     if (data.activity != 0) errors.push({error:__("Performer is involved in some activities and can not be deleted"), activity: data.activity});
                     res.json(errors);
@@ -418,14 +426,14 @@ router.removeImage = (req, res) => {
 router.removeFootage = (req, res) => {
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.members = req.user._id;
-  logger.debug(query);
+  debugLog(query);
   Models["Playlist"]
   .findOne(query)
   .select({_id:1, title:1, stats:1, footage:1})
   .populate({ "path": "footage", "select": "title", "model": "Footage"})
   .exec((err, playlist) => {
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!playlist) {
       res.status(404).send({
@@ -480,14 +488,14 @@ router.removeFootage = (req, res) => {
       });
     } else {
       playlist.footage.splice(playlist.footage.map((item)=>{return item._id.toString()}).indexOf(req.params.footage), 1);
-      logger.debug("playlist.footage");
-      logger.debug(playlist.footage);
-      logger.debug(playlist.footage.length);
+      debugLog("playlist.footage");
+      debugLog(playlist.footage);
+      debugLog(playlist.footage.length);
       playlist.stats.footage = playlist.footage.length;
 
       playlist.save(function(err){
         if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
+          debugLog(`${JSON.stringify(err)}`);
           res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.footage};
@@ -497,13 +505,13 @@ router.removeFootage = (req, res) => {
           //.populate({ "path": "members", "select": "addresses", "model": "User"})
           .exec((err, footage) => {
             footage.playlists.splice(footage.playlists.indexOf(req.params.id), 1);
-            logger.debug("footage.playlists");
-            logger.debug(footage.playlists);
-            logger.debug(footage.playlists.length);
+            debugLog("footage.playlists");
+            debugLog(footage.playlists);
+            debugLog(footage.playlists.length);
             footage.stats.playlists = footage.playlists.length;
             footage.save(function(err){
               if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
+                debugLog(`${JSON.stringify(err)}`);
                 res.status(404).send({ message: err });
               } else {
                 req.params.sez = 'playlists';
@@ -518,9 +526,9 @@ router.removeFootage = (req, res) => {
   });
 }
 
-router.getSubscriptions = (req, res) => {
-  logger.debug("getSubscriptions");
-  logger.debug(req.params.id);
+router.getSubscriptions = async (req, res) => {
+  debugLog("getSubscriptions");
+  debugLog(req.params.id);
   if (config.cpanel[req.params.sez] && req.params.id) {
     //const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
     const select = config.cpanel[req.params.sez].list.select;
@@ -528,75 +536,73 @@ router.getSubscriptions = (req, res) => {
     populate.push({ "path": "event", "select": "title slug schedule organizationsettings", "model": "Event", "populate":[{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]});
     //const ids = [req.params.id].concat(req.user.crews);
     const query = {"reference" :  req.params.id};
-    /* logger.debug(query);
-    logger.debug(select);
-    logger.debug(populate); */
-    Models["Program"]
-    .find(query)
-    .select(select)
-    .populate(populate)
-    .sort({createdAt:-1})
-    .exec((err, data) => {
-      //logger.debug(data);
-      if (err) {
-        res.status(500).send({ message: `${JSON.stringify(err)}` });
+    /* debugLog(query);
+    debugLog(select);
+    debugLog(populate); */
+    try {
+
+      let data = await Models["Program"]
+      .find(query)
+      .select(select)
+      .populate(populate)
+      .sort({createdAt:-1})
+      .exec();
+      //debugLog(data);
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        res.json(data);
       } else {
-        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-          res.json(data);
-        } else {
-          res.render('admin/subscriptions', {
-            title: 'Subscriptions',
-            scripts: ["paypal"],
-            currentUrl: req.originalUrl,
-            
-            data: data,
-            script: false
-          });
-        }
+        res.render('admin/subscriptions', {
+          title: 'Subscriptions',
+          scripts: ["paypal"],
+          currentUrl: req.originalUrl,
+          
+          data: data,
+          script: false
+        });
       }
-    });
+    } catch (err) {
+      res.status(500).send({ message: `${JSON.stringify(err)}` });
+    }
   } else {
     res.status(404).send({ message: `API_NOT_FOUND` });
   }
 }
 
-router.getList = (req, res, view) => {
+router.getList = async (req, res, view) => {
   if (config.cpanel[req.params.sez] && req.params.id) {
     const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
     const ids = [req.params.id].concat(req.user.crews.map(u => {return u._id.toString()}));
     const query =  req.params.sez == "crews" || req.params.sez == "partners" ? {members: req.params.id} : {users:{$in: ids}};
-
-    Models[config.cpanel[req.params.sez].list.model]
-    .find(query)
-    .select(select)
-    .populate(populate)
-    .sort({createdAt:-1})
-    .exec((err, data) => {
-      if (err) {
-        if (view == "json") {
-          res.status(500).send({ message: `${JSON.stringify(err)}` });
-        } else {
-          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
-        }
+    try {
+      let data = await Models[config.cpanel[req.params.sez].list.model]
+      .find(query)
+      .select(select)
+      .populate(populate)
+      .sort({createdAt:-1})
+      .exec();
+      let send = JSON.parse(JSON.stringify(req.user));
+      send[req.params.sez] = data;
+      //for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
+      if (view == "json") {
+        res.json(send);
       } else {
-        let send = JSON.parse(JSON.stringify(req.user));
-        send[req.params.sez] = data;
-        //for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
-        if (view == "json") {
-          res.json(send);
-        } else {
-          res.render(view, {
-            title: view,
-            scripts: [],
-            currentUrl: req.originalUrl,
-            get: req.params,
-            msg_tmp: { }, 
-            data: send
-          });
-        }  
+        res.render(view, {
+          title: view,
+          scripts: [],
+          currentUrl: req.originalUrl,
+          get: req.params,
+          msg_tmp: { }, 
+          data: send
+        });
+      }  
+    } catch (err) {
+      if (view == "json") {
+        res.status(500).send({ message: `${JSON.stringify(err)}` });
+      } else {
+        res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
       }
-    });
+    }
   } else {
     if (view == "json") {
       res.status(404).send({ message: `API_NOT_FOUND` });
@@ -606,73 +612,34 @@ router.getList = (req, res, view) => {
   }
 }
 
-router.getData = (req, res, view) => {
+router.getData = async (req, res, view) => {
+  debugLog("ddddddddddddd")
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     const id = req.params.id;
     const select = req.query.pure ? config.cpanel[req.params.sez].forms[req.params.form].select : Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].forms[req.params.form].populate;
-    Models[config.cpanel[req.params.sez].model]
-    .findById(id)
-    .select(select)
-    .populate(populate)
-    .exec((err, data) => {
-      if (err) {
+    try {
+      let data = await Models[config.cpanel[req.params.sez].model]
+      .findById(id)
+      .select(select)
+      .populate(populate)
+      .exec();
+      if (!data) {
         if (view == "json") {
-          res.status(500).send({ message: `${JSON.stringify(err)}` });
+          res.status(404).send({ message: `DOC_NOT_FOUND` });
         } else {
           res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
-        }
+        }  
       } else {
-        if (!data) {
+        if (helpers.editable(req, data, id)) {
+          let send = {_id: data._id};
+          for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
           if (view == "json") {
-            res.status(404).send({ message: `DOC_NOT_FOUND` });
+            res.json(send);
           } else {
-            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
-          }  
-        } else {
-          if (helpers.editable(req, data, id)) {
-            let send = {_id: data._id};
-            for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
-            if (view == "json") {
-              res.json(send);
-            } else {
-              logger.debug("body")
-              logger.debug(req.body)
-              if (req.params.sez == "partners" && req.body.subject && req.body.submit=="send") {
-                router.addPartnersToQueque(req, res, data, () => {
-                  req.flash('success', { msg: __('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+__("CHECK THE CUE")+'</b></a>' });
-                  res.render(view, {
-                    title: view,
-                    scripts: [],
-                    currentUrl: req.originalUrl,
-                    get: req.params,
-                    query: req.query,
-                    body: req.body,
-                    countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
-                    languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
-                    msg_tmp: { }, 
-                    data: send,
-                    partners_categories: partners_categories
-                  });
-                });
-              } else if (req.params.sez == "events" && req.body.subject && req.body.submit=="send") {
-                router.addPartnersEventToQueque(req, res, data, () => {
-                  req.flash('success', { msg: __('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+__("CHECK THE CUE")+'</b></a>' });
-                  res.render(view, {
-                    title: view,
-                    scripts: [],
-                    currentUrl: req.originalUrl,
-                    get: req.params,
-                    query: req.query,
-                    body: req.body,
-                    countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
-                    languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
-                    msg_tmp: { }, 
-                    data: send,
-                    partners_categories: partners_categories
-                  });
-                });
-              } else {
+            if (req.params.sez == "partners" && req.body.subject && req.body.submit=="send") {
+              router.addPartnersToQueque(req, res, data, () => {
+                req.flash('success', { msg: __('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+__("CHECK THE CUE")+'</b></a>' });
                 res.render(view, {
                   title: view,
                   scripts: [],
@@ -686,18 +653,57 @@ router.getData = (req, res, view) => {
                   data: send,
                   partners_categories: partners_categories
                 });
-              }
-            }  
-          } else {
-            if (view == "json") {
-              res.status(401).send({ message: `DOC_NOT_OWNED` });
+              });
+            } else if (req.params.sez == "events" && req.body.subject && req.body.submit=="send") {
+              router.addPartnersEventToQueque(req, res, data, () => {
+                req.flash('success', { msg: __('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+__("CHECK THE CUE")+'</b></a>' });
+                res.render(view, {
+                  title: view,
+                  scripts: [],
+                  currentUrl: req.originalUrl,
+                  get: req.params,
+                  query: req.query,
+                  body: req.body,
+                  countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                  languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                  msg_tmp: { }, 
+                  data: send,
+                  partners_categories: partners_categories
+                });
+              });
             } else {
-              res.status(401).render('401', {path: req.originalUrl, title:__("401: Access to the content is denied"), titleicon:"icon-warning"});
-            }  
-          }
+              res.render(view, {
+                title: view,
+                config: config,
+                scripts: [],
+                currentUrl: req.originalUrl,
+                get: req.params,
+                query: req.query,
+                body: req.body,
+                countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                msg_tmp: { }, 
+                data: send,
+                partners_categories: partners_categories
+              });
+            }
+          }  
+        } else {
+          if (view == "json") {
+            res.status(401).send({ message: `DOC_NOT_OWNED` });
+          } else {
+            res.status(401).render('401', {path: req.originalUrl, title:__("401: Access to the content is denied"), titleicon:"icon-warning"});
+          }  
         }
       }
-    });
+    } catch (err) {
+      console.error(`🔥 Error in getData:`, err);
+      if (view == "json") {
+        res.status(500).send({ message: `${JSON.stringify(err)}` });
+      } else {
+        res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+      }
+    }
   } else {
     if (view == "json") {
       res.status(404).send({ message: `API_NOT_FOUND` });
@@ -751,14 +757,14 @@ router.addPartnersToQueque = (req, res, data, cb) => {
       if (message.to_html != "") {
         tosave.messages_tosend.push(message);
       } else {
-        logger.debug(item);
+        debugLog(item);
       }
     } else {
-      logger.debug(item);
+      debugLog(item);
     }
   });
   Models.Emailqueue.create(tosave, function (err) {
-    logger.debug("Emailqueue.create")
+    debugLog("Emailqueue.create")
     cb(err)
   });
 }
@@ -776,7 +782,7 @@ router.addPartnersEventToQueque = (req, res, data, cb) => {
   var dest = [];
   data.partners.forEach((group, index) => {
     group.users.forEach((item, index) => {
-      logger.debug(item);
+      debugLog(item);
       if (!req.body.exclude || res.body.exclude.indexOf(item._id.toString())) dest.push(item._id.toString());
     });
   });
@@ -795,11 +801,11 @@ router.addPartnersEventToQueque = (req, res, data, cb) => {
     for (var item in data) {
       partners = partners.concat(data[item].partners);
     }   
-    logger.debug("partners");
-    logger.debug(partners);
+    debugLog("partners");
+    debugLog(partners);
     partners.forEach((item, index) => {
       var message = {};
-      logger.debug("req.body.exclude.indexOf(item._id.toString())===-1");
+      debugLog("req.body.exclude.indexOf(item._id.toString())===-1");
       if (item && item.partner && item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && dest.indexOf(item.partner._id.toString())!==-1) {
         message.to_html = "";
         message.cc_html = [];
@@ -823,13 +829,13 @@ router.addPartnersEventToQueque = (req, res, data, cb) => {
   
         if (message.to_html != "") tosave.messages_tosend.push(message)
       } else {
-        //logger.debug(item.partner.stagename);
+        //debugLog(item.partner.stagename);
       }
     });
-    logger.debug("tosavetosavetosavetosavetosavetosave");
-    //logger.debug(tosave);
+    debugLog("tosavetosavetosavetosavetosavetosave");
+    //debugLog(tosave);
     Models.Emailqueue.create(tosave, function (err) {
-      logger.debug("Emailqueue.create")
+      debugLog("Emailqueue.create")
       cb(err)
     });
   });
@@ -844,14 +850,14 @@ router.addPartnersEventToQueque = (req, res, data, cb) => {
 
 
 router.getEmailqueue = (req, res) => {
-  logger.debug('/mailer/'+req.params.id);
-  logger.debug("getEmailqueue");
-  logger.debug("req.body");
+  debugLog('/mailer/'+req.params.id);
+  debugLog("getEmailqueue");
+  debugLog("req.body");
   var ids = req.user.crews.map(item => {return item._id});
-  logger.debug(ids);
-  logger.debug(req.body);
-  logger.debug("req.params");
-  logger.debug(req.params);
+  debugLog(ids);
+  debugLog(req.body);
+  debugLog("req.params");
+  debugLog(req.params);
 
   var query = {$or:[{organization: {$in: ids}}, {user: req.user._id}]};
   if (req.params.event) query.event = req.params.event;
@@ -866,8 +872,8 @@ router.getEmailqueue = (req, res) => {
   //select({stagename: 1, createdAt: 1, crews:1}).
   populate(populate).
   exec((err, data) => {
-    logger.debug("data");
-    logger.debug(data);
+    debugLog("data");
+    debugLog(data);
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);
     } else {
@@ -902,7 +908,7 @@ router.getOwnresIds = (req, res,cb) => {
 router.getSlug = (req, res) => {
   Models[config.cpanel[req.params.sez].model]
   .findOne({ slug : req.params.slug },'_id', (err, user) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (err) debugLog(`${JSON.stringify(err)}`);
     res.json({slug:req.params.slug,exist:user!==null?true:false});
   });
 }
@@ -910,18 +916,20 @@ router.getSlug = (req, res) => {
 router.getEmail = (req, res) => {
   Models["User"]
   .findOne({ $or : [{ "email" : req.params.email },{ "emails.email" : req.params.email }] },'_id', (err, user) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (err) debugLog(`${JSON.stringify(err)}`);
     res.json({email:req.params.email,exist:user!==null?true:false});
   });
 }
 
-router.getCategoryByAncestor = (cat, cb) => {
-  Models.Category.find({ancestor: cat._id})
-  .select({name:1 , slug:1})
-  .exec( (err, childrens) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
-    cb(childrens);
-  });
+router.getCategoryByAncestor = async (cat) => {
+  try {
+    let childrens = await Models.Category.find({ancestor: cat._id})
+    .select({name:1 , slug:1})
+    .exec()
+    return childrens;
+  } catch (err) {
+    debugLog(`${JSON.stringify(err)}`);
+  }
 }
 
 router.getCategories = (req, res) => {
@@ -934,10 +942,10 @@ router.getCategories = (req, res) => {
     Models.Category.findOne({slug: req.params.q, rel: req.params.rel })
     .select({name:1 , slug:1})
     .exec( (err, category) => {
-      if (err) logger.debug(`${JSON.stringify(err)}`);
+      if (err) debugLog(`${JSON.stringify(err)}`);
       if (category && category._id) {
         router.getCategoryByAncestor(category, (childrens) => {
-          if (err) logger.debug(`${JSON.stringify(err)}`);
+          if (err) debugLog(`${JSON.stringify(err)}`);
           for (let a=0;a<childrens.length;a++){
             router.getCategoryByAncestor(childrens[a], (childrens2) => {
               childrens[a].childrens = childrens2;
@@ -963,19 +971,19 @@ router.getCategories = (req, res) => {
   }
 }
 
-router.getPerfCategories = (req, res, cb) => {
-  Models.Category.find({ancestor: "5be8708afc3961000000021c", rel: req.params.rel })
-  .select({name:1 , slug:1})
-  .exec( (err, genre) => {
-    let conta = 0;
-    Models.Category.findOne({slug: req.params.q, rel: req.params.rel })
+/* router.getPerfCategories = async (req, res) => {
+  try {
+    let genre = await Models.Category.find({ancestor: "5be8708afc3961000000021c", rel: req.params.rel })
     .select({name:1 , slug:1})
-    .exec( (err, category) => {
-      if (err) logger.debug(`${JSON.stringify(err)}`);
+    .exec();
+    let conta = 0;
+    try {
+      let category = await Models.Category.findOne({slug: req.params.q, rel: req.params.rel })
+      .select({name:1 , slug:1})
+      .exec();
       if (category && category._id) {
         router.getCategoryByAncestor(category, (childrens) => {
-          logger.debug(childrens);
-          if (err) logger.debug(`${JSON.stringify(err)}`);
+          debugLog(childrens);
           for (let a=0;a<childrens.length;a++){
             router.getCategoryByAncestor(childrens[a], (childrens2) => {
               for (let b=0;b<childrens2.length;b++) childrens2[b].childrens = genre;
@@ -1016,19 +1024,80 @@ router.getPerfCategories = (req, res, cb) => {
                   }
                   send.children.push(child);
                 }
-                cb(send);
+                console.log("bbbbbbbbbb")
+                console.log(send)
+                return send;
               }
             });
           }
-      
         });  
       } else {
-        cb(category);
+        return category;
       }    
-    });
-  });
-}
-
+    } catch (err) {
+      debugLog(`${JSON.stringify(err)}`);
+      return err;
+    }
+  } catch (err) {
+    debugLog(`${JSON.stringify(err)}`);
+    return err;
+  }
+} */
+  router.getPerfCategories = async (req, res) => {
+    try {
+      let genre = await Models.Category.find({ ancestor: "5be8708afc3961000000021c", rel: req.params.rel })
+        .select({ name: 1, slug: 1 })
+        .exec();
+  
+      let category = await Models.Category.findOne({ slug: req.params.q, rel: req.params.rel })
+        .select({ name: 1, slug: 1 })
+        .exec();
+  
+      if (!category || !category._id) return category; // Return empty if category not found
+  
+      let childrens = await router.getCategoryByAncestor(category);
+  
+      for (let a = 0; a < childrens.length; a++) {
+        let childrens2 = await router.getCategoryByAncestor(childrens[a]);
+  
+        for (let b = 0; b < childrens2.length; b++) {
+          childrens2[b].childrens = genre;
+        }
+        childrens[a].childrens = childrens2;
+      }
+  
+      category.childrens = childrens;
+  
+      let send = {
+        name: category.name,
+        slug: category.slug,
+        _id: category._id,
+        children: category.childrens.map(child => ({
+          name: child.name,
+          slug: child.slug,
+          _id: child._id,
+          children: child.childrens.map(childchild => ({
+            name: childchild.name,
+            slug: childchild.slug,
+            _id: childchild._id,
+            children: childchild.childrens.map(childchildchild => ({
+              name: childchildchild.name,
+              slug: childchildchild.slug,
+              _id: childchildchild._id,
+              children: []
+            }))
+          }))
+        }))
+      };
+  
+      console.log("✅ Successfully built category tree:", send);
+      return send;
+    } catch (err) {
+      debugLog(`🔥 Error in getPerfCategories: ${JSON.stringify(err)}`);
+      return err;
+    }
+  };
+  
 router.getMembers = (req, res) => {
   Models.User
   .find({$or:[
@@ -1043,10 +1112,10 @@ router.getMembers = (req, res) => {
   //.collation({locale: "en" })
   .sort({'stagename': 1})
   .exec((err, users) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (err) debugLog(`${JSON.stringify(err)}`);
     //res.json(users.map(item => {delete item.imageFormats; return item;}));
     let result = [];
-    logger.debug(users);
+    debugLog(users);
     res.json(users);
   });
 }
@@ -1065,7 +1134,7 @@ router.getAuthors = (req, res) => {
   .select({'stagename':1})
   .sort({'stagename': 1})
   .exec((err, users) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (err) debugLog(`${JSON.stringify(err)}`);
     res.json(users);
   });
 }
@@ -1080,7 +1149,7 @@ router.getPerformances = (req, res) => {
   .select({'title':1})
   .sort({'title': 1})
   .exec((err, performances) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (err) debugLog(`${JSON.stringify(err)}`);
     res.json(performances);
   });
 }
@@ -1095,7 +1164,7 @@ router.getGalleries = (req, res) => {
   .select({'title':1})
   .sort({'title': 1})
   .exec((err, galleries) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (err) debugLog(`${JSON.stringify(err)}`);
     res.json(galleries);
   });
 }
@@ -1122,14 +1191,14 @@ router.getVideos = (req, res) => {
   .select(select)
   .sort({'title': 1})
   .exec((err, video) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (err) debugLog(`${JSON.stringify(err)}`);
     res.json(video);
   });
 }
 
 router.removeAddress = (req, res) => {
   if (req.query.db === "users") {
-    logger.debug(req.query);
+    debugLog(req.query);
     router.removeAddressUsers(req, res, () => {
       router.removeAddressDB(req, res, () => {
         res.json(req.query);
@@ -1137,9 +1206,9 @@ router.removeAddress = (req, res) => {
     });
   }
   if (req.query.db === "venues") {
-    logger.debug(req.query);
+    debugLog(req.query);
     router.removeVenueDB(req, res, (newaddr) => {
-      //logger.debug(newaddr);
+      //debugLog(newaddr);
       router.removeAddressEvents(req, res, newaddr, () => {
         res.json(req.query);
       });
@@ -1148,12 +1217,12 @@ router.removeAddress = (req, res) => {
 }
 
 router.removeAddressUsers = (req, res, cb) => {
-  logger.debug("removeAddressUsers");
+  debugLog("removeAddressUsers");
   var conta = 0;
   //res.json(req.query);
   Models.User
   .find({"addresses.country": req.query.country, "addresses.locality": req.query.locality},'_id, addresses', (err, users) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (err) debugLog(`${JSON.stringify(err)}`);
     if (users.length) {
       for(var a=0;a<users.length;a++){
         for(var b=0;b<users[a].addresses.length;b++){
@@ -1163,10 +1232,10 @@ router.removeAddressUsers = (req, res, cb) => {
                 users[a].addresses[b].locality = undefined;
               }
               if (req.query.field === "country") {
-                logger.debug("stocazzzooooooooooo USERS");
-                logger.debug(users[a]);
+                debugLog("stocazzzooooooooooo USERS");
+                debugLog(users[a]);
                 users[a].addresses.splice(b, 1);
-                logger.debug(users[a]);
+                debugLog(users[a]);
               }
             }
             if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
@@ -1174,14 +1243,14 @@ router.removeAddressUsers = (req, res, cb) => {
             }
           }
         }
-        logger.debug("stocazzzooooooooooo USERS");
-        logger.debug(users[a]);
+        debugLog("stocazzzooooooooooo USERS");
+        debugLog(users[a]);
         Models.User.updateOne({_id: users[a]._id}, { $set: {addresses: users[a].addresses}}, function(err, res) {
           conta++;
           if (err) {
-            logger.debug(err);
+            debugLog(err);
           } else {
-            logger.debug(res);
+            debugLog(res);
           }
           if (conta === users.length) cb();
         });
@@ -1193,7 +1262,7 @@ router.removeAddressUsers = (req, res, cb) => {
 }
 
 router.removeAddressDB = (req, res, cb) => {
-  logger.debug("removeAddressDB");
+  debugLog("removeAddressDB");
   var collection;
   var rel;
   var q;
@@ -1207,20 +1276,20 @@ router.removeAddressDB = (req, res, cb) => {
   }
   collection
   .find(q, (err, addresses) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (err) debugLog(`${JSON.stringify(err)}`);
     if (addresses.length) {
       var b=0;
       if (req.query.action === "REMOVE") {
         if (req.query.field === "locality") {
           addresses[b].locality = undefined;
-          logger.debug("stocazzzooooooooooo AddressDB");
-          logger.debug(addresses[b]);
+          debugLog("stocazzzooooooooooo AddressDB");
+          debugLog(addresses[b]);
           collection.findByIdAndUpdate(addresses[b]._id, { $unset: {locality:1}}, { new: false }, function (err, res) {
-            logger.debug(err);
-            logger.debug(res);
+            debugLog(err);
+            debugLog(res);
             if (err && err.code == "11000") {
               collection.deleteOne(q, function (err) {
-                if (err) logger.debug(err);
+                if (err) debugLog(err);
                 cb();
                 // deleted at most one tank document
               });
@@ -1231,7 +1300,7 @@ router.removeAddressDB = (req, res, cb) => {
         }
         if (req.query.field === "country") {
           collection.deleteOne(q, function (err) {
-            if (err) logger.debug(err);
+            if (err) debugLog(err);
             cb();
           });
         }
@@ -1240,11 +1309,11 @@ router.removeAddressDB = (req, res, cb) => {
         var update = {};
         update[req.query.field] = req.query.new;
         collection.findByIdAndUpdate(addresses[b]._id, update, { new: false }, function (err, res) {
-          logger.debug(err);
-          logger.debug(res);
+          debugLog(err);
+          debugLog(res);
           if (err && err.code == "11000") {
             collection.deleteOne(q, function (err) {
-              if (err) logger.debug(err);
+              if (err) debugLog(err);
               cb();
               // deleted at most one tank document
             });
@@ -1260,14 +1329,14 @@ router.removeAddressDB = (req, res, cb) => {
 }
 
 router.removeAddressEvents = (req, res, newaddr, cb) => {
-  logger.debug("removeAddressEvents");
+  debugLog("removeAddressEvents");
   var conta = 0;
   Models.Event
   .find({$or: [{"schedule.venue.name": req.query.name, "schedule.venue.location.country": req.query.country, "schedule.venue.location.locality": req.query.locality},{"program.schedule.venue.name": req.query.name}]},{schedule:1,title:1,program:1}, (err, events) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (err) debugLog(`${JSON.stringify(err)}`);
     if (events.length) {
       for(var a=0;a<events.length;a++){
-        logger.debug(events[a].title);
+        debugLog(events[a].title);
         for(var b=0;b<events[a].schedule.length;b++){
           if (events[a].schedule[b].venue.name === req.query.name && events[a].schedule[b].venue.location.country === req.query.country && events[a].schedule[b].venue.location.locality === req.query.locality) {
             /* if (req.query.action === "REMOVE") {
@@ -1295,10 +1364,10 @@ router.removeAddressEvents = (req, res, newaddr, cb) => {
                   events[a].program[b].schedule.venue.location.locality = undefined;
                 }
                 if (req.query.field === "country") {
-                  logger.debug("stocazzzooooooooooo events");
-                  logger.debug(events[a]);
+                  debugLog("stocazzzooooooooooo events");
+                  debugLog(events[a]);
                   events[a].program.splice(b, 1);
-                  logger.debug(events[a]);
+                  debugLog(events[a]);
                 }
               } */
               if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
@@ -1312,13 +1381,13 @@ router.removeAddressEvents = (req, res, newaddr, cb) => {
           }
         }
         var set = events[a].program ? {schedule: events[a].schedule,program: events[a].program} : {schedule: events[a].schedule};
-        logger.debug(set);
+        debugLog(set);
         Models.Event.updateOne({_id: events[a]._id}, set, function(err, res) {
           conta++;
           if (err) {
-            logger.debug(err);
+            debugLog(err);
           } else {
-            logger.debug(res);
+            debugLog(res);
           }
           if (conta === events.length) cb();
         });
@@ -1330,26 +1399,26 @@ router.removeAddressEvents = (req, res, newaddr, cb) => {
 }
 
 router.removeVenueDB = (req, res, cb) => {
-  logger.debug("removeVenueDB");
+  debugLog("removeVenueDB");
   var rel;
   var q;
   q = {"name": req.query.name, "country": req.query.country, "locality": req.query.locality};
   Models.VenueDB
   .find(q, (err, addresses) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (err) debugLog(`${JSON.stringify(err)}`);
     if (addresses.length) {
       var b=0;
       /* if (req.query.action === "REMOVE") {
         if (req.query.field === "locality") {
           addresses[b].locality = undefined;
-          logger.debug("stocazzzooooooooooo AddressDB");
-          logger.debug(addresses[b]);
+          debugLog("stocazzzooooooooooo AddressDB");
+          debugLog(addresses[b]);
           Models.VenueDB.findByIdAndUpdate(addresses[b]._id, { $unset: {locality:1}}, { new: false }, function (err, res) {
-            logger.debug(err);
-            logger.debug(res);
+            debugLog(err);
+            debugLog(res);
             if (err && err.code == "11000") {
               Models.VenueDB.deleteOne(q, function (err) {
-                if (err) logger.debug(err);
+                if (err) debugLog(err);
                 cb();
                 // deleted at most one tank document
               });
@@ -1360,7 +1429,7 @@ router.removeVenueDB = (req, res, cb) => {
         }
         if (req.query.field === "country") {
           Models.VenueDB.deleteOne(q, function (err) {
-            if (err) logger.debug(err);
+            if (err) debugLog(err);
             cb();
           });
         }
@@ -1368,13 +1437,13 @@ router.removeVenueDB = (req, res, cb) => {
       if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
         var update = {};
         update[req.query.field] = req.query.new;
-        logger.debug(update);
+        debugLog(update);
         Models.VenueDB.findByIdAndUpdate(addresses[b]._id, update, { new: false }, function (err, res) {
-          //logger.debug(err);
-          //logger.debug(res);
+          //debugLog(err);
+          //debugLog(res);
           if (err && err.code == "11000") {
             Models.VenueDB.deleteOne(q, function (err) {
-              if (err) logger.debug(err);
+              if (err) debugLog(err);
               cb(res);
               // deleted at most one tank document
             });
@@ -1384,7 +1453,7 @@ router.removeVenueDB = (req, res, cb) => {
         });
       }
     } else {
-      logger.debug("stocazzostocazzostocazzostocazzostocazzo");
+      debugLog("stocazzostocazzostocazzostocazzostocazzo");
       cb();
     }
   });
@@ -1393,14 +1462,14 @@ router.removeVenueDB = (req, res, cb) => {
 router.addMember = (req, res) => {
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.members = req.user._id;
-  logger.debug();
+  debugLog();
   Models["User"]
   .findOne(query)
   .select({_id:1, stats:1, stagename:1, members:1})
   .populate({ "path": "members", "select": "addresses", "model": "User"})
   .exec((err, crew) => {
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!crew) {
       res.status(404).send({
@@ -1438,11 +1507,11 @@ router.addMember = (req, res) => {
       });
     } else {
       crew.members.push(req.params.member);
-      logger.debug("crew.members");
-      logger.debug(crew.members);
-      logger.debug(crew.members.length);
+      debugLog("crew.members");
+      debugLog(crew.members);
+      debugLog(crew.members.length);
       crew.stats.members = crew.members.length;
-      logger.debug(crew);
+      debugLog(crew);
       crew.save(function(err){
         var query = {_id: req.params.member};
         Models["User"]
@@ -1451,17 +1520,17 @@ router.addMember = (req, res) => {
         //.populate({ "path": "members", "select": "addresses", "model": "User"})
         .exec((err, member) => {
           if (err) {
-            logger.debug(`${JSON.stringify(err)}`);
+            debugLog(`${JSON.stringify(err)}`);
             res.status(404).send({ message: err });
           } else {
             member.crews.push(req.params.id);
-            logger.debug("member.crews");
-            logger.debug(member.crews);
-            logger.debug(member.crews.length);
+            debugLog("member.crews");
+            debugLog(member.crews);
+            debugLog(member.crews.length);
             member.stats.crews = member.crews.length;
             member.save(function(err){
               if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
+                debugLog(`${JSON.stringify(err)}`);
                 res.status(404).send({ message: err });
               } else {
                 req.params.sez = 'crews';
@@ -1479,14 +1548,14 @@ router.addMember = (req, res) => {
 router.removeMember = (req, res) => {
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.members = req.user._id;
-  logger.debug(query);
+  debugLog(query);
   Models["User"]
   .findOne(query)
   .select({_id:1, stagename:1, stats:1, members:1})
   .populate({ "path": "members", "select": "addresses", "model": "User"})
   .exec((err, crew) => {
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!crew) {
       res.status(404).send({
@@ -1541,14 +1610,14 @@ router.removeMember = (req, res) => {
       });
     } else {
       crew.members.splice(crew.members.map((item)=>{return item._id.toString()}).indexOf(req.params.member), 1);
-      logger.debug("crew.members");
-      logger.debug(crew.members);
-      logger.debug(crew.members.length);
+      debugLog("crew.members");
+      debugLog(crew.members);
+      debugLog(crew.members.length);
       crew.stats.members = crew.members.length;
 
       crew.save(function(err){
         if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
+          debugLog(`${JSON.stringify(err)}`);
           res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.member};
@@ -1558,13 +1627,13 @@ router.removeMember = (req, res) => {
           //.populate({ "path": "members", "select": "addresses", "model": "User"})
           .exec((err, member) => {
             member.crews.splice(member.crews.indexOf(req.params.id), 1);
-            logger.debug("member.crews");
-            logger.debug(member.crews);
-            logger.debug(member.crews.length);
+            debugLog("member.crews");
+            debugLog(member.crews);
+            debugLog(member.crews.length);
             member.stats.crews = member.crews.length;
             member.save(function(err){
               if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
+                debugLog(`${JSON.stringify(err)}`);
                 res.status(404).send({ message: err });
               } else {
                 req.params.sez = 'crews';
@@ -1589,7 +1658,7 @@ router.addUser = (req, res) => {
   //.populate({ "path": "users", "select": "stagename", "model": "User"})
   .exec((err, item) => {
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!item) {
       res.status(404).send({
@@ -1629,7 +1698,7 @@ router.addUser = (req, res) => {
       item.users.push(req.params.user);
       item.save(function(err){
         if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
+          debugLog(`${JSON.stringify(err)}`);
           res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.user};
@@ -1643,7 +1712,7 @@ router.addUser = (req, res) => {
             user[req.params.sez].push(req.params.id);
             user.save(function(err){
               if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
+                debugLog(`${JSON.stringify(err)}`);
                 res.status(404).send({ message: err });
               } else {
                 Promise.all(
@@ -1673,7 +1742,7 @@ router.removeUser = (req, res) => {
   //.populate({ "path": "users", "select": "stagename", "model": "User"})
   .exec((err, item) => {
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!item) {
       res.status(404).send({
@@ -1731,7 +1800,7 @@ router.removeUser = (req, res) => {
       //res.json(item);
       item.save(function(err){
         if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
+          debugLog(`${JSON.stringify(err)}`);
           res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.user};
@@ -1745,7 +1814,7 @@ router.removeUser = (req, res) => {
             user[req.params.sez].splice(user[req.params.sez].indexOf(req.params.id), 1);
             user.save(function(err){
               if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
+                debugLog(`${JSON.stringify(err)}`);
                 res.status(404).send({ message: err });
               } else {
                 Promise.all(
@@ -1773,7 +1842,7 @@ router.eventAddPerformance = (req, res) => {
   //.populate({ "path": "users", "select": "stagename", "model": "User"})
   .exec((err, item) => {
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!item) {
       res.status(404).send({
@@ -1813,7 +1882,7 @@ router.eventAddPerformance = (req, res) => {
       item.program.push({performance:req.params.performance});
       item.save(function(err){
         if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
+          debugLog(`${JSON.stringify(err)}`);
           res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.performance};
@@ -1826,7 +1895,7 @@ router.eventAddPerformance = (req, res) => {
             performance.bookings.push({event:req.params.id});
             performance.save(function(err){
               if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
+                debugLog(`${JSON.stringify(err)}`);
                 res.status(404).send({ message: err });
               } else {
                 query = {performance: req.params.performance, event: req.params.id};
@@ -1842,7 +1911,7 @@ router.eventAddPerformance = (req, res) => {
                     Models["Program"]
                     .create(program, function (err, program) {
                       if (err) {
-                        logger.debug(`${JSON.stringify(err)}`);
+                        debugLog(`${JSON.stringify(err)}`);
                         res.status(404).send({ message: err });
                       } else {
                         req.params.sez = 'events';
@@ -1875,7 +1944,7 @@ router.eventAddPerformance = (req, res) => {
   //.populate({ "path": "users", "select": "stagename", "model": "User"})
   .exec((err, event) => {
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!event) {
       res.status(404).send({
@@ -1925,7 +1994,7 @@ router.eventAddPerformance = (req, res) => {
           Models["Program"]
           .create(programnew, function (err, program) {
             if (err) {
-              logger.debug(`${JSON.stringify(err)}`);
+              debugLog(`${JSON.stringify(err)}`);
               res.status(404).send({ message: err });
             } else {
               Models["Program"]
@@ -1934,7 +2003,7 @@ router.eventAddPerformance = (req, res) => {
                 event.program.push({performance:req.params.performance, subscription_id:program._id});
                 event.save(function(err){
                   if (err) {
-                    logger.debug(`${JSON.stringify(err)}`);
+                    debugLog(`${JSON.stringify(err)}`);
                     res.status(404).send({ message: err });
                   } else {
                     var query = {_id: req.params.performance};
@@ -1947,7 +2016,7 @@ router.eventAddPerformance = (req, res) => {
                       performance.bookings.push({event:req.params.id, subscription_id:program._id});
                       performance.save(function(err){
                         if (err) {
-                          logger.debug(`${JSON.stringify(err)}`);
+                          debugLog(`${JSON.stringify(err)}`);
                           res.status(404).send({ message: err });
                         } else {
                           req.params.sez = 'events';
@@ -1994,7 +2063,7 @@ router.eventRemovePerformance = (req, res) => {
   //.populate({ "path": "users", "select": "stagename", "model": "User"})
   .exec((err, item) => {
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!item) {
       res.status(404).send({
@@ -2035,7 +2104,7 @@ router.eventRemovePerformance = (req, res) => {
       //res.json(item);
       item.save(function(err){
         if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
+          debugLog(`${JSON.stringify(err)}`);
           res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.performance};
@@ -2049,14 +2118,14 @@ router.eventRemovePerformance = (req, res) => {
             performance.bookings.splice(performance.bookings.map((item)=>{return item.event.toString()}).indexOf(req.params.id), 1);
             performance.save(function(err){
               if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
+                debugLog(`${JSON.stringify(err)}`);
                 res.status(404).send({ message: err });
               } else {
                 query = {performance: req.params.performance, event: req.params.id};
                 Models["Program"]
                 .findOneAndRemove(query, function (err, program) {
                   if (err) {
-                    logger.debug(`${JSON.stringify(err)}`);
+                    debugLog(`${JSON.stringify(err)}`);
                     res.status(404).send({ message: err });
                   } else {
                     req.params.sez = 'events';
@@ -2083,7 +2152,7 @@ router.performanceAddEvent = (req, res) => {
   //.populate({ "path": "users", "select": "stagename", "model": "User"})
   .exec((err, item) => {
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!item) {
       res.status(404).send({
@@ -2123,7 +2192,7 @@ router.performanceAddEvent = (req, res) => {
       item.bookings.push({event:req.params.event});
       item.save(function(err){
         if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
+          debugLog(`${JSON.stringify(err)}`);
           res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.event};
@@ -2136,7 +2205,7 @@ router.performanceAddEvent = (req, res) => {
             event.program.push({performance:req.params.id});
             event.save(function(err){
               if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
+                debugLog(`${JSON.stringify(err)}`);
                 res.status(404).send({ message: err });
               } else {
                 query = {event: req.params.event, performance: req.params.id};
@@ -2152,7 +2221,7 @@ router.performanceAddEvent = (req, res) => {
                     Models["Program"]
                     .create(program, function (err, program) {
                       if (err) {
-                        logger.debug(`${JSON.stringify(err)}`);
+                        debugLog(`${JSON.stringify(err)}`);
                         res.status(404).send({ message: err });
                       } else {
                         req.params.sez = 'events';
@@ -2185,7 +2254,7 @@ router.performanceRemoveEvent = (req, res) => {
   //.populate({ "path": "users", "select": "stagename", "model": "User"})
   .exec((err, item) => {
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!item) {
       res.status(404).send({
@@ -2226,7 +2295,7 @@ router.performanceRemoveEvent = (req, res) => {
       //res.json(item);
       item.save(function(err){
         if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
+          debugLog(`${JSON.stringify(err)}`);
           res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.event};
@@ -2240,14 +2309,14 @@ router.performanceRemoveEvent = (req, res) => {
             event.program.splice(event.program.map((item)=>{return item.performance.toString()}).indexOf(req.params.id), 1);
             event.save(function(err){
               if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
+                debugLog(`${JSON.stringify(err)}`);
                 res.status(404).send({ message: err });
               } else {
                 query = {event: req.params.event, performance: req.params.id};
                 Models["Program"]
                 .findOneAndRemove(query, function (err, program) {
                   if (err) {
-                    logger.debug(`${JSON.stringify(err)}`);
+                    debugLog(`${JSON.stringify(err)}`);
                     res.status(404).send({ message: err });
                   } else {
                     req.params.sez = 'events';
@@ -2275,8 +2344,8 @@ router.setStatsAndActivity = (req, res) => {
     promises
   ).then( (resultsPromise) => {
     setTimeout(function() {
-      //logger.debug('resultsPromise');
-      //logger.debug(resultsPromise);
+      //debugLog('resultsPromise');
+      //debugLog(resultsPromise);
       //resolve(resultsPromise);
       res.json(resultsPromise);
     }, 1000);
@@ -2284,24 +2353,24 @@ router.setStatsAndActivity = (req, res) => {
 }
 
 router.sendEmailVericaition = (req, res) => {
-  logger.debug("sendEmailVericaition");
-  logger.debug(req.headers.host);
-  const uid = require('uuid');
-  const mongoose = require('mongoose');
+  debugLog("sendEmailVericaition");
+  debugLog(req.headers.host);
+  //import uid from 'uuid';
+  //import mongoose from 'mongoose';
   const User = mongoose.model('User');
   //User.findOne({"emails.email": req.params.email}, "emails", (err, user) => {
   User.findOne({"_id": req.user._id}, "emails", (err, user) => {
     if (err) { 
-      logger.debug("MAIL SEARCH ERROR");
+      debugLog("MAIL SEARCH ERROR");
       res.json({error: true, msg: __("MAIL SEARCH ERROR")});
     } else if (!user) {
-      logger.debug("USER NOT FOUND");     
+      debugLog("USER NOT FOUND");     
       res.json({error: true, msg: __("USER NOT FOUND")});
     } else if (req.user._id.toString() !== user._id.toString() /*&& !req.user.is_admin*/) {
-      logger.debug("EMAIL IS NOT YOUR");     
+      debugLog("EMAIL IS NOT YOUR");     
       res.json({error: true, msg: __("EMAIL IS NOT YOUR")});
     } else {
-      logger.debug("Email OK");
+      debugLog("Email OK");
       let nothingToDo = true;
       if (user.emails.map(item => {return item.email}).indexOf(req.params.email)===-1) {
         user.emails.push({
@@ -2315,17 +2384,17 @@ router.sendEmailVericaition = (req, res) => {
         if (user.emails[item].email === req.params.email && !user.emails[item].is_confirmed) {
           nothingToDo = false;
           const mailer = require('../../../utilities/mailer');
-          user.emails[item].confirm = uid.v4();
-          logger.debug(user.emails[item]);
-          logger.debug(user);
+          user.emails[item].confirm = setIdentifier();
+          debugLog(user.emails[item]);
+          debugLog(user);
           user.save((err) => {
             if (err) {
-              logger.debug("Save failuresssss");
-              logger.debug(err);
+              debugLog("Save failuresssss");
+              debugLog(err);
               res.json({error: true, msg: __(err.message)});
             } else {
-              logger.debug("Save success");
-              logger.debug("mySendMailer");
+              debugLog("Save success");
+              debugLog("mySendMailer");
               mailer.mySendMailer({
                 template: 'confirm-email',
                 message: {
@@ -2345,11 +2414,11 @@ router.sendEmailVericaition = (req, res) => {
                 }
               }, function (err){
                 if (err) {
-                  logger.debug("Email sending failure");
-                  logger.debug(err);
+                  debugLog("Email sending failure");
+                  debugLog(err);
                   res.json({error: true, msg: __("Confirmation email sending failure, please try later"), err: err});
                 } else {
-                  logger.debug("Email sending OK");
+                  debugLog("Email sending OK");
                   res.json({error: false, msg: __("Confirmation Email sending success, please check your inbox and confirm")});
                 }
               });
@@ -2358,7 +2427,7 @@ router.sendEmailVericaition = (req, res) => {
         }
       }
       if(nothingToDo) {
-        logger.debug("Nothing to do");
+        debugLog("Nothing to do");
         res.json({error: true, msg: "Nothing to do"});          
       }
     }
@@ -2367,7 +2436,7 @@ router.sendEmailVericaition = (req, res) => {
 
 
 router.addGallery = (req, res) => {
-  logger.debug("addGallery");
+  debugLog("addGallery");
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
   if (req.params.sez == "events" || req.params.sez == "performances") {
@@ -2377,10 +2446,10 @@ router.addGallery = (req, res) => {
     .select({_id:1, title:1, stats:1, galleries:1})
     //.populate({ "path": "users", "select": "stagename", "model": "User"})
     .exec((err, item) => {
-      logger.debug("addGallery");
-      logger.debug(item);
+      debugLog("addGallery");
+      debugLog(item);
       if (err) {
-        logger.debug(`${JSON.stringify(err)}`);
+        debugLog(`${JSON.stringify(err)}`);
         res.status(404).send({ message: err });
       } else if (!item) {
         res.status(404).send({
@@ -2420,7 +2489,7 @@ router.addGallery = (req, res) => {
         item.galleries.push(req.params.gallery);
         item.save(function(err){
           if (err) {
-            logger.debug(`${JSON.stringify(err)}`);
+            debugLog(`${JSON.stringify(err)}`);
             res.status(404).send({ message: err });
           } else {
             var query = {_id: req.params.gallery};
@@ -2435,7 +2504,7 @@ router.addGallery = (req, res) => {
               gallery[req.params.sez].push(req.params.id);
               gallery.save(function(err){
                 if (err) {
-                  logger.debug(`${JSON.stringify(err)}`);
+                  debugLog(`${JSON.stringify(err)}`);
                   res.status(404).send({ message: err });
                 } else {
                   //req.params.sez = 'events';
@@ -2464,7 +2533,7 @@ router.removeGallery = (req, res) => {
     //.populate({ "path": "users", "select": "stagename", "model": "User"})
     .exec((err, item) => {
       if (err) {
-        logger.debug(`${JSON.stringify(err)}`);
+        debugLog(`${JSON.stringify(err)}`);
         res.status(404).send({ message: err });
       } else if (!item) {
         res.status(404).send({
@@ -2505,7 +2574,7 @@ router.removeGallery = (req, res) => {
         //res.json(item);
         item.save(function(err){
           if (err) {
-            logger.debug(`${JSON.stringify(err)}`);
+            debugLog(`${JSON.stringify(err)}`);
             res.status(404).send({ message: err });
           } else {
             var query = {_id: req.params.gallery};
@@ -2519,7 +2588,7 @@ router.removeGallery = (req, res) => {
               gallery.events.splice(gallery.events.map((item)=>{return item.toString()}).indexOf(req.params.id), 1);
               gallery.save(function(err){
                 if (err) {
-                  logger.debug(`${JSON.stringify(err)}`);
+                  debugLog(`${JSON.stringify(err)}`);
                   res.status(404).send({ message: err });
                 } else {
                   //req.params.sez = 'events';
@@ -2538,7 +2607,7 @@ router.removeGallery = (req, res) => {
 }
 
 router.addVideo = (req, res) => {
-  logger.debug("addVideo");
+  debugLog("addVideo");
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
   if (req.params.sez == "events" || req.params.sez == "performances") {
@@ -2548,10 +2617,10 @@ router.addVideo = (req, res) => {
     .select({_id:1, title:1, stats:1, videos:1})
     //.populate({ "path": "users", "select": "stagename", "model": "User"})
     .exec((err, item) => {
-      logger.debug("addVideo");
-      logger.debug(item);
+      debugLog("addVideo");
+      debugLog(item);
       if (err) {
-        logger.debug(`${JSON.stringify(err)}`);
+        debugLog(`${JSON.stringify(err)}`);
         res.status(404).send({ message: err });
       } else if (!item) {
         res.status(404).send({
@@ -2591,7 +2660,7 @@ router.addVideo = (req, res) => {
         item.videos.push(req.params.video);
         item.save(function(err){
           if (err) {
-            logger.debug(`${JSON.stringify(err)}`);
+            debugLog(`${JSON.stringify(err)}`);
             res.status(404).send({ message: err });
           } else {
             var query = {_id: req.params.video};
@@ -2606,7 +2675,7 @@ router.addVideo = (req, res) => {
               video[req.params.sez].push(req.params.id);
               video.save(function(err){
                 if (err) {
-                  logger.debug(`${JSON.stringify(err)}`);
+                  debugLog(`${JSON.stringify(err)}`);
                   res.status(404).send({ message: err });
                 } else {
                   req.params.form = 'videos';
@@ -2632,16 +2701,16 @@ router.removeVideo = (req, res) => {
   } else {
     res.status(404).send({ message: `API_NOT_FOUND` });
   }
-  logger.debug(model);
+  debugLog(model);
   model
   .findOne(query)
   .select({_id:1, videos:1})
   //.populate({ "path": "users", "select": "stagename", "model": "User"})
   .exec((err, item) => {
-    logger.debug(req.params.video)
-    logger.debug(item.videos)
+    debugLog(req.params.video)
+    debugLog(item.videos)
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!item) {
       res.status(404).send({
@@ -2682,7 +2751,7 @@ router.removeVideo = (req, res) => {
       //res.json(item);
       item.save(function(err){
         if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
+          debugLog(`${JSON.stringify(err)}`);
           res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.video};
@@ -2696,7 +2765,7 @@ router.removeVideo = (req, res) => {
             video.events.splice(video.events.map((item)=>{return item.toString()}).indexOf(req.params.id), 1);
             video.save(function(err){
               if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
+                debugLog(`${JSON.stringify(err)}`);
                 res.status(404).send({ message: err });
               } else {
                 //req.params.sez = 'events';
@@ -2779,116 +2848,103 @@ router.eventGetFreezed = (req, res) => {
   });
 }
 
-router.getPartners = (req, res) => {
-  logger.debug('/organizations/'+req.params.id);
-  logger.debug(req.user.crews.map(item => {return item._id}));
+router.getPartners = async (req, res) => {
+  debugLog('/organizations/'+req.params.id);
+  debugLog(req.user.crews.map(item => {return item._id}));
   var crews = req.user.crews.map(item => {return item._id});
-  Models.Category.
+  let categories = await Models.Category.
   find({ancestor: "5be8708afc396100000001eb"}).
   lean().
-  exec((err, categories) => {
-    var populate = [
-      {path: "users", select: {stagename:1}, model:"UserShow"},
-      {path: "partners.users", select: {stagename:1}, model:"UserShow"},
-      {path: "partners.category", select: {name:1, slug:1}, model:"Category"}
-    ];
-    Models.Event.
-    //find({"users": req.params.id}).
-    findOne({_id: req.params.id}).
-    populate(populate).
-    select({title: 1, slug: 1, partners:1, users:1}).
-    //sort({title: 1}).
-    //select({stagename: 1, createdAt: 1, crews:1}).
-    //exec((err, events) => {
-    exec((err, event) => {
-      var populate = [
-        { "path": "partners.partner", "select": "stagename", "model": "User"}
-      /* 
-        {path: "members", select: {stagename:1, gender:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, lang:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
-        {path: "partnerships", select: {title:1, slug:1}, model:"EventShow"},
-        {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
-      */];
-      //const query = {"partner_owner.owner": {$in: event.users.map(item =>{return item._id})}};
-      const query = {"_id": {$in: event.users.map(item =>{return item._id})}};
-      Models.User.
-      find(query).
-      lean().
-      sort({stagename: 1}).
-      //select({stagename: 1, createdAt: 1, crews:1}).
-      populate(populate).
-      exec((err, data) => {
-        var partners = []
-        for (var item in data) {
-          partners = partners.concat(data[item].partners);
-        }   
-        /* Models.Event.
-        find({"users": req.params.id}).
-        select({title: 1}).
-        sort({title: 1}).
-        //select({stagename: 1, createdAt: 1, crews:1}).
-        exec((err, events) => { */
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-            res.json(data);
-          } else {
-    
-            var partnerships = event.partners.slice(0);
-              //logger.debug(existingCat);
-              var notassigned = [];
-              var notassignedID = [];
-              var partnersID = [];
+  exec();
+  var populate = [
+    {path: "users", select: {stagename:1}, model:"UserShow"},
+    {path: "partners.users", select: {stagename:1}, model:"UserShow"},
+    {path: "partners.category", select: {name:1, slug:1}, model:"Category"}
+  ];
+  let event = await Models.Event.
+  //find({"users": req.params.id}).
+  findOne({_id: req.params.id}).
+  populate(populate).
+  select({title: 1, slug: 1, partners:1, users:1}).
+  //sort({title: 1}).
+  //select({stagename: 1, createdAt: 1, crews:1}).
+  //exec((err, events) => {
+  exec();
+  var populate = [
+    { "path": "partners.partner", "select": "stagename", "model": "User"}
+  /* 
+    {path: "members", select: {stagename:1, gender:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, lang:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
+    {path: "partnerships", select: {title:1, slug:1}, model:"EventShow"},
+    {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
+  */];
+  //const query = {"partner_owner.owner": {$in: event.users.map(item =>{return item._id})}};
+  const query = {"_id": {$in: event.users.map(item =>{return item._id})}};
+  let data = await Models.User.
+  find(query).
+  lean().
+  sort({stagename: 1}).
+  populate(populate).
+  exec();
+  var partners = []
+  for (var item in data) {
+    partners = partners.concat(data[item].partners);
+  }   
+  if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    res.json(data);
+  } else {
+    var partnerships = event.partners.slice(0);
+    var notassigned = [];
+    var notassignedID = [];
+    var partnersID = [];
 
-              for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
-              for (var item in partners) {
-                if (partners[item] && partners[item].is_active && partners[item].is_selecta && partners[item].partner) {
-                  if (partnersID.indexOf(partners[item].partner._id.toString())===-1) {
-                    if (notassignedID.indexOf(partners[item].partner._id.toString())===-1) {
-                      notassignedID.push(partners[item].partner._id.toString());
-                      notassigned.push(partners[item].partner);
-                    }
-                  }
-                } else {
-                  logger.debug(partners[item]);
-                }
-              }
-              notassigned.sort((a,b)=>{
-                if ( a.stagename < b.stagename ){
-                  return -1;
-                }
-                if ( a.stagename > b.stagename ){
-                  return 1;
-                }
-                return 0;
-              });
-              var existingCat = partnerships.map(item => {return item.category._id.toString()});
-              var pp = partnerships.map(item => {return item});
-              
-              for (var item in categories) {
-                if (existingCat.indexOf(categories[item]._id.toString())===-1) pp.push({category:categories[item], users:[]});
-              }
-              if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-                res.json(data);
-              } else {
-                res.render('admin/events_partners', {
-                  title: 'Partners',
-                  currentUrl: req.originalUrl,
-                  hide: req.query.hide ? req.query.hide : [],
-                  owner: crews,
-                  get: req.params,
-                  body: req.body,
-                  //events: events,
-                  notassigned: notassigned,
-                  data: event,
-                  //events: events,
-                  event: event,
-                  partnerships: pp,
-                  script: false
-                });
-              }
+    for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
+    for (var item in partners) {
+      if (partners[item] && partners[item].is_active && partners[item].is_selecta && partners[item].partner) {
+        if (partnersID.indexOf(partners[item].partner._id.toString())===-1) {
+          if (notassignedID.indexOf(partners[item].partner._id.toString())===-1) {
+            notassignedID.push(partners[item].partner._id.toString());
+            notassigned.push(partners[item].partner);
           }
-        //});
-      });
+        }
+      } else {
+        debugLog(partners[item]);
+      }
+    }
+    notassigned.sort((a,b)=>{
+      if ( a.stagename < b.stagename ){
+        return -1;
+      }
+      if ( a.stagename > b.stagename ){
+        return 1;
+      }
+      return 0;
     });
-  });
+    var existingCat = partnerships.map(item => {return item.category._id.toString()});
+    var pp = partnerships.map(item => {return item});
+    
+    for (var item in categories) {
+      if (existingCat.indexOf(categories[item]._id.toString())===-1) pp.push({category:categories[item], users:[]});
+    }
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(data);
+    } else {
+      res.render('admin/events_partners', {
+        title: 'Partners',
+        currentUrl: req.originalUrl,
+        hide: req.query.hide ? req.query.hide : [],
+        owner: crews,
+        get: req.params,
+        body: req.body,
+        //events: events,
+        notassigned: notassigned,
+        data: event,
+        //events: events,
+        event: event,
+        partnerships: pp,
+        script: false
+      });
+    }
+  }
 }
 
 /*
@@ -2896,7 +2952,7 @@ router.addVideos = (req, res) => {
   Models[req.params.model]
   .findOne({_id: req.params.id},'_id, videos', (err, result) => {
     if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
+      debugLog(`${JSON.stringify(err)}`);
       res.status(404).send({ message: err });
     } else if (!result) {
       res.status(404).send({
@@ -2919,7 +2975,7 @@ router.addVideos = (req, res) => {
       Models.Video
       .create({slug:req.body.slug, slug:req.body.title}, (err, data) => {
         if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
+          debugLog(`${JSON.stringify(err)}`);
           res.status(404).send({ message: err });
         } else {
           result.videos.push(data._id);
@@ -2957,12 +3013,12 @@ router.addVideos = (req, res) => {
             url: 'https://ml.avnode.net/subscribe',
             formData:formData,
             function (error, response, body) {
-              logger.debug("Newsletter");
-              logger.debug(error);
-              logger.debug(body);
+              debugLog("Newsletter");
+              debugLog(error);
+              debugLog(body);
             }
           });
-          //logger.debug(mailinglists.join(','));
+          //debugLog(mailinglists.join(','));
  */
 
 /**/
@@ -2994,4 +3050,4 @@ router.get('/countries', (req, res) => {
   });
 });
 */
-module.exports = router;
+export default router;

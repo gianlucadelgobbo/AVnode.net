@@ -1,12 +1,18 @@
-const config = require('getconfig');
-const i18n = require('i18n');
+import getconfig from 'getconfig';
+import i18n from 'i18n';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+// Fix `__dirname` in ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 i18n.configure({
-  locales:config.locales,
+  locales: getconfig.locales,
   header: 'accept-language-disabled',
-  defaultLocale: config.defaultLocale,
-  directory: `${__dirname}/../../locales`,
+  defaultLocale: getconfig.defaultLocale,
+  directory: path.join(__dirname, '../../locales'),
   register: global
 });
 
-module.exports = i18n;
+export default i18n;

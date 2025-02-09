@@ -1,23 +1,20 @@
-const app = require('./server');
-const mongoose = require('./app/utilities/mongoose');
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
 
-/* const options = {
-  useCreateIndex: true,
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-  //useMongoClient: true
-}; */
-const options = {
-  autoIndex: true, // Don't build indexes
-  maxPoolSize: 10, // Maintain up to 10 socket connections
-  serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
-  socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-  family: 4 // Use IPv4, skip trying IPv6
-};
-mongoose.connect(process.env.MONGODB_URI, options, (error) => {
-  app.listen(app.get('port'), () => {
-    console.log('App is running at http://localhost:%d in %s mode', app.get('port'), app.get('env'));
-    console.log('Press CTRL-C to stop\n');
+import { mongoose, connectDB, loadModels } from './app/utilities/mongoose.js';
+
+const startServer = async () => {
+  await loadModels(); // Ensure models are registered
+  //console.log('✅ Models Loaded:', Object.keys(mongoose.models));
+
+  await connectDB(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/dbname');
+
+  const { default: app } = await import('./server.js');
+
+  const PORT = app.get('port') || 3000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
   });
-});
+};
 
+startServer();

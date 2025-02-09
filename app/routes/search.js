@@ -1,4 +1,5 @@
-const router = require('./router')();
+import createRouter from "./router.js";
+const router = createRouter();
 router.use('/', (req, res) => {
   res.render('search', {
     title: 'Search results',
@@ -8,7 +9,8 @@ router.use('/', (req, res) => {
 });
 
 /*
-const logger = require('../utilities/logger');
+import { info, debugLog, error } from '../utilities/logger.js';
+
 const elasticsearch = require('../utilities/elasticsearch');
 const _ = require('lodash');
 
@@ -34,17 +36,17 @@ router.use('/:type?', ({ params, query }, res) => {
     q.type = params.type;
   }
   
-  logger.debug('Search with the following query', JSON.stringify(q));
+  debugLog('Search with the following query', JSON.stringify(q));
   esClient.search(q, (err, results) => {
     if (err) {
-      logger.debug('Search returned this error:', err.message);
+      debugLog('Search returned this error:', err.message);
       res.render('search', {
         title: '😱 – Oh noo!',
         subtitle: __('Search is currently unavailable…'),
         searchAvailable: false
       });
     } else {
-      logger.debug('Results', results.hits.hits);
+      debugLog('Results', results.hits.hits);
       res.render('search', {
         title: __('Results'),
         data: results.hits.hits,
@@ -56,4 +58,4 @@ router.use('/:type?', ({ params, query }, res) => {
   });
 }); */
 
-module.exports = router;
+export default router;

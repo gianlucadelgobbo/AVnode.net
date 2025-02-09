@@ -1,11 +1,12 @@
-const nodemailer = require('nodemailer');
-const { google } = require("googleapis");
-const OAuth2 = google.auth.OAuth2;
-const logger = require('./logger');
+import nodemailer from 'nodemailer';
+import { google } from "googleapis";
+import { info, debugLog, error } from './logger.js';
 
-module.exports.gMailer = (data, cb) => {
-  logger.debug('gMailer gMailer');
-  logger.debug(data);
+const OAuth2 = google.auth.OAuth2;
+
+export const gMailer = (data, cb) => {
+  debugLog('gMailer gMailer');
+  debugLog(data);
 
   var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -14,17 +15,17 @@ module.exports.gMailer = (data, cb) => {
 
   transporter.sendMail(data.mail, function(err, info) {
     if (err) {
-      logger.debug(err);
+      debugLog(err);
     } else {
-      logger.debug("info.messageId: " + info.messageId);
-      logger.debug("info.envelope: " + info.envelope);
-      logger.debug("info.accepted: " + info.accepted);
-      logger.debug("info.rejected: " + info.rejected);
-      logger.debug("info.pending: " + info.pending);
-      logger.debug("info.response: " + info.response);
+      debugLog("info.messageId: " + info.messageId);
+      debugLog("info.envelope: " + info.envelope);
+      debugLog("info.accepted: " + info.accepted);
+      debugLog("info.rejected: " + info.rejected);
+      debugLog("info.pending: " + info.pending);
+      debugLog("info.response: " + info.response);
     }
     transporter.close();
-    logger.debug(err || info);
+    debugLog(err || info);
     cb(err, info);
   });
 };

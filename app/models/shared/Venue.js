@@ -1,6 +1,7 @@
-const Schema = require('mongoose').Schema;
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
-const Address = require('./Address');
+import Address from './Address.js';
 
 const Venue = new Schema({
   name: String,
@@ -23,4 +24,4 @@ Venue.virtual('mapUrl').get(function () {
   return url;
 });
 
-module.exports = Venue;
+export default Venue;

@@ -1,7 +1,8 @@
-const router = require('../router')();
-const mongoose = require('mongoose');
+import createRouter from "../router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
 const User = mongoose.model('User');
-const moment = require('moment');
+import moment from 'moment';
 
 router.get('/:email?/:token?', (req, res) => {
   User.findOne({email: req.params.email, passwordResetToken: req.params.token}, (err, user) => {
@@ -29,4 +30,4 @@ router.get('/:email?/:token?', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

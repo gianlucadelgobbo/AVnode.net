@@ -1,16 +1,17 @@
-const router = require('./router')();
-const uuid = require('uuid');
-const axios = require('axios');
+import createRouter from "./router.js";
+const router = createRouter();
+import axios from 'axios';
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const UserTemp = mongoose.model('UserTemp');
 const User = mongoose.model('User');
 //const mailer = require('../utilities/mailer');
 //const _slug = require('../utilities/slug');
 
-const logger = require('../utilities/logger');
+import { info, debugLog, error } from '../utilities/logger.js';
 
-let config = require('getconfig');
+
+import config from 'getconfig';
 
 router.get('/:sez/:code', (req, res) => {
   if (req.params.sez == 'signup' && req.params.code) {
@@ -20,9 +21,9 @@ router.get('/:sez/:code', (req, res) => {
       if (put) {
         router.signupVerifyValidator(put, (data, errors) => {
           if (errors.message === "") {
-            logger.debug("signupVerifyValidator");
-            logger.debug(data.crewslug);
-            logger.debug(data);
+            debugLog("signupVerifyValidator");
+            debugLog(data.crewslug);
+            debugLog(data);
             let user = new User();
             user.stagename = data.stagename;
             user.slug = data.slug;
@@ -55,7 +56,7 @@ router.get('/:sez/:code', (req, res) => {
               user.stats = {crews: 1};
             }
             user.save((err) => {
-              logger.debug(err);
+              debugLog(err);
               if (err) {
                 res.render('verify/signup', {
                   title: __('Signup verify'),
@@ -206,7 +207,7 @@ router.updateSendy = (user, email, cb) => {
   });
   // req error
   req.on('error', function (err) {
-    logger.debug(err);
+    debugLog(err);
   });
    //send request witht the postData form
   req.write(postData);
@@ -286,4 +287,4 @@ router.signupVerifyValidator = (put, cb) => {
   });
 }
 
-module.exports = router;
+export default router;

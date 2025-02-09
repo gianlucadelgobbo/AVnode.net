@@ -1,20 +1,24 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
+import config from 'getconfig';
+import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
-const moment = require('moment');
-//const indexPlugin = require('../utilities/elasticsearch/User');
-const uniqueValidator = require('mongoose-unique-validator');
+import moment from 'moment';
+//import indexPlugin from '../utilities/elasticsearch/User.js';
 
-const MediaImage = require('./shared/MediaImage');
-const About = require('./shared/About');
-const Address = require('./shared/Address');
-const AddressPrivate = require('./shared/AddressPrivate');
-const Link = require('./shared/Link');
-const OrganizationData = require('./shared/OrganizationData');
-const Citizenship = require('./shared/Citizenship');
 
-const bcrypt = require('bcrypt');
+import MediaImage from './shared/MediaImage.js';
+import About from './shared/About.js';
+import Address from './shared/Address.js';
+import AddressPrivate from './shared/AddressPrivate.js';
+import Link from './shared/Link.js';
+import OrganizationData from './shared/OrganizationData.js';
+import Citizenship from './shared/Citizenship.js';
+
+import bcrypt from 'bcrypt';
+
+import https from 'https';
+import querystring from 'querystring';
+
 
 const adminsez = 'profile';
 
@@ -225,7 +229,9 @@ const userSchema = new Schema({
     virtuals: true
   }
 });
-userSchema.plugin(uniqueValidator, { message: 'FIELD_ALREADY_EXISTS' });
+userSchema.post('save', function(error, doc, next) {
+  next(error);
+});
 
 userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
@@ -427,8 +433,6 @@ userSchema.pre('save', function (next) {
         if (this.addresses && this.addresses[0] && this.addresses[0].geometry && this.addresses[0].geometry.lat) formData.LATITUDE = this.addresses[0].geometry.lat;
         if (this.addresses && this.addresses[0] && this.addresses[0].geometry && this.addresses[0].geometry.lng) formData.LONGITUDE = this.addresses[0].geometry.lng;
 
-        var https = require('https');
-        var querystring = require('querystring');
         
         // form data
         var postData = querystring.stringify(formData);
@@ -518,22 +522,26 @@ userSchema.pre('save', function (next) {
   return this.password;
 });*/
 
-userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (error, isMatch) => {
-    const err = {
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  try {
+    console.log("candidatePassword:", candidatePassword);
+    console.log("Stored password hash:", this.password);
+
+    const isMatch = await bcrypt.compare(candidatePassword, this.password);
+    return isMatch;
+  } catch (error) {
+    console.error("🔥 Error in comparePassword:", error);
+    return {
       "errors": {
         "password": {
           "message": error
         }
       }
     };
-    cb(error ? err : error, isMatch);
-  });
+  }
 };
-
 //userSchema.plugin(indexPlugin());
-userSchema.plugin(uniqueValidator);
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+export default User;

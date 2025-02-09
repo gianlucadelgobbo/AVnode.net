@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const VenueDBschema = new Schema({
@@ -27,4 +27,4 @@ const VenueDBschema = new Schema({
 
 const VenueDB = mongoose.model('VenueDB', VenueDBschema);
 
-module.exports = VenueDB;
+export default VenueDB;

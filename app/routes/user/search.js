@@ -1,4 +1,5 @@
-const router = require('../router')();
+import createRouter from "../router.js";
+const router = createRouter();
 const User = require('../../models/User');
 //const Crew = require('../../models/Crew');
 const _ = require('lodash');
@@ -28,4 +29,4 @@ router.get('/member/:crew/:q', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

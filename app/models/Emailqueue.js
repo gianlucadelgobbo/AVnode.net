@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const Emailqueueschema = new Schema({
@@ -41,4 +41,4 @@ const Emailqueueschema = new Schema({
 
 const Emailqueue = mongoose.model('Emailqueue', Emailqueueschema);
 
-module.exports = Emailqueue;
+export default Emailqueue;

@@ -1,6 +1,7 @@
-const router = require('./router')();
-const show = require('./vjtv/show');
+import createRouter from "./router.js";
+const router = createRouter();
+import show from "./vjtv/show.js";
 
 router.use('/', show);
 
-module.exports = router;
+export default router;

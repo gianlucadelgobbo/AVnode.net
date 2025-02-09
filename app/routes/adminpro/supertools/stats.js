@@ -1,7 +1,8 @@
 
-const router = require('../../router')();
-const helpers = require('../../admin/api/helpers.js');
-const mongoose = require('mongoose');
+import createRouter from "../../router.js";
+const router = createRouter();
+import helpers from "../../admin/api/helpers.js";
+import mongoose from 'mongoose';
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
 const Performance = mongoose.model('Performance');
@@ -11,9 +12,10 @@ const News = mongoose.model('News');
 const Footage = mongoose.model('Footage');
 const Playlist = mongoose.model('Playlist');
 const Category = mongoose.model('Category');
-const config = require('getconfig');
+import config from 'getconfig';
 
-const logger = require('../../../utilities/logger');
+import { info, debugLog, error } from '../../../utilities/logger.js';
+
 
 /* router.unflatten = function( array, parent, tree ){
 
@@ -21,10 +23,10 @@ const logger = require('../../../utilities/logger');
   parent = typeof parent !== 'undefined' ? parent : { _id: 0 };
 
   var children = array.filter(child => child.ancestor == parent._id || !child.ancestor);
-  logger.debug("children");
-  logger.debug(children);
-  logger.debug("parent");
-  logger.debug(parent);
+  debugLog("children");
+  debugLog(children);
+  debugLog("parent");
+  debugLog(parent);
 
   if( children.length!==0  ){
       if( parent._id == 0 ){
@@ -33,11 +35,11 @@ const logger = require('../../../utilities/logger');
          parent['children'] = children;
       }
       for(let child in children){ 
-        logger.debug(child);
+        debugLog(child);
         router.unflatten( array, child ) 
       }                    
   }
-  logger.debug(tree);
+  debugLog(tree);
 
   return tree;
 } */
@@ -79,7 +81,7 @@ router.post('/usersstatsupdate', (req, res) => {
   exec((err, qq) => {
     console.log(qq)
     //let query = JSON.parse('{"q": '+req.body.q+'}').q;
-    logger.debug(qq);
+    debugLog(qq);
     var promises = [];
     for (item in qq) promises.push(helpers.setStatsAndActivity(qq[item]));
     //for (item in qq) console.log(query[item])
@@ -103,4 +105,4 @@ router.post('/usersstatsupdate', (req, res) => {
 });
 
 
-module.exports = router;
+export default router;

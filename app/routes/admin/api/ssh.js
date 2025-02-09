@@ -1,8 +1,9 @@
-const router = require('../../router')();
-let config = require('getconfig');
-let helpers = require('./helpers');
+import createRouter from "../../router.js";
+const router = createRouter();
+import config from 'getconfig';
+import helpers from './helpers.js';
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Models = {
   'Category': mongoose.model('Category'),
   'User': mongoose.model('User'),
@@ -19,8 +20,13 @@ const Models = {
   'Program': mongoose.model('Program'),
   'Emailqueue': mongoose.model('Emailqueue')
 }
-const logger = require('../../../utilities/logger');
-const { __ } = require('i18n');
+import { info, debugLog, error } from '../../../utilities/logger.js';
+import pkg from 'i18n';
+const { __ } = pkg;
+
+import pkg2 from 'ssh2';
+const { Client } = pkg2;
+
 const partners_categories = [
   {
     "_id" : ("5be8708afc396100000001e8"),
@@ -69,26 +75,25 @@ const partners_categories = [
 ];
 
 router.streamCommand = (req, res, cmd) => {
-  logger.debug("streamCommand");
-  const { Client } = require('ssh2');  
+  debugLog("streamCommand");
   const conn = new Client();
   conn.on('ready', () => {
-    logger.debug('Client :: ready');
-    logger.debug(cmd);
+    debugLog('Client :: ready');
+    debugLog(cmd);
     conn.exec(cmd, (err, stream) => {
       if (err) res.json(err);
       stream.on('close', (code, signal) => {
-        logger.debug('Stream :: close :: code: ' + code + ', signal: ' + signal);
+        debugLog('Stream :: close :: code: ' + code + ', signal: ' + signal);
         conn.end();
       }).on('data', (data) => {
-        logger.debug(data);
-        logger.debug('STDOUT: ' + data);
+        debugLog(data);
+        debugLog('STDOUT: ' + data);
         res.json({
           'CMD': cmd,
           'STDOUT': (""+data).replace("\n",""),
         });
       }).stderr.on('data', (data) => {
-        //logger.debug(data);
+        //debugLog(data);
       });
     });
   }).connect({
@@ -100,21 +105,21 @@ router.streamCommand = (req, res, cmd) => {
 }
 
 router.streamUpdateAndRestart = (req, res) => {
-  logger.debug("streamStop");
+  debugLog("streamStop");
   var cmd = 'cd /home/hyo/streaming/ffplayout-engine/ && sh ./FFplayout_update_and_restart.sh';
   router.streamCommand(req, res, cmd);
 }
 
 router.streamStop = (req, res) => {
-  logger.debug("streamStop");
+  debugLog("streamStop");
   var cmd = 'cd /home/hyo/streaming/ffplayout-engine/ && sh ./FFplayout_stop.sh';
   router.streamCommand(req, res, cmd);
 }
 
 router.streamRestart = (req, res) => {
-  logger.debug("streamStop");
+  debugLog("streamStop");
   var cmd = 'cd /home/hyo/streaming/ffplayout-engine/ && sh ./FFplayout_restart.sh';
   router.streamCommand(req, res, cmd);
 }
 
-module.exports = router;
+export default router;

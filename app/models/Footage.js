@@ -1,12 +1,12 @@
-const config = require("getconfig");
-const mongoose = require("mongoose");
+import config from "getconfig";
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-//const indexPlugin = require("../utilities/elasticsearch/Footage");
-const helper = require("../utilities/helper");
-const uniqueValidator = require('mongoose-unique-validator');
+//import indexPlugin from "../utilities/elasticsearch/Footage";
+import helper from "../utilities/helper.js";
 
-const About = require("./shared/About");
-const Media = require("./shared/Media");
+
+import About from "./shared/About.js";
+import Media from "./shared/Media.js";
 
 const adminsez = "footage";
 
@@ -132,8 +132,7 @@ footageSchema.virtual("description").get(function(req) {
 }); */
 
 //footageSchema.plugin(indexPlugin());
-footageSchema.plugin(uniqueValidator);
 
 const Footage = mongoose.model("Footage", footageSchema);
 
-module.exports = Footage;
+export default Footage;

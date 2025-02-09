@@ -1,23 +1,24 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
+import config from 'getconfig';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
-const moment = require('moment');
-const truncatise = require('truncatise');
-//const indexPlugin = require('../utilities/elasticsearch/Event');
+import moment from 'moment';
+import truncatise from 'truncatise';
+//const indexPlugin from '../utilities/elasticsearch/Event');
 
-const About = require('./shared/About');
-const Category = require('./shared/Category');
+import About from './shared/About.js';
+import Category from './shared/Category.js';
 
-const MediaImage = require('./shared/MediaImage');
-const Link = require('./shared/Link');
-const Venue = require('./shared/Venue');
-const Schedule = require('./shared/Schedule');
-const Package = require('./shared/Package');
+import MediaImage from './shared/MediaImage.js';
+import Link from './shared/Link.js';
+import Venue from './shared/Venue.js';
+import Schedule from './shared/Schedule.js';
+import Package from './shared/Package.js';
 
 const adminsez = 'events';
-const logger = require('../utilities/logger');
-const helper = require('../utilities/helper');
+import { info, debugLog, error } from '../utilities/logger.js';
+
+import helper from '../utilities/helper.js';
 
 const datevenueSchema = new Schema({
   starttime: Date,
@@ -187,7 +188,7 @@ const eventSchema = new Schema({
 }); */
 
 eventSchema.virtual('advanced').get(function (req) {
-  //logger.debug("virtual advanced");
+  //debugLog("virtual advanced");
   //let programmebydayvenue = [];
   let performers = {
     performersN: 0,
@@ -411,7 +412,7 @@ eventSchema.virtual('about').get(function (req) {
       Strict : true,
       StripHTML : false,
     };
-    str = about;
+    let str = about;
     str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
     str = helper.linkify(str);
@@ -450,7 +451,7 @@ eventSchema.virtual('aboutFull').get(function (req) {
       Strict : true,
       StripHTML : false,
     };
-    str = about;
+    let str = about;
 
     str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
@@ -672,7 +673,7 @@ eventSchema.virtual('fullSchedule').get(function (req) {
       }
       boxDates.push(eventSchema.boxDateCreator(starttime, endtime, boxVenue));
     }
-    logger.debug(boxDates);
+    debugLog(boxDates);
 
     return boxDates;
   }
@@ -704,4 +705,4 @@ eventSchema.boxDateCreator = (starttime, endtime, boxVenue) => {
 
 const EventShow = mongoose.model('EventShow', eventSchema);
 
-module.exports = EventShow;
+export default EventShow;

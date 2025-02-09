@@ -1,6 +1,4 @@
-const logger = require('./logger');
-
-const uuid = require('uuid');
+import { info, debugLog, error } from './logger.js';
 
 const youtubeRegex = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
 
@@ -23,7 +21,7 @@ const makeDescription = (abouts) => {
   }
   about = about.replace(/\r\n/g, ' ').replace(/\n/g, ' ').replace(new RegExp(/<(?:.|\n)*?>/gm), " ").trim().replace(/  /g , " ");
 
-  descriptionA = about.split(" ");
+  let descriptionA = about.split(" ");
   let descriptionShort = "";
   for(let item in descriptionA) if ((descriptionShort+" "+descriptionA[item]).trim().length<300) descriptionShort+=descriptionA[item]+" ";
   descriptionShort = descriptionShort.trim();
@@ -40,18 +38,18 @@ const dateFix = (date) => {
     const month = parseInt(dateA[1])-1;
     const year = parseInt(dateA[2]);
     const dateO = new Date(year,month,day,2,0,0);
-    logger.debug('birthday');
-    logger.debug(date);
-    logger.debug(dateO);
-    logger.debug("day");
-    logger.debug(day);
-    logger.debug(dateO.getDate());
-    logger.debug("month");
-    logger.debug(month);
-    logger.debug(dateO.getMonth());
-    logger.debug("year");
-    logger.debug(year);
-    logger.debug(dateO.getFullYear());
+    debugLog('birthday');
+    debugLog(date);
+    debugLog(dateO);
+    debugLog("day");
+    debugLog(day);
+    debugLog(dateO.getDate());
+    debugLog("month");
+    debugLog(month);
+    debugLog(dateO.getMonth());
+    debugLog("year");
+    debugLog(year);
+    debugLog(dateO.getFullYear());
     if (year !== dateO.getFullYear() || month !== dateO.getMonth() || day !== dateO.getDate()) {
       return false;
     } else {
@@ -103,10 +101,11 @@ const linkify = (str) => {
     .replace(emailAddressPattern, '<a href="mailto:$&">$&</a>');
 };
 
-const setIdentifier = () => {
-  return uuid.v4();
-};
+import { v4 as uuidv4 } from 'uuid';
 
+const setIdentifier = () => {
+  return uuidv4();
+};
 const getStorageFolder = () => {
   //return `${process.cwd()}/${process.env.STORAGE}`;
 };
@@ -181,7 +180,7 @@ const dateoW3CString = (date) => {
 		offsetSign + offsetHours + ':' + offsetMinutes;
 }
 
-module.exports = {
+export default {
   dateoW3CString,
   makeDescription,
   linkify,

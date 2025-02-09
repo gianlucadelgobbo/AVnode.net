@@ -1,5 +1,7 @@
-const express = require('express');
+import express from 'express';
 
-module.exports = () => {
-  return express.Router({mergeParams: true});
+const createRouter = () => {
+  return express.Router({ mergeParams: true });
 };
+
+export default createRouter;

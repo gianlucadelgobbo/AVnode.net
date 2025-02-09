@@ -1,10 +1,13 @@
-const router = require('../router')();
-const dataprovider = require('../../utilities/dataprovider');
+import createRouter from "../router.js";
+const router = createRouter();
+import dataprovider from '../../utilities/dataprovider.js';
 
-const Model = require('mongoose').model('Performance');
+import mongoose from 'mongoose';
+const Model = mongoose.model('Performance');
 const section = 'performances';
 
-const logger = require('../../utilities/logger');
+import { info, debugLog, error } from '../../utilities/logger.js';
+
 
 router.get('/', (req, res) => {
   dataprovider.show(req, res, section, 'show', Model);
@@ -33,5 +36,5 @@ router.get('/videos', (req, res) => {
   dataprovider.show(req, res, section, 'videos', Model);
 });
 
-module.exports = router;
+export default router;
 

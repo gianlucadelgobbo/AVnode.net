@@ -1,10 +1,13 @@
-const router = require('../router')();
-const dataprovider = require('../../utilities/dataprovider');
+import createRouter from "../router.js";
+const router = createRouter();
+import dataprovider from '../../utilities/dataprovider.js';
 
-const Model = require('mongoose').model('EventShow');
+import mongoose from 'mongoose';
+const Model = mongoose.model('EventShow');
 const section = 'events';
 
-const logger = require('../../utilities/logger');
+import { info, debugLog, error } from '../../utilities/logger.js';
+
 
 router.get('/', (req, res) => {
   dataprovider.show(req, res, section, 'show', Model);
@@ -43,7 +46,7 @@ router.get('/program/type/:type', (req, res) => {
   if (sub.getFullYear()+"-"+(("0" + (sub.getMonth()+1)).slice(-2))+"-"+(("0" + (sub.getDate())).slice(-2)) == sub) {
     dataprovider.show(req, res, section, 'program', Model);
   } else {
-    dataprovider.show(req, res, "performances", 'show', require('mongoose').model('Performance'));
+    dataprovider.show(req, res, "performances", 'show', mongoose.model('Performance'));
   }
 }); */
 
@@ -55,4 +58,4 @@ router.get('/videos', (req, res) => {
   dataprovider.show(req, res, section, 'videos', Model);
 });
 
-module.exports = router;
+export default router;

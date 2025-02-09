@@ -1,4 +1,5 @@
-const router = require('../router')();
+import createRouter from "../router.js";
+const router = createRouter();
 const User = require('../../models/User');
 //const Crew = require('../../models/Crew');
 
@@ -30,4 +31,4 @@ router.get('/', (req, res, next) => {
   });
 });
 
-module.exports = router;
+export default router;

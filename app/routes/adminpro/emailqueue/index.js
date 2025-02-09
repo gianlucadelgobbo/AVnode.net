@@ -1,23 +1,25 @@
-const router = require('../../router')();
-const mongoose = require('mongoose');
+import createRouter from "../../router.js";
+const router = createRouter();
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
 const Emailqueue = mongoose.model('Emailqueue');
 
-const logger = require('../../../utilities/logger');
+import { info, debugLog, error } from '../../../utilities/logger.js';
+
 router.get('/', (req, res) => {
   router.getEmailqueue(req, res);
 });
 
 router.getEmailqueue = (req, res) => {
-  logger.debug('/getEmailqueue/'+req.params.id);
-  logger.debug("req.body");
+  debugLog('/getEmailqueue/'+req.params.id);
+  debugLog("req.body");
   var ids = req.user.crews.map(item => {return item._id});
-      logger.debug(ids);
-      logger.debug(req.body);
-      logger.debug("req.params");
-      logger.debug(req.params);
+      debugLog(ids);
+      debugLog(req.body);
+      debugLog("req.params");
+      debugLog(req.params);
 
       var query = {$or:[{organization: {$in: ids}}, {user: req.user._id}]};
       if (req.params.event) query.event = req.params.event;
@@ -32,8 +34,8 @@ router.getEmailqueue = (req, res) => {
       //select({stagename: 1, createdAt: 1, crews:1}).
       populate(populate).
       exec((err, data) => {
-        logger.debug("data");
-        logger.debug(data);
+        debugLog("data");
+        debugLog(data);
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {
@@ -55,4 +57,4 @@ router.getEmailqueue = (req, res) => {
       });
 }
 
-module.exports = router;
+export default router;

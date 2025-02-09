@@ -1,18 +1,18 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
+import config from 'getconfig';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-const moment = require('moment');
-//const indexPlugin = require('../utilities/elasticsearch/User');
-//const async = require('async');
-//const imageUtil = require('../utilities/image');
-const helper = require('../utilities/helper');
-const truncatise = require('truncatise');
+import moment from 'moment';
+//const indexPlugin from '../utilities/elasticsearch/User.js';
+//const async from 'async';
+//const imageUtil from '../utilities/image.js';
+import helper from '../utilities/helper.js';
+import truncatise from 'truncatise';
 
-const MediaImage = require('./shared/MediaImage');
-const Address = require('./shared/Address');
-const About = require('./shared/About');
-const Link = require('./shared/Link');
-const OrganizationData = require('./shared/OrganizationData');
+import MediaImage from './shared/MediaImage.js';
+import Address from './shared/Address.js';
+import About from './shared/About.js';
+import Link from './shared/Link.js';
+import OrganizationData from './shared/OrganizationData.js';
 
 const adminsez = 'profile';
 
@@ -264,7 +264,7 @@ userSchema.virtual('about').get(function (req) {
       Strict : true,
       StripHTML : false,
     };
-    str = about;
+    let str = about;
     str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
     str = helper.linkify(str);
@@ -303,7 +303,7 @@ userSchema.virtual('aboutFull').get(function (req) {
       Strict : true,
       StripHTML : false,
     };
-    str = about;
+    let str = about;
 
     str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
@@ -354,4 +354,4 @@ userSchema.virtual('imageFormats').get(function () {
 
 const UserShow = mongoose.model('UserShow', userSchema);
 
-module.exports = UserShow;
+export default UserShow;

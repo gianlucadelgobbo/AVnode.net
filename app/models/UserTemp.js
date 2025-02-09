@@ -1,11 +1,15 @@
-const config = require('getconfig');
-const mongoose = require('mongoose');
-const Address = require('./shared/Address');
+import config from 'getconfig';
+import mongoose from 'mongoose';
+import Address from './shared/Address.js';
 const Schema = mongoose.Schema;
-const uniqueValidator = require('mongoose-unique-validator');
 
-const bcrypt = require('bcrypt');
-const uid = require('uuid');
+
+import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
+
+const setIdentifier = () => {
+  return uuidv4();
+};
 const hasNumber = (str) => /\d/.test(str);
 const hasLowerCase = (str) => /[a-z]/.test(str);
 const hasUpperCase = (str) => /[A-Z]/.test(str);
@@ -46,7 +50,9 @@ const userSchema = new Schema({
     virtuals: true
   }
 });
-userSchema.plugin(uniqueValidator, { message: 'FIELD_ALREADY_EXISTS' });
+userSchema.post('save', function(error, doc, next) {
+  next(error);
+});
 
 userSchema.pre('save', function (next) {
   const user = this;
@@ -55,14 +61,12 @@ userSchema.pre('save', function (next) {
     bcrypt.hash(user.password, salt, (err, hash) => {
       if (err) { return next(err); }
       user.password = hash;
-      user.confirm = uid.v4();
+      user.confirm = setIdentifier();
       next();
     });
   });
 });
 
-userSchema.plugin(uniqueValidator);
-
 const UserTemp = mongoose.model('UserTemp', userSchema);
 
-module.exports = UserTemp;
+export default UserTemp;

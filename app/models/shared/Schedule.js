@@ -1,6 +1,7 @@
-const Schema = require('mongoose').Schema;
-const Venue = require('./Venue');
-const moment = require('moment');
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
+import Venue from './Venue.js';
+import moment from 'moment';
 
 const Schedule = new Schema({
   disableautoschedule: Boolean,
@@ -170,4 +171,4 @@ Schedule.virtual('endtimeTime').get(function () {
   return endtimeTime;
 });
 
-module.exports = Schedule;
+export default Schedule;

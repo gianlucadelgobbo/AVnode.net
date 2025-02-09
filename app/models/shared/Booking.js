@@ -1,6 +1,7 @@
-const Schema = require('mongoose').Schema;
-const Schedule = require('./Schedule');
-const moment = require('moment');
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
+import Schedule from './Schedule.js';
+import moment from 'moment';
 
 const Booking = new Schema({
   schedule: [Schedule],
@@ -41,4 +42,4 @@ Booking.virtual('boxDate').get(function () {
   return boxDate;
 });
 
-module.exports = Booking;
+export default Booking;

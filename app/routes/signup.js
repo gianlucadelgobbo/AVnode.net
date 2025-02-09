@@ -1,20 +1,22 @@
-const router = require('./router')();
-const mailer = require('../utilities/mailer');
-const helper = require('../utilities/helper');
-const helpers = require('./admin/api/helpers');
+import createRouter from "./router.js";
+const router = createRouter();
+import { mySendMailer } from '../utilities/mailer.js';
+import helper from '../utilities/helper.js';;
+import helpers from './admin/api/helpers.js';
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const UserTemp = mongoose.model('UserTemp');
 const User = mongoose.model('User');
 //const mailer = require('../utilities/mailer');
 //const _slug = require('../utilities/slug');
 
-let config = require('getconfig');
+import config from 'getconfig';
 
-const logger = require('../utilities/logger');
+import { info, debugLog, error } from '../utilities/logger.js';
+
 
 router.get('/', (req, res) => {
-  logger.debug('global.getLocale: '+global.getLocale());
+  debugLog('global.getLocale: '+global.getLocale());
   if (req.user) {
     return res.redirect('/admin/profile/'+req.user._id+'/public');
   }
@@ -26,7 +28,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  logger.debug(req.body);
+  debugLog(req.body);
   if (req.body.crewName) req.body.crewname = req.body.crewName;
   if (req.body.crewUrl) req.body.crewslug = req.body.crewUrl;
   req.body.lang = global.getLocale();
@@ -35,23 +37,23 @@ router.post('/', (req, res) => {
   let select = config.cpanel.signup.forms.signup.select;
   let put = {};
   for (const item in select) if(req.body[item]) put[item] = req.body[item];
-  logger.debug("put");
-  logger.debug(put);
+  debugLog("put");
+  debugLog(put);
 
   helpers.mySlugify(User, put.stagename, (slug) => {
     put.slug = slug;
     helpers.mySlugify(User, put.crewname, (crewslug) => {
       put.crewslug = crewslug;
       router.signupValidator(put, (put, errors) => {
-        logger.debug("signupValidatorsignupValidatorsignupValidatorsignupValidator");
-        logger.debug(errors);
+        debugLog("signupValidatorsignupValidatorsignupValidatorsignupValidator");
+        debugLog(errors);
         if (!Object.keys(errors.errors).length) {
-          logger.debug("deleteManydeleteManydeleteManydeleteMany");
+          debugLog("deleteManydeleteManydeleteManydeleteMany");
           Object.assign(data, put);
-          logger.debug(  data)      
+          debugLog(  data)      
           UserTemp.deleteMany({ email: data.email }, function (err) {
             data.save((err) => {
-              logger.debug("deleteManydeleteManydeleteManydeleteMany");
+              debugLog("deleteManydeleteManydeleteManydeleteMany");
               if (err) {
                 //res.status(400).send(err);
                 req.flash('errors', {msg: `${JSON.stringify(err)}`});
@@ -147,8 +149,8 @@ router.post('/', (req, res) => {
 });
 
 router.signupValidator = (put, cb) => {
-  logger.debug("signupValidator")
-  logger.debug(put)
+  debugLog("signupValidator")
+  debugLog(put)
   let errors = {
     "errors":{},
     "_message":"",
@@ -276,4 +278,4 @@ router.post('/', (req, res, next) => {
   }  
 });
 */
-module.exports = router;
+export default router;
