@@ -7,284 +7,343 @@ import imageUtil from '../../utilities/image.js';
 
 import mongoose from 'mongoose';
 
-const Footage = mongoose.model('Footage');
-const Video = mongoose.model('Video');
-const Order = mongoose.model('Order');
+const User = mongoose.model('User');
 const Event = mongoose.model('Event');
+const Footage = mongoose.model('Footage');
+const Performance = mongoose.model('Performance');
+const Playlist = mongoose.model('Playlist');
+const Video = mongoose.model('Video');
+const News = mongoose.model('News');
+const Gallery = mongoose.model('Gallery');
+
+const Order = mongoose.model('Order');
 const Vjtv = mongoose.model('Vjtv');
 const Emailqueue = mongoose.model('Emailqueue');
 
 import { info, debugLog, error } from '../../utilities/logger.js';
 
-
-router.post('/emailqueue', (req, res) => {
-  Emailqueue
-  .findOne({_id: req.body.id})
-  .exec((err, emailqueue) => {
-    if (err) {
-      res.status(500).send({ message: `${JSON.stringify(err)}` });
+router.get('/likes', async (req, res) => {
+  let res_send = "P";
+  if (!req.user) {
+    res.send({err:true,msg:__("Please login to like"), status:""});
+  } else { 
+    let model;
+    let inc;
+    let likeid = req.query.img_index ? req.query.id+"#IMG:"+req.query.img_slug : req.query.id;
+    if (req.query.section ==='performances') model = Performance;
+    if (req.query.section ==='events') model = Event;
+    if (req.query.section ==='videos') model = Video;
+    if (req.query.section ==='footage') model = Footage;
+    if (req.query.section ==='playlists') model = Playlist;
+    if (req.query.section ==='news') model = News;
+    if (req.query.section ==='galleries') model = Gallery;
+    console.log("req.userreq.userreq.userreq.userreq.user")
+    console.log(req.user.likes[req.query.section].map(function(e) { return e.id.toString(); }))
+    console.log(likeid)
+    if (!req.user.likes || !req.user.likes[req.query.section] || req.user.likes[req.query.section].map(function(e) { return e.id.toString(); }).indexOf(likeid.toString())===-1) {
+      if (!req.user.likes) req.user.likes = {};
+      if (!req.user.likes[req.query.section]) req.user.likes[req.query.section] = [];
+      req.user.likes[req.query.section].push({date:new Date(),id:likeid});
+      res_send = "Liked";
+      inc = 1;
     } else {
-      if (emailqueue.messages_tosend && emailqueue.messages_tosend.length) {
-        const data = emailqueue.messages_tosend[0];
-        const auth = {
-          user: data.user_email,
-          pass: data.user_password
-        };
-        const mail = {
-          from: data.from_name + " <"+ data.from_email + ">",
-          //to: data.from_name + " <"+ data.from_email + ">",
-          to: data.to_html,
-          subject: data.subject,
-          text: data.text
-        };
-        if (data.cc_html && data.cc_html.length) mail.cc = data.cc_html.join(", ");
-        const gmailer = require('../../utilities/gmailer');
-        gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-          if (err) {
-            debugLog("Email sending failure");
-            debugLog(err);
-            res.json({error: true, msg: "Email sending failure", id: req.body.id, err: err});
-          } else {
-            debugLog("Email sending OK");
-            emailqueue.messages_sent.push(emailqueue.messages_tosend[0]);
-            emailqueue.messages_tosend = emailqueue.messages_tosend.splice(1, emailqueue.messages_tosend.length)
-            emailqueue.save((err) => {
-              if (err) {
-                res.json({error: true, msg: "Saving email queue failed", id: req.body.id});
-              } else {
-                res.json({error: false, msg: "Email sending success", id: req.body.id});
-              }
-            });
-          }
-        });
-      } else {
-        debugLog("Email sending completed");
-        res.json({error: false, msg: "Email sending completed", id: req.body.id});
-      }
+      req.user.likes[req.query.section].splice(req.user.likes[req.query.section].map(function(e) { return e.id.toString(); }).indexOf(likeid.toString()),1);
+      res_send = "Unliked";
+      inc = -1;
     }
-  });
+    try {
+      console.log("req.user")
+      console.log(req.user._id)
+      console.log(req.user.likes)
+      await User.updateOne({ _id: req.user._id }, { $set: { likes: req.user.likes } }).exec();
+
+      if (req.query.img_slug) {
+        try {
+          await model.updateOne(
+            { _id: req.query.id, "medias.slug": req.query.img_slug },
+            { $inc: { "medias.$.stats.likes": inc } }
+          ).exec();
+        } catch (err) {
+          console.error("Error updating media likes:", err);
+        }
+      } else {
+        try {
+          await model.updateOne(
+            { _id: req.query.id },
+            { $inc: { "stats.likes": inc } }
+          ).exec();
+        } catch (err) {
+          console.error("Error updating likes:", err);
+        }
+      }
+  
+      res.send({ err: false, msg: "", status: res_send, likes: req.user.likes });
+  
+    } catch (err) {
+      console.error("🔥 Error in /likes route:", err);
+      debugLog(err);
+    }
+  }
 });
 
-router.get('/tobeencoded/:sez', (req, res) => {
-  Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;  
-  Model
-  //.findOne({"media.encoded":{$exists:true},"media.encoded": {$ne:true},"media.encoded": {$ne:1}})
-  //.find({"media.encoded":{$exists:true}, "media.original":{$exists:true}, "media.encoded": 1,"media.original":{$regex: '2013/12/capillary_short.mov'}})
-  .find({media:{$exists:true}, $or: [{"media.encoded":{$exists:false}}, {"media.encoded":0}]})
-  .lean(1)
-  .limit(1)
-  .sort({createdAt: 1})
-  .select({media:1})
-  .exec((err, data) => {
-    if (err) {
-      res.status(500).send({ message: `${JSON.stringify(err)}` });
+router.post('/emailqueue', async (req, res) => {
+  try {
+    const emailqueue = await Emailqueue
+    .findOne({_id: req.body.id})
+    .exec();
+    if (emailqueue.messages_tosend && emailqueue.messages_tosend.length) {
+      const data = emailqueue.messages_tosend[0];
+      const auth = {
+        user: data.user_email,
+        pass: data.user_password
+      };
+      const mail = {
+        from: data.from_name + " <"+ data.from_email + ">",
+        //to: data.from_name + " <"+ data.from_email + ">",
+        to: data.to_html,
+        subject: data.subject,
+        text: data.text
+      };
+      if (data.cc_html && data.cc_html.length) mail.cc = data.cc_html.join(", ");
+      const gmailer = require('../../utilities/gmailer');
+      gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
+        if (err) {
+          debugLog("Email sending failure");
+          debugLog(err);
+          res.json({error: true, msg: "Email sending failure", id: req.body.id, err: err});
+        } else {
+          debugLog("Email sending OK");
+          emailqueue.messages_sent.push(emailqueue.messages_tosend[0]);
+          emailqueue.messages_tosend = emailqueue.messages_tosend.splice(1, emailqueue.messages_tosend.length)
+          emailqueue.save((err) => {
+            if (err) {
+              res.json({error: true, msg: "Saving email queue failed", id: req.body.id});
+            } else {
+              res.json({error: false, msg: "Email sending success", id: req.body.id});
+            }
+          });
+        }
+      });
     } else {
-      if (data.length) {
-        res.json(data);      
-      } else {
-        Model
+      debugLog("Email sending completed");
+      res.json({error: false, msg: "Email sending completed", id: req.body.id});
+    }
+  } catch (err) {
+    res.status(500).send({ message: `${JSON.stringify(err)}` });
+  }
+});
+
+router.get('/tobeencoded/:sez', async (req, res) => {
+  Model = req.params.sez && req.params.sez == "videos" ? Video : Footage; 
+  try {
+    const data = await Model
+    //.findOne({"media.encoded":{$exists:true},"media.encoded": {$ne:true},"media.encoded": {$ne:1}})
+    //.find({"media.encoded":{$exists:true}, "media.original":{$exists:true}, "media.encoded": 1,"media.original":{$regex: '2013/12/capillary_short.mov'}})
+    .find({media:{$exists:true}, $or: [{"media.encoded":{$exists:false}}, {"media.encoded":0}]})
+    .lean(1)
+    .limit(1)
+    .sort({createdAt: 1})
+    .select({media:1})
+    .exec();
+    if (data.length) {
+      res.json(data);      
+    } else {
+      try {
+        const data = await Model
         .find({media:{$exists:true}, $or: [{"media.rencoded":{$exists:false}}]})
         .lean(1)
         .limit(1)
         .select({media:1})
         .sort({createdAt:-1})
-        .exec((err, data) => {
-          if (err) {
-            res.status(500).send({ message: `${JSON.stringify(err)}` });
-          } else {
-            res.json(data);
-          }
-        });      
+        .exec();
+        res.json(data);
+      } catch (err) {
+        res.status(500).send({ message: `${JSON.stringify(err)}` });
       }
     }
-  });
+  } catch (err) {
+    res.status(500).send({ message: `${JSON.stringify(err)}` });
+  }
 });
 
-router.get('/setdurationandsize/:sez/:id/', (req, res) => {
+router.get('/setdurationandsize/:sez/:id/', async (req, res) => {
   debugLog('/setencodingstatus/:sez/:id/');
   debugLog("existsSync");
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
-  Model
-  .findOne({_id:req.params.id})
-  .exec((err, data) => {
+  try {
+    const data = await Model
+    .findOne({_id:req.params.id})
+    .exec();
     debugLog(data);
-    //data.media.file = "/public/1f575e4c-7cd5-4609-a0cc-75b3b301c6f3.mp4";
-    if (err) {
-      res.status(500).send({ message: `${JSON.stringify(err)}` });
-    } else {
-      /* if (!data || !data.media || data.media.file) {
-        res.status(500).send({ message: "MEDIA NOT FOUND" });
-      } else { */
-        if (fs.existsSync(global.appRoot+data.media.file)) {
-          data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
-          debugLog("ffprobe");
-          debugLog(global.appRoot+data.media.file);
-      
-          var ffprobe = require('ffprobe');
-          var ffprobeStatic = require('ffprobe-static');
-          ffprobe(global.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
-            if (!info || !info.streams || !info.streams.length) {
-              res.json({error: "NO_STREAMS"});
+    if (fs.existsSync(global.appRoot+data.media.file)) {
+      data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
+      debugLog("ffprobe");
+      debugLog(global.appRoot+data.media.file);
+  
+      var ffprobe = require('ffprobe');
+      var ffprobeStatic = require('ffprobe-static');
+      ffprobe(global.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
+        if (!info || !info.streams || !info.streams.length) {
+          res.json({error: "NO_STREAMS"});
+        } else {
+          for (var a=0; a<info.streams.length; a++) {
+            if (info.streams[a].width && info.streams[a].height) {
+              data.media.width = info.streams[a].width;
+              data.media.height = info.streams[a].height;
+              data.media.duration = info.streams[a].duration*1000;
+            }
+          }
+          data.save((err) => {
+            if (err) {
+              res.json(err);
             } else {
-              for (var a=0; a<info.streams.length; a++) {
-                if (info.streams[a].width && info.streams[a].height) {
-                  data.media.width = info.streams[a].width;
-                  data.media.height = info.streams[a].height;
-                  data.media.duration = info.streams[a].duration*1000;
-                }
-              }
-              data.save((err) => {
-                if (err) {
-                  res.json(err);
-                } else {
-                  res.json(data);
-                }
-              });
+              res.json(data);
             }
           });
-        } else {
-          res.json({error: "FILE NOT FOUND"});
         }
-      //}
+      });
+    } else {
+      res.json({error: "FILE NOT FOUND"});
     }
-  });
+  } catch (err) {
+    res.status(500).send({ message: `${JSON.stringify(err)}` });
+  }
 });
 
-router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
+router.get('/setencodingstatus/:sez/:id/:encoding', async (req, res) => {
   debugLog('/setencodingstatus/:sez/:id/:encoding');
   debugLog(req.params.encoding);
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
   if (req.params.encoding == 1) {
-    Model
-    .findOne({_id:req.params.id})
-    .exec((err, data) => {
-      if (err) {
-        res.status(500).send({ message: `${JSON.stringify(err)}` });
-      } else {
-        debugLog(data.media.original);
-        const ext = data.media.original.substring(data.media.original.lastIndexOf(".")+1);
-        data.media.file = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "/").replace("/glacier/", "/warehouse/")+"_"+ext+".mp4";
-        data.media.preview = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "_previews/")+"_"+ext+".png";
-        data.is_public = 1;
-        data.media.encoded = req.params.encoding;
-        debugLog(global.appRoot+data.media.preview);
-        debugLog(global.appRoot+data.media.file);
-        if (fs.existsSync(global.appRoot+data.media.file)) {
-          data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
-          const options = config.cpanel[req.params.sez].forms.video.components.media.config;
-          debugLog("data.media.filesize");
-          debugLog(data.media.filesize);
-          debugLog(imageUtil);
-          debugLog(imageUtil.resizer);
+    try {
+      const data = await Model
+      .findOne({_id:req.params.id})
+      .exec()
+      debugLog(data.media.original);
+      const ext = data.media.original.substring(data.media.original.lastIndexOf(".")+1);
+      data.media.file = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "/").replace("/glacier/", "/warehouse/")+"_"+ext+".mp4";
+      data.media.preview = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "_previews/")+"_"+ext+".png";
+      data.is_public = 1;
+      data.media.encoded = req.params.encoding;
+      debugLog(global.appRoot+data.media.preview);
+      debugLog(global.appRoot+data.media.file);
+      if (fs.existsSync(global.appRoot+data.media.file)) {
+        data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
+        const options = config.cpanel[req.params.sez].forms.video.components.media.config;
+        debugLog("data.media.filesize");
+        debugLog(data.media.filesize);
+        debugLog(imageUtil);
+        debugLog(imageUtil.resizer);
 
-          imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (files_resized) => {
-            debugLog("files_resized");
-            debugLog(files_resized);
-            if (files_resized.map(item => {return item.err ? true : false}).indexOf(true)!==-1) {
-              debugLog("Image resize ERROR: info undefined");
-              res.json(files_resized);
-            } else {
-              data.media.encoded = req.params.encoding;
-              data.media.rencoded = req.params.encoding;
-              var ffprobe = require('ffprobe');
-              var ffprobeStatic = require('ffprobe-static');
-              ffprobe(global.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
-                if (!info || !info.streams || !info.streams.length) {
-                  res.json({error: "NO_STREAMS"});
-                } else {
-                  for (var a=0; a<info.streams.length; a++) {
-                    if (info.streams[a].width && info.streams[a].height) {
-                      data.media.width = info.streams[a].width;
-                      data.media.height = info.streams[a].height;
-                      data.media.duration = info.streams[a].duration*1000;
-                    }
+        imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (files_resized) => {
+          debugLog("files_resized");
+          debugLog(files_resized);
+          if (files_resized.map(item => {return item.err ? true : false}).indexOf(true)!==-1) {
+            debugLog("Image resize ERROR: info undefined");
+            res.json(files_resized);
+          } else {
+            data.media.encoded = req.params.encoding;
+            data.media.rencoded = req.params.encoding;
+            var ffprobe = require('ffprobe');
+            var ffprobeStatic = require('ffprobe-static');
+            ffprobe(global.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
+              if (!info || !info.streams || !info.streams.length) {
+                res.json({error: "NO_STREAMS"});
+              } else {
+                for (var a=0; a<info.streams.length; a++) {
+                  if (info.streams[a].width && info.streams[a].height) {
+                    data.media.width = info.streams[a].width;
+                    data.media.height = info.streams[a].height;
+                    data.media.duration = info.streams[a].duration*1000;
                   }
-                  data.save((err) => {
-                    if (err) {
-                      res.json(err);
-                    } else {
-                      res.json(data);
-                    }
-                  });
                 }
-              });
-                }
-          });
-        } else {
-          res.json({error: "FILE NOT FOUND"});
-        }
+                data.save((err) => {
+                  if (err) {
+                    res.json(err);
+                  } else {
+                    res.json(data);
+                  }
+                });
+              }
+            });
+              }
+        });
+      } else {
+        res.json({error: "FILE NOT FOUND"});
       }
-    });
-  
+    } catch (err) {
+      res.status(500).send({ message: `${JSON.stringify(err)}` });
+    }
   } else {
     Model.updateOne({_id:req.params.id},{"media.encoded":req.params.encoding, "media.rencoded":req.params.encoding}, (err, raw) => {
       res.json(raw);
     });
   }
 });
+
 import cors from 'cors';
 var corsOptions = {
   origin: 'https://liveperformersmeeting.net',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
+
 router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
   debugLog("updateTransation");
   debugLog(req.body);
 
   const gmailer = require('../../utilities/gmailer');
   Order
-  .create(req.body, (err, data) => {
+  .create(req.body, async (err, data) => {
     debugLog("req.body.event");
     debugLog(req.body);
     if(!err) {
       if (req.body.event) {
         debugLog(req.body.event);
-        Event
-        .findOne({"_id":req.body.event})
-        .select({title:1, organizationsettings:1})
-        .exec((err, event) => {
+        try {
+          const event = await Event
+          .findOne({"_id":req.body.event})
+          .select({title:1, organizationsettings:1})
+          .exec();
           debugLog("event.organizationsettings.email");
           debugLog(event.organizationsettings.email);
-          if (err) {
-            res.status(500).send({ message: `${JSON.stringify(err)}` });
-          } else {
-            const auth = {
-              user: event.organizationsettings.emailuser,
-              pass: event.organizationsettings.emailpassword
-            };
-            let email = "Ciao " + req.body.details.payer.name.given_name +",\n"+"your payment to \""+event.title+"\" was successful!!!";
-            email+= "\n\nYour purchase is:";
-            for (var a=0;a<req.body.details.purchase_units.length;a++) {
-              email+= "\n\n"+req.body.details.purchase_units[a].description+"           "+req.body.details.purchase_units[a].amount.value+" "+req.body.details.purchase_units[a].amount.currency_code+" ";
-            } 
-            email+= "\n\nThank you.";
-            email+= "\n\n"+event.organizationsettings.text_sign;
-            const mail = {
-              from: event.organizationsettings.emailname + " <"+ event.organizationsettings.email + ">",
-              to: req.body.details.payer.name.given_name + " " + req.body.details.payer.name.surname + " <"+ req.body.details.payer.email_address + ">",
-              subject: __("Payment Confirm") + " | " + event.title,
-              text: email
-            };
-            debugLog("pre gMailer")
-            debugLog(auth)
-            debugLog(mail)
-            gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-              /* debugLog("gMailer");
-              debugLog(err);
-              debugLog("gMailer");
-              debugLog(result);
-              res.json({res:result}); */
-              if (err) {
-                debugLog("Email sending failure");
-                debugLog(err);
-                res.json({error: true, msg: "Email sending failure", err: err});
-              } else {
-                debugLog("Email sending OK");
-                res.json({error: false, msg: "Email sending success"});
-              }
-            });
+          const auth = {
+            user: event.organizationsettings.emailuser,
+            pass: event.organizationsettings.emailpassword
+          };
+          let email = "Ciao " + req.body.details.payer.name.given_name +",\n"+"your payment to \""+event.title+"\" was successful!!!";
+          email+= "\n\nYour purchase is:";
+          for (var a=0;a<req.body.details.purchase_units.length;a++) {
+            email+= "\n\n"+req.body.details.purchase_units[a].description+"           "+req.body.details.purchase_units[a].amount.value+" "+req.body.details.purchase_units[a].amount.currency_code+" ";
           } 
-        });  
+          email+= "\n\nThank you.";
+          email+= "\n\n"+event.organizationsettings.text_sign;
+          const mail = {
+            from: event.organizationsettings.emailname + " <"+ event.organizationsettings.email + ">",
+            to: req.body.details.payer.name.given_name + " " + req.body.details.payer.name.surname + " <"+ req.body.details.payer.email_address + ">",
+            subject: __("Payment Confirm") + " | " + event.title,
+            text: email
+          };
+          debugLog("pre gMailer")
+          debugLog(auth)
+          debugLog(mail)
+          gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
+            /* debugLog("gMailer");
+            debugLog(err);
+            debugLog("gMailer");
+            debugLog(result);
+            res.json({res:result}); */
+            if (err) {
+              debugLog("Email sending failure");
+              debugLog(err);
+              res.json({error: true, msg: "Email sending failure", err: err});
+            } else {
+              debugLog("Email sending OK");
+              res.json({error: false, msg: "Email sending success"});
+            }
+          });
+        } catch (err) {
+          res.status(500).send({ message: `${JSON.stringify(err)}` });
+        }
       } else {
         res.json({err:err});
       }
@@ -292,21 +351,24 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
   });  
 });
 
-router.get('/getprogramsdays', (req, res) => {
+router.get('/getprogramsdays', async (req, res) => {
   debugLog("getprograms");
-  Vjtv.
-  aggregate([
-    {"$group":{
-     "_id":{
-       "$dateToString":{"format":"%Y-%m-%d","date":"$programming"}
-     }
-  }}]).
-  exec((err, days) => {
+  try {
+    const days = await Vjtv.
+    aggregate([
+      {"$group":{
+      "_id":{
+        "$dateToString":{"format":"%Y-%m-%d","date":"$programming"}
+      }
+    }}]).
+    exec();
     res.json(days.map(item =>{return item._id}));
-  });
+  } catch (err) {
+    res.status(500).send({ message: `${JSON.stringify(err)}` });
+  }
 });
 
-router.get('/getprograms', (req, res) => {
+router.get('/getprograms', async (req, res) => {
   debugLog("getprograms");
   //req.body.month = "2020-03";
   debugLog(req.query);
@@ -335,12 +397,13 @@ router.get('/getprograms', (req, res) => {
 
   debugLog(start);
   debugLog(end);
-  Vjtv
-  .find({programming: { $lt: end, $gt: start}})
-  //.select(select)
-  .sort({programming: 1})
-  .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
-  .exec((err, results) => {
+  try {
+    const results = await Vjtv
+    .find({programming: { $lt: end, $gt: start}})
+    //.select(select)
+    .sort({programming: 1})
+    .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
+    .exec();
     var data = [];
     for(var i = 0; i<results.length;i++){
       if (results[i].video && results[i].video.media && results[i].video.media.duration) data.push(results[i]);
@@ -385,10 +448,12 @@ router.get('/getprograms', (req, res) => {
         }
       }
     } */
-  });
+  } catch (err) {
+    res.status(500).send({ message: `${JSON.stringify(err)}` });
+  }
 });
   
-router.get('/getprograms2', (req, res) => {
+router.get('/getprograms2', async (req, res) => {
   debugLog("getprograms2");
   //req.body.month = "2020-03";
   debugLog(req.query);
@@ -417,12 +482,13 @@ router.get('/getprograms2', (req, res) => {
 
   debugLog(start);
   debugLog(end);
-  Vjtv
-  .find({programming: { $lt: end, $gt: start}})
-  //.select(select)
-  .sort({programming: 1})
-  .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: [{path:"users", select: {stagename: 1}},{path:"categories", select: "name", model:"Category"}]}])
-  .exec((err, results) => {
+  try {
+    const results = await Vjtv
+    .find({programming: { $lt: end, $gt: start}})
+    //.select(select)
+    .sort({programming: 1})
+    .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: [{path:"users", select: {stagename: 1}},{path:"categories", select: "name", model:"Category"}]}])
+    .exec();
     var data = [];
     var colors = {"PERFORMANCES": "purple", "VJ-DJ SETS": "red", "DOCS": "green"};    
     for(var i = 0; i<results.length;i++){
@@ -449,10 +515,12 @@ router.get('/getprograms2', (req, res) => {
         }
       }
     } */
-  });
+  } catch (err) {
+    res.status(500).send({ message: `${JSON.stringify(err)}` });
+  }
 });
     
-router.get('/getcurrentprogram', (req, res) => {
+router.get('/getcurrentprogram', async (req, res) => {
   debugLog("getcurrentprogram");
   debugLog(req.query);
   if(req.query.day) {
@@ -469,12 +537,13 @@ router.get('/getcurrentprogram', (req, res) => {
       date.getSeconds()
     ));
   }
-  Vjtv
-  .findOne({programming: { $lt: date}})
-  //.select(select)
-  .sort({programming: -1})
-  .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
-  .exec((err, data) => {
+  try {
+    const data = await Vjtv
+    .findOne({programming: { $lt: date}})
+    //.select(select)
+    .sort({programming: -1})
+    .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
+    .exec()
     var r = {
       data: data, 
       date: date
@@ -512,7 +581,9 @@ router.get('/getcurrentprogram', (req, res) => {
     } else {
       res.json(r);
     }
-  });
+  } catch (err) {
+    res.status(500).send({ message: `${JSON.stringify(err)}` });
+  }
 });
   
 export default router;

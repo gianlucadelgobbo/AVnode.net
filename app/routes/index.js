@@ -20,12 +20,11 @@ import password from './password.js';
 import search from './search.js';
 import signup from './signup.js';
 import verify from './verify.js';
-import likes from './likes.js';
 import admin from './admin/index.js';
 import adminpro from './adminpro/index.js';
 import pages from './pages.js';
 import organizations from './organizations.js';
-import vjtv from './vjtv.js';
+//import vjtv from './vjtv.js';
 
 // Utilities
 import dataprovider from '../utilities/dataprovider.js';
@@ -34,7 +33,6 @@ import helper from '../utilities/helper.js';
 const router = express.Router();
 
 // Route mappings
-router.use('/likes', likes);
 router.use('/contacts', pages);
 router.use('/terms', pages);
 router.use('/manifesto', pages);
@@ -52,7 +50,7 @@ router.use('/videos', videos);
 router.use('/galleries', galleries);
 router.use('/news', news);
 router.use('/api', api);
-router.use('/vjtv', vjtv);
+//router.use('/vjtv', vjtv);
 
 router.use('/login', login);
 router.use('/logout', logout);

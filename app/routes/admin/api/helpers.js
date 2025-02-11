@@ -340,39 +340,40 @@ router.setStatsAndActivitySingle = async function(query) {
 };
 
 
-router.mySlugify = function (model, str, cb) {
-  if (str) {
-    slugify.extend({'|': ' '})
-    slugify.extend({'+': 'and'})
-    slugify.extend({'@': 'at'})
-    slugify.extend({'†': ''})
-    slugify.extend({'>': '-'})
-    /* slugify.extend({'\\': ''})
-    slugify.extend({"‘": "'"})
-    slugify.extend({"’": "'"})
-    slugify.extend({"“": "\\\""})
-    slugify.extend({"”": "\\\""})
-    slugify.extend({"†": "-"})
-    slugify.extend({"•": "-"})
-    slugify.extend({"…": "..."}) */
-  
-    let slug = slugify(str, {
-      replacement: '-',  // replace spaces with replacement character, defaults to `-`
-      remove: /[*~.()[\]{\\}'‘’"“”…!:/]/g, // remove characters that match regex, defaults to `undefined`
-      lower: true,      // convert to lower case, defaults to `false`
-      strict: false,     // strip special characters except replacement, defaults to `false`
-    }).replace(/[^a-z0-9 -]/g, "");
-    model.countDocuments({slug: slug}, function (err, count) {
-      if (count) {
-        router.mySlugify(model, slug+"_1", cb);
-      } else {
-        cb(slug);
+// Ensure this is at the top before it's used in router.post('/')
+router.mySlugify = async (Model, name) => {
+  if (!name) return null;
+
+  try {
+    // Normalize slug
+    let slug = name
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/[^a-z0-9\-]/g, '') // Remove special characters
+      .replace(/-+/g, '-'); // Remove multiple hyphens
+
+    let exists = await Model.exists({ slug });
+    let counter = 1;
+
+    while (exists) {
+      let newSlug = `${slug}-${counter}`;
+      exists = await Model.exists({ slug: newSlug });
+      if (!exists) {
+        slug = newSlug;
+        break;
       }
-    });
-  } else {
-    cb(str);
+      counter++;
+    }
+
+    return slug;
+  } catch (err) {
+    console.error("🔥 Error in mySlugify:", err);
+    throw err;
   }
-}
+};
+
 
 router.editable = function(req, data, id) {
   if (!req.user) {

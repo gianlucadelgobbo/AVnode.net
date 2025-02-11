@@ -1023,18 +1023,12 @@ dataprovider.fetchRandomPerformance = async (model, query, select, populate, lim
 
 
 
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 dataprovider.fetchLists = async (model, query, select, populate, limit, skip, sorting, cb) => {
   try {
     query.is_public = true;
     
     // Log the function call for debugging
-    debugLog(`[${__filename}] fetchLists called with model: ${model.modelName}`);
+    debugLog(`FetchLists called with model: ${model.modelName}`);
 
     // Use Promises instead of callback
     const total = await model.countDocuments(query);
@@ -1051,7 +1045,7 @@ dataprovider.fetchLists = async (model, query, select, populate, limit, skip, so
     cb(null, data, total);
   } catch (err) {
     // 🔥 Enhanced Error Logging with File Name
-    error(`🔥 ERROR in fetchLists at [${__filename}]: ${err.message}`);
+    error(`🔥 ERROR in fetchLists: ${err.message}`);
     error(err.stack);
 
     cb(err);

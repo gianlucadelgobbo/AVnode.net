@@ -51,8 +51,6 @@ router.get('/', (req, res) => {
         const skip = 0;
         const sorting = config.sections[section].ordersQueries[config.sections[section].orders[0]]
       
-        console.log("stocazzo")
-        console.log(req.session)
         dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
           homedata.news = data;
           homedata.stats.news = total;

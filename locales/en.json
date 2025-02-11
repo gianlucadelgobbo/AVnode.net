@@ -798,5 +798,8 @@
 	"days": "days",
 	"Total": "Total",
 	"day": "day",
-	"Wait for the evaluation": "Wait for the evaluation"
+	"Wait for the evaluation": "Wait for the evaluation",
+	"Loading current day programming": "Loading current day programming",
+	"Password confirm does not match": "Password confirm does not match",
+	"We have sent a confirmation email, please confirm activate your account": "We have sent a confirmation email, please confirm activate your account"
 }

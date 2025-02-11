@@ -372,36 +372,41 @@ userSchema.pre('save', function (next) {
   });
 });
 
-userSchema.pre('save', function (next) {
+userSchema.pre('save', async function (next) {
   if (this.emails && this.emails.length && !this.is_crew) {
     let query = { _id:{$ne:this._id}, $or : [] };
     for (let item=0 ;item< this.emails.length; item++) {
       query.$or.push({ "email" : this.emails[item].email });
       query.$or.push({ "emails.email" : this.emails[item].email })
     }
-    User.findOne(query,'_id', (err, user) => {
+    try {
+      const user = await User
+      .findOne(query,'_id')
+      .exec();
       if (!user){
-          next();
-      }else{                
-          const err = {
-            "message": "EMAIL IS NOT YOUR",
-            "name": "MongoError",
+        next();
+      } else {                
+        const err = {
+          "message": "EMAIL IS NOT YOUR",
+          "name": "MongoError",
+          "stringValue":"\"EMAIL IS NOT YOUR\"",
+          "kind":"Email",
+          "value":null,
+          "path":"email",
+          "reason":{
+            "message":"EMAIL IS NOT YOUR",
+            "name":"MongoError",
             "stringValue":"\"EMAIL IS NOT YOUR\"",
-            "kind":"Email",
+            "kind":"string",
             "value":null,
-            "path":"email",
-            "reason":{
-              "message":"EMAIL IS NOT YOUR",
-              "name":"MongoError",
-              "stringValue":"\"EMAIL IS NOT YOUR\"",
-              "kind":"string",
-              "value":null,
-              "path":"email"
-            }
-          };
-          next(err);
+            "path":"email"
+          }
+        };
+        next(err);
       }
-    });
+    } catch (err) {
+      next(err);
+    }
   } else {
     next();
   }
@@ -413,7 +418,7 @@ userSchema.pre('save', function (next) {
       let conta = 0;
       for (let item=0 ; item<emailwithmailinglists.length;item++) {
         let mailinglists = [];
-        for (mailinglist in this.emails[item].mailinglists) if (this.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);
+        for (let mailinglist in this.emails[item].mailinglists) if (this.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);
         let formData = {
           list: 'AXRGq2Ftn2Fiab3skb5E892g',
           api_key: process.env.SENDYAPIKEY,

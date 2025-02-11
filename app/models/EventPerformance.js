@@ -10,7 +10,7 @@ import Booking from './shared/Booking.js';
 import moment from 'moment';
 
 
-const adminsez = 'performances';
+const adminsez = 'event_performances';
 
 function ignoreEmpty (val) {
   if ("" === val) {
@@ -59,7 +59,8 @@ const performanceSchema = new Schema({
   },
   toJSON: {
     virtuals: true
-  }
+  },
+  collection: 'event_performances'
 });
 
 performanceSchema.virtual('about').get(function (req) {
@@ -174,6 +175,6 @@ performanceSchema.pre('validate', function(next) {
 
 //performanceSchema.plugin(indexPlugin());
 
-const Performance = mongoose.model('Performance', performanceSchema);
+const Performance = mongoose.model('EventPerformance', performanceSchema);
 
 export default Performance;

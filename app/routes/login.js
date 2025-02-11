@@ -14,10 +14,8 @@ router.get('/', (req, res) => {
   if (req.user) {
     return res.redirect (returnTo);
   }
-  const template = req.originalUrl === '/flxerlogin' ? 'login_flxer' : 'login';
-  const title = req.originalUrl === '/flxerlogin' ? __('FLxER Login') : __('Login');
-  res.render(template, {
-    title: title,
+  res.render('login', {
+    title: __('Login'),
     returnTo: returnTo.replace("/admin/api/loggeduser" , "/")
   });
 });

@@ -27,209 +27,153 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   debugLog(req.body);
-  if (req.body.crewName) req.body.crewname = req.body.crewName;
-  if (req.body.crewUrl) req.body.crewslug = req.body.crewUrl;
-  req.body.lang = global.getLocale();
 
-  let data = new UserTemp();
-  let select = config.cpanel.signup.forms.signup.select;
-  let put = {};
-  for (const item in select) if(req.body[item]) put[item] = req.body[item];
-  debugLog("put");
-  debugLog(put);
+  try {
+    // Normalize request fields
+    req.body.crewname = req.body.crewName || req.body.crewname;
+    req.body.crewslug = req.body.crewUrl || req.body.crewslug;
+    req.body.lang = global.getLocale();
 
-  helpers.mySlugify(User, put.stagename, (slug) => {
-    put.slug = slug;
-    helpers.mySlugify(User, put.crewname, (crewslug) => {
-      put.crewslug = crewslug;
-      router.signupValidator(put, (put, errors) => {
-        debugLog("signupValidatorsignupValidatorsignupValidatorsignupValidator");
-        debugLog(errors);
-        if (!Object.keys(errors.errors).length) {
-          debugLog("deleteManydeleteManydeleteManydeleteMany");
-          Object.assign(data, put);
-          debugLog(  data)      
-          UserTemp.deleteMany({ email: data.email }, function (err) {
-            data.save((err) => {
-              debugLog("deleteManydeleteManydeleteManydeleteMany");
-              if (err) {
-                //res.status(400).send(err);
-                req.flash('errors', {msg: `${JSON.stringify(err)}`});
-                res.render('admin/signup', {
-                  title: __('Create Account'),
-                  get: req.body,
-                  currentUrl: req.originalUrl,
-                  scripts: ['signup'],
-                  err: err
-                });  
-              } else {
-                select = Object.assign(config.cpanel.signup.forms.signup.select, config.cpanel.signup.forms.signup.selectaddon);
-                //let populate = config.cpanel.signup.forms.signup.populate;      
-                //.populate(populate)
-                UserTemp
-                .findById(data._id)
-                .select(select)
-                .exec((err, data) => {
-                  if (err) {
-                    //res.status(500).send({ message: `${JSON.stringify(err)}` });
-                    req.flash('errors', {msg: `${JSON.stringify(err)}`});
-                    res.render('admin/signup', {
-                      title: __('Create Account'),
-                      get: req.body,
-                      currentUrl: req.originalUrl,
-                      scripts: ['signup'],
-                      err: err
-                    });  
-                  } else {
-                    if (!data) {
-                      res.status(404).send({ message: `DOC_NOT_FOUND` });
-                    } else {
-                      mailer.mySendMailer({
-                        template: 'signup',
-                        message: {
-                          to: data.email
-                        },
-                        locals: {
-                        },
-                        email_content: {
-                          site: 'http://'+req.headers.host,
-                          link: 'http://'+req.headers.host+'/verify/signup/'+data.confirm,
-                          stagename: data.stagename,
-                          email: data.email,
-                          confirm: data.confirm,
-                          title:    __("Welcome!"),
-                          subject:  __("Welcome!")+' | AVnode.net',
-                          block_1:  __("We're excited to have you get started. First, you need to confirm your account. Just press the button below."),
-                          button:   __("Confirm Account"),
-                          block_2:  __("If that doesn't work, copy and paste the following link in your browser:"),
-                          block_3:  __("If you have any questions, just reply to this email, we're always happy to help out."),
-                          html_sign: "The AVnode.net Team",
-                          text_sign:  "The AVnode.net Team"
-                        }
-                      }, function(){
-                      });
-                      let send = {_id: data._id};
-                      for (const item in config.cpanel.signup.forms.signup.select) send[item] = data[item];
-                      //res.json(send);
-                      req.flash('success', {msg: __("We have sent a confirmation email, please confirm activate your accont")});
-                      res.render('admin/signup', {
-                        title: __('Create Account'),
-                        get: req.body,
-                        currentUrl: req.originalUrl,
-                        scripts: ['signup'],
-                        err: errors
-                      });  
-                    }
-                  }
-                });
-              }
-            });
-          });
-        } else {
-          if (req.params.api==1) {
-            //res.status(400).send(errors); 
-          } else {
-            req.flash('errors', {msg: `${JSON.stringify(errors)}`});
-            res.render('admin/signup', {
-              title: __('Create Account'),
-              get: req.body,
-              currentUrl: req.originalUrl,
-              scripts: ['signup'],
-              err: errors
-            });  
-          }
-        
-        }
-      });      
+    let select = config.cpanel.signup.forms.signup.select;
+    let put = {};
+    for (const item in select) if (req.body[item]) put[item] = req.body[item];
+
+    debugLog("put");
+    debugLog(put);
+
+    // Generate unique slugs
+    put.slug = await helpers.mySlugify(User, put.stagename);
+    put.crewslug = await helpers.mySlugify(User, put.crewname);
+
+    // Validate signup data
+    const errors = await router.signupValidator(put);
+    debugLog("Validation Errors:", errors);
+
+    if (Object.keys(errors.errors).length) {
+      req.flash('errors', { msg: JSON.stringify(errors) });
+      return res.render('admin/signup', {
+        title: __('Create Account'),
+        get: req.body,
+        currentUrl: req.originalUrl,
+        scripts: ['signup'],
+        err: errors
+      });
+    }
+
+    debugLog("deleteMany UserTemp");
+    await UserTemp.deleteMany({ email: put.email });
+
+    // Create new temporary user
+    const data = new UserTemp(put);
+    await data.save();
+
+    select = { ...config.cpanel.signup.forms.signup.select, ...config.cpanel.signup.forms.signup.selectaddon };
+
+    const savedUser = await UserTemp.findById(data._id).select(select);
+
+    if (!savedUser) {
+      return res.status(404).send({ message: `DOC_NOT_FOUND` });
+    }
+
+    // Send confirmation email
+    await mySendMailer({
+      template: 'signup',
+      message: { to: savedUser.email },
+      locals: {},
+      email_content: {
+        site: 'http://' + req.headers.host,
+        link: 'http://' + req.headers.host + '/verify/signup/' + savedUser.confirm,
+        stagename: savedUser.stagename,
+        email: savedUser.email,
+        confirm: savedUser.confirm,
+        title: __("Welcome!"),
+        subject: __("Welcome!") + ' | AVnode.net',
+        block_1: __("We're excited to have you get started. First, you need to confirm your account. Just press the button below."),
+        button: __("Confirm Account"),
+        block_2: __("If that doesn't work, copy and paste the following link in your browser:"),
+        block_3: __("If you have any questions, just reply to this email, we're always happy to help out."),
+        html_sign: "The AVnode.net Team",
+        text_sign: "The AVnode.net Team"
+      }
     });
-  });
 
+    req.flash('success', { msg: __("We have sent a confirmation email, please confirm activate your account") });
+    res.render('admin/signup', {
+      title: __('Create Account'),
+      get: req.body,
+      currentUrl: req.originalUrl,
+      scripts: ['signup'],
+      err: errors
+    });
+
+  } catch (err) {
+    console.error("🔥 Signup Error:", err);
+    req.flash('errors', { msg: JSON.stringify(err) });
+    res.render('admin/signup', {
+      title: __('Create Account'),
+      get: req.body,
+      currentUrl: req.originalUrl,
+      scripts: ['signup'],
+      err
+    });
+  }
 });
 
-router.signupValidator = (put, cb) => {
-  debugLog("signupValidator")
-  debugLog(put)
-  let errors = {
-    "errors":{},
-    "_message":"",
-    "message":"",
-    "name":""
-  };
-  //put = {};
-  //put.birthday="01-09-2018";
-  //const birthday = helper.dateFix(put.birthday);
-  if (put.crewname && put.crewname.trim() === put.stagename.trim()) {
-    errors.errors.crewname = {
-      "message": __("CREW_NAME_CAN_NOT_BE_THE_EQUAL_TO_THE_STAGE_NAME")
-    }
-  }
-  if (!put.stagename || put.stagename == "") {
-    errors.errors.stagename = {
-      "message": __("STAGE_NAME_IS_REQUIRED")
-    };
-  }
-  if (!put.birthday || put.birthday == "") {
-    errors.errors.birthday = {
-      "message": __("BIRTHDAY_IS_REQUIRED")
-    };
-  }
-  if (!put.email || put.email == "") {
-    errors.errors.email = {
-      "message": "EMAIL_IS_REQUIRED"
-    }
-  }
 
+router.signupValidator = async (put) => {
+  debugLog("signupValidator", put);
+  let errors = { errors: {}, _message: "", message: "", name: "" };
+
+  if (put.crewname && put.crewname.trim() === put.stagename.trim()) {
+    errors.errors.crewname = { message: __("CREW_NAME_CAN_NOT_BE_THE_EQUAL_TO_THE_STAGE_NAME") };
+  }
+  if (!put.stagename) errors.errors.stagename = { message: __("STAGE_NAME_IS_REQUIRED") };
+  if (!put.birthday) errors.errors.birthday = { message: __("BIRTHDAY_IS_REQUIRED") };
+  if (!put.email) errors.errors.email = { message: "EMAIL_IS_REQUIRED" };
 
   if (!put.addresses || !put.addresses.length) {
-    errors.errors.addresses = [{
-      "message": __("ADDRESS_IS_IN_A_WRONG_FORMAT")
-    }]
+    errors.errors.addresses = [{ message: __("ADDRESS_IS_IN_A_WRONG_FORMAT") }];
   } else {
-    for(var i=0; i<put.addresses.length; i++ ){
-      if (!put.addresses[i].geometry || !put.addresses[i].formatted_address || !put.addresses[i].geometry.lat){
+    put.addresses.forEach((address, i) => {
+      if (!address.geometry || !address.formatted_address || !address.geometry.lat) {
         if (!errors.errors.addresses) errors.errors.addresses = [];
-        errors.errors.addresses[i] = {
-          "message": __("ADDRESS_IS_IN_A_WRONG_FORMAT")
-        }
-      }
-    }
-  }
-  if (!put.password || put.password == "") {
-    errors.errors.password = {
-      "message": __("PASSWORD_IS_REQUIRED")
-    };
-  }
-  if (!put.confirmPassword || put.confirmPassword == "") {
-    errors.errors.confirmPassword = {
-      "message": __("PASSWORD_CONFIRM_IS_REQUIRED")
-    };
-  } else if (put.password !== put.confirmPassword) {
-    errors.errors.confirmPassword = {
-      "message": __("Password confirm do not match")
-    };
-  }
-  /*
-  */
-  if (Object.keys(errors.errors).length)  {
-    cb(put, errors);
-  } else {
-    User.find({ $or: [ { 'email': put.email }, { 'emails.email': put.email } ] }, "_id", function(err, docs) {
-      if (err) {
-        errors.errors.err = err;
-        cb(put, errors);
-      } else {
-        if (docs.length) {
-          errors.errors.email = {
-            "message": "There is already an account with this email: \""+put.email+"\".<br />Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>"
-          }
-        }
-        cb(put, errors);
+        errors.errors.addresses[i] = { message: __("ADDRESS_IS_IN_A_WRONG_FORMAT") };
       }
     });
   }
-}
+
+  if (!put.password) errors.errors.password = { message: __("PASSWORD_IS_REQUIRED") };
+  if (!put.confirmPassword) {
+    errors.errors.confirmPassword = { message: __("PASSWORD_CONFIRM_IS_REQUIRED") };
+  } else if (put.password !== put.confirmPassword) {
+    errors.errors.confirmPassword = { message: __("Password confirm does not match") };
+  }
+
+  if (Object.keys(errors.errors).length) return errors;
+
+  try {
+    const existingUser = await User.findOne({
+      $or: [{ email: put.email }, { 'emails.email': put.email }]
+    }).select("_id");
+
+    if (existingUser) {
+      errors.errors.email = {
+        message: `There is already an account with this email: "${put.email}".<br />
+        Please login <a href='/login?email=${put.email}'>here</a> or ask for a password <a href='/password/forgot?email=${put.email}'>here</a>`
+      };
+    }
+  } catch (err) {
+    console.error("🔥 Error in signupValidator:", err);
+    errors.errors.err = err;
+  }
+
+  return errors;
+};
+
+
+
 
 
 

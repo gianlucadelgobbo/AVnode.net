@@ -7,23 +7,23 @@ const UserTemp = mongoose.model('UserTemp');
 const User = mongoose.model('User');
 //const mailer = require('../utilities/mailer');
 //const _slug = require('../utilities/slug');
+import https from 'https';
+import querystring from 'querystring';
 
 import { info, debugLog, error } from '../utilities/logger.js';
 
 
 import config from 'getconfig';
 
-router.get('/:sez/:code', (req, res) => {
+router.get('/:sez/:code', async (req, res) => {
   if (req.params.sez == 'signup' && req.params.code) {
-    UserTemp
-    .findOne({confirm:req.params.code})
-    .exec((err, put) => {
+    try {
+      const put = await UserTemp
+      .findOne({confirm:req.params.code})
+      .exec();
       if (put) {
-        router.signupVerifyValidator(put, (data, errors) => {
+        router.signupVerifyValidator(put, async (data, errors) => {
           if (errors.message === "") {
-            debugLog("signupVerifyValidator");
-            debugLog(data.crewslug);
-            debugLog(data);
             let user = new User();
             user.stagename = data.stagename;
             user.slug = data.slug;
@@ -55,47 +55,49 @@ router.get('/:sez/:code', (req, res) => {
               user.crews = [crew._id];
               user.stats = {crews: 1};
             }
-            user.save((err) => {
-              debugLog(err);
-              if (err) {
-                res.render('verify/signup', {
-                  title: __('Signup verify'),
-                  err: err,
-                  data: data
-                });
-              } else {
-                if (data.crewslug) {
-                  crew.save((err) => {
-                    if (err) {
-                      res.render('verify/signup', {
-                        title: __('Signup verify'),
-                        err: err,
-                        data: data
-                      });
-                    } else {
-                      router.updateSendy(user, user.email, (err) => {
-                        UserTemp.deleteMany({ confirm:req.params.code }, function (err) {
-                          res.render('verify/signup', {
-                            title: __('Signup verify'),
-                            data: data
-                          });
-                        });
-                      });
-                    } 
-                  });
-              } else {
-                  router.updateSendy(user, user.email, (err) => {
-                    UserTemp.deleteMany({ confirm:req.params.code }, function (err) {
-                      res.render('verify/signup', {
-                        title: __('Signup verify'),
-                        data: data
-                      });
-                    });
+            try {
+              await user.save(); // Save the user
+              debugLog('User saved successfully');
+          
+              if (data.crewslug) {
+                try {
+                  await crew.save(); // Save the crew
+                  debugLog('Crew saved successfully');
+                } catch (crewError) {
+                  debugLog(crewError);
+                  return res.render('verify/signup', {
+                    title: __('Signup verify'),
+                    err: crewError,
+                    data: data
                   });
                 }
               }
-            });
-          } else {
+          
+              try {
+                await router.updateSendy(user, user.email); // Update mailing list
+                await UserTemp.deleteMany({ confirm: req.params.code }); // Delete temp user records
+                debugLog('UserTemp records deleted');
+                
+                return res.render('verify/signup', {
+                  title: __('Signup verify'),
+                  data: data
+                });
+              } catch (sendyError) {
+                debugLog(sendyError);
+                return res.render('verify/signup', {
+                  title: __('Signup verify'),
+                  err: sendyError,
+                  data: data
+                });
+              }
+            } catch (userError) {
+              debugLog(userError);
+              return res.render('verify/signup', {
+                title: __('Signup verify'),
+                err: userError,
+                data: data
+              });
+            }          } else {
             res.render('verify/signup', {
               title: __('Signup verify'),
               err: errors,
@@ -109,13 +111,19 @@ router.get('/:sez/:code', (req, res) => {
           err: true,
         });
       }
-    });
+    } catch (err) {
+      res.render('verify/signup', {
+        title: __('Signup verify'),
+        err: true,
+      });
+    }
   }
   if (req.params.sez == 'email' && req.params.code) {
-    User
-    .findOne({"emails.confirm":req.params.code})
-    .select({emails: 1})
-    .exec((err, user) => {
+    try {
+      const user = await User
+      .findOne({"emails.confirm":req.params.code})
+      .select({emails: 1})
+      .exec();
       if (user) {
         for(let item=0;item<user.emails.length;item++) {
           if (user.emails[item].confirm === req.params.code) {
@@ -125,166 +133,129 @@ router.get('/:sez/:code', (req, res) => {
             //delete user.emails[item].confirm;
           }
         }
-        user.save((err) => {
-          if (err) {
+        try {
+          await user.save()
+          await router.updateSendy(user, sendyemail); // Update mailing list
+          if (req.user) {
+            req.flash('success', { msg: __('Email verificated with success.') });
+            res.redirect('/admin/profile/'+req.user._id+'/emails');
+          } else {
             res.render('verify/email', {
               title: __('Email verify'),
-              err: true,
-            });
-          } else {
-            router.updateSendy(user, sendyemail, (err) => {
-              if (req.user) {
-                req.flash('success', { msg: __('Email verificated with success.') });
-                res.redirect('/admin/profile/'+req.user._id+'/emails');
-              } else {
-                res.render('verify/email', {
-                  title: __('Email verify'),
-                  err: false,
-                });  
-              }
-            });
+              err: false,
+            });  
           }
-        });  
+        } catch (err) {
+          res.render('verify/email', {
+            title: __('Email verify'),
+            err: true,
+          });
+        }
       } else {
         res.render('verify/email', {
           title: __('Email verify'),
           err: true,
         });
       }
-    });
+    } catch (err) {
+      res.render('verify/email', {
+        title: __('Email verify'),
+        err: true,
+      });
+    };
   }
 });
 
-router.updateSendy = (user, email, cb) => {
+router.updateSendy = async (user, email) => {
   let formData = {
-    list: 'AXRGq2Ftn2Fiab3skb5E892g',
+    list: process.env.SENDYLIST,
     api_key: process.env.SENDYAPIKEY,
     email: email,
-    Topics: "flxer,livevisuals",
+    Topics: process.env.SENDYLISTTOPICS,
     avnode_id: user._id.toString(),
     avnode_slug: user.slug,
     avnode_email: user.email,
     boolean: true
   };
+
   if (user.name) formData.Name = user.name;
   if (user.surname) formData.Surname = user.surname;
   if (user.stagename) formData.Stagename = user.stagename;
-  if (user.addresses && user.addresses[0] && user.addresses[0].locality) formData.Location = user.addresses[0].locality;
-  if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = user.addresses[0].country;
-  if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
-  if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
+  if (user.addresses?.[0]?.locality) formData.Location = user.addresses[0].locality;
+  if (user.addresses?.[0]?.country) formData.Country = user.addresses[0].country;
+  if (user.addresses?.[0]?.geometry?.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
+  if (user.addresses?.[0]?.geometry?.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
 
-  var https = require('https');
-  var querystring = require('querystring');
-  
-  // form data
-  var postData = querystring.stringify(formData);
-  
-  // request option
-  /* var options = {
-    host: 'ml.avnode.net',
-    port: 443,
-    method: 'POST',
-    path: '/subscribe',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': postData.length
-    }
-  };
-  
-  // request object
-  var req = https.request(options, function (res) {
-    var result = '';
-    res.on('data', function (chunk) {
-      result += chunk;
-    });
-    res.on('end', function () {
-      cb();
-    });
-    res.on('error', function (err) {
-      cb(error);
-    })
-  });
-  // req error
-  req.on('error', function (err) {
-    debugLog(err);
-  });
-   //send request witht the postData form
-  req.write(postData);
-  req.end();
-    */
+  const postData = querystring.stringify(formData);
 
-  axios.post('https://ml.avnode.net/subscribe', postData)
-  .then((response) => {
-    cb();
-  }, (error) => {
-    cb(error);
-  });
+  try {
+    const response = await axios.post(process.env.SENDYENDPOINT, postData);
+    return response.data; // Log success response if needed
+  } catch (error) {
+    console.error(`Sendy update failed: ${error.message}`); // Log error but don't break the app
+    return null; // Return null to avoid breaking the flow
+  }
+};
 
-  
-}
-
-router.signupVerifyValidator = (put, cb) => {
+router.signupVerifyValidator = async (put, cb) => {
   let errors = {
     "errors":{},
     "_message":"",
     "message":"",
     "name":""
   };
-  User.find({ $or: [ { 'email': put.email }, { 'emails.email': put.email } ] }, "_id", function(err, docs) {
-    if (err) {
-      errors.errors.err = err;
-      cb(put, errors);
-    } else {
-      if (docs.length) {
-        errors.errors.email = {
-          "message": "E11000 duplicate key error collection: avnode.users index: email_1 dup key: { : \""+put.email+"\" }",
-          "name": "MongoError",
+  console.log("signupVerifyValidator 2")
+  try {
+    const docs = await User.find({ $or: [ { 'email': put.email }, { 'emails.email': put.email } ] }, "_id")
+    if (docs.length) {
+      errors.errors.email = {
+        "message": "E11000 duplicate key error collection: avnode.users index: email_1 dup key: { : \""+put.email+"\" }",
+        "name": "MongoError",
+        "stringValue":"\"Duplicate Key\"",
+        "kind":"Date",
+        "value":null,
+        "path":"email",
+        "reason":{
+          "message":"E11000 duplicate key error collection: avnode.users index: email_1 dup key: { : \""+put.email+"\" }",
+          "name":"MongoError",
           "stringValue":"\"Duplicate Key\"",
-          "kind":"Date",
+          "kind":"string",
           "value":null,
-          "path":"email",
-          "reason":{
-            "message":"E11000 duplicate key error collection: avnode.users index: email_1 dup key: { : \""+put.email+"\" }",
-            "name":"MongoError",
-            "stringValue":"\"Duplicate Key\"",
-            "kind":"string",
-            "value":null,
-            "path":"email"
-          }
+          "path":"email"
+        }
+      };
+    }
+    try {
+      const docs = await User.find({ 'slug': put.slug }, "_id");
+      if (docs.length) {
+        errors.errors.slug = {
+          "message": "E11000 duplicate key error collection: avnode.user index: slug_1 dup key: { : \""+put.slug+"\" }"
         };
       }
-      User.find({ 'slug': put.slug }, "_id", function(err, docs) {
-        if (err) {
+      if (put.crewslug) {
+        try {
+          const docs = await User.find({ 'slug': put.crewslug }, "_id")
+          if (docs.length) {
+            errors.errors.crewslug = {
+              "message": "E11000 duplicate key error collection: avnode.user index: crewslug_1 dup key: { : \""+put.crewslug+"\" }"
+            };
+          } 
+          cb(put, errors);
+        } catch (err) {
           errors.errors.err = err;
           cb(put, errors);
-        } else {
-          if (docs.length) {
-            errors.errors.slug = {
-              "message": "E11000 duplicate key error collection: avnode.user index: slug_1 dup key: { : \""+put.slug+"\" }"
-            };
-          }
-          if (put.crewslug) {
-            User.find({ 'slug': put.crewslug }, "_id", function(err, docs) {
-              if (err) {
-                errors.errors.err = err;
-                cb(put, errors);
-              } else {
-                if (docs.length) {
-                  errors.errors.crewslug = {
-                    "message": "E11000 duplicate key error collection: avnode.user index: crewslug_1 dup key: { : \""+put.crewslug+"\" }"
-                  };
-                } 
-                cb(put, errors);
-              }
-            });        
-          } else {
-            cb(put, errors);
-          }
         }
-      });        
+      } else {
+        cb(put, errors);
+      }
+    } catch (err) {
+      errors.errors.err = err;
+      cb(put, errors);
     }
-  });
+  } catch (err) {
+    errors.errors.err = err;
+    cb(put, errors);
+  }
 }
 
 export default router;
