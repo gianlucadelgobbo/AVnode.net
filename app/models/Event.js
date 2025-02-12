@@ -15,7 +15,7 @@ import Program from './Program.js';
 import Package from './shared/Package.js';
 
 const adminsez = 'events';
-import { info, debugLog, error } from '../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
 
 const datevenueSchema = new Schema({

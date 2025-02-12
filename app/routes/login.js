@@ -2,7 +2,7 @@ import createRouter from "./router.js";
 const router = createRouter();
 import { passport, isAuthenticated } from '../utilities/passport.js';
 
-import { info, debugLog, error } from '../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
 import mongoose from 'mongoose';
 const User = mongoose.model('User');
@@ -10,7 +10,7 @@ const User = mongoose.model('User');
 
 router.get('/', (req, res) => {
   var returnTo = req.query.returnTo ? req.query.returnTo : req.session.returnTo ? req.session.returnTo : "/";
-  debugLog('passport.loginredirect GET req:' + returnTo);
+  logger.info('passport.loginredirect GET req:' + returnTo);
   if (req.user) {
     return res.redirect (returnTo);
   }
@@ -24,18 +24,18 @@ router.get('/', (req, res) => {
 //validationConfig.validate()
 router.post('/', (req, res, next) => {
   const returnTo = req.session.returnTo ? req.session.returnTo : req.body.returnTo ? req.body.returnTo : "/";
-  debugLog("req.body login");
-  /* debugLog(req.body);
-  debugLog(req.params);
-  debugLog(req.query);
+  logger.info("req.body login");
+  /* logger.info(req.body);
+  logger.info(req.params);
+  logger.info(req.query);
 
-  debugLog('passport.loginredirect req:' + req.body.returnTo);
+  logger.info('passport.loginredirect req:' + req.body.returnTo);
   
-  debugLog('passport.authenticate req:' + JSON.stringify(req.body.email)); */
+  logger.info('passport.authenticate req:' + JSON.stringify(req.body.email)); */
 
   passport.authenticate('local', (err, user, info) => {
     if (err) {
-      debugLog('passport.authenticate error:' + JSON.stringify(err));
+      logger.info('passport.authenticate error:' + JSON.stringify(err));
       if (req.body.api=="1") {
         res.send(err);
       } else {
@@ -43,7 +43,7 @@ router.post('/', (req, res, next) => {
       }
     }
     if (!user) {
-      debugLog('passport.authenticate !user:' + JSON.stringify(info));
+      logger.info('passport.authenticate !user:' + JSON.stringify(info));
       if (req.body.api=="1") {
         res.status(500).send(info);
       } else {
@@ -53,7 +53,7 @@ router.post('/', (req, res, next) => {
     } else {
       req.logIn(user, (err) => {
         if (err) {
-          debugLog('passport.authenticate req.logIn error:' + JSON.stringify(err));
+          logger.info('passport.authenticate req.logIn error:' + JSON.stringify(err));
           if (req.body.api=="1") {
             res.status(500).send(err);
           } else {
@@ -61,8 +61,8 @@ router.post('/', (req, res, next) => {
           }
         }
         delete req.session.returnTo;
-        debugLog('passport.authenticate auth success');
-        debugLog(returnTo);
+        logger.info('passport.authenticate auth success');
+        logger.info(returnTo);
         if (req.body.api=="1") {
           res.send(true);
         } else {

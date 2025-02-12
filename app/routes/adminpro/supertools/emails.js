@@ -17,14 +17,14 @@ import config from 'getconfig';
 //import sharp from 'sharp';
 //const ObjectId = Schema.ObjectId;
 
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
 
 // V > db.events.findOne({"schedule.venue.location.locality":{$exists: true}},{schedule:1});
 // V {"addresses.country": "Italy", "addresses.locality":{$in: ["Rome","Roma"]}},{addresses:1}
 
 router.get('/allemails', (req, res) => {
-  debugLog('/adminpro/supertools/emails');
+  logger.info('/adminpro/supertools/emails');
   User.find({email:{$exists:true}, 'emails.email': {$exists:true}, is_crew:false}).
   lean().
   select({name: 1, slug: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
@@ -44,11 +44,11 @@ router.get('/allemails', (req, res) => {
       //if (e.email == "alberto.bordonaro@gmail.com")     console.log(e);
 
       /* if (e.emails.filter(item => item.email=e.email).length===0 && e.activity==0) {
-        debugLog("e.emails.filter(item => item.email=e.email).length");
-        debugLog(e.emails.filter(item => item.email=e.email).length);
-        debugLog(e.email);
-        debugLog(e.emails);
-        debugLog(e.slug);
+        logger.info("e.emails.filter(item => item.email=e.email).length");
+        logger.info(e.emails.filter(item => item.email=e.email).length);
+        logger.info(e.email);
+        logger.info(e.emails);
+        logger.info(e.slug);
       } */
       let email = {
         list: 'AXRGq2Ftn2Fiab3skb5E892g',
@@ -100,7 +100,7 @@ router.get('/updateSendy', (req, res) => {
   const limit = 50;
   const skip = req.query.skip ? parseFloat(req.query.skip) : 0;
 
-  debugLog('/adminpro/supertools/emails');
+  logger.info('/adminpro/supertools/emails');
   User.find({email:{$exists:true}, "emails.email":{$exists:true}, is_crew:false}).
   select({name: 1, slug: 1, old_id: 1, activity: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
   lean().
@@ -118,7 +118,7 @@ router.get('/updateSendy', (req, res) => {
       });
       
       results.forEach(function(e) {
-        debugLog(e);
+        logger.info(e);
         let email = {
           list: 'AXRGq2Ftn2Fiab3skb5E892g',
           api_key: process.env.SENDYAPIKEY,
@@ -145,14 +145,14 @@ router.get('/updateSendy', (req, res) => {
   
           for (const mailinglist in ee.mailinglists) if (ee.mailinglists[mailinglist]) topics.push(mailinglist);
           email.Topics = topics.join(',');
-          //debugLog(email);
+          //logger.info(email);
           //email.mailinglists = ee.mailinglists;
           mailinglists.push(email);
   
           axios.post('https://ml.avnode.net/subscribe', {email})
           .then((response) => {
             conta++;
-            debugLog(response);
+            logger.info(response);
             if (conta === fatto) {
               res.render('adminpro/supertools/emails/showall', {
                 title: 'Emails',
@@ -185,7 +185,7 @@ router.get('/mailinator', (req, res) => {
   lean().
   //sort('name').
   exec((err, results) => {
-    debugLog(results);
+    logger.info(results);
     let mailinglists = [];
     let conta = 0;
     let fatto = 0;
@@ -196,11 +196,11 @@ router.get('/mailinator', (req, res) => {
     
     results.forEach(function(e) {
       /* if (e.emails.filter(item => item.email=e.email).length===0 && e.activity==0) {
-        debugLog("e.emails.filter(item => item.email=e.email).length");
-        debugLog(e.emails.filter(item => item.email=e.email).length);
-        debugLog(e.email);
-        debugLog(e.emails);
-        debugLog(e.slug);
+        logger.info("e.emails.filter(item => item.email=e.email).length");
+        logger.info(e.emails.filter(item => item.email=e.email).length);
+        logger.info(e.email);
+        logger.info(e.emails);
+        logger.info(e.slug);
       } */
       let email = {
         list: 'AXRGq2Ftn2Fiab3skb5E892g',

@@ -8,11 +8,11 @@ const Event = mongoose.model('Event');
 
 import axios from 'axios';
 
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
 
 /* router.get('/showall', (req, res) => {
-  debugLog('/adminpro/supertools/addresses/showall');
+  logger.info('/adminpro/supertools/addresses/showall');
   showall(req, res, false, cb = (data) => {
     res.render('adminpro/supertools/addresses/showall', {
       title: 'adminpro/supertools/addresses/showall',
@@ -23,7 +23,7 @@ import { info, debugLog, error } from '../../../utilities/logger.js';
 }); */
 
 router.get('/usersdbcheck', (req, res) => {
-  debugLog('/adminpro/supertools/addresses/usersdbcheck');
+  logger.info('/adminpro/supertools/addresses/usersdbcheck');
   usersdbcheck(req, res, cb = (data) => {
     res.render('adminpro/supertools/addresses/usersdbcheck', {
       title: 'adminpro/supertools/addresses/usersdbcheck',
@@ -35,7 +35,7 @@ router.get('/usersdbcheck', (req, res) => {
 });
 
 router.get('/updatedb', (req, res) => {
-  debugLog('/adminpro/supertools/addresses/updatedb');
+  logger.info('/adminpro/supertools/addresses/updatedb');
   showall(req, res, true, cb = (data) => {
     res.render('adminpro/supertools', {
       title: 'adminpro/supertools/addresses/updatedb',
@@ -46,11 +46,11 @@ router.get('/updatedb', (req, res) => {
   });
 });
 router.get('/getgeometry', (req, res) => {
-  debugLog('/addresses/getgeometry');
+  logger.info('/addresses/getgeometry');
   getgeometry(req, res, cb = (data) => {
-    debugLog('getgeometry');
+    logger.info('getgeometry');
     const script = !data.length || data[0].error_message  || data[0].status == 'OVER_QUERY_LIMIT' ? false : '<script>var timeout = setTimeout("location.reload(true);",10000);</script>';
-    debugLog(script);
+    logger.info(script);
     res.render('adminpro/supertools', {
       title: 'adminpro/supertools/addresses/getgeometry',
       
@@ -62,9 +62,9 @@ router.get('/getgeometry', (req, res) => {
 });
 
 router.get('/setgeometry', (req, res) => {
-  debugLog(req.query.skip);
+  logger.info(req.query.skip);
   var skip = req.query.skip ? parseFloat(req.query.skip)+1 : 0;
-  debugLog(skip);
+  logger.info(skip);
   setgeometry(req, res, skip, cb = (data) => {
     res.render('adminpro/supertools', {
       title: 'adminpro/supertools/addresses/setgeometry',
@@ -79,9 +79,9 @@ router.get('/setgeometry', (req, res) => {
 // VENUES
 
 router.get('/venuesdbcheck', (req, res) => {
-  debugLog('/adminpro/supertools/addresses/venuesdbcheck');
+  logger.info('/adminpro/supertools/addresses/venuesdbcheck');
   venuesdbcheck(req, res, cb = (data) => {
-    debugLog(data);
+    logger.info(data);
     res.render('adminpro/supertools/addresses/venuesdbcheck', {
       title: 'adminpro/supertools/addresses/venuesdbcheck',
       
@@ -92,9 +92,9 @@ router.get('/venuesdbcheck', (req, res) => {
 });
 
 router.get('/venuesdbimport', (req, res) => {
-  debugLog('/adminpro/supertools/addresses/venuesdbimport');
+  logger.info('/adminpro/supertools/addresses/venuesdbimport');
   venuesdbimport(req, res, cb = (data) => {
-    //debugLog(data);
+    //logger.info(data);
     res.render('adminpro/supertools/addresses/venuesdbcheck', {
       title: 'adminpro/supertools/addresses/venuesdbimport',
       
@@ -105,11 +105,11 @@ router.get('/venuesdbimport', (req, res) => {
 });
 
 router.get('/venuesgetgeometry', (req, res) => {
-  debugLog('/addresses/venuesgetgeometry');
+  logger.info('/addresses/venuesgetgeometry');
   venuesgetgeometry(req, res, cb = (data) => {
-    debugLog('venuesgetgeometry');
+    logger.info('venuesgetgeometry');
     const script = !data.length || data[0].error_message  || data[0].status == 'OVER_QUERY_LIMIT' ? false : '<script>var timeout = setTimeout("location.reload(true);",10000);</script>';
-    debugLog(script);
+    logger.info(script);
     res.render('adminpro/supertools', {
       title: 'adminpro/supertools/addresses/venuesgetgeometry',
       
@@ -121,9 +121,9 @@ router.get('/venuesgetgeometry', (req, res) => {
 });
 
 router.get('/venuessetgeometry', (req, res) => {
-  debugLog(req.query.skip);
+  logger.info(req.query.skip);
   var skip = req.query.skip ? parseFloat(req.query.skip)+1 : 0;
-  debugLog(skip);
+  logger.info(skip);
   venuessetgeometry(req, res, skip, cb = (data) => {
     res.render('adminpro/supertools', {
       title: 'adminpro/supertools/addresses/venuessetgeometry',
@@ -136,13 +136,13 @@ router.get('/venuessetgeometry', (req, res) => {
 });
 
 const setgeometry = (req, res, s, cb) => {
-  debugLog(s);
+  logger.info(s);
   AddressDB.find({status: "OK"}).
   skip(s).
   limit(100).
   sort({"country": 1, "locality": 1}).
   exec((err, addressesA) => {
-    debugLog(addressesA);
+    logger.info(addressesA);
     if (addressesA.length) {
       let conta = 0;
       addressesA.forEach((element, index) => {
@@ -154,8 +154,8 @@ const setgeometry = (req, res, s, cb) => {
           if (data.length) {
             data.forEach ((user, indexsave) => {
               data[indexsave].addresses.forEach ((useraddress, indexaddress) => {
-                debugLog('addresssave pre');
-                debugLog(data[indexsave].addresses);
+                logger.info('addresssave pre');
+                logger.info(data[indexsave].addresses);
                 if (addressesA[index].locality && data[indexsave].addresses[indexaddress].country == addressesA[index].country && addressesA[index].locality == data[indexsave].addresses[indexaddress].locality) {
                   data[indexsave].addresses[indexaddress].country = addressesA[index].country;
                   data[indexsave].addresses[indexaddress].locality = addressesA[index].locality;
@@ -168,17 +168,17 @@ const setgeometry = (req, res, s, cb) => {
                   data[indexsave].addresses[indexaddress].formatted_address = addressesA[index].formatted_address;
                 }
               });
-              debugLog('addresssave after');
-              debugLog(data[indexsave].addresses);
+              logger.info('addresssave after');
+              logger.info(data[indexsave].addresses);
               data[indexsave].save((err, todo) => {
                 if (err) {
-                  debugLog('addresssave error');
+                  logger.info('addresssave error');
                 } else {
-                  debugLog('addresssave OK');
+                  logger.info('addresssave OK');
                 }
                 conta++;
-                debugLog('conta '+conta);
-                debugLog('data.length + addressesA.length '+(data.length + addressesA.length - 1));
+                logger.info('conta '+conta);
+                logger.info('data.length + addressesA.length '+(data.length + addressesA.length - 1));
                 if (conta === data.length + addressesA.length - 1 ) {
                   cb(data);
                 }
@@ -206,14 +206,14 @@ const getgeometry = (req, res, cb) => {
     if (addressesA.length) {
       let conta = 0;
       addressesA.forEach((element, index) => {
-        debugLog("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+(element.locality ? element.locality+',' : '')+','+element.country);
+        logger.info("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+(element.locality ? element.locality+',' : '')+','+element.country);
         axios.get("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+encodeURIComponent((element.locality ? element.locality+',' : '')+element.country))
         .then((body) => {
           conta++;
           try {
-            debugLog("ADDRESS try");
+            logger.info("ADDRESS try");
             let json = JSON.parse(body.data);
-            debugLog(json.results[0].address_components);
+            logger.info(json.results[0].address_components);
             if (json.results.length) {
               addressesA[index].formatted_address = json.results[0].formatted_address;
               addressesA[index].status = json.status;
@@ -231,18 +231,18 @@ const getgeometry = (req, res, cb) => {
             }
             AddressDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
               if (err) {
-                debugLog(err);
+                logger.info(err);
               } else {
                 AddressDB.find({_id: addressesA[index]._id}).
                 then(function(resres) {
                   if (err) {
-                    debugLog(err);
+                    logger.info(err);
                   } else {
                     allres = allres.concat(resres);
                   }
-                  debugLog("update end");
+                  logger.info("update end");
                   if (conta === addressesA.length) {
-                    debugLog("update end");
+                    logger.info("update end");
                     cb(allres);
                   }
               });
@@ -250,19 +250,19 @@ const getgeometry = (req, res, cb) => {
             });
           } catch(e) {
             const error = JSON.parse(body);
-            debugLog("ADDRESS catch");
-            debugLog(error);
+            logger.info("ADDRESS catch");
+            logger.info(error);
 
             if (error.status == "ZERO_RESULTS" || error.status == "INVALID_REQUEST") {
               addressesA[index].status = error.status;
               AddressDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
                 if (err) {
-                  debugLog(err);
+                  logger.info(err);
                 } else {
                   AddressDB.find({_id: addressesA[index]._id}).
                   then(function(resres) {
                     if (err) {
-                      debugLog(err);
+                      logger.info(err);
                     } else {
                       allres = allres.concat(resres);
                     }
@@ -273,7 +273,7 @@ const getgeometry = (req, res, cb) => {
                 }
               });
             } else {
-              //debugLog(JSON.parse(body));
+              //logger.info(JSON.parse(body));
               allres = allres.concat([error]);
               if (conta === addressesA.length) {
                 cb(allres);
@@ -281,7 +281,7 @@ const getgeometry = (req, res, cb) => {
             }
           }
         }, (error) => {
-          debugLog(error);
+          logger.info(error);
         });
         /* UPDATE USERS
                 if (json.results[0].geometry.location) {
@@ -294,13 +294,13 @@ const getgeometry = (req, res, cb) => {
                       //elementsave.addresses.forEach((addresssave, indexaddress) => {
                         if (data[indexsave].addresses[indexaddress].country == addressesA[index].newAddress.country && addressesA[index].localityOld.indexOf(data[indexsave].addresses[indexaddress].locality)!==-1) {
                           data[indexsave].addresses[indexaddress] = addressesA[index].newAddress;
-                          debugLog('addresssave');
-                          debugLog(data[indexsave].addresses[indexaddress]);
+                          logger.info('addresssave');
+                          logger.info(data[indexsave].addresses[indexaddress]);
                           data[indexsave].save((err, todo) => {
                             if (err) {
-                              debugLog('addresssave error');
+                              logger.info('addresssave error');
                             } else {
-                              debugLog('addresssave OK');
+                              logger.info('addresssave OK');
                             }
                           });
                         }
@@ -343,7 +343,7 @@ const showall = (req, res, save, cb) => {
       let create = [];
 
       for (const item in data) {
-        debugLog(data[item].slug);
+        logger.info(data[item].slug);
         for (const address in data[item].addresses) {
           const country = data[item].addresses[address].country;
           const localityOld = data[item].addresses[address].locality;
@@ -356,7 +356,7 @@ const showall = (req, res, save, cb) => {
 
           /*if (country && typeof addresses[country] === 'undefined') {
             addresses[country] = {};
-            //debugLog('country '+addresses[country].indexOf(locality));
+            //logger.info('country '+addresses[country].indexOf(locality));
           }
           */
           //if (locality && addresses[country].indexOf(locality) === -1) {
@@ -370,7 +370,7 @@ const showall = (req, res, save, cb) => {
               } else {
                 addressOKobj[country+"_"+locality].status = 'TO ADD';
               }
-              //debugLog(country);
+              //logger.info(country);
               //addresses[country].sort();
             } else if(addressOKobj[country+"_"+locality].localityOld.indexOf(localityOld) === -1) {
               addressOKobj[country+"_"+locality].localityOld.push(localityOld);
@@ -401,11 +401,11 @@ const showall = (req, res, save, cb) => {
       if (save) {
         for (let item in create) {
           AddressDB.create(create[item], function(err, res) {
-            debugLog("createcreatecreate ");
-            debugLog(create[item]);
-            debugLog("salvatoooooo ");
-            debugLog(err);
-            debugLog(res);
+            logger.info("createcreatecreate ");
+            logger.info(create[item]);
+            logger.info("salvatoooooo ");
+            logger.info(err);
+            logger.info(res);
           });
         }
         create.sort(function(a, b) {
@@ -440,11 +440,11 @@ const showall = (req, res, save, cb) => {
 
       import request from "axios";
       addressesA.forEach((element, index) => {
-        debugLog("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+element.newAddress.locality+','+element.newAddress.country);
+        logger.info("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+element.newAddress.locality+','+element.newAddress.country);
         request.get("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+element.newAddress.locality+','+element.newAddress.country, (error, response, body) => {
-          debugLog(error);
+          logger.info(error);
           if (error) {
-            debugLog(error);
+            logger.info(error);
           } else {
             try {
               let json = JSON.parse(body);
@@ -461,13 +461,13 @@ const showall = (req, res, save, cb) => {
                       //elementsave.addresses.forEach((addresssave, indexaddress) => {
                         if (data[indexsave].addresses[indexaddress].country == addressesA[index].newAddress.country && addressesA[index].localityOld.indexOf(data[indexsave].addresses[indexaddress].locality)!==-1) {
                           data[indexsave].addresses[indexaddress] = addressesA[index].newAddress;
-                          debugLog('addresssave');
-                          debugLog(data[indexsave].addresses[indexaddress]);
+                          logger.info('addresssave');
+                          logger.info(data[indexsave].addresses[indexaddress]);
                           data[indexsave].save((err, todo) => {
                             if (err) {
-                              debugLog('addresssave error');
+                              logger.info('addresssave error');
                             } else {
-                              debugLog('addresssave OK');
+                              logger.info('addresssave OK');
                             }
                           });
                         }
@@ -477,8 +477,8 @@ const showall = (req, res, save, cb) => {
                 }
               }
             } catch(e) {
-              debugLog(error);
-              debugLog(body);
+              logger.info(error);
+              logger.info(body);
             }
           }
           if (index === addressesA.length-1) {
@@ -505,18 +505,18 @@ const usersdbcheck = (req, res, cb) => {
 
 const venuesdbcheck = (req, res, cb) => {
   const q = req.query.q ? {status: req.query.q} : {};
-  debugLog(q);
+  logger.info(q);
   VenueDB.find(q).
   sort('name').
   exec((err, addresses) => {
-    debugLog(q);
+    logger.info(q);
     cb(addresses);
   });
 };
 
 const venuesdbimport = (req, res, cb) => {
   const q = req.query.q ? {status: req.query.q} : {};
-  debugLog(q);
+  logger.info(q);
   Event.find({"schedule.venue":{$exists: true}}).
   sort('name').
   exec((err, e) => {
@@ -526,20 +526,20 @@ const venuesdbimport = (req, res, cb) => {
         if (e[a].schedule[b].venue && e[a].schedule[b].venue.location && e[a].schedule[b].venue.name) {
           var loc = JSON.parse(JSON.stringify(e[a].schedule[b].venue.location));
           loc.name = e[a].schedule[b].venue.name;
-          debugLog(loc);
+          logger.info(loc);
           addresses.push(loc);
         }
       }  
     }
     VenueDB.insertMany(addresses, { ordered: false }, (err) => {
-      debugLog(err);
+      logger.info(err);
       cb(addresses);
     });
   });
 };
 
 const venuesgetgeometry = (req, res, cb) => {
-  debugLog("venuesgetgeometry");
+  logger.info("venuesgetgeometry");
   let allres = [];
   //AddressDB.find({country_new: {$exists: false}, status: {$not:{$in: ['OK', 'CHECK', 'ZERO_RESULTS', 'INVALID_REQUEST']}}}).
   //AddressDB.find({status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
@@ -551,29 +551,29 @@ const venuesgetgeometry = (req, res, cb) => {
     if (addressesA.length) {
       let conta = 0;
       addressesA.forEach((element, index) => {
-        debugLog("S");
-        debugLog(element);
-        debugLog("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+(element.name ? element.name+',' : '')+(element.route_new ? element.route_new+',' : '')+(element.street_number_new ? element.street_number_new+',' : '')+(element.locality ? element.locality+',' : '')+element.country);
+        logger.info("S");
+        logger.info(element);
+        logger.info("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+(element.name ? element.name+',' : '')+(element.route_new ? element.route_new+',' : '')+(element.street_number_new ? element.street_number_new+',' : '')+(element.locality ? element.locality+',' : '')+element.country);
         axios.get("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+encodeURIComponent((element.name ? element.name+',' : '')+(element.route ? element.route+',' : '')+(element.street_number ? element.street_number+',' : '')+(element.locality ? element.locality+',' : '')+element.country))
         .then((b) => {
-          debugLog("axiosaxiosaxiosaxios");
-          debugLog(error);
+          logger.info("axiosaxiosaxiosaxios");
+          logger.info(error);
             try {
-              debugLog("ADDRESS try");
+              logger.info("ADDRESS try");
               let eee = JSON.parse(b).results[0];
-              debugLog(process.env.GOOGLEMAPSAPIURLBYID+'&placeid='+eee.place_id);
+              logger.info(process.env.GOOGLEMAPSAPIURLBYID+'&placeid='+eee.place_id);
               axios.get(process.env.GOOGLEMAPSAPIURLBYID+'&placeid='+eee.place_id)
               .then((body) => {
-                debugLog("axiosaxiosaxiosaxios");
-                //debugLog(element);
-                //debugLog(error);
-                //debugLog(body);
+                logger.info("axiosaxiosaxiosaxios");
+                //logger.info(element);
+                //logger.info(error);
+                //logger.info(body);
                 conta++;
                 try {
-                  debugLog("ADDRESS try");
+                  logger.info("ADDRESS try");
                   let json = JSON.parse(body.data);
                   if (json.result) {
-                    debugLog(json.result.address_components);
+                    logger.info(json.result.address_components);
                     addressesA[index].name_new = json.result.name;
                     addressesA[index].formatted_address = json.result.formatted_address;
                     addressesA[index].status = json.status;
@@ -589,26 +589,26 @@ const venuesgetgeometry = (req, res, cb) => {
                     }
                     addressesA[index].geometry_new = json.result.geometry.location;
                     if (!addressesA[index].geometry && addressesA[index].geometry_new) addressesA[index].geometry = addressesA[index].geometry_new
-                    debugLog("addressesA[index]");
-                    debugLog(addressesA[index]);
+                    logger.info("addressesA[index]");
+                    logger.info(addressesA[index]);
                   } else {
                     addressesA[index].formatted_address = "";
                     addressesA[index].status = json.status;
                   }
                   VenueDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
                     if (err) {
-                      debugLog(err);
+                      logger.info(err);
                     } else {
                       VenueDB.find({_id: addressesA[index]._id}).
                       then(function(resres) {
                         if (err) {
-                          debugLog(err);
+                          logger.info(err);
                         } else {
                           allres = allres.concat(resres);
                         }
-                        debugLog("update end");
+                        logger.info("update end");
                         if (conta === addressesA.length) {
-                          debugLog("update end");
+                          logger.info("update end");
                           cb(allres);
                         }
                       });
@@ -616,8 +616,8 @@ const venuesgetgeometry = (req, res, cb) => {
                   });
                 } catch(e) {
                   const error = JSON.parse(body);
-                  debugLog("ADDRESS catch");
-                  debugLog(error);
+                  logger.info("ADDRESS catch");
+                  logger.info(error);
                   cb([{error_message: error}]);
                 }
               });    
@@ -626,7 +626,7 @@ const venuesgetgeometry = (req, res, cb) => {
               cb([{error_message: error}]);
             }
         }, (error) => {
-          debugLog(error);
+          logger.info(error);
           cb([{error_message: error}]);
         });
       });  
@@ -637,13 +637,13 @@ const venuesgetgeometry = (req, res, cb) => {
 };
 
 const venuessetgeometry = (req, res, s, cb) => {
-  debugLog(s);
+  logger.info(s);
   VenueDB.find({status: "OK"}).
   skip(s).
   limit(10).
   sort({"name": 1, "country": 1, "locality": 1}).
   exec((err, addressesA) => {
-    debugLog(addressesA);
+    logger.info(addressesA);
     if (addressesA.length) {
       let conta = 0;
       addressesA.forEach((element, index) => {
@@ -656,8 +656,8 @@ const venuessetgeometry = (req, res, s, cb) => {
             data.forEach ((user, indexsave) => {
               data[indexsave].schedule.forEach ((useraddress, indexaddress) => {
                 if (data[indexsave].schedule[indexaddress].venue.location.country == addressesA[index].country && addressesA[index].locality == data[indexsave].schedule[indexaddress].venue.location.locality) {
-                  debugLog('addresssave pre');
-                  debugLog(data[indexsave].schedule[indexaddress].venue);
+                  logger.info('addresssave pre');
+                  logger.info(data[indexsave].schedule[indexaddress].venue);
                   data[indexsave].schedule[indexaddress].venue.name = addressesA[index].name;
                   data[indexsave].schedule[indexaddress].venue.location.postal_code = addressesA[index].postal_code_new;
                   data[indexsave].schedule[indexaddress].venue.location.street_number = addressesA[index].street_number_new;
@@ -666,19 +666,19 @@ const venuessetgeometry = (req, res, s, cb) => {
                   data[indexsave].schedule[indexaddress].venue.location.locality = addressesA[index].locality;
                   data[indexsave].schedule[indexaddress].venue.location.geometry = addressesA[index].geometry;
                   data[indexsave].schedule[indexaddress].venue.location.formatted_address = addressesA[index].formatted_address;
-                  debugLog('addresssave after');
-                  debugLog(data[indexsave].schedule[indexaddress].venue);
+                  logger.info('addresssave after');
+                  logger.info(data[indexsave].schedule[indexaddress].venue);
                 }
               });
               data[indexsave].save((err, todo) => {
                 if (err) {
-                  debugLog('addresssave error');
+                  logger.info('addresssave error');
                 } else {
-                  debugLog('addresssave OK');
+                  logger.info('addresssave OK');
                 }
                 conta++;
-                debugLog('conta '+conta);
-                debugLog('data.length + addressesA.length '+(data.length + addressesA.length - 1));
+                logger.info('conta '+conta);
+                logger.info('data.length + addressesA.length '+(data.length + addressesA.length - 1));
                 if (conta === data.length + addressesA.length - 1 ) {
                   cb(data);
                 }
@@ -688,8 +688,8 @@ const venuessetgeometry = (req, res, s, cb) => {
             addressesA[index].status = "NOT IN USE";
             addressesA[index].save((err, todo) => {
               conta++;
-              debugLog('conta '+conta);
-              debugLog('data.length + addressesA.length '+(data.length + addressesA.length - 1));
+              logger.info('conta '+conta);
+              logger.info('data.length + addressesA.length '+(data.length + addressesA.length - 1));
               if (conta === data.length + addressesA.length - 1 ) {
                 cb(data);
               }

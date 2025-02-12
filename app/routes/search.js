@@ -9,7 +9,7 @@ router.use('/', (req, res) => {
 });
 
 /*
-import { info, debugLog, error } from '../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
 const elasticsearch = require('../utilities/elasticsearch');
 const _ = require('lodash');
@@ -36,17 +36,17 @@ router.use('/:type?', ({ params, query }, res) => {
     q.type = params.type;
   }
   
-  debugLog('Search with the following query', JSON.stringify(q));
+  logger.info('Search with the following query', JSON.stringify(q));
   esClient.search(q, (err, results) => {
     if (err) {
-      debugLog('Search returned this error:', err.message);
+      logger.info('Search returned this error:', err.message);
       res.render('search', {
         title: '😱 – Oh noo!',
         subtitle: __('Search is currently unavailable…'),
         searchAvailable: false
       });
     } else {
-      debugLog('Results', results.hits.hits);
+      logger.info('Results', results.hits.hits);
       res.render('search', {
         title: __('Results'),
         data: results.hits.hits,

@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 
 const Vjtv = mongoose.model('Vjtv');
 
-import { info, debugLog, error } from '../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 
 
 router.get('/', (req, res) => {
@@ -23,16 +23,16 @@ router.get('/post/:day', (req, res) => {
 });
 
 router.getVjtvPost = (req, res) => {
-  debugLog("getprogram by date");
+  logger.info("getprogram by date");
   //req.body.month = "2020-03";
-  debugLog(req.params);
+  logger.info(req.params);
   if(req.params.day) {
     var pieces = req.params.day.split("-");
     var date = new Date(Date.UTC(parseInt(pieces[0]), parseInt(pieces[1])-1, parseInt(pieces[2]), 0, 0,0,0));
   } else {
     var date = new Date();
   }
-  debugLog(date);
+  logger.info(date);
   // 1 Month
   //var start = new Date(new Date(date.getFullYear(), date.getMonth(), 1, 0, 0,0,0).getTime()+offset);
   //var end = new Date(new Date(date.getFullYear(), date.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset);
@@ -49,8 +49,8 @@ router.getVjtvPost = (req, res) => {
   var start = date;
   var end = new Date(date.getTime()+day);
 
-  debugLog(start);
-  debugLog(end);
+  logger.info(start);
+  logger.info(end);
   Vjtv
   .find({programming: { $lt: end, $gt: start}})
   //.select(select)

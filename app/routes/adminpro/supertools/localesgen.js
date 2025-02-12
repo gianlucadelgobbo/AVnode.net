@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import jsonfile from 'jsonfile';
 import config from 'getconfig';
 
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
 
 router.get('/', (req, res) => {
@@ -45,8 +45,8 @@ router.post('/', (req, res) => {
     promises
   ).then( (resultsPromise) => {
     setTimeout(function() {
-      debugLog('resultsPromise');
-      debugLog(resultsPromise);
+      logger.info('resultsPromise');
+      logger.info(resultsPromise);
       res.render('adminpro/supertools/localesgen/index', {
         title: 'Locales Generator',
         currentUrl: req.originalUrl,

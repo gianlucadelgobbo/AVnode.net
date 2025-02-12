@@ -8,7 +8,7 @@ block content
     ol
       each item, index in data
         if !item.exists
-          li!="file: "+global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+          li!="file: "+config.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.mkdir
               - mkdir.push(item.mkdir)
             if item.find
@@ -21,27 +21,27 @@ block content
             if item.imageFormats
               each image, format in item.imageFormats
                 !="<br />"
-                !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+                !=format+": "+config.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
     h3="MISSING FORMATS"
     ol
       each item, index in data
         if item.exists && Object.values(item.imageFormatsExists).indexOf(false)!=-1
           li
-            !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+            !=config.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.imageFormats
               each image, format in item.imageFormats
                 !="<br />"
-                !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+                !=format+": "+config.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
     h3="FILES OK"
     ol
       each item, index in data
         if item.exists && Object.values(item.imageFormatsExists).indexOf(false)==-1
           li
-            !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+            !=config.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.imageFormats
               each image, format in item.imageFormats
                 !="<br />"
-                !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+                !=format+": "+config.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
     pre
       !=mkdir.join("\n")
     pre

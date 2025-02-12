@@ -21,27 +21,27 @@ block content
           !="<br />"
           !="File: "
           if item.file 
-            !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+            !=config.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
           else
             !='<span class="badge badge-danger">MISSING</span>'
           !="<br />"
           !="Original: "
           if item.original 
-            !=global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+            !=config.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
           else
             !='<span class="badge badge-danger">MISSING</span>'
 
           !="<br />"
           !="Preview: "
           if item.preview
-            !=global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+            !=config.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
           else
             !='<span class="badge badge-danger">MISSING</span>'
 
           if item.imageFormats
             each image, format in item.imageFormats
               !="<br />"
-              !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              !=format+": "+config.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
   - var mkdir = []
   if data.length
     each item, index in data

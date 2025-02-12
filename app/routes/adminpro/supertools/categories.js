@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 const Category = mongoose.model('Category');
 import config from 'getconfig';
 
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
 
 router.unflatten = function( array, parent, tree ){
@@ -13,10 +13,10 @@ router.unflatten = function( array, parent, tree ){
   parent = typeof parent !== 'undefined' ? parent : { _id: 0 };
 
   var children = array.filter(child => child.ancestor == parent._id || !child.ancestor);
-  debugLog("children");
-  debugLog(children);
-  debugLog("parent");
-  debugLog(parent);
+  logger.info("children");
+  logger.info(children);
+  logger.info("parent");
+  logger.info(parent);
 
   if( children.length!==0  ){
       if( parent._id == 0 ){
@@ -25,11 +25,11 @@ router.unflatten = function( array, parent, tree ){
          parent['children'] = children;
       }
       for(let child in children){ 
-        debugLog(child);
+        logger.info(child);
         router.unflatten( array, child ) 
       }                    
   }
-  debugLog(tree);
+  logger.info(tree);
 
   return tree;
 }

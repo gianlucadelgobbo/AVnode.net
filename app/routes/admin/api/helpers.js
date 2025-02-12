@@ -25,7 +25,7 @@ const Models = {
   'AddressDB': mongoose.models.AddressDB
 };
 
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 import { countries as defaultCountries } from 'countries-list';
 const allCountries = defaultCountries;
 const allLanguages = defaultCountries;
@@ -65,24 +65,24 @@ router.getLanguages = (req, res) => {
 }
 
 /* router.setStatsAndActivity = function(query) {
-  debugLog('setStatsAndActivity');
-  debugLog(query);
+  logger.info('setStatsAndActivity');
+  logger.info(query);
   return new Promise(function (resolve, reject) {
     //let query = JSON.parse('{"q": '+req.body.q+'}').q;
     Models['User'].
     find(query).
     exec((err, e) => {
-      debugLog('setStatsAndActivity');
-      //debugLog(query);
-      //debugLog(e.length);
+      logger.info('setStatsAndActivity');
+      //logger.info(query);
+      //logger.info(e.length);
       var promises = [];
       for (var item=0; item<e.length; item++) promises.push(router.setStatsAndActivitySingle({_id: e[item]._id}));
       Promise.all(
         promises
       ).then( (resultsPromise) => {
         setTimeout(function() {
-          //debugLog('resultsPromise');
-          //debugLog(resultsPromise);
+          //logger.info('resultsPromise');
+          //logger.info(resultsPromise);
           resolve(resultsPromise);
         }, 1000);
       });
@@ -91,12 +91,12 @@ router.getLanguages = (req, res) => {
   });
 } */
 router.setStatsAndActivity = async function(query) {
-  debugLog('setStatsAndActivity');
-  debugLog(query);
+  logger.info('setStatsAndActivity');
+  logger.info(query);
   
   try {
     const users = await Models['User'].find(query).exec(); // Async/await version
-    debugLog('setStatsAndActivity - Users Found:', users.length);
+    logger.info('setStatsAndActivity - Users Found:', users.length);
 
     // Process each user with setStatsAndActivitySingle
     const promises = users.map(user => router.setStatsAndActivitySingle({_id: user._id}));
@@ -106,7 +106,7 @@ router.setStatsAndActivity = async function(query) {
 
     return results;
   } catch (error) {
-    debugLog('Error in setStatsAndActivity:', error);
+    logger.info('Error in setStatsAndActivity:', error);
     throw error; // Ensure error propagates
   }
 };
@@ -114,7 +114,7 @@ router.getServerpath = storage => {
   // Set Folder and create if do not exist
   const d = new Date();
   let month = d.getMonth() + 1;
-  let serverpath = `${global.appRoot}${storage}${d.getFullYear()}/`;
+  let serverpath = `${config.appRoot}${storage}${d.getFullYear()}/`;
   month = month < 10 ? "0" + month : month;
   if (!fs.existsSync(serverpath)) fs.mkdirSync(serverpath);
   serverpath += month;
@@ -152,7 +152,7 @@ router.myTrim = (str, l) => {
 };
 
 router.myExternalUrl = async function(req, cb) {
-  debugLog('myExternalUrl');
+  logger.info('myExternalUrl');
 
   // Ensure the request has a valid video external URL
   if (req.params.sez !== 'videos' || !req.body.externalurl) {
@@ -161,7 +161,7 @@ router.myExternalUrl = async function(req, cb) {
 
   try {
     const oembed = await extract(req.body.externalurl, { maxwidth: 1920, maxheight: 1080 });
-    debugLog(oembed);
+    logger.info(oembed);
 
     req.body.media = {
       externalurl: req.body.externalurl,
@@ -176,7 +176,7 @@ router.myExternalUrl = async function(req, cb) {
           const parser = new xml2js.Parser();
           parser.parseString(htmlPart, function (err, result) {
             if (err) {
-              debugLog("XML Parsing Error:", err);
+              logger.info("XML Parsing Error:", err);
               return cb(err);
             }
 
@@ -232,12 +232,12 @@ router.myExternalUrl = async function(req, cb) {
         let glacierFilename = `${uuid.v4()}.${thumbnailFile.split(".").pop()}`;
         let glacierFile = router.getServerpath("/glacier/videos_previews/") + "/" + glacierFilename;
 
-        req.body.media.preview = glacierFile.replace(global.appRoot, "");
+        req.body.media.preview = glacierFile.replace(config.appRoot, "");
 
         // Download and process the image
         router.download(oembed.thumbnail_url, glacierFile, (err) => {
           if (err) {
-            debugLog("Thumbnail Download Error:", err);
+            logger.info("Thumbnail Download Error:", err);
             return cb(err);
           }
 
@@ -246,7 +246,7 @@ router.myExternalUrl = async function(req, cb) {
             config.cpanel.videos.forms.video.components.media.config,
             (resizeErr) => {
               if (resizeErr) {
-                debugLog("Image Resize Error:", resizeErr);
+                logger.info("Image Resize Error:", resizeErr);
                 return cb(resizeErr);
               }
               cb(null);
@@ -258,22 +258,22 @@ router.myExternalUrl = async function(req, cb) {
       }
     }
   } catch (err) {
-    debugLog("oEmbed Extraction Error:", err);
+    logger.info("oEmbed Extraction Error:", err);
     cb(err);
   }
 };
 
 
 router.setStatsAndActivitySingle = async function(query) {
-  debugLog('setStatsAndActivitySingle');
-  debugLog(query);
+  logger.info('setStatsAndActivitySingle');
+  logger.info(query);
 
   try {
     const e = await Models['User'].findOne(query).exec();
     if (!e) throw new Error("User not found");
 
     let myids = [e._id];
-    debugLog('setStatsAndActivity start', myids);
+    logger.info('setStatsAndActivity start', myids);
 
     const results = await Promise.all([
       Models['User'].find({ "members": { $in: myids } }).select("_id"),
@@ -321,7 +321,7 @@ router.setStatsAndActivitySingle = async function(query) {
     ] = results;
 
     // ✅ You can now safely use these counts
-    debugLog({ lightsinstallation, mapping, vjset, workshop });
+    logger.info({ lightsinstallation, mapping, vjset, workshop });
 
     return {
       events,
@@ -386,11 +386,11 @@ router.editable = function(req, data, id) {
       meandcrews.indexOf(id.toString())!==-1 || 
       id == req.user._id || 
       (data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
-    /* debugLog(id);
-    debugLog(data);
-    if (data.users) debugLog(data.users.map((item)=>{return item._id.toString()}));
-    debugLog(meandcrews);
-    debugLog((data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
+    /* logger.info(id);
+    logger.info(data);
+    if (data.users) logger.info(data.users.map((item)=>{return item._id.toString()}));
+    logger.info(meandcrews);
+    logger.info((data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
      */
     return is_editable;
     //return false;

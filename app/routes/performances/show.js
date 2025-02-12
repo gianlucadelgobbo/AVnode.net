@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 const Model = mongoose.model('Performance');
 const section = 'performances';
 
-import { info, debugLog, error } from '../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 
 
 router.get('/', (req, res) => {

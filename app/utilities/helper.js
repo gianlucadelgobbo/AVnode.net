@@ -1,4 +1,4 @@
-import { info, debugLog, error } from './logger.js';
+import { logger, requestLogger, errorLogger } from './logger.js';
 
 const youtubeRegex = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
 
@@ -38,18 +38,18 @@ const dateFix = (date) => {
     const month = parseInt(dateA[1])-1;
     const year = parseInt(dateA[2]);
     const dateO = new Date(year,month,day,2,0,0);
-    debugLog('birthday');
-    debugLog(date);
-    debugLog(dateO);
-    debugLog("day");
-    debugLog(day);
-    debugLog(dateO.getDate());
-    debugLog("month");
-    debugLog(month);
-    debugLog(dateO.getMonth());
-    debugLog("year");
-    debugLog(year);
-    debugLog(dateO.getFullYear());
+    logger.info('birthday');
+    logger.info(date);
+    logger.info(dateO);
+    logger.info("day");
+    logger.info(day);
+    logger.info(dateO.getDate());
+    logger.info("month");
+    logger.info(month);
+    logger.info(dateO.getMonth());
+    logger.info("year");
+    logger.info(year);
+    logger.info(dateO.getFullYear());
     if (year !== dateO.getFullYear() || month !== dateO.getMonth() || day !== dateO.getDate()) {
       return false;
     } else {

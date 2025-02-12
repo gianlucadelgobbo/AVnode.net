@@ -18,7 +18,7 @@ const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
 
-import { info, debugLog, error } from './logger.js';
+import { logger, requestLogger, errorLogger } from './logger.js';
 
 var countries = [
   'Afghanistan',
@@ -210,16 +210,16 @@ for(var b=0;b<countries.length;b++){
 }
 */
 dataprovider.fetchShow = async (req, section, subsection, model, populate, select, output, cb) => {
-  /* debugLog("populate");
-  debugLog(populate);
-  debugLog("req.query");
-  debugLog(req.query);
-  debugLog("subsection");
-  debugLog(subsection);
-  debugLog("slug");
-  debugLog(req.params.slug);
-  debugLog("model");
-  debugLog(model); */
+  /* logger.info("populate");
+  logger.info(populate);
+  logger.info("req.query");
+  logger.info(req.query);
+  logger.info("subsection");
+  logger.info(subsection);
+  logger.info("slug");
+  logger.info(req.params.slug);
+  logger.info("model");
+  logger.info(model); */
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
     if (req.query.crews) {
       try {
@@ -242,10 +242,10 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         const newpopulate = populate.filter(pop => pop.path == subsection)[0].populate;
         const limit = populate.filter(pop => pop.path == subsection)[0].options.limit;
         const sort = populate.filter(pop => pop.path == subsection)[0].options.sort;
-        //debugLog("newselect");
-        //debugLog(newselect);
-        //debugLog(submodel);
-        //debugLog(sort);
+        //logger.info("newselect");
+        //logger.info(newselect);
+        //logger.info(submodel);
+        //logger.info(sort);
         //const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
         try {
           const total = await submodel.countDocuments(query);
@@ -291,13 +291,13 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
           select(select).
           exec()
           /* const res = Object.assign(select, data);
-          //debugLog(select);
-          //debugLog(Object.keys(res));
+          //logger.info(select);
+          //logger.info(Object.keys(res));
           cb(err, res, total); */
-          //debugLog("res.partnershipaaaaaaab");
+          //logger.info("res.partnershipaaaaaaab");
           if(data && data.partnerships && data.partnerships_ordered) {
             delete data.partnerships;
-            //debugLog(data.partnerships);
+            //logger.info(data.partnerships);
           }
           cb(null, data, total);
         } catch (err) {
@@ -366,7 +366,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
       if (req.params.day) {
         /*
         const date = new Date(req.params.day);
-        //debugLog(date);
+        //logger.info(date);
         select['program.schedule.date.$'] = date;
         populate.push({
           "path": "program.schedule",
@@ -497,11 +497,11 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         }
       }
     }
-    /* debugLog("BINGOOOOO");
-    debugLog(select);
-    debugLog({slug: req.params.sub ? req.params.sub : req.params.slug});
-    debugLog("model");
-    debugLog(model); */
+    /* logger.info("BINGOOOOO");
+    logger.info(select);
+    logger.info({slug: req.params.sub ? req.params.sub : req.params.slug});
+    logger.info("model");
+    logger.info(model); */
     try {
 
       const ddd = await model.
@@ -609,13 +609,13 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         res.advanced.programmenotscheduled = undefined;
       }
       if (res && res.advanced && res.advanced.performers && res.advanced.performers.performers && req.params.performer) {
-        //debugLog("BINGOOOOO");
+        //logger.info("BINGOOOOO");
         for(let a=0; a<res.advanced.performers.performers.length;a++) {
           if (res.advanced.performers.performers[a].slug===req.params.performer) {
             res.performer = res.advanced.performers.performers[a];
           }
         }
-        //debugLog(res.performer);
+        //logger.info(res.performer);
         if (res.performer) {
           //console.log("res.performer.performances")
           //console.log(res.performer.performances)
@@ -641,12 +641,12 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         }
         delete res.advanced.performers;
       }
-      //debugLog("res.partnershipaaaaaaa");
+      //logger.info("res.partnershipaaaaaaa");
       if(res && res.partnerships && res.partnerships_ordered) {
         delete res.partnerships;
-        //debugLog(res.partnerships);
+        //logger.info(res.partnerships);
       }
-      //debugLog("fetchShow END");
+      //logger.info("fetchShow END");
       cb(null, res);
       //cb(err, data);
     } catch (err) {
@@ -676,8 +676,8 @@ dataprovider.getPerformanceByIds = async (req, ids, cb) => {
 
 /* dataprovider.getEmailById = (id, cb) => {
   UserShow.findOne({'_id':id}, "email",(err, data) => {
-    //debugLog("getEmailById");  
-    //debugLog(data);  
+    //logger.info("getEmailById");  
+    //logger.info(data);  
     cb(err, data);
   });
 }; */
@@ -762,8 +762,8 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
       }
     }
   } else if (data && data.title) {
-    //debugLog("subsection");
-    //debugLog(subsection);
+    //logger.info("subsection");
+    //logger.info(subsection);
     if (subsection != "show" && !data.performer && !data.performance) {
       jsonld["@type"] = "ItemList";
       jsonld.itemListElement = [];
@@ -839,7 +839,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
         if (data.performer.social) for(let a=0;a<data.performer.social.length;a++) jsonld.sameAs.push(data.performer.social[a].url);
       }
       if (data.performer.addresses && data.performer.addresses.length) {
-        //debugLog(data.addresses);
+        //logger.info(data.addresses);
         jsonld.address = {
           "@type": "PostalAddress",
           "addressLocality": data.performer.addresses[0].locality,
@@ -849,7 +849,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
     } else if (subsection == "program" && data.performance) {
       if (data.performance.bookings && data.performance.bookings.length) {
         for(let a=0;a<data.performance.bookings.length;a++) {
-          //debugLog(data.performance.bookings[a]);
+          //logger.info(data.performance.bookings[a]);
           if(data.performance.bookings[a].event._id.toString()==data._id.toString()) {
             jsonld.startDate = data.performance.bookings[a].schedule[0].starttime;
             jsonld.location = {
@@ -992,7 +992,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
     jsonld.image = data.imageFormats.large; */
   }
 
-  //debugLog(jsonld);
+  //logger.info(jsonld);
   return jsonld;
 };
 
@@ -1028,11 +1028,11 @@ dataprovider.fetchLists = async (model, query, select, populate, limit, skip, so
     query.is_public = true;
     
     // Log the function call for debugging
-    debugLog(`FetchLists called with model: ${model.modelName}`);
+    logger.info(`FetchLists called with model: ${model.modelName}`);
 
     // Use Promises instead of callback
     const total = await model.countDocuments(query);
-    debugLog(total)
+    logger.info(total)
 
     const data = await model.find(query)
       .populate(populate)
@@ -1089,12 +1089,12 @@ dataprovider.addCat = async (req, populate, cb) => {
 
 
 dataprovider.show = (req, res, section, subsection, model) => {
-  //debugLog(section);
-  //debugLog(subsection);
-  //debugLog(config.sections[section]);
+  //logger.info(section);
+  //logger.info(subsection);
+  //logger.info(config.sections[section]);
   let populate = JSON.parse(JSON.stringify(config.sections[section][subsection].populate));
-  //debugLog("populate PRE");
-  //debugLog(populate);
+  //logger.info("populate PRE");
+  //logger.info(populate);
   dataprovider.addCat(req, populate, (populate, type) => {
     for(let item in populate) {
       if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
@@ -1129,14 +1129,14 @@ dataprovider.show = (req, res, section, subsection, model) => {
         }
       }
     }
-    //debugLog("populate AFTER");
-    //debugLog(populate[0].match);
+    //logger.info("populate AFTER");
+    //logger.info(populate[0].match);
     const select = config.sections[section][subsection].select;
     const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
 
     dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
-      //debugLog("fetchShow END");
-      //debugLog(data);
+      //logger.info("fetchShow END");
+      //logger.info(data);
       if (err || !data || data === null) {
         res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
       } else {
@@ -1163,8 +1163,8 @@ dataprovider.show = (req, res, section, subsection, model) => {
               if (locations[item]) data.locations.push(locations[item]);
             }
           }
-          //debugLog("locations");
-          //debugLog(locations);
+          //logger.info("locations");
+          //logger.info(locations);
           //data.schedule = undefined;
         }
         if (data && data.addresses && data.addresses.length) {
@@ -1272,7 +1272,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           }
         } */
         if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
-          //debugLog("fetchShow END");
+          //logger.info("fetchShow END");
           res.json(data);
           /* if (process.env.DEBUG) {
             res.render('json', {data: data});
@@ -1365,7 +1365,7 @@ dataprovider.list = (req, res, section, model) => {
         } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
           if (data.length) {
             /* var dates = data.map(item => {return item.updatedAt}).sort().reverse()[0];
-            //debugLog(dates);
+            //logger.info(dates);
             let lastmod = new Date();
             lastmod.setHours( lastmod.getHours() -2 );
             lastmod.setMinutes(0); */

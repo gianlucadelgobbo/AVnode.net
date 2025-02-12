@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 const Model = mongoose.model('Footage');
 const section = 'footage';
 
-import { info, debugLog, error } from '../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 
 
 router.get('/:filter/:sorting/:page', (req, res) => {

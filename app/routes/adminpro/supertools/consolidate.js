@@ -14,7 +14,7 @@ const Playlist = mongoose.model('Playlist');
 const Category = mongoose.model('Category');
 import config from 'getconfig';
 
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
 
 /* router.unflatten = function( array, parent, tree ){
@@ -23,10 +23,10 @@ import { info, debugLog, error } from '../../../utilities/logger.js';
   parent = typeof parent !== 'undefined' ? parent : { _id: 0 };
 
   var children = array.filter(child => child.ancestor == parent._id || !child.ancestor);
-  debugLog("children");
-  debugLog(children);
-  debugLog("parent");
-  debugLog(parent);
+  logger.info("children");
+  logger.info(children);
+  logger.info("parent");
+  logger.info(parent);
 
   if( children.length!==0  ){
       if( parent._id == 0 ){
@@ -35,11 +35,11 @@ import { info, debugLog, error } from '../../../utilities/logger.js';
          parent['children'] = children;
       }
       for(let child in children){ 
-        debugLog(child);
+        logger.info(child);
         router.unflatten( array, child ) 
       }                    
   }
-  debugLog(tree);
+  logger.info(tree);
 
   return tree;
 } */
@@ -195,7 +195,7 @@ router.post('/', (req, res) => {
   exec((err, qq) => {
     console.log(qq)
     //let query = JSON.parse('{"q": '+req.body.q+'}').q;
-    debugLog(qq);
+    logger.info(qq);
     var promises = [];
     for (item in qq) promises.push(helpers.consolidateUser(qq[item]));
     for (item in qq) promises.push(helpers.setStatsAndActivity(qq[item]));

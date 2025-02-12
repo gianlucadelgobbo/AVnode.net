@@ -22,7 +22,7 @@ import vjtv  from './vjtv/index.js';
 import emailqueue  from './emailqueue/index.js';
 import consolidate  from './supertools/consolidate.js';
 
-import { info, debugLog, error } from '../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 
 
 if (process.env.DEBUG) {
@@ -32,7 +32,7 @@ if (process.env.DEBUG) {
 }
 router.get('/', async (req, res) => {
   if (req.user.is_pro || req.user.is_admin) {
-    debugLog('/adminpro');
+    logger.info('/adminpro');
     let results = {};
     const myids = req.user.crews.concat([req.user._id.toString()]);
     try {
@@ -54,7 +54,7 @@ router.get('/', async (req, res) => {
         });
       }
     } catch (err){
-      debugLog('Some error here /adminpro');
+      logger.info('Some error here /adminpro');
     }
   } else {
     res.render('adminpro/home', {

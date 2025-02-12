@@ -12,7 +12,7 @@ const Video = mongoose.model('Video');
 const News = mongoose.model('News');
 const Gallery = mongoose.model('Gallery');
 
-import { info, debugLog, error } from '../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 
 
 router.get('/', (req, res) => {
@@ -44,12 +44,12 @@ router.get('/', (req, res) => {
         User.updateOne({_id:req.user._id},{likes:req.user.likes}, (err, raw) => {
             if (req.query.img_slug) {
                 model.updateOne({_id:req.query.id,"medias.slug": req.query.img_slug},{ $inc: { "medias.$.stats.likes": inc }}, (err, raw) => {
-                    if (err) debugLog(err);
+                    if (err) logger.info(err);
                     res.send({err:false,msg:"", status:res_send});
                 });
             } else {
                 model.updateOne({_id:req.query.id},{ $inc: { "stats.likes": inc }}, (err, raw) => {
-                    if (err) debugLog(err);
+                    if (err) logger.info(err);
                     res.send({err:false,msg:"", status:res_send});
                 });
             }

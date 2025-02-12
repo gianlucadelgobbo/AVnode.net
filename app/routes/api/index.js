@@ -20,7 +20,7 @@ const Order = mongoose.model('Order');
 const Vjtv = mongoose.model('Vjtv');
 const Emailqueue = mongoose.model('Emailqueue');
 
-import { info, debugLog, error } from '../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 
 router.get('/likes', async (req, res) => {
   let res_send = "P";
@@ -81,7 +81,7 @@ router.get('/likes', async (req, res) => {
   
     } catch (err) {
       console.error("🔥 Error in /likes route:", err);
-      debugLog(err);
+      logger.info(err);
     }
   }
 });
@@ -108,11 +108,11 @@ router.post('/emailqueue', async (req, res) => {
       const gmailer = require('../../utilities/gmailer');
       gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
         if (err) {
-          debugLog("Email sending failure");
-          debugLog(err);
+          logger.info("Email sending failure");
+          logger.info(err);
           res.json({error: true, msg: "Email sending failure", id: req.body.id, err: err});
         } else {
-          debugLog("Email sending OK");
+          logger.info("Email sending OK");
           emailqueue.messages_sent.push(emailqueue.messages_tosend[0]);
           emailqueue.messages_tosend = emailqueue.messages_tosend.splice(1, emailqueue.messages_tosend.length)
           emailqueue.save((err) => {
@@ -125,7 +125,7 @@ router.post('/emailqueue', async (req, res) => {
         }
       });
     } else {
-      debugLog("Email sending completed");
+      logger.info("Email sending completed");
       res.json({error: false, msg: "Email sending completed", id: req.body.id});
     }
   } catch (err) {
@@ -167,22 +167,22 @@ router.get('/tobeencoded/:sez', async (req, res) => {
 });
 
 router.get('/setdurationandsize/:sez/:id/', async (req, res) => {
-  debugLog('/setencodingstatus/:sez/:id/');
-  debugLog("existsSync");
+  logger.info('/setencodingstatus/:sez/:id/');
+  logger.info("existsSync");
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
   try {
     const data = await Model
     .findOne({_id:req.params.id})
     .exec();
-    debugLog(data);
-    if (fs.existsSync(global.appRoot+data.media.file)) {
-      data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
-      debugLog("ffprobe");
-      debugLog(global.appRoot+data.media.file);
+    logger.info(data);
+    if (fs.existsSync(config.appRoot+data.media.file)) {
+      data.media.filesize = fs.statSync(config.appRoot+data.media.file).size;
+      logger.info("ffprobe");
+      logger.info(config.appRoot+data.media.file);
   
       var ffprobe = require('ffprobe');
       var ffprobeStatic = require('ffprobe-static');
-      ffprobe(global.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
+      ffprobe(config.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
         if (!info || !info.streams || !info.streams.length) {
           res.json({error: "NO_STREAMS"});
         } else {
@@ -211,42 +211,42 @@ router.get('/setdurationandsize/:sez/:id/', async (req, res) => {
 });
 
 router.get('/setencodingstatus/:sez/:id/:encoding', async (req, res) => {
-  debugLog('/setencodingstatus/:sez/:id/:encoding');
-  debugLog(req.params.encoding);
+  logger.info('/setencodingstatus/:sez/:id/:encoding');
+  logger.info(req.params.encoding);
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
   if (req.params.encoding == 1) {
     try {
       const data = await Model
       .findOne({_id:req.params.id})
       .exec()
-      debugLog(data.media.original);
+      logger.info(data.media.original);
       const ext = data.media.original.substring(data.media.original.lastIndexOf(".")+1);
       data.media.file = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "/").replace("/glacier/", "/warehouse/")+"_"+ext+".mp4";
       data.media.preview = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "_previews/")+"_"+ext+".png";
       data.is_public = 1;
       data.media.encoded = req.params.encoding;
-      debugLog(global.appRoot+data.media.preview);
-      debugLog(global.appRoot+data.media.file);
-      if (fs.existsSync(global.appRoot+data.media.file)) {
-        data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
+      logger.info(config.appRoot+data.media.preview);
+      logger.info(config.appRoot+data.media.file);
+      if (fs.existsSync(config.appRoot+data.media.file)) {
+        data.media.filesize = fs.statSync(config.appRoot+data.media.file).size;
         const options = config.cpanel[req.params.sez].forms.video.components.media.config;
-        debugLog("data.media.filesize");
-        debugLog(data.media.filesize);
-        debugLog(imageUtil);
-        debugLog(imageUtil.resizer);
+        logger.info("data.media.filesize");
+        logger.info(data.media.filesize);
+        logger.info(imageUtil);
+        logger.info(imageUtil.resizer);
 
-        imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (files_resized) => {
-          debugLog("files_resized");
-          debugLog(files_resized);
+        imageUtil.resizer([{path:config.appRoot+data.media.preview}], options, (files_resized) => {
+          logger.info("files_resized");
+          logger.info(files_resized);
           if (files_resized.map(item => {return item.err ? true : false}).indexOf(true)!==-1) {
-            debugLog("Image resize ERROR: info undefined");
+            logger.info("Image resize ERROR: info undefined");
             res.json(files_resized);
           } else {
             data.media.encoded = req.params.encoding;
             data.media.rencoded = req.params.encoding;
             var ffprobe = require('ffprobe');
             var ffprobeStatic = require('ffprobe-static');
-            ffprobe(global.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
+            ffprobe(config.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
               if (!info || !info.streams || !info.streams.length) {
                 res.json({error: "NO_STREAMS"});
               } else {
@@ -288,24 +288,24 @@ var corsOptions = {
 }
 
 router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
-  debugLog("updateTransation");
-  debugLog(req.body);
+  logger.info("updateTransation");
+  logger.info(req.body);
 
   const gmailer = require('../../utilities/gmailer');
   Order
   .create(req.body, async (err, data) => {
-    debugLog("req.body.event");
-    debugLog(req.body);
+    logger.info("req.body.event");
+    logger.info(req.body);
     if(!err) {
       if (req.body.event) {
-        debugLog(req.body.event);
+        logger.info(req.body.event);
         try {
           const event = await Event
           .findOne({"_id":req.body.event})
           .select({title:1, organizationsettings:1})
           .exec();
-          debugLog("event.organizationsettings.email");
-          debugLog(event.organizationsettings.email);
+          logger.info("event.organizationsettings.email");
+          logger.info(event.organizationsettings.email);
           const auth = {
             user: event.organizationsettings.emailuser,
             pass: event.organizationsettings.emailpassword
@@ -323,21 +323,21 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
             subject: __("Payment Confirm") + " | " + event.title,
             text: email
           };
-          debugLog("pre gMailer")
-          debugLog(auth)
-          debugLog(mail)
+          logger.info("pre gMailer")
+          logger.info(auth)
+          logger.info(mail)
           gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-            /* debugLog("gMailer");
-            debugLog(err);
-            debugLog("gMailer");
-            debugLog(result);
+            /* logger.info("gMailer");
+            logger.info(err);
+            logger.info("gMailer");
+            logger.info(result);
             res.json({res:result}); */
             if (err) {
-              debugLog("Email sending failure");
-              debugLog(err);
+              logger.info("Email sending failure");
+              logger.info(err);
               res.json({error: true, msg: "Email sending failure", err: err});
             } else {
-              debugLog("Email sending OK");
+              logger.info("Email sending OK");
               res.json({error: false, msg: "Email sending success"});
             }
           });
@@ -352,7 +352,7 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
 });
 
 router.get('/getprogramsdays', async (req, res) => {
-  debugLog("getprograms");
+  logger.info("getprograms");
   try {
     const days = await Vjtv.
     aggregate([
@@ -369,16 +369,16 @@ router.get('/getprogramsdays', async (req, res) => {
 });
 
 router.get('/getprograms', async (req, res) => {
-  debugLog("getprograms");
+  logger.info("getprograms");
   //req.body.month = "2020-03";
-  debugLog(req.query);
+  logger.info(req.query);
   if(req.query.day) {
     var pieces = req.query.day.split("-");
     var date = new Date(Date.UTC(parseInt(pieces[0]), parseInt(pieces[1])-1, parseInt(pieces[2]), 0, 0,0,0));
   } else {
     var date = new Date();
   }
-  debugLog(date);
+  logger.info(date);
   // 1 Month
   //var start = new Date(new Date(date.getFullYear(), date.getMonth(), 1, 0, 0,0,0).getTime()+offset);
   //var end = new Date(new Date(date.getFullYear(), date.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset);
@@ -395,8 +395,8 @@ router.get('/getprograms', async (req, res) => {
   var start = date;
   var end = new Date(date.getTime()+day);
 
-  debugLog(start);
-  debugLog(end);
+  logger.info(start);
+  logger.info(end);
   try {
     const results = await Vjtv
     .find({programming: { $lt: end, $gt: start}})
@@ -454,15 +454,15 @@ router.get('/getprograms', async (req, res) => {
 });
   
 router.get('/getprograms2', async (req, res) => {
-  debugLog("getprograms2");
+  logger.info("getprograms2");
   //req.body.month = "2020-03";
-  debugLog(req.query);
+  logger.info(req.query);
   if(req.query.start && req.query.end) {
     var start = new Date(new Date(req.query.start).getTime()-(new Date(req.query.start).getTimezoneOffset()*60*1000));
     var end = new Date(new Date(req.query.end).getTime()-(new Date(req.query.end).getTimezoneOffset()*60*1000));
   } else {
     var date = new Date();
-    debugLog(date);
+    logger.info(date);
     // 1 Month
     //var start = new Date(new Date(date.getFullYear(), date.getMonth(), 1, 0, 0,0,0).getTime()+offset);
     //var end = new Date(new Date(date.getFullYear(), date.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset);
@@ -480,8 +480,8 @@ router.get('/getprograms2', async (req, res) => {
     var end = new Date(date.getTime()+day);
   }
 
-  debugLog(start);
-  debugLog(end);
+  logger.info(start);
+  logger.info(end);
   try {
     const results = await Vjtv
     .find({programming: { $lt: end, $gt: start}})
@@ -521,8 +521,8 @@ router.get('/getprograms2', async (req, res) => {
 });
     
 router.get('/getcurrentprogram', async (req, res) => {
-  debugLog("getcurrentprogram");
-  debugLog(req.query);
+  logger.info("getcurrentprogram");
+  logger.info(req.query);
   if(req.query.day) {
     var pieces = req.query.day.split("-");
     var date = new Date(Date.UTC(parseInt(pieces[0]), parseInt(pieces[1])-1, parseInt(pieces[2]), 0, 0,0,0));

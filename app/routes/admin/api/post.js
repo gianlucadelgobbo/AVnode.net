@@ -26,25 +26,25 @@ const Models = {
   'Video': mongoose.model('Video'),
   'Order': mongoose.model('Order')
 }
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
 
 export const postData = (req, res) => {
-  debugLog("postData");
-  debugLog("req.body");
-  debugLog('');
-  debugLog(req.body);
-  debugLog("req.params");
-  debugLog(req.params);
+  logger.info("postData");
+  logger.info("req.body");
+  logger.info('');
+  logger.info(req.body);
+  logger.info("req.params");
+  logger.info(req.params);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms.new) {
-    debugLog('BINGO');
+    logger.info('BINGO');
     let select = Object. assign({}, config.cpanel[req.params.sez].forms.new.select);
     let selectaddon = config.cpanel[req.params.sez].forms.new.selectaddon;
     let post = {};
 
     helpers.myExternalUrl(req, (err) => {
-      debugLog("myExternalUrl result");
-      debugLog(req.body);
+      logger.info("myExternalUrl result");
+      logger.info(req.body);
       if (req.params.sez == "videos" && req.body.media && req.body.media.externalurl) {
         select.image = 1;
         select.media = 1;
@@ -53,12 +53,12 @@ export const postData = (req, res) => {
       }
       helpers.mySlugify(Models[config.cpanel[req.params.sez].model], req.body.stagename ? req.body.stagename : req.body.title, (slug) => {
         req.body.slug = slug;
-        debugLog("slug");
-        debugLog(slug);
+        logger.info("slug");
+        logger.info(slug);
         //for (const item in select) if(req.body[item]) post[item] = req.body[item];
         // db.users.updateOne({slug:'gianlucadelgobbo'},{$unset: {oldpassword:""}});
-        debugLog('select');
-        debugLog(select);
+        logger.info('select');
+        logger.info(select);
         for (const item in select) if(req.body[item]) {
           post[item] = req.body[item];
         }
@@ -74,14 +74,14 @@ export const postData = (req, res) => {
         if (req.params.ancestor && req.params.id) {
           post[req.params.ancestor] = [req.params.id];
         }
-        debugLog('postpostpostpostpostpost');
-        debugLog(post);
+        logger.info('postpostpostpostpostpost');
+        logger.info(post);
   
         Models[config.cpanel[req.params.sez].model]
         .create(post, (err, data) => {
           if (!err) {
-            debugLog('create success');
-            debugLog(data);
+            logger.info('create success');
+            logger.info(data);
             var id;
             if (req.params.sez==="partners") {
               id = post.partner_owner[0].owner;
@@ -90,8 +90,8 @@ export const postData = (req, res) => {
             }
             Models['User']
             .findById(id, req.params.sez, (err, user) => {
-              debugLog('findById user');
-              debugLog(user);
+              logger.info('findById user');
+              logger.info(user);
               if (!err) {
                 if (user) {
                   if (req.params.sez==="partners") {
@@ -102,16 +102,16 @@ export const postData = (req, res) => {
                     });                
                   } else {
                     user[req.params.sez].push(data._id);
-                    debugLog('save user');
-                    debugLog(user);
+                    logger.info('save user');
+                    logger.info(user);
                   }
                   user.save((err) => {
                     if (err) {
-                      debugLog('save user err');
-                      debugLog(err);
+                      logger.info('save user err');
+                      logger.info(err);
                       res.status(400).send(err);
                     } else {
-                      debugLog('save user success 1');
+                      logger.info('save user success 1');
                       if (req.params.ancestor && req.params.id) {
                         Models[config.cpanel[req.params.ancestor].model]
                         .findById(req.params.id)
@@ -119,14 +119,14 @@ export const postData = (req, res) => {
                           ancestor[req.params.sez].push(data._id);
                           ancestor.save((err) => {
                             if (err) {
-                              debugLog('save ancestor err');
-                              debugLog(err);
+                              logger.info('save ancestor err');
+                              logger.info(err);
                               res.status(400).send(err);
                             } else {
-                              debugLog("save ancestor success");
-                              debugLog(data);
-                              debugLog("stocazzooooooooooo");
-                              debugLog(data);
+                              logger.info("save ancestor success");
+                              logger.info(data);
+                              logger.info("stocazzooooooooooo");
+                              logger.info(data);
                               var cloneData = JSON.parse(JSON.stringify(data));
 
                               if (req.body.admitted) cloneData.admitted = req.body.admitted
@@ -135,12 +135,12 @@ export const postData = (req, res) => {
                           });
                         });
                       } else {
-                        debugLog("stocazzo");
-                        debugLog(req.body.admitted);
+                        logger.info("stocazzo");
+                        logger.info(req.body.admitted);
                         var cloneData = JSON.parse(JSON.stringify(data));
 
                         if (req.body.admitted) cloneData.admitted = req.body.admitted;
-                        debugLog(cloneData);
+                        logger.info(cloneData);
                         res.json(cloneData);                    
                       }
                       /* select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
@@ -156,8 +156,8 @@ export const postData = (req, res) => {
                         } else {
                           let send = {_id: data._id};
                           for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
-                          debugLog('sendsendsendsendsendsendsend');
-                          debugLog(send);
+                          logger.info('sendsendsendsendsendsendsend');
+                          logger.info(send);
                           res.json(send);
                         }
                       }); */
@@ -171,8 +171,8 @@ export const postData = (req, res) => {
               }
             });
           } else {
-            debugLog('create err');
-            debugLog(err);
+            logger.info('create err');
+            logger.info(err);
             res.status(400).send(err);
           }
         });
@@ -186,7 +186,7 @@ export const postData = (req, res) => {
 }
 
 export const cancelSubscription = (req, res) => {
-  debugLog(req.body);
+  logger.info(req.body);
   var err = [];
   Models.Program
   .findOne({_id: req.body.id/* , members:req.user.id */},'_id, event performance', (err, sub) => {
@@ -194,42 +194,42 @@ export const cancelSubscription = (req, res) => {
       err.push(err);
       res.json(err);
     } else {
-      debugLog("sub.event");
-      debugLog(sub.event);
-      debugLog("sub.performance");
-      debugLog(sub.performance);
+      logger.info("sub.event");
+      logger.info(sub.event);
+      logger.info("sub.performance");
+      logger.info(sub.performance);
       Models.Event
       .findOne({_id: sub.event, "program.subscription_id": req.body.id},'_id, program', (err, event) => {
         if (err) {
           err.push(err);
           res.json(err);
         } else {
-          debugLog("event.program");
-          debugLog(event.program.length);
+          logger.info("event.program");
+          logger.info(event.program.length);
           event.program.forEach((program, index) => {
             if (program.subscription_id == req.body.id) {
               event.program.splice(index, 1);
             }
           });
-          debugLog(event.program.length);
+          logger.info(event.program.length);
           Models.Performance
           .findOne({_id: sub.performance},'_id, bookings', (err, performance) => {
             if (err) {
               err.push(err);
               res.json(err);
             } else {
-              debugLog("performance.bookings.length");
-              debugLog(performance.bookings);
+              logger.info("performance.bookings.length");
+              logger.info(performance.bookings);
               performance.bookings.forEach((booking, index) => {
                 if (booking.subscription_id == req.body.id) {
                   performance.bookings.splice(index, 1);
                 }
               });
-              debugLog(performance.bookings.length);
+              logger.info(performance.bookings.length);
               event.save(function(err){
                 performance.save(function(err){
                   sub.remove(function(err){
-                    debugLog("SUCCESSO!!!");
+                    logger.info("SUCCESSO!!!");
                     res.json(true);
                   });
                 });  
@@ -243,9 +243,9 @@ export const cancelSubscription = (req, res) => {
 }
 
 export const editSubscriptionSave = (req, res) => {
-  debugLog("editSubscriptionSave");
-  debugLog("req.body");
-  debugLog(req.body);
+  logger.info("editSubscriptionSave");
+  logger.info("req.body");
+  logger.info(req.body);
   Models.Program.findOne({_id: req.body.program})
   .exec((err, program) => {
     if (req.body.schedule!=undefined) {
@@ -261,23 +261,23 @@ export const editSubscriptionSave = (req, res) => {
         } else {
           Models.Performance.findOne({_id: program.performance})
           .exec((err, performance) => {
-            debugLog({_id: program.performance});
+            logger.info({_id: program.performance});
             for(var a=0;a<performance.bookings.length;a++){
               if (performance.bookings[a].event && performance.bookings[a].event.toString()===program.event.toString()) {
                 performance.bookings[a].schedule = program.schedule;
               }
             }
-            debugLog(performance.bookings);
+            logger.info(performance.bookings);
             performance.save(function(err){
               Models.Event.findOne({"program.subscription_id": req.body.program})
               .exec((err, event) => {
-                debugLog(event.program);
+                logger.info(event.program);
                 for(var a=0;a<event.program.length;a++){
                   if (event.program[a].subscription_id.toString()===req.body.program.toString()) {
                     event.program[a].schedule = program.schedule;
                   }
                 }
-                debugLog(event.program);
+                logger.info(event.program);
                 event.save(function(err){
                   if (err) {
                     res.json(err);
@@ -312,8 +312,8 @@ export const editSubscriptionSave = (req, res) => {
             tmpPack[0].option = subscriptions[item].packages[pack].option;
             subscriptions[item].packages[pack] = tmpPack[0];
           }
-          debugLog("subscriptions[item].packages");
-          debugLog(subscriptions[item].packages);  
+          logger.info("subscriptions[item].packages");
+          logger.info(subscriptions[item].packages);  
         }
       }
       for (var item=0;item<program.subscriptions.length;item++) {
@@ -379,12 +379,12 @@ export const shareOnTelegram = (req, res) => {
 }
 /**/
 export const setReordered = (req, res) => {
-  debugLog(req.body);
+  logger.info(req.body);
   Models[req.body.model]
   .findOne({_id: req.body.id}, (err, item) => {
     if (item) {
       item[req.body.link] = req.body.obj;
-      debugLog(item[req.body.link]);
+      logger.info(item[req.body.link]);
       item.save(err => {
         res.json({err: err});
       });
@@ -394,12 +394,12 @@ export const setReordered = (req, res) => {
   });
 }
 export const setVideoCategory = (req, res) => {
-  debugLog(req.body);
+  logger.info(req.body);
   Models.Video
   .findOne({_id: req.body.id},'_id, categories', (err, video) => {
     if (video) {
       video.categories = req.body.categories;
-      debugLog(video);
+      logger.info(video);
       video.save(err => {
         res.json({err: err});
       });
@@ -409,12 +409,12 @@ export const setVideoCategory = (req, res) => {
   });
 }
 export const setVideoExclude = (req, res) => {
-  debugLog(req.body);
+  logger.info(req.body);
   Models.Video
   .findOne({_id: req.body.id},'_id', (err, video) => {
     if (video) {
       video.vjtv_exclude = req.body.vjtv_exclude;
-      debugLog(video);
+      logger.info(video);
       video.save(err => {
         res.json({err: err});
       });
@@ -425,7 +425,7 @@ export const setVideoExclude = (req, res) => {
 }
 
 export const editSubscription = (req, res) => {
-  debugLog(req.body);
+  logger.info(req.body);
   let populate = [
     { "path": "event", "select": "title slug schedule organizationsettings", "model": "Event", "populate":[{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]},
     { "path": "performance", "select": "title slug users duration abouts image bookings", "model": "Performance", "populate": [{"path": "users", "select": "stagename addresses image abouts members", "populate": [{"path": "members", "select": "stagename addresses image abouts", "model": "UserShow"}], "model": "UserShow"},{"path": "type", "select": "name", "model": "Category"},{"path": "tecnique", "select": "name", "model": "Category"},{"path": "genre", "select": "name", "model": "Category"}]},
@@ -437,7 +437,7 @@ export const editSubscription = (req, res) => {
   .findOne({_id: req.body.id/* , members:req.user.id */})
   .populate(populate)
   .exec((err, sub) => {
-    debugLog(sub);
+    logger.info(sub);
     let daysdays = [];
     let schedule = JSON.parse(JSON.stringify(sub.event.schedule));
     for(let a=0;a<schedule.length;a++) {
@@ -457,15 +457,15 @@ export const editSubscription = (req, res) => {
     for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[global.getLocale()].weekdaydaymonthyear)});
     
     res.render('adminpro/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
-      debugLog(err);
-      debugLog("sub");
+      logger.info(err);
+      logger.info("sub");
       res.json(body);
     });
   });
 }
 
 export const editSubscriptionPrice = (req, res) => {
-  debugLog(req.body);
+  logger.info(req.body);
   Models.Program
   .findOne({_id: req.body.id/* , members:req.user.id */})
   .select({schedule: 1})
@@ -477,7 +477,7 @@ export const editSubscriptionPrice = (req, res) => {
 }
 
 export const editSubscriptionCost = (req, res) => {
-  debugLog(req.body);
+  logger.info(req.body);
   Models.Program
   .findOne({_id: req.body.id/* , members:req.user.id */})
   .select({fee: 1, technical_cost: 1, accommodation_cost: 1, transfer_cost: 1})
@@ -489,11 +489,11 @@ export const editSubscriptionCost = (req, res) => {
 }
 
 export const linkPartner = (req, res) => {
-  debugLog(req.body);
+  logger.info(req.body);
   Models.User
   .findOne({_id: req.body.id, is_crew: true},'_id partner_owner', (err, partner) => {
-    debugLog("eq.body");
-    debugLog(err || partner);
+    logger.info("eq.body");
+    logger.info(err || partner);
     if (partner) {
       if (!partner.partner_owner || partner.partner_owner.map(item => {return item.owner;}).indexOf(req.body.partner_owner)===-1) {
         if (!partner.partner_owner) partner.partner_owner = [];
@@ -505,8 +505,8 @@ export const linkPartner = (req, res) => {
               if (!owner.partners || owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)===-1) {
                 if (!owner.partners) owner.partners = [];
                 owner.partners.push({partner: req.body.id, delegate: req.body.delegate, "is_active":true, "is_selecta":true});
-                debugLog("owner.partners");
-                debugLog(owner.partners);
+                logger.info("owner.partners");
+                logger.info(owner.partners);
                 owner.save(err => {
                   res.json({err: err});
                 });
@@ -522,18 +522,18 @@ export const linkPartner = (req, res) => {
         Models.User
         .findOne({_id: req.body.partner_owner, is_crew: true},'_id partners', (err, owner) => {
           if (owner) {
-            debugLog("owner");
+            logger.info("owner");
             if (!owner.partners || owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)===-1) {
               if (!owner.partners) owner.partners = [];
               owner.partners.push({partner: req.body.id, delegate: req.body.delegate, "is_active":true, "is_selecta":true});
-              debugLog("owner.partners");
-              debugLog(owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id));
+              logger.info("owner.partners");
+              logger.info(owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id));
               owner.save(err => {
                 res.json({err: err});
               });
             } else {
-              debugLog({err: "Partner already in"});
-              debugLog(owner.partners[owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)]);
+              logger.info({err: "Partner already in"});
+              logger.info(owner.partners[owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)]);
               res.status(400).json({err: "Partner already in"});
             }
           } else {
@@ -548,21 +548,21 @@ export const linkPartner = (req, res) => {
 }
 
 export const unlinkPartner = (req, res) => {
-  debugLog("unlinkPartner");
-  debugLog(req.body);
+  logger.info("unlinkPartner");
+  logger.info(req.body);
   Models.User
   .findOne({_id: req.body.owner, /* is_crew: true,  */"partners.partner": req.body.id},'_id event partners', (err, user) => {
-    debugLog(user.partners.length);
+    logger.info(user.partners.length);
     if (user && user.partners && user.partners.length) {
       user.partners.splice(user.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id), 1);
-      debugLog(user.partners.length);
+      logger.info(user.partners.length);
       user.save(err => {
         Models.User
         .findOne({_id: req.body.id, /* is_crew: true,  */"partner_owner.owner": req.body.owner},'_id event partner_owner', (err, partner) => {
-          debugLog(partner.partner_owner.length);
+          logger.info(partner.partner_owner.length);
           if (partner && partner.partner_owner && partner.partner_owner.length) {
             partner.partner_owner.splice(partner.partner_owner.map(item => {return item.owner.toString();}).indexOf(req.body.owner), 1);
-            debugLog(partner.partner_owner.length);
+            logger.info(partner.partner_owner.length);
             partner.save(err => {
               res.json({err: err});
             });
@@ -577,8 +577,8 @@ export const unlinkPartner = (req, res) => {
   });
 }
 export const setStatus = (req, res) => {
-  debugLog('/partners/status/');
-  debugLog(req.body);
+  logger.info('/partners/status/');
+  logger.info(req.body);
   if (!req.body || !req.body.owner || !req.body.id || !req.body.name || req.body.value === undefined) {
     res.status(400).send("NO DATA");
   } else {
@@ -587,25 +587,25 @@ export const setStatus = (req, res) => {
     .select({partners:1})
     .exec((err, user) => {
       if (err || !user) {
-        debugLog('user err');
-        debugLog(err);
+        logger.info('user err');
+        logger.info(err);
         res.status(400).send(err);
       } else {
         for (var a=0;a<user.partners.length;a++) {
           if (user.partners[a].partner._id.toString() === req.body.id) {
             user.partners[a][req.body.name] = req.body.value;
-            debugLog(user.partners[a]);
+            logger.info(user.partners[a]);
           }
         }
         user.save((err) => {
-          debugLog(err);
+          logger.info(err);
           if (err) {
-            debugLog('save user err');
-            debugLog(err);
+            logger.info('save user err');
+            logger.info(err);
             res.status(400).send(err);
           } else {
-            debugLog("save user success 2");
-            debugLog(req.body);
+            logger.info("save user success 2");
+            logger.info(req.body);
             res.json(req.body);                    
           }
         });
@@ -616,8 +616,8 @@ export const setStatus = (req, res) => {
 }
 
 export const setCategories = (req, res) => {
-  debugLog('/partners/categories/');
-  debugLog(req.body);
+  logger.info('/partners/categories/');
+  logger.info(req.body);
   if (!req.body || !req.body.owner || !req.body.id || !req.body.category || req.body.value === undefined) {
     res.status(400).send("NO DATA");
   } else {
@@ -626,8 +626,8 @@ export const setCategories = (req, res) => {
     .select({partners:1})
     .exec((err, user) => {
       if (err || !user) {
-        debugLog('user err');
-        debugLog(err);
+        logger.info('user err');
+        logger.info(err);
         res.status(400).send(err);
       } else {
         for (var a=0;a<user.partners.length;a++) {
@@ -635,23 +635,23 @@ export const setCategories = (req, res) => {
             if (req.body.value==="true") {
               user.partners[a].categories.push(req.body.category)
             } else {
-              debugLog("req.body.category");
-              debugLog(req.body.category);
-              debugLog(user.partners[a].categories.map(item => {return item.toString()}));
+              logger.info("req.body.category");
+              logger.info(req.body.category);
+              logger.info(user.partners[a].categories.map(item => {return item.toString()}));
               user.partners[a].categories.splice(user.partners[a].categories.map(item => {return item.toString()}).indexOf(req.body.category))
             }
-            debugLog(user.partners[a].categories);
+            logger.info(user.partners[a].categories);
           }
         }
         user.save((err) => {
-          debugLog(err);
+          logger.info(err);
           if (err) {
-            debugLog('save user err');
-            debugLog(err);
+            logger.info('save user err');
+            logger.info(err);
             res.status(400).send(err);
           } else {
-            debugLog("save user success 3");
-            //debugLog(req.body);
+            logger.info("save user success 3");
+            //logger.info(req.body);
             res.json(req.body);                    
           }
         });
@@ -662,23 +662,23 @@ export const setCategories = (req, res) => {
 }
 
 export const addContacts = (req, res) => {
-  debugLog('/partners/contacts/add/');
-  debugLog(req.body);
+  logger.info('/partners/contacts/add/');
+  logger.info(req.body);
   Models.User.
   findOne({_id: req.body.crew})
   .exec((err, user) => {
   //select({stagename: 1, createdAt: 1, crews:1}).
     if (err || !user) {
-      debugLog('user err');
-      debugLog(err);
+      logger.info('user err');
+      logger.info(err);
       res.status(400).send(err);
     } else {
       delete req.body.crew;
       if (req.body.index) {
         user.organizationData.contacts.splice(req.body.index, 1, req.body);
       } else {
-        debugLog(user);
-        debugLog("useruseruseruseruseruseruseruseruseruseruseruser");
+        logger.info(user);
+        logger.info("useruseruseruseruseruseruseruseruseruseruseruser");
         delete req.body.index;
         delete req.body.stagename;
         if (!user.organizationData) user.organizationData = {};
@@ -688,16 +688,16 @@ export const addContacts = (req, res) => {
           user.organizationData.contacts.push(req.body);
         }
       };
-      debugLog(user.organizationData.contacts[0]);
+      logger.info(user.organizationData.contacts[0]);
       user.save((err) => {
-        debugLog(err);
+        logger.info(err);
         if (err) {
-          debugLog('save user err');
-          debugLog(err);
+          logger.info('save user err');
+          logger.info(err);
           res.status(400).send(err);
         } else {
-          debugLog("save user success 4");
-          debugLog(user.organizationData.contacts);
+          logger.info("save user success 4");
+          logger.info(user.organizationData.contacts);
           res.json(user.organizationData.contacts);                    
         }
       });
@@ -706,31 +706,31 @@ export const addContacts = (req, res) => {
 }
 
 export const deleteContacts = (req, res) => {
-  debugLog('/partners/contacts/deleteContacts/');
-  debugLog(req.body);
+  logger.info('/partners/contacts/deleteContacts/');
+  logger.info(req.body);
   Models.User.
   findOne({_id: req.body.id})
   .exec((err, user) => {
   //select({stagename: 1, createdAt: 1, crews:1}).
-    debugLog('stocazzo');
-    debugLog(user);
+    logger.info('stocazzo');
+    logger.info(user);
     if (err || !user) {
-      debugLog('user err');
-      debugLog(err);
+      logger.info('user err');
+      logger.info(err);
       res.status(400).send(err);
     } else {
-      debugLog(req.body.index);
+      logger.info(req.body.index);
       user.organizationData.contacts.splice(req.body.index, 1);
-      debugLog(user.organizationData.contacts);   
+      logger.info(user.organizationData.contacts);   
       user.save((err) => {
-        debugLog(err);
+        logger.info(err);
         if (err) {
-          debugLog('save user err');
-          debugLog(err);
+          logger.info('save user err');
+          logger.info(err);
           res.status(400).send(err);
         } else {
-          debugLog("save user success 5");
-          debugLog(user.organizationData.contacts);
+          logger.info("save user success 5");
+          logger.info(user.organizationData.contacts);
           res.json(user.organizationData.contacts);                    
         }
       });
@@ -740,9 +740,9 @@ export const deleteContacts = (req, res) => {
 
 
 export const updatePartnerships = (req, res) => {
-  debugLog("updatePartnerships");
-  debugLog("req.body");
-  debugLog(req.body);
+  logger.info("updatePartnerships");
+  logger.info("req.body");
+  logger.info(req.body);
   Models.Event
   .findOne({_id: req.body.event},'partnerships', (err, event) => {
     event.partners = req.body.partnerships;
@@ -774,9 +774,9 @@ export const updatePartnerships = (req, res) => {
 }
 
 export const updateProgram = (req, res) => {
-  debugLog("updateProgram");
-  debugLog("req.body");
-  debugLog(req.body);
+  logger.info("updateProgram");
+  logger.info("req.body");
+  logger.info(req.body);
   var performances = [];
   var programIDS = [];
   var program = [];
@@ -786,8 +786,8 @@ export const updateProgram = (req, res) => {
   if (req.body.tobescheduled && req.body.tobescheduled.length) {
     for (var a=0;a<req.body.tobescheduled.length;a++) {
       var index = programIDS.indexOf(req.body.tobescheduled[a]._id);
-      debugLog("req.body.tobescheduled[a]");
-      debugLog(req.body.tobescheduled[a]);
+      logger.info("req.body.tobescheduled[a]");
+      logger.info(req.body.tobescheduled[a]);
       if (index===-1) {
         programIDS.push(req.body.tobescheduled[a]._id);
         program.push(req.body.tobescheduled[a]);
@@ -799,8 +799,8 @@ export const updateProgram = (req, res) => {
   if (req.body.data && req.body.data.length) {
     for (var a=0;a<req.body.data.length;a++) {
       var index = programIDS.indexOf(req.body.data[a]._id);
-      debugLog("req.body.data[a]");
-      debugLog(req.body.data[a]);
+      logger.info("req.body.data[a]");
+      logger.info(req.body.data[a]);
       if (index===-1) {
         programIDS.push(req.body.data[a]._id);
         program.push(req.body.data[a]);
@@ -813,14 +813,14 @@ export const updateProgram = (req, res) => {
   for (var a=0;a<program.length;a++) {
     eventProgram.push({subscription_id: program[a]._id, performance: program[a].performance, schedule: !program[a].schedule ? [] : program[a].schedule});
     if (program[a].performance.toString() == "60ef195282f94366b0a464d2") {
-      debugLog("60ef195282f94366b0a464d260ef195282f94366b0a464d2");
-      debugLog(program[a]._id);
-      debugLog(program[a].schedule);
+      logger.info("60ef195282f94366b0a464d260ef195282f94366b0a464d2");
+      logger.info(program[a]._id);
+      logger.info(program[a].schedule);
     }
     promises.push(Models.Program.findOneAndUpdate({_id: program[a]._id}, { $set: { schedule: !program[a].schedule ? [] : program[a].schedule }}, {upsert: true, useFindAndModify: false}));
   }
-  debugLog("eventProgram");
-  debugLog(eventProgram);
+  logger.info("eventProgram");
+  logger.info(eventProgram);
   Promise.all(
     promises
   ).then( (resultsPromise) => {
@@ -844,9 +844,9 @@ export const updateProgram = (req, res) => {
         } else {
           resultsPromisePerf[a].bookings = [{event:req.body.event,schedule: program[a].schedule}];
         }
-        debugLog("resultsPromisePerf[a].bookings")
-        debugLog(resultsPromisePerf[a].title)
-        debugLog(req.body.event)
+        logger.info("resultsPromisePerf[a].bookings")
+        logger.info(resultsPromisePerf[a].title)
+        logger.info(req.body.event)
         promisesPerfSave.push(Models.Performance.updateOne({_id:resultsPromisePerf[a]._id}, resultsPromisePerf[a]));
       }
       Promise.all(
@@ -882,8 +882,8 @@ details: details,
 data: data
 */
 export const contact = (req, res) => {
-  debugLog("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body");
-  debugLog(req.body);
+  logger.info("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body");
+  logger.info(req.body);
   if (req.body.user) {
     let message = {};
 
@@ -893,8 +893,8 @@ export const contact = (req, res) => {
     .populate([{ "path": "members", "select": "stagename name surname email", "model": "User"}])
     .exec((err, user) => {
       if (!user.is_banned) {
-        debugLog(user);
-        debugLog(err);
+        logger.info(user);
+        logger.info(err);
         message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
         let messagetext = "FROM\n";
         messagetext+= "Stagename: "+req.user.stagename+"\n";
@@ -911,7 +911,7 @@ export const contact = (req, res) => {
         }
         messagetext+= "Link: http://"+req.headers.host+"/"+user.slug+"\n\n---------\n";
         messagetext+= req.body.message+"\n--------------";
-        debugLog(messagetext);
+        logger.info(messagetext);
        mySendMailer({
           template: 'bookingRequest',
           message: message,
@@ -931,7 +931,7 @@ export const contact = (req, res) => {
           } else {
             message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
             if (user.is_crew) {
-              debugLog("crew")
+              logger.info("crew")
               for (var b=0;b<user.members.length;b++) {
                 if (!message.to) {
                   message.to = user.members[b].stagename+" <"+user.members[b].email+">";
@@ -941,7 +941,7 @@ export const contact = (req, res) => {
                 }
                 }
             } else {
-              debugLog("single")
+              logger.info("single")
               if (!message.to) {
                 message.to = user.stagename+" <"+user.email+">";
               } else {
@@ -983,8 +983,8 @@ export const contact = (req, res) => {
 }
 
 export const forceEmailChange = (req, res) => {
-  debugLog("forceEmailChange");
-  debugLog(req.body);
+  logger.info("forceEmailChange");
+  logger.info(req.body);
   if (req.body._id) {
     let message = {};
 
@@ -992,8 +992,8 @@ export const forceEmailChange = (req, res) => {
     .findOne({_id: req.body._id})
     .select({stagename: 1, slug:1, name:1, surname:1, email: 1, emails:1})
     .exec((err, user) => {
-      debugLog(user);
-      debugLog(user.emails.map((item)=>{return item.email}).indexOf(req.body.oldemail));
+      logger.info(user);
+      logger.info(user.emails.map((item)=>{return item.email}).indexOf(req.body.oldemail));
       const newemail = req.body.email
       const emailindex = user.emails.map((item)=>{return item.email}).indexOf(req.body.oldemail)
       const deaultmailinglists = { flxer: false, flyer: false, livevisuals: true, updates: true };
@@ -1002,12 +1002,12 @@ export const forceEmailChange = (req, res) => {
       var sendytopics = keys.filter(function(key) {
           return deaultmailinglists[key]
       });
-      debugLog(sendytopics);
+      logger.info(sendytopics);
       if (emailindex == -1 && user.email != req.body.oldemail) {
         res.json({errors:{message:"Email not Found"}});
       } else {
         if (emailindex != -1) {
-          debugLog(user.emails[emailindex].mailinglists);
+          logger.info(user.emails[emailindex].mailinglists);
           user.emails[emailindex].email = newemail;
           user.emails[emailindex].mailinglists = deaultmailinglists;
         }
@@ -1033,8 +1033,8 @@ export const forceEmailChange = (req, res) => {
         if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
         Models.User.updateOne({_id:user._id}, { emails: user.emails, email: user.email })
         .exec((err, user) => {
-          debugLog("formData");
-          debugLog(formData);
+          logger.info("formData");
+          logger.info(formData);
                   
           // form data
           var postData = querystring.stringify(formData);
@@ -1054,8 +1054,8 @@ export const forceEmailChange = (req, res) => {
         });
       }
      /*  if (!is_banned) {
-        debugLog(user);
-        debugLog(err);
+        logger.info(user);
+        logger.info(err);
         message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
         let messagetext = "FROM\n";
         messagetext+= "Stagename: "+req.user.stagename+"\n";
@@ -1072,7 +1072,7 @@ export const forceEmailChange = (req, res) => {
         }
         messagetext+= "Link: http://"+req.headers.host+"/"+user.slug+"\n\n---------\n";
         messagetext+= req.body.message+"\n--------------";
-        debugLog(messagetext);
+        logger.info(messagetext);
         const mailer = require('../../../utilities/mailer');
        mySendMailer({
           template: 'bookingRequest',
@@ -1093,7 +1093,7 @@ export const forceEmailChange = (req, res) => {
           } else {
             message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
             if (user.is_crew) {
-              debugLog("crew")
+              logger.info("crew")
               for (var b=0;b<user.members.length;b++) {
                 if (!message.to) {
                   message.to = user.members[b].stagename+" <"+user.members[b].email+">";
@@ -1103,7 +1103,7 @@ export const forceEmailChange = (req, res) => {
                 }
                 }
             } else {
-              debugLog("single")
+              logger.info("single")
               if (!message.to) {
                 message.to = user.stagename+" <"+user.email+">";
               } else {
@@ -1144,7 +1144,7 @@ export const forceEmailChange = (req, res) => {
 
 
 export const bookingRequest = (req, res) => {
-  debugLog(req.body);
+  logger.info(req.body);
   if (req.body.perf) {
     let message = {};
 
@@ -1153,8 +1153,8 @@ export const bookingRequest = (req, res) => {
     .select({title: 1, slug: 1})
     .populate([{ "path": "users", "select": "is_crew stagename name surname email", "model": "User", "populate": { "path": "members", "select": "stagename name surname email", "model": "User"}}])
     .exec((err, perf) => {
-      debugLog(perf.users);
-      debugLog(err);
+      logger.info(perf.users);
+      logger.info(err);
       message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
       let messagetext = "";
       messagetext+= "Stagename: "+req.user.stagename+"\n";
@@ -1165,7 +1165,7 @@ export const bookingRequest = (req, res) => {
       messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n\n---------\n";
       messagetext+= "Performance: http://"+req.headers.host+"/"+perf.slug+"\n\n---------\n";
       messagetext+= req.body.request+"\n--------------";
-      debugLog(messagetext);
+      logger.info(messagetext);
      mySendMailer({
         template: 'bookingRequest',
         message: message,
@@ -1187,7 +1187,7 @@ export const bookingRequest = (req, res) => {
           message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
           for (var a=0;a<perf.users.length;a++) {
             if (perf.users[a].is_crew) {
-              debugLog("crew")
+              logger.info("crew")
               for (var b=0;b<perf.users[a].members.length;b++) {
                 if (!message.to) {
                   message.to = perf.users[a].members[b].stagename+" <"+perf.users[a].members[b].email+">";
@@ -1197,7 +1197,7 @@ export const bookingRequest = (req, res) => {
                 }
                 }
             } else {
-              debugLog("single")
+              logger.info("single")
               if (!message.to) {
                 message.to = perf.users[a].stagename+" <"+perf.users[a].email+">";
               } else {
@@ -1236,7 +1236,7 @@ export const bookingRequest = (req, res) => {
 }
 
 export const updateSubscription = (req, res) => {
-  //debugLog("updateSubscription");
+  //logger.info("updateSubscription");
 
 /*   const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
 
@@ -1331,19 +1331,19 @@ export const updateSubscription = (req, res) => {
     .select({schedule: 1, call: 1, event: 1})
     .populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
     .exec((err, sub) => {
-      //debugLog(sub);
+      //logger.info(sub);
       Models.Event
       .findOne({_id: sub.event})
       .select({program: 1, organizationsettings: 1})
       .exec((err, event) => {
-        /* debugLog(event.organizationsettings.call.calls[sub.call].email);
+        /* logger.info(event.organizationsettings.call.calls[sub.call].email);
         event.program.forEach((program, index) => {
-          debugLog(program);
+          logger.info(program);
           if (program.subscription_id == req.body.id) {
             //event.program[index].schedule.status = req.body.status;
             program.status = req.body.status;
           }
-          debugLog(program);
+          logger.info(program);
         }); */
         const status = {
           "5c38c57d9d426a9522c15ba5": "to be evaluated" ,
@@ -1356,9 +1356,9 @@ export const updateSubscription = (req, res) => {
         const old_status_name = sub.status.name;
         sub.status = req.body.status;
         sub.save(function(err){
-          //debugLog("sub.save");
-          //debugLog(sub.call);
-          //debugLog(sub.status);
+          //logger.info("sub.save");
+          //logger.info(sub.call);
+          //logger.info(sub.status);
           //event.save(function(err){
             if(!err) {
               if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
@@ -1379,17 +1379,17 @@ export const updateSubscription = (req, res) => {
                   subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
                   text: email
                 };
-                //debugLog("pre gMailer")
+                //logger.info("pre gMailer")
                 gMailer({auth:auth, mail:mail}, function (err, result){
-                  //debugLog("gMailer");
-                  //debugLog(err);
-                  //debugLog("gMailer");
-                  //debugLog(result);
+                  //logger.info("gMailer");
+                  //logger.info(err);
+                  //logger.info("gMailer");
+                  //logger.info(result);
                   if (err) {
-                    debugLog("Email sending failure");
+                    logger.info("Email sending failure");
                     res.json({error: true, msg: "Email sending failure", err: err});
                   } else {
-                    debugLog("Email sending OK");
+                    logger.info("Email sending OK");
                     res.json({error: false, msg: "Email sending success"});
                   }
                 });
@@ -1432,8 +1432,8 @@ export const updateSendy = function (req, res) {
     if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].country) formData.Country = req.req.user.addresses[0].country;
     if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lat) formData.LATITUDE = req.user.addresses[0].geometry.lat;
     if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lng) formData.LONGITUDE = req.user.addresses[0].geometry.lng;
-    debugLog("formData");
-    debugLog(formData);
+    logger.info("formData");
+    logger.info(formData);
   
     // form data
     var postData = querystring.stringify(formData);
@@ -1466,7 +1466,7 @@ export const updateSendy = function (req, res) {
     
     // req error
     req.on('error', function (err) {
-      debugLog(err);
+      logger.info(err);
     });
     
     //send request witht the postData form
@@ -1475,11 +1475,11 @@ export const updateSendy = function (req, res) {
 
     axios.post('https://ml.avnode.net/subscribe', formData)
     .then((response) => {
-        debugLog("Newsletter");
-        debugLog(response);
+        logger.info("Newsletter");
+        logger.info(response);
         res.json({message:"User is saved"});
     });
-    //debugLog(mailinglists.join(','));  }
+    //logger.info(mailinglists.join(','));  }
   //}
 }
 

@@ -3,7 +3,7 @@ const router = createRouter();
 import config from 'getconfig';
 import get from './api/get.js';
 import put from './api/put.js';
-import { info, debugLog, error } from '../../utilities/logger.js'; // Logger
+import { logger, requestLogger, errorLogger } from '../../utilities/logger.js'; // Logger
 
 // API Routes
 import apiRoutes from './api/index.js';

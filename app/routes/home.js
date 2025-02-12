@@ -9,7 +9,7 @@ const News = mongoose.model('News');
 
 import dataprovider from '../utilities/dataprovider.js';
 
-import { info, debugLog, error } from '../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
 
 router.get('/', (req, res) => {

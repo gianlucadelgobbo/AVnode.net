@@ -1,7 +1,7 @@
 //import {fileTypeFromStream} from 'file-type';
 import sharp from 'sharp';
 import fs from 'fs';
-import { info, debugLog, error } from './logger.js';
+import { logger, requestLogger, errorLogger } from './logger.js';
 let counter = 0;
 let counterresizes = 0;
 import sizeOf from 'image-size';
@@ -9,7 +9,7 @@ import sizeOf from 'image-size';
 const image = {};
 
 image.resizer = (files, options, done) => {
-  debugLog('resizerresizerresizerresizerresizerresizerresizerresizerresizer');
+  logger.info('resizerresizerresizerresizerresizerresizerresizerresizerresizer');
   let sizesA = [];
   for (let item in options.sizes) sizesA.push(options.sizes[item]);
   var promises = [];
@@ -19,8 +19,8 @@ image.resizer = (files, options, done) => {
   Promise.all(
     promises
   ).then( (resultsPromise) => {
-    debugLog('resultsPromiseaaaaaaaa');
-    debugLog(resultsPromise);
+    logger.info('resultsPromiseaaaaaaaa');
+    logger.info(resultsPromise);
     done(resultsPromise);
   })
   .catch(error => {
@@ -29,7 +29,7 @@ image.resizer = (files, options, done) => {
 };
 
 image.checksizer = (files, options, req, done) => {
-  debugLog('checksizer');
+  logger.info('checksizer');
   let sizesA = [];
   for (let item in options.sizes) sizesA.push(options.sizes[item]);
   var promises = [];
@@ -39,8 +39,8 @@ image.checksizer = (files, options, req, done) => {
   Promise.all(
     promises
   ).then( (resultsPromise) => {
-    debugLog('resultsPromise check');
-    debugLog(resultsPromise);
+    logger.info('resultsPromise check');
+    logger.info(resultsPromise);
     done(resultsPromise);
   })
   .catch(error => {
@@ -50,20 +50,20 @@ image.checksizer = (files, options, req, done) => {
 
 image.resize = (file, sizeA) => {
   var promise = new Promise((resolve, reject) => {
-    debugLog('resize');
-    debugLog(file);
+    logger.info('resize');
+    logger.info(file);
     const localFileName = file.path.substring(file.path.lastIndexOf('/') + 1); // file.path.jpg this.file.path.file.path.substr(19)
     const localPath = file.path.substring(0, file.path.lastIndexOf('/')).replace('/glacier/', '/warehouse/').replace('_originals/', '/'); // /warehouse/2017/03
     const localPathA = localPath.split('/');
     let checkPath = '/';
     for (let a=1; a<localPathA.length; a++) {
       checkPath += localPathA[a]+'/';
-      debugLog(checkPath);
+      logger.info(checkPath);
       if (!fs.existsSync(checkPath)) {
         fs.mkdirSync(checkPath);
       }
     }
-    debugLog('resize');
+    logger.info('resize');
     for (var a=0; a<sizeA.length; a++) {
       var size = sizeA[a];
       if (!fs.existsSync(`${localPath}/${size.folder}`)) {
@@ -76,9 +76,9 @@ image.resize = (file, sizeA) => {
       sizeA[a].in = file.path;
       sizeA[a].out = scaledFilename;
       sizeA[a].outWebP = scaledFilenameWebP;
-      debugLog('resize in  ' + file.path);
-      debugLog('resize out ' + scaledFilename);
-      debugLog(sizeA[a]);
+      logger.info('resize in  ' + file.path);
+      logger.info('resize out ' + scaledFilename);
+      logger.info(sizeA[a]);
     }
     const resize = size => sharp(size.in)
     .resize(size.w, size.h)
@@ -110,33 +110,33 @@ image.resize = (file, sizeA) => {
 
 image.checksize = (file, sizeA, options, req) => {
   var promise = new Promise((resolve, reject) => {
-    debugLog('checksize');
+    logger.info('checksize');
     (async () => {
       var format = (await fileTypeFromFile(file.path));
-      debugLog("post FileType");
-      debugLog(format);
+      logger.info("post FileType");
+      logger.info(format);
       if (format.mime.indexOf("image")!==-1) {
-        debugLog("pre sizeOf");
+        logger.info("pre sizeOf");
         const dimensions = sizeOf(file.path);
 
         file.width = dimensions.width;
         file.height = dimensions.height;
-        debugLog(file);
-        debugLog("dimensions.width " + dimensions.width);
-        debugLog("dimensions.height " + dimensions.height);
-        debugLog("options.minwidth " + options.minwidth);
-        debugLog("options.minheight " + options.minheight);
+        logger.info(file);
+        logger.info("dimensions.width " + dimensions.width);
+        logger.info("dimensions.height " + dimensions.height);
+        logger.info("options.minwidth " + options.minwidth);
+        logger.info("options.minheight " + options.minheight);
         var dimensionError = true;
         if (dimensions.width >= options.minwidth && dimensions.height >= options.minheight) dimensionError = false;
         if (dimensionError && req.params.sez == "galleries")
           if (dimensions.width >= options.minheight && dimensions.height >= options.minwidth) dimensionError = false;
         if (dimensionError) {
           file.err = __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight;
-          debugLog( __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight);
+          logger.info( __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight);
           setTimeout(resolve, 100, file);
         } else {
           setTimeout(resolve, 100, file);
-          debugLog("Image minimum size is ok");
+          logger.info("Image minimum size is ok");
         }
       } else {
         file.err = __("File is not an image");

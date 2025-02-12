@@ -19,12 +19,12 @@ import config from 'getconfig';
 import sharp from 'sharp';
 import moment from 'moment';
 
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
 
 // HOME 
 router.get('/', async (req, res) => {
-  debugLog('/events');
+  logger.info('/events');
   let results = {};
   const myids = req.user.crews.concat([req.user._id.toString()]);
   try {
@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:event', async (req, res) => {
-  debugLog('/events/'+req.params.event);
+  logger.info('/events/'+req.params.event);
   let data = {};
   try {
     let event = await Event.
@@ -80,8 +80,8 @@ router.get('/:event', async (req, res) => {
 });
 
 router.get('/:event/orders', async (req, res) => {
-  debugLog('/events/'+req.params.event+'/orders');
-  debugLog(req.query)
+  logger.info('/events/'+req.params.event+'/orders');
+  logger.info(req.query)
   let data = {};
   try {
     let event = await Event.
@@ -91,7 +91,7 @@ router.get('/:event/orders', async (req, res) => {
     exec();
     try {
       let query = {"event": req.params.event};
-      debugLog(query)
+      logger.info(query)
       let orders = await Order.
       find(query).
       /* select(select).
@@ -187,7 +187,7 @@ router.get('/:event/orders', async (req, res) => {
     });
   });  
   /* router.get('/:event/program-social', (req, res) => {
-    debugLog('/events/'+req.params.event+'/program-print');
+    logger.info('/events/'+req.params.event+'/program-print');
     let data = {};
     Event.
     findOne({"_id": req.params.event}).
@@ -201,7 +201,7 @@ router.get('/:event/orders', async (req, res) => {
         const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["program-social"].populate;
         let query = {"event": req.params.event, status: "5be8708afc39610000000013"};
         if (req.query.call && req.query.call!='none') query.call = req.query.call;
-        debugLog(query);
+        logger.info(query);
         Program.
         find(query).
         select(select).
@@ -328,18 +328,18 @@ router.get('/:event/acts', (req, res) => {
   });
 });  
 router.get('/:event/acts/message', (req, res) => {
-  debugLog('/events/'+req.params.event+'/acts/message');
+  logger.info('/events/'+req.params.event+'/acts/message');
   router.getMessageActs(req, res);
 });
 
 router.post('/:event/acts/message', (req, res) => {
-  debugLog('/events/'+req.params.event+'/acts');
+  logger.info('/events/'+req.params.event+'/acts');
   router.getMessageActs(req, res);
 });
 
 router.getActsData = async (req, res, cb) => {
-  debugLog('/events/'+req.params.event+'/acts');
-  debugLog(req.query)
+  logger.info('/events/'+req.params.event+'/acts');
+  logger.info(req.query)
   let data = {};
   try {
     let event = await Event.
@@ -347,9 +347,9 @@ router.getActsData = async (req, res, cb) => {
     select({title: 1, schedule: 1, organizationsettings: 1}).
     populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
     exec();
-    debugLog("pre-populate");
+    logger.info("pre-populate");
     const native_populate = JSON.parse(JSON.stringify(config.cpanel["events_advanced"].forms["acts"].populate));
-    debugLog(native_populate);
+    logger.info(native_populate);
     const select = config.cpanel["events_advanced"].forms["acts"].select;
     let populate = req.query.pure ? [] : native_populate;
     let query = {"event": req.params.event};
@@ -369,8 +369,8 @@ router.getActsData = async (req, res, cb) => {
         }
       }
     }
-    debugLog("populate")
-    debugLog(populate)
+    logger.info("populate")
+    logger.info(populate)
     try {
       let program = await Program.
       find(query).
@@ -448,8 +448,8 @@ router.getActsData = async (req, res, cb) => {
 };
 
 router.getPrintData = async (req, res, cb) => {
-  debugLog('/events/'+req.params.event+'/getPrintData');
-  debugLog(req.query)
+  logger.info('/events/'+req.params.event+'/getPrintData');
+  logger.info(req.query)
   let data = {};
   try {
     let event = await Event.
@@ -533,11 +533,11 @@ router.getPrintData = async (req, res, cb) => {
       "model": "Category"
     }]).
     exec()
-    debugLog(event);
+    logger.info(event);
     cb(event);
-/*    debugLog("pre-populate");
+/*    logger.info("pre-populate");
       const native_populate = JSON.parse(JSON.stringify(config.cpanel["events_advanced"].forms["acts"].populate));
-      debugLog(native_populate);
+      logger.info(native_populate);
       const select = config.cpanel["events_advanced"].forms["acts"].select;
       let populate = req.query.pure ? [] : native_populate;
       let query = {"event": req.params.event};
@@ -554,8 +554,8 @@ router.getPrintData = async (req, res, cb) => {
           }
         }
       }
-      debugLog("populate")
-      debugLog(populate)
+      logger.info("populate")
+      logger.info(populate)
       Program.
       find(query).
       select(select).
@@ -633,10 +633,10 @@ router.getMessageActs = (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);
     } else {
-      //debugLog(query);
-      debugLog("getMessageActs");
-      debugLog("req.body");
-      debugLog(req.body);
+      //logger.info(query);
+      logger.info("getMessageActs");
+      logger.info("req.body");
+      logger.info(req.body);
       if (req.body.subject) {
         var tosave = {};
         if (!req.body.exclude) req.body.exclude = []
@@ -678,7 +678,7 @@ router.getMessageActs = (req, res) => {
           }
         });
         if (req.body.send == "1") {
-          debugLog(tosave);
+          logger.info(tosave);
           Emailqueue.create(tosave, function (err) {
             res.redirect("/adminpro/emailqueue/")
           });
@@ -706,17 +706,17 @@ router.getMessageActs = (req, res) => {
 };
 
 router.get('/:event/peoples/message', (req, res) => {
-  debugLog('/events/'+req.params.event+'/acts/message');
+  logger.info('/events/'+req.params.event+'/acts/message');
   router.getMessagePeoples(req, res);
 });
 
 router.post('/:event/peoples/message', (req, res) => {
-  debugLog('/events/'+req.params.event+'/acts');
+  logger.info('/events/'+req.params.event+'/acts');
   router.getMessagePeoples(req, res);
 });
 
 router.get('/:event/peoples', (req, res) => {
-  debugLog('/events/'+req.params.event+'/peoples');
+  logger.info('/events/'+req.params.event+'/peoples');
   router.getPeoplesData(req, res, data => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);
@@ -734,7 +734,7 @@ router.get('/:event/peoples', (req, res) => {
 });
 
 router.getPeoplesData = async (req, res, cb) => {
-  debugLog(req.query)
+  logger.info(req.query)
   let data = {};
   try {
     let event = await Event.
@@ -763,8 +763,8 @@ router.getPeoplesData = async (req, res, cb) => {
         }
       }
     }
-    debugLog("query");
-    debugLog(query);
+    logger.info("query");
+    logger.info(query);
     try {
       let program = await Program.
       find(query).
@@ -808,11 +808,11 @@ router.getPeoplesData = async (req, res, cb) => {
             subscription.subscription = program[a].subscriptions[b];
             data.subscriptions.push(subscription);
           } else  if (!program[a].subscriptions[b].freezed) {
-            debugLog(program[a].subscriptions[b])
+            logger.info(program[a].subscriptions[b])
           }
         }
       }
-      debugLog(data.subscriptions.length);
+      logger.info(data.subscriptions.length);
       for(let a=0;a<program.length;a++) {
         for(let b=0; b<program[a].subscriptions.length;b++) {
           if (program[a].subscriptions[b].freezed) {
@@ -900,10 +900,10 @@ router.getMessagePeoples = (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);
     } else {
-      //debugLog(query);
-      debugLog("getMessagePeoples");
-      debugLog("req.body");
-      debugLog(req.body);
+      //logger.info(query);
+      logger.info("getMessagePeoples");
+      logger.info("req.body");
+      logger.info(req.body);
       if (req.body.subject) {
         var tosave = {};
         if (!req.body.exclude) req.body.exclude = []
@@ -939,7 +939,7 @@ router.getMessagePeoples = (req, res) => {
           }
         });
         if (req.body.send == "1") {
-          debugLog(tosave);
+          logger.info(tosave);
           Emailqueue.create(tosave, function (err) {
             res.redirect("/adminpro/emailqueue/")
           });
@@ -968,8 +968,8 @@ router.getMessagePeoples = (req, res) => {
 
 
 router.get('/:event/program', async (req, res) => {
-  debugLog('/events/'+req.params.event+'/program');
-  debugLog(req.query);
+  logger.info('/events/'+req.params.event+'/program');
+  logger.info(req.query);
   let data = {};
   try {
     let event = await Event.
@@ -984,7 +984,7 @@ router.get('/:event/program', async (req, res) => {
     const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["program"].populate;
     let query = {"event": req.params.event, status: "5be8708afc39610000000013"};
     if (req.query.call && req.query.call!='none') query.call = req.query.call;
-    debugLog(query);
+    logger.info(query);
     try {
       let program = await Program.
       find(query).
@@ -1087,24 +1087,24 @@ router.get('/:event/program', async (req, res) => {
                   let y = date.getUTCFullYear();
                   let program = JSON.parse(JSON.stringify(data.program[a]));
                   program.schedule = data.program[a].schedule[b];
-                  debugLog(data.program[a].performance.title);
-                  debugLog(data.program[a].performance._id);
+                  logger.info(data.program[a].performance.title);
+                  logger.info(data.program[a].performance._id);
                   if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
                     data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
                   } else {
-                    debugLog("------------------------------------------------------------");
+                    logger.info("------------------------------------------------------------");
 
                     //delete data.program[a].schedule[b];
                   }
                 } else {
                   var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
-                  debugLog("stocazzooooooo");
-                  debugLog(data.program[a].performance._id);
-                  debugLog(data.program[a].performance.title);
-                  debugLog(data.program[a].schedule.length);
-                  debugLog(days);
-                  debugLog(a);
-                  debugLog(b);
+                  logger.info("stocazzooooooo");
+                  logger.info(data.program[a].performance._id);
+                  logger.info(data.program[a].performance.title);
+                  logger.info(data.program[a].schedule.length);
+                  logger.info(days);
+                  logger.info(a);
+                  logger.info(b);
                   for(let c=0;c<days;c++){
                     let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
                     let d = ('0'+date.getUTCDate()).substr(-2);
@@ -1113,16 +1113,16 @@ router.get('/:event/program', async (req, res) => {
                     let program = JSON.parse(JSON.stringify(data.program[a]));
                     program.schedule = data.program[a].schedule[b];
                     data.program[a].performance.duration = duration/days;
-                    debugLog(data.program[a].schedule[b].venue.room);
-                    debugLog(data.program[a].schedule[b].starttime);
+                    logger.info(data.program[a].schedule[b].venue.room);
+                    logger.info(data.program[a].schedule[b].starttime);
                     if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
                       data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
                     } else {
-                      debugLog("------------------------------------------------------------");
+                      logger.info("------------------------------------------------------------");
                       //delSchedule = true;
                     }
                   }
-                  debugLog("stocazzo end");
+                  logger.info("stocazzo end");
                 }
               }
               if (delSchedule) delete data.program[a].schedule[b];
@@ -1156,7 +1156,7 @@ router.get('/:event/program', async (req, res) => {
 });
 
 router.get('/:event/technical-riders', async (req, res) => {
-  debugLog('/events/'+req.params.event+'/technical-riders');
+  logger.info('/events/'+req.params.event+'/technical-riders');
   let data = {};
   try {
     let event = await Event.
@@ -1176,7 +1176,7 @@ router.get('/:event/technical-riders', async (req, res) => {
       }
     }
     try {
-      debugLog(query);
+      logger.info(query);
       let program = await Program.
       find(query).
       select(select).
@@ -1298,7 +1298,7 @@ router.get('/:event/technical-riders', async (req, res) => {
 });
 
 /* router.get('/:event/program-print', (req, res) => {
-  debugLog('/events/'+req.params.event+'/program-print');
+  logger.info('/events/'+req.params.event+'/program-print');
   let data = {};
   Event.
   findOne({"_id": req.params.event}).
@@ -1319,7 +1319,7 @@ router.get('/:event/technical-riders', async (req, res) => {
           }
         }
       }
-      debugLog(query);
+      logger.info(query);
       Program.
       find(query).
       select(select).
@@ -1430,8 +1430,8 @@ router.get('/:event/technical-riders', async (req, res) => {
 
  */
 router.get('/:event/pass-sheet', async (req, res) => {
-  debugLog('/events/'+req.params.event+'/pass-sheet');
-  debugLog(req.query)
+  logger.info('/events/'+req.params.event+'/pass-sheet');
+  logger.info(req.query)
   let data = {};
   try {
     let event = await Event.
@@ -1458,14 +1458,14 @@ router.get('/:event/pass-sheet', async (req, res) => {
         }
       }
     }
-    debugLog(populate);
+    logger.info(populate);
     try {
       let program = await Program.
       find(query).
       select(select).
       populate(populate).
       exec();
-      debugLog(program);
+      logger.info(program);
       if (err) {
         res.json(err);
       } else {
@@ -1556,8 +1556,8 @@ router.get('/:event/pass-sheet', async (req, res) => {
 });
 
 router.get('/:event/pass', async (req, res) => {
-  debugLog('/events/'+req.params.event+'/pass');
-  debugLog(req.query)
+  logger.info('/events/'+req.params.event+'/pass');
+  logger.info(req.query)
   let data = {};
   try {
     let event = await Event.
@@ -1585,13 +1585,13 @@ router.get('/:event/pass', async (req, res) => {
       }
     }
     try {
-      debugLog(query);
+      logger.info(query);
       let program = await Program.
       find(query).
       select(select).
       populate(populate).
       exec();
-      debugLog(program);
+      logger.info(program);
       data.event = event;
       //data.status = config.cpanel["events_advanced"].status;
       let daysdays = [];

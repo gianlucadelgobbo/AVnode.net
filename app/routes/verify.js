@@ -10,7 +10,7 @@ const User = mongoose.model('User');
 import https from 'https';
 import querystring from 'querystring';
 
-import { info, debugLog, error } from '../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
 
 import config from 'getconfig';
@@ -57,14 +57,14 @@ router.get('/:sez/:code', async (req, res) => {
             }
             try {
               await user.save(); // Save the user
-              debugLog('User saved successfully');
+              logger.info('User saved successfully');
           
               if (data.crewslug) {
                 try {
                   await crew.save(); // Save the crew
-                  debugLog('Crew saved successfully');
+                  logger.info('Crew saved successfully');
                 } catch (crewError) {
-                  debugLog(crewError);
+                  logger.info(crewError);
                   return res.render('verify/signup', {
                     title: __('Signup verify'),
                     err: crewError,
@@ -76,14 +76,14 @@ router.get('/:sez/:code', async (req, res) => {
               try {
                 await router.updateSendy(user, user.email); // Update mailing list
                 await UserTemp.deleteMany({ confirm: req.params.code }); // Delete temp user records
-                debugLog('UserTemp records deleted');
+                logger.info('UserTemp records deleted');
                 
                 return res.render('verify/signup', {
                   title: __('Signup verify'),
                   data: data
                 });
               } catch (sendyError) {
-                debugLog(sendyError);
+                logger.info(sendyError);
                 return res.render('verify/signup', {
                   title: __('Signup verify'),
                   err: sendyError,
@@ -91,7 +91,7 @@ router.get('/:sez/:code', async (req, res) => {
                 });
               }
             } catch (userError) {
-              debugLog(userError);
+              logger.info(userError);
               return res.render('verify/signup', {
                 title: __('Signup verify'),
                 err: userError,

@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 const Model = mongoose.model("UserShow");
 const section = "performers";
 
-import { info, debugLog, error } from '../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 
 router.get("/", (req, res) => {
   dataprovider.show(req, res, section, "show", Model);

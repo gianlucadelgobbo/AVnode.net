@@ -12,11 +12,11 @@ const User = mongoose.model('User');
 
 import config from 'getconfig';
 
-import { info, debugLog, error } from '../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
 
 router.get('/', (req, res) => {
-  debugLog('global.getLocale: '+global.getLocale());
+  logger.info('global.getLocale: '+global.getLocale());
   if (req.user) {
     return res.redirect('/admin/profile/'+req.user._id+'/public');
   }
@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  debugLog(req.body);
+  logger.info(req.body);
 
   try {
     // Normalize request fields
@@ -40,8 +40,8 @@ router.post('/', async (req, res) => {
     let put = {};
     for (const item in select) if (req.body[item]) put[item] = req.body[item];
 
-    debugLog("put");
-    debugLog(put);
+    logger.info("put");
+    logger.info(put);
 
     // Generate unique slugs
     put.slug = await helpers.mySlugify(User, put.stagename);
@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
 
     // Validate signup data
     const errors = await router.signupValidator(put);
-    debugLog("Validation Errors:", errors);
+    logger.info("Validation Errors:", errors);
 
     if (Object.keys(errors.errors).length) {
       req.flash('errors', { msg: JSON.stringify(errors) });
@@ -62,7 +62,7 @@ router.post('/', async (req, res) => {
       });
     }
 
-    debugLog("deleteMany UserTemp");
+    logger.info("deleteMany UserTemp");
     await UserTemp.deleteMany({ email: put.email });
 
     // Create new temporary user
@@ -123,7 +123,7 @@ router.post('/', async (req, res) => {
 
 
 router.signupValidator = async (put) => {
-  debugLog("signupValidator", put);
+  logger.info("signupValidator", put);
   let errors = { errors: {}, _message: "", message: "", name: "" };
 
   if (put.crewname && put.crewname.trim() === put.stagename.trim()) {

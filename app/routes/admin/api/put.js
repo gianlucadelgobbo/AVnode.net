@@ -15,12 +15,12 @@ const Models = {
   'Playlist': mongoose.model('Playlist'),
   'Video': mongoose.model('Video')
 }
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
 
 router.putData = (req, res, view) => {
-  debugLog("putData");
-  debugLog(req.body);
+  logger.info("putData");
+  logger.info(req.body);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     if (req.body.mediastr) {
       if (!req.body.medias) req.body.medias = [];
@@ -29,7 +29,7 @@ router.putData = (req, res, view) => {
       } else {
         req.body.medias[0] = JSON.parse(req.body.mediastr)
       }
-      debugLog(req.body);
+      logger.info(req.body);
       delete req.body.mediastr;
     }
     const id = req.params.id;
@@ -42,11 +42,11 @@ router.putData = (req, res, view) => {
           //if (select.is_public)
           req.body.is_public = req.body.is_public ? req.body.is_public : false;
           let put = {};
-          debugLog('Data');
-          debugLog(data);
-          debugLog('select');
-          debugLog(select);
-          debugLog(Object.keys(select));
+          logger.info('Data');
+          logger.info(data);
+          logger.info('select');
+          logger.info(select);
+          logger.info(Object.keys(select));
           const selectkeys = Object.keys(select);
           for(var k in selectkeys) {
             if (req.body[selectkeys[k]]!==undefined) {
@@ -61,10 +61,10 @@ router.putData = (req, res, view) => {
               put.schedule[s].endtime = new Date(Date.UTC(tmp[0],tmp[1]-1,tmp[2],tmp[3],tmp[4]));
             }
           }
-          debugLog('putputputputputput');
-          debugLog(put);
-          debugLog('DataDataDataDataDataData');
-          debugLog(data);
+          logger.info('putputputputputput');
+          logger.info(put);
+          logger.info('DataDataDataDataDataData');
+          logger.info(data);
           Object.assign(data, put);
           if (data.medias && data.medias.length){
             data.medias = req.body.medias
@@ -80,16 +80,16 @@ router.putData = (req, res, view) => {
             if (req.user.stagename) data.stagename = req.user.stagename;
             if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].locality) data.addresses = req.user.addresses;
           } */
-          debugLog('putDataputDataputDataputDataputDataputData');
-          debugLog(data);
+          logger.info('putDataputDataputDataputDataputDataputData');
+          logger.info(data);
           if (helpers.editable(req, data, id)) {
-            debugLog('savesavesavesavesavesavesavesave');
+            logger.info('savesavesavesavesavesavesavesave');
             data.save((err) => {
               if (err) {
                 if (view == "json") {
-                  debugLog(err);
-                  debugLog("view");
-                  debugLog(view);
+                  logger.info(err);
+                  logger.info("view");
+                  logger.info(view);
                   res.status(400).send({ message: `${JSON.stringify(err)}` });
                 } else {
                   for (e in err.errors) err.errors[e].message = __(err.errors[e].message)
@@ -106,17 +106,17 @@ router.putData = (req, res, view) => {
                   });
                 }
               } else {
-                debugLog('USERS ?');
-                debugLog(data.users);
-                debugLog('MEMBERS ?');
-                debugLog(data.members);
+                logger.info('USERS ?');
+                logger.info(data.users);
+                logger.info('MEMBERS ?');
+                logger.info(data.members);
                 var inin = []
                 if (data.members) {
                   inin = [...data.members]
                   inin.push(data._id)
                 }
                 var query = {_id: {$in:data.users || inin || data._id}};
-                debugLog(query);
+                logger.info(query);
                 Promise.all(
                   [helpers.setStatsAndActivity(query)]
                 ).then( (results) => {

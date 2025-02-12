@@ -9,12 +9,12 @@ const Event = mongoose.model('Event');
 const News = mongoose.model('News');
 import fs from 'fs';
 
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
 
 router.get('/events', (req, res) => {
   req.session.organizations = undefined;
-  debugLog('/admin/tools/import/events');
+  logger.info('/admin/tools/import/events');
   res.render('adminpro/supertools/import', {
     title: 'WP Events',
     
@@ -28,21 +28,21 @@ router.get('/events', (req, res) => {
 });
 
 router.post('/events_import', (req, res) => {
-  debugLog('/admin/tools/import/events_import POST');
-  debugLog('{"q": '+req.body.q+'}');
+  logger.info('/admin/tools/import/events_import POST');
+  logger.info('{"q": '+req.body.q+'}');
   if (!req.session.events && req.body.q) req.session.events = req.body.q;
   res.redirect(req.originalUrl);
 });
 
 router.get('/events_import', (req, res) => {
-  debugLog('/admin/tools/import/events_import');
-  //debugLog(req.session.events);
+  logger.info('/admin/tools/import/events_import');
+  //logger.info(req.session.events);
   let events = JSON.parse('{"q": '+req.session.events+'}').q;
-  //debugLog(events);
+  //logger.info(events);
   let page = req.query.page ? parseFloat(req.query.page) : 0;
   if (events[page]) {
     const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/events/"+events[page];
-    //debugLog({"url": url});
+    //logger.info({"url": url});
     page++;
     request({
         url: url,
@@ -52,15 +52,15 @@ router.get('/events_import', (req, res) => {
         Event
         .findOne({slug: body.post_name})
         .exec((err, e) => {
-          debugLog(body);
+          logger.info(body);
           var startdate = new Date(parseInt(body['wpcf-startdate'])*1000);
           var enddate = new Date(parseInt(body['wpcf-enddate'])*1000);
-          debugLog("startdate");
-          debugLog(startdate);
-          debugLog(startdate.toISOString());
-          debugLog("enddate");
-          debugLog(enddate);
-          debugLog(enddate.toISOString());
+          logger.info("startdate");
+          logger.info(startdate);
+          logger.info(startdate.toISOString());
+          logger.info("enddate");
+          logger.info(enddate);
+          logger.info(enddate.toISOString());
           var locations = [];
           for (var item in body['wpcf-location']) {
             var arr = body['wpcf-location'][item].split(";");
@@ -77,9 +77,9 @@ router.get('/events_import', (req, res) => {
             }
             locations.push(venue);
           }
-          debugLog(locations);
+          logger.info(locations);
           if (!e) {
-            debugLog("NUOVOOOO");
+            logger.info("NUOVOOOO");
             var event = {
               wp_id: body.ID,
               wp_users: body.capauthors,
@@ -119,7 +119,7 @@ router.get('/events_import', (req, res) => {
               ]
             };
           } else {
-            debugLog("VECCHIO");
+            logger.info("VECCHIO");
             event = e;
             event.subtitles = [{
               lang : "en", 
@@ -133,7 +133,7 @@ router.get('/events_import', (req, res) => {
               abouttext: body.post_content.replace(/\r\n/g, '').replace(/\n/g, '').replace(/\r/g, '')
             }];        
           }
-          debugLog(body.web_site);
+          logger.info(body.web_site);
           for (var item in body.web_site) {
             if (event.web.map(url => {return url.url;}).indexOf(body.web_site[item])) {
               var web = {
@@ -142,9 +142,9 @@ router.get('/events_import', (req, res) => {
               event.web.push(web);
             }
           }
-          debugLog("enddate.getDate()-startdate.getDate() "+(enddate.getDate()-startdate.getDate()));
+          logger.info("enddate.getDate()-startdate.getDate() "+(enddate.getDate()-startdate.getDate()));
           //for (var a=0;a<=enddate.getDate()-startdate.getDate();a++) {
-            debugLog("locations.length "+locations.length);
+            logger.info("locations.length "+locations.length);
             event.schedule = [];
             if (locations.length) {
               for (var b=0;b<locations.length;b++) {
@@ -174,22 +174,22 @@ router.get('/events_import', (req, res) => {
                 event.users = [ObjectId("5be87f15fc3961000000a669")];
               }
             }
-            debugLog(event);
+            logger.info(event);
             Event.
             findOneAndUpdate({slug: event.slug}, event, {upsert: true, useFindAndModify: false, new: true, setDefaultsOnInsert: true }, (err) => {
               let result;
               if (err) {
-                debugLog('error '+err);
+                logger.info('error '+err);
                 result = err;
               } else {
                 result = event;
               }
-              debugLog('saveoutputsaveoutputsaveoutputsaveoutputsaveoutputsaveoutput ');
-              debugLog(body.featured);
+              logger.info('saveoutputsaveoutputsaveoutputsaveoutputsaveoutputsaveoutput ');
+              logger.info(body.featured);
               if (body.featured && body.featured.full) {
-                router.download(body.featured.full, global.appRoot+event.image.file, (p1,p2,p3) => {
+                router.download(body.featured.full, config.appRoot+event.image.file, (p1,p2,p3) => {
     
-                  debugLog('saveoutput ');
+                  logger.info('saveoutput ');
                   res.render('adminpro/supertools/import', {
                     title: 'WP Events',
                     
@@ -248,7 +248,7 @@ router.get('/events_import', (req, res) => {
   "telenoika"]; */
 router.get('/organizations', (req, res) => {
   req.session.organizations = undefined;
-  debugLog('/admin/tools/import/organizations');
+  logger.info('/admin/tools/import/organizations');
   res.render('adminpro/supertools/import', {
     title: 'WP Organizations',
     
@@ -261,37 +261,37 @@ router.get('/organizations', (req, res) => {
 });
     
 router.post('/organizations_import', (req, res) => {
-  debugLog('/admin/tools/import/organizations_import POST');
-  debugLog('{"q": '+req.body.q+'}');
+  logger.info('/admin/tools/import/organizations_import POST');
+  logger.info('{"q": '+req.body.q+'}');
   if (!req.session.organizations && req.body.q) req.session.organizations = req.body.q;
   res.redirect(req.originalUrl);
 });
 
 router.get('/organizations_import', (req, res) => {
-  debugLog('/admin/tools/import/organizations_import');
-  debugLog(req.session.organizations);
+  logger.info('/admin/tools/import/organizations_import');
+  logger.info(req.session.organizations);
   let organizations = JSON.parse('{"q": '+req.session.organizations+'}').q;
-  debugLog(organizations);
+  logger.info(organizations);
   let page = req.query.page ? parseFloat(req.query.page) : 0;
   if (organizations[page]) {
     const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/author/avnode/"+organizations[page];
-    debugLog({"url": url});
+    logger.info({"url": url});
 
     request({
         url: url,
         json: true
     }, function (error, response, body) {
-      debugLog({"slug": body.user_login});
-      debugLog(error);
-      debugLog(response.statusCode);
-      debugLog("body.ID");
-      debugLog(body.ID);
+      logger.info({"slug": body.user_login});
+      logger.info(error);
+      logger.info(response.statusCode);
+      logger.info("body.ID");
+      logger.info(body.ID);
       if (!error && response.statusCode === 200) {
         page++;
         if (body.organisation) {
-          debugLog({"slug": body.user_login});
-          debugLog(url);
-          debugLog(body.organisation);
+          logger.info({"slug": body.user_login});
+          logger.info(url);
+          logger.info(body.organisation);
           User.findOne({"slug": body.user_login}, function(error, result) {
             if (result) {
               result.organizationData = JSON.parse(JSON.stringify(body.organisation));
@@ -317,7 +317,7 @@ router.get('/organizations_import', (req, res) => {
                   var obj = {source: result.organizationData.logo.toString()};
                   const ext = result.organizationData.logo.substring(result.organizationData.logo.lastIndexOf("."));
                   obj.dest = result.organizationData.logo = "/warehouse/organizations/logos/LOGO-"+result.slug+ext;
-                  debugLog(obj);
+                  logger.info(obj);
                   row.push(obj);
                 }
                 if (result.organizationData.statute) {
@@ -340,7 +340,7 @@ router.get('/organizations_import', (req, res) => {
                 }
                 let contapost = 0;
                 for (let a=0;a<row.length;a++) {
-                  router.download(row[a].source, global.appRoot+row[a].dest, (p1,p2,p3) => {
+                  router.download(row[a].source, config.appRoot+row[a].dest, (p1,p2,p3) => {
                     contapost++;
                     if (contapost == row.length) {
                       result.save(function(error) {
@@ -359,12 +359,12 @@ router.get('/organizations_import', (req, res) => {
                   });          
                 }
               } else {
-                debugLog('saveoutput ');
-                debugLog({"result": result});
-                debugLog(body.organisation);
+                logger.info('saveoutput ');
+                logger.info({"result": result});
+                logger.info(body.organisation);
                 result.save(function(error) {
-                  debugLog("salvato");
-                  debugLog(error || result);
+                  logger.info("salvato");
+                  logger.info(error || result);
                   res.render('adminpro/supertools/import', {
                     title: 'WP Organizations',
                     
@@ -445,7 +445,7 @@ router.daysBetween = function( date1, date2 ) {
 
 router.get('/news', (req, res) => {
   req.session.news = undefined;
-  debugLog('/admin/tools/import/news');
+  logger.info('/admin/tools/import/news');
   res.render('adminpro/supertools/import', {
     title: 'WP News',
     
@@ -458,36 +458,36 @@ router.get('/news', (req, res) => {
 });
     
 router.post('/news_import', (req, res) => {
-  debugLog('/admin/tools/import/news_import POST');
-  debugLog('{"q": '+req.body.q+'}');
+  logger.info('/admin/tools/import/news_import POST');
+  logger.info('{"q": '+req.body.q+'}');
   if (!req.session.news && req.body.q) req.session.news = req.body.q;
   res.redirect(req.originalUrl);
 });
 
 router.get('/news_import', (req, res) => {
-  debugLog('/admin/tools/import/news_import');
-  debugLog(req.session.news);
+  logger.info('/admin/tools/import/news_import');
+  logger.info(req.session.news);
   let news = JSON.parse('{"q": '+req.session.news+'}').q;
-  debugLog(news);
+  logger.info(news);
   let page = req.query.page ? parseFloat(req.query.page) : 0;
-  debugLog(news[page]);
+  logger.info(news[page]);
   if (news[page]) {
     const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/news/"+news[page];
-    debugLog({"url": url});
+    logger.info({"url": url});
 
     request({
         url: url,
         json: true
     }, function (error, response, body) {
-      debugLog({"error": error});
-      debugLog({"response": response});
-      debugLog({"body": body});
+      logger.info({"error": error});
+      logger.info({"response": response});
+      logger.info({"body": body});
       if (!error && response.statusCode === 200) {
         page++;
         if (body.ID) {
           let news = body;
-          debugLog("News "+news.post_title);
-          debugLog(news);
+          logger.info("News "+news.post_title);
+          logger.info(news);
           let tmp = {
             old_id: news.ID,
             createdAt: news.date,
@@ -534,13 +534,13 @@ router.get('/news_import', (req, res) => {
             slugs.push(news.capauthors[user].user_login);
           }
           User.find({"slug": {$in: slugs}}).exec((err, persons) => {
-            debugLog("slugs");
-            debugLog(slugs);
+            logger.info("slugs");
+            logger.info(slugs);
             var usersA = persons.map(function(item){ return item._id; });
-            debugLog("usersA");
+            logger.info("usersA");
             if (!usersA.length) usersA = [ObjectId("5be8772bfc39610000007065")];
             tmp.users = usersA;
-            debugLog(usersA);
+            logger.info(usersA);
             if (news.featured && news.featured.full) {
               let filename = '';
               let dest = '';
@@ -550,30 +550,30 @@ router.get('/news_import', (req, res) => {
               news.date = new Date(news.date);
               let month = news.date.getMonth() + 1;
               month = month < 10 ? '0' + month : month;
-              dest = `${global.appRoot}/glacier/news_originals/${news.date.getFullYear()}/`;
+              dest = `${config.appRoot}/glacier/news_originals/${news.date.getFullYear()}/`;
               if (!fs.existsSync(dest)) {
-                debugLog(fs.mkdirSync(dest));
+                logger.info(fs.mkdirSync(dest));
               }
               dest += month;
               if (!fs.existsSync(dest)) {
-                debugLog(fs.mkdirSync(dest));
+                logger.info(fs.mkdirSync(dest));
               }
               dest += `/${filename}`;
-              //debugLog(dest.replace(global.appRoot, '')+filename);
+              //logger.info(dest.replace(config.appRoot, '')+filename);
               tmp.image = {
-                file: dest.replace(global.appRoot, ''),
+                file: dest.replace(config.appRoot, ''),
                 filename: filename,
                 originalname: source
               };
               router.download(source, dest, (p1,p2,p3) => {
   
-                debugLog('saveoutput ');
-                debugLog(tmp);
+                logger.info('saveoutput ');
+                logger.info(tmp);
                 News.
                 update({slug: tmp.slug}, tmp, {upsert: true}, (err) => {
                   let result;
                   if (err) {
-                    debugLog('error '+err);
+                    logger.info('error '+err);
                     result = err;
                   } else {
                     result = tmp;
@@ -592,13 +592,13 @@ router.get('/news_import', (req, res) => {
     
               });          
             } else {
-              debugLog('saveoutput ');
-              debugLog(tmp);
+              logger.info('saveoutput ');
+              logger.info(tmp);
               News.
               update({slug: tmp.slug}, tmp, {upsert: true}, (err) => {
                 let result;
                 if (err) {
-                  debugLog('error '+err);
+                  logger.info('error '+err);
                   result = err;
                 } else {
                   result = tmp;
@@ -669,17 +669,17 @@ router.download = (source, dest, callback) => {
     }
     request.head(source, function(err, res, body){
       if (err) {
-        debugLog(err);
+        logger.info(err);
       }
       if (res) {
-        debugLog('content-type:', res.headers['content-type']);
-        debugLog('content-length:', res.headers['content-length']);
+        logger.info('content-type:', res.headers['content-type']);
+        logger.info('content-length:', res.headers['content-length']);
       }
       //dest = dest.substring(0, dest.lastIndexOf("/"));
-      debugLog("source ");
-      debugLog(source);
-      debugLog("dest ");
-      debugLog(dest);
+      logger.info("source ");
+      logger.info(source);
+      logger.info("dest ");
+      logger.info(dest);
       request(source).pipe(fs.createWriteStream(dest)).on('close', callback);
     });
   //});
@@ -709,7 +709,7 @@ router.mkdirRecursive = (path, callback) => {
 }
 
 /* router.get('/news_import', (req, res) => {
-  debugLog('/admin/tools/wpimport/news');
+  logger.info('/admin/tools/wpimport/news');
   let page = req.query.page ? parseFloat(req.query.page) : 1;
   const url = `https://flyer.dev.flyer.it/wp-json/wp/v2/news/?page=${page}`;
 
@@ -723,9 +723,9 @@ router.mkdirRecursive = (path, callback) => {
       let contapost = 0;
       let contaposttotal = 0;
       body.forEach((news, index) => {
-        debugLog("News "+index);
-        debugLog("News "+news.title.rendered);
-        //debugLog(news);
+        logger.info("News "+index);
+        logger.info("News "+news.title.rendered);
+        //logger.info(news);
         let tmp = {
           old_id: news.id,
           createdAt: news.date,
@@ -772,13 +772,13 @@ router.mkdirRecursive = (path, callback) => {
           slugs.push(news.capauthors[user].user_login);
         }
         User.find({"slug": {$in: slugs}}).exec((err, persons) => {
-          debugLog("slugs");
-          debugLog(slugs);
+          logger.info("slugs");
+          logger.info(slugs);
           var usersA = persons.map(function(item){ return item._id; });
-          debugLog("usersA");
+          logger.info("usersA");
           if (!usersA.length) usersA = ['5be8772bfc39610007065'];
           tmp.users = usersA;
-          debugLog(usersA);
+          logger.info(usersA);
           if (news.featured && news.featured.full) {
             let filename = '';
             let dest = '';
@@ -789,38 +789,38 @@ router.mkdirRecursive = (path, callback) => {
             let month = news.date.getMonth() + 1;
             month = month < 10 ? '0' + month : month;
             contaposttotal++;
-            dest = `${global.appRoot}/glacier/news_originals/${news.date.getFullYear()}/`;
+            dest = `${config.appRoot}/glacier/news_originals/${news.date.getFullYear()}/`;
             if (!fs.existsSync(dest)) {
-              debugLog(fs.mkdirSync(dest));
+              logger.info(fs.mkdirSync(dest));
             }
             dest += month;
             if (!fs.existsSync(dest)) {
-              debugLog(fs.mkdirSync(dest));
+              logger.info(fs.mkdirSync(dest));
             }
             dest += `/${filename}`;
-            //debugLog(dest.replace(global.appRoot, '')+filename);
+            //logger.info(dest.replace(config.appRoot, '')+filename);
             tmp.image = {
-              file: dest.replace(global.appRoot, ''),
+              file: dest.replace(config.appRoot, ''),
               filename: filename,
               originalname: source
             };
             data.push(tmp);
             router.download(source, dest, (p1,p2,p3) => {
               contapost++;
-              debugLog('contapost download ');
-              debugLog(data.length);
-              debugLog(body.length);
-              debugLog(contapost);
+              logger.info('contapost download ');
+              logger.info(data.length);
+              logger.info(body.length);
+              logger.info(contapost);
 
               if (contapost == body.length) {
-                debugLog('saveoutput ');
-                debugLog(data.length);
-                debugLog(data);
+                logger.info('saveoutput ');
+                logger.info(data.length);
+                logger.info(data);
                 News.
                 create(data, (err) => {
                   let result;
                   if (err) {
-                    debugLog('error '+err);
+                    logger.info('error '+err);
                     result = err;
                   } else {
                     result = data;
@@ -838,19 +838,19 @@ router.mkdirRecursive = (path, callback) => {
             });          
           } else {
             contapost++;
-            debugLog('contapost NO download ');
-            debugLog(data.length);
-            debugLog(body.length);
-            debugLog(contapost);
+            logger.info('contapost NO download ');
+            logger.info(data.length);
+            logger.info(body.length);
+            logger.info(contapost);
             if (contapost == body.length) {
-              debugLog('saveoutput ');
-              debugLog(data.length);
-              debugLog(data);
+              logger.info('saveoutput ');
+              logger.info(data.length);
+              logger.info(data);
               News.
               create(data, (err) => {
                 let result;
                 if (err) {
-                  debugLog('error '+err);
+                  logger.info('error '+err);
                   result = err;
                 } else {
                   result = data;
@@ -879,7 +879,7 @@ router.mkdirRecursive = (path, callback) => {
 });
 
 router.get('/eventsupdate', (req, res) => {
-  debugLog('/admin/tools/import/eventsupdate');
+  logger.info('/admin/tools/import/eventsupdate');
   let page = req.query.page ? parseFloat(req.query.page) : 0;
   if (events[page]) {
     const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/events/"+events[page];
@@ -890,11 +890,11 @@ router.get('/eventsupdate', (req, res) => {
         json: true
     }, function (error, response, body) {
       if (!error && response.statusCode === 200, body.ID) {
-        //debugLog(body);
+        //logger.info(body);
         var startdatetime = new Date((parseInt(body['wpcf-startdate'])*100));
-        //debugLog(startdatetime);
+        //logger.info(startdatetime);
         var enddatetime = new Date((parseInt(body['wpcf-enddate'])*100));
-        //debugLog(enddatetime);
+        //logger.info(enddatetime);
         
         var locations = [];
         for (var item in body['wpcf-location']) {
@@ -912,7 +912,7 @@ router.get('/eventsupdate', (req, res) => {
           }
           locations.push(venue);
         }
-        //debugLog(locations);
+        //logger.info(locations);
 
         var event = {
           wp_id: body.ID,
@@ -951,7 +951,7 @@ router.get('/eventsupdate', (req, res) => {
               ("5be8708afc396100001de")
           ]
         };
-        ////debugLog(body.web_site);
+        ////logger.info(body.web_site);
         for (var item in body.web_site) {
           var web = {
             txt : body.web_site[item],
@@ -960,10 +960,10 @@ router.get('/eventsupdate', (req, res) => {
           }
           event.web.push(web);
         }
-        //debugLog("enddate.getDate()-startdate.getDate() "+router.daysBetween( new Date(parseInt(body['wpcf-startdate'])*100), new Date(parseInt(body['wpcf-enddate'])*100) ));
+        //logger.info("enddate.getDate()-startdate.getDate() "+router.daysBetween( new Date(parseInt(body['wpcf-startdate'])*100), new Date(parseInt(body['wpcf-enddate'])*100) ));
         var daysBetween = router.daysBetween( new Date(parseInt(body['wpcf-startdate'])*100), new Date(parseInt(body['wpcf-enddate'])*100) )
         for (var a=0;a<=daysBetween;a++) {
-          debugLog(a);
+          logger.info(a);
           if (locations.length) {
             for (var b=0;b<locations.length;b++) {
               var schedule = {
@@ -972,7 +972,7 @@ router.get('/eventsupdate', (req, res) => {
                 endtime: new Date((parseInt(body['wpcf-enddate'])*100)-((daysBetween-a)*(100*60*60*24))),
                 venue: locations[b]
               };
-              ////debugLog(schedule);
+              ////logger.info(schedule);
               event.schedule.push(schedule);
             }
           } else {
@@ -984,18 +984,18 @@ router.get('/eventsupdate', (req, res) => {
             event.schedule.push(schedule);
           }
         }
-        //debugLog("original");
-        //debugLog(original);
+        //logger.info("original");
+        //logger.info(original);
 
         Event.findOneAndUpdate({"slug": body.post_name}, event, { upsert: true, new: false, setDefaultsOnInsert: true }, function(error, result) {
           if (error) {
-            debugLog(error);
+            logger.info(error);
           } else if (!result) {
             // Create it
             //result = new Model();
             //result = Object.assign(result, event);
-            debugLog("insert");
-            debugLog(events[page]);
+            logger.info("insert");
+            logger.info(events[page]);
             // If the document doesn't exist
             // Save the document
           } 

@@ -6,20 +6,20 @@ const User = mongoose.model('User');
 const Event = mongoose.model('Event');
 const Emailqueue = mongoose.model('Emailqueue');
 
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
 router.get('/', (req, res) => {
   router.getEmailqueue(req, res);
 });
 
 router.getEmailqueue = (req, res) => {
-  debugLog('/getEmailqueue/'+req.params.id);
-  debugLog("req.body");
+  logger.info('/getEmailqueue/'+req.params.id);
+  logger.info("req.body");
   var ids = req.user.crews.map(item => {return item._id});
-      debugLog(ids);
-      debugLog(req.body);
-      debugLog("req.params");
-      debugLog(req.params);
+      logger.info(ids);
+      logger.info(req.body);
+      logger.info("req.params");
+      logger.info(req.params);
 
       var query = {$or:[{organization: {$in: ids}}, {user: req.user._id}]};
       if (req.params.event) query.event = req.params.event;
@@ -34,8 +34,8 @@ router.getEmailqueue = (req, res) => {
       //select({stagename: 1, createdAt: 1, crews:1}).
       populate(populate).
       exec((err, data) => {
-        debugLog("data");
-        debugLog(data);
+        logger.info("data");
+        logger.info(data);
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {

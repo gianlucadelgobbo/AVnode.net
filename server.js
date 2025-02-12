@@ -8,36 +8,34 @@ import MongoStore from "connect-mongo";
 import flash from "express-flash";
 import moment from "moment";
 import fs from "fs";
-import { fileURLToPath } from "url";
 
 // Import utilities and config
 import config from "getconfig";
 import i18n from "./app/utilities/i18n.js";
 import { passport } from './app/utilities/passport.js';
 import morgan from "morgan";
-import { info, debugLog, error } from './app/utilities/logger.js';
+import { logger, requestLogger, errorLogger } from './app/utilities/logger.js';
 
 import routes from "./app/routes/index.js";
-
-// Fix __dirname in ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Global Config
-global.config = config;
-config.defaultLocale = process.argv[3];
-global.appRoot = __dirname;
-
-// Load models early (but models are now handled in index.js before server start)
-//import "./app/models/index.js";
 
 // Initialize Express app
 const app = express();
 app.locals.moment = moment;
 
-// Set up headers for CORS
+// Passa config ai template Pug/Jade
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.locals.config = config; 
+  next();
+});
+
+// Set up headers for CORS
+const allowedOrigins = ["https://avnode.net", "https://avnode.org"];
+
+app.use((req, res, next) => {
+  const origin = req.get("origin");
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   res.header("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
   next();
@@ -45,25 +43,17 @@ app.use((req, res, next) => {
 
 // View Engine Configuration
 app.set("port", config.ports[config.defaultLocale] || 3000);
-app.set("views", path.join(__dirname, "app/views"));
+app.set("views", path.join(config.appRoot, "app/views"));
 app.set("view engine", "pug");
-app.set("view options", { debug: true });
+app.set("view options", { debug: process.env.DEBUG });
 app.set("trust proxy", "loopback");
-
-// Logging Configuration
-const accessLogStream = fs.createWriteStream(
-  path.join(__dirname, "../logs/avnode_" + process.argv[3] + "_errors.log"),
-  { flags: "a" }
-);
-
-app.use(morgan("combined", { skip: (req, res) => res.statusCode < 400, stream: accessLogStream }));
 
 // Middleware
 app.use(compression());
-app.use(express.static(path.join(__dirname, "public")));
-app.use("/storage", express.static(path.join(__dirname, "storage")));
-app.use("/warehouse", express.static(path.join(__dirname, "warehouse")));
-app.use("/glacier", express.static(path.join(__dirname, "glacier")));
+app.use(express.static(path.join(config.appRoot, "public")));
+app.use("/storage", express.static(path.join(config.appRoot, "storage")));
+app.use("/warehouse", express.static(path.join(config.appRoot, "warehouse")));
+app.use("/glacier", express.static(path.join(config.appRoot, "glacier")));
 
 app.use(bodyParser.json({ limit: "10gb" }));
 app.use(bodyParser.urlencoded({ limit: "10gb", extended: true, parameterLimit: 50000 }));
@@ -74,23 +64,27 @@ app.use(flash());
 app.use(i18n.init);
 
 // Redirect if accessed from old IP address
+const blockedIPs = new Set((process.env.BLOCKED_IPS || "").split(","));
+
 app.use((req, res, next) => {
-  if (req.get("host") === "176.9.142.221:8006") {
-    res.redirect("https://avnode.net" + req.originalUrl);
-  } else {
-    next();
+  const host = req.get("host") || req.get("X-Forwarded-Host");
+  if (blockedIPs.has(host)) {
+    console.warn(`⛔ Tentativo di accesso da IP bloccato: ${host}`);
+    return res.redirect("https://avnode.net" + req.originalUrl);
   }
+  next();
 });
 
-// Session Management
+// Sicurezza sessioni migliorata
 app.use(
   session({
-    resave: true,
-    saveUninitialized: true,
+    resave: false, // Evita di salvare sessioni non modificate
+    saveUninitialized: false, // Evita di creare sessioni vuote
     secret: process.env.SESSION_SECRET,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 },
+    cookie: { maxAge: 24 * 60 * 60 * 1000, secure: process.env.NODE_ENV === "production" },
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
+      dbName: process.env.MONGODB_NAME,
       touchAfter: 24 * 3600,
     }),
   })
@@ -127,25 +121,66 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  req.session.current_lang = config.defaultLocale;
-  global.setLocale(req.session.current_lang);
-  moment.locale(req.session.current_lang);
+  const host = req.get("host") || "localhost";
+  const parts = host.split(".");
+  const subdomain = parts.length > 2 && parts[0].length === 2 ? parts[0] : null;
 
-  if (/auth|login|logout|signup|images|fonts/i.test(path)) {
-    return next();
+  let lang = "en"; // Default inglese su `avnode.net`
+
+  if (subdomain && config.domain_to_lang[subdomain]) {
+    lang = config.domain_to_lang[subdomain];
+  } else if (host === "localhost") {
+    lang = config.defaultLocale; // Se siamo in locale
+  } else if (!/avnode\./.test(host)) {  // Supporta anche avnode.org, avnode.it, ecc.
+    lang = config.defaultLocale; 
   }
 
-  if (
-    !req.user &&
-    req.path.indexOf("/admin") === 0 &&
-    req.path !== "/admin/api/signup"
-  ) {
-    req.session.returnTo = req.path.replace("/admin/api/loggeduser", "/");
-    res.redirect("/login");
-  } else {
-    next();
-  }
+  req.session.current_lang = lang;
+  moment.locale(lang);
+  i18n?.setLocale?.(req, lang);
+
+  next();
 });
+
+
+
+
+// Logging Configuration - Pre-inizializza i log per ogni lingua
+// Middleware per errori
+app.use(errorLogger);
+
+// Catch all per errori non gestiti
+app.use((err, req, res, next) => {
+  logger.error(`Errore non gestito: ${err.message}`);
+  res.status(500).json({ error: "Errore interno del server" });
+});
+
+
+
+
+
+const adminPathRegex = /^\/(admin|adminpro)/; // Aggiunto qui
+
+const excludedRoutes = new Set([
+  "/login", "/logout", "/signup", "/admin/api/signup",
+  "/warehouse", "/fonts", "/css", "/datetimeentry",
+  "/fullcalendar", "/icons", "/images", "/js",
+  "/lightgallery", "/organizations", "/webfonts"
+]);
+
+app.use((req, res, next) => {
+  if (excludedRoutes.has(req.path)) return next();
+
+  if (!req.user && req.path.startsWith("/admin")) {
+    req.session.returnTo = req.originalUrl.includes("/admin/api/loggeduser") ? "/" : req.originalUrl;
+    return res.redirect("/login");
+  }
+
+  next();
+});
+
+
+
 // ✅ Debugging - Check if session & user exist
 /* app.use((req, res, next) => {
   console.log("🔍 DEBUG: Session ID:", req.sessionID);
@@ -155,32 +190,17 @@ app.use((req, res, next) => {
   next();
 }); */
 
-// Routes
-app.use(routes);
 
 // Error Handling Middleware
 // Enhanced Error Handling Middleware
 app.use((err, req, res, next) => {
-  console.error("🔥 Error Middleware Triggered");
-  console.error("URL:", req.method, req.headers.host + req.url);
-  console.error("Error:", err.message);
-
-  // 🛑 Print stack trace to find the source file
-  if (err.stack) {
-    console.error("Stack Trace:\n", err.stack);
-  }
-
-  // Log error to `debugLog` (so it's also stored in logs)
-  debugLog("🔥 Error Middleware Triggered");
-  debugLog("URL:", req.method, req.headers.host + req.url);
-  debugLog("Error:", err.message);
-  debugLog("Stack Trace:\n", err.stack);
-
-  if (!err.statusCode) err.statusCode = 500;
-  res.status(err.statusCode).send("Internal server error");
+  console.error("🔥 ERRORE:", err.message);
+  if (err.stack) console.error("Stack Trace:\n", err.stack);
+  res.status(err.status || 500).json({ error: "Errore interno del server" });
 });
 
 
-
+// Routes
+app.use(routes);
 
 export default app;

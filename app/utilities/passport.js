@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import mongoose from 'mongoose';
-import { info, debugLog as debug, error } from '../utilities/logger.js'; // Logger
+import { logger, requestLogger, errorLogger } from '../utilities/logger.js'; // Logger
 import { mySendMailer } from '../utilities/mailer.js'; // Email sender
 
 const User = mongoose.model('User'); // Ensure User model is registered
@@ -26,7 +26,7 @@ passport.deserializeUser(async (id, done) => {
 // Local Strategy for authentication
 passport.use(
   new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, async (req, email, password, done) => {
-    debug(`passport.use: ${email}`);
+    logger.debug(`passport.use: ${email}`);
 
     try {
       const user = await User.findOne({
@@ -38,28 +38,28 @@ passport.use(
       }).select('stagename slug password email');
 
       if (!user) {
-        debug(`User not found: ${email}`);
+        logger.debug(`User not found: ${email}`);
         return done(null, false, {
           msg: { errors: { email: { message: 'Invalid email or password.' } } },
           redirect: '/login'
         });
       }
 
-      debug(`Checking password for: ${email}`);
+      logger.debug(`Checking password for: ${email}`);
       const isMatch = await user.comparePassword(password);
 
       if (isMatch) {
-        debug('User password match');
+        logger.debug('User password match');
         return done(null, user);
       } else {
-        debug('User password does not match');
+        logger.debug('User password does not match');
         return done(null, false, {
           msg: { errors: { email: { message: 'Invalid email or password.' } } },
           redirect: '/login'
         });
       }
     } catch (err) {
-      debug(`Error in authentication: ${JSON.stringify(err)}`);
+      logger.debug(`Error in authentication: ${JSON.stringify(err)}`);
       return done(err);
     }
   })

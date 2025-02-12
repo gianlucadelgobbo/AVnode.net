@@ -20,7 +20,7 @@ const Models = {
   'Program': mongoose.model('Program'),
   'Emailqueue': mongoose.model('Emailqueue')
 }
-import { info, debugLog, error } from '../../../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 import pkg from 'i18n';
 const { __ } = pkg;
 
@@ -75,25 +75,25 @@ const partners_categories = [
 ];
 
 router.streamCommand = (req, res, cmd) => {
-  debugLog("streamCommand");
+  logger.info("streamCommand");
   const conn = new Client();
   conn.on('ready', () => {
-    debugLog('Client :: ready');
-    debugLog(cmd);
+    logger.info('Client :: ready');
+    logger.info(cmd);
     conn.exec(cmd, (err, stream) => {
       if (err) res.json(err);
       stream.on('close', (code, signal) => {
-        debugLog('Stream :: close :: code: ' + code + ', signal: ' + signal);
+        logger.info('Stream :: close :: code: ' + code + ', signal: ' + signal);
         conn.end();
       }).on('data', (data) => {
-        debugLog(data);
-        debugLog('STDOUT: ' + data);
+        logger.info(data);
+        logger.info('STDOUT: ' + data);
         res.json({
           'CMD': cmd,
           'STDOUT': (""+data).replace("\n",""),
         });
       }).stderr.on('data', (data) => {
-        //debugLog(data);
+        //logger.info(data);
       });
     });
   }).connect({
@@ -105,19 +105,19 @@ router.streamCommand = (req, res, cmd) => {
 }
 
 router.streamUpdateAndRestart = (req, res) => {
-  debugLog("streamStop");
+  logger.info("streamStop");
   var cmd = 'cd /home/hyo/streaming/ffplayout-engine/ && sh ./FFplayout_update_and_restart.sh';
   router.streamCommand(req, res, cmd);
 }
 
 router.streamStop = (req, res) => {
-  debugLog("streamStop");
+  logger.info("streamStop");
   var cmd = 'cd /home/hyo/streaming/ffplayout-engine/ && sh ./FFplayout_stop.sh';
   router.streamCommand(req, res, cmd);
 }
 
 router.streamRestart = (req, res) => {
-  debugLog("streamStop");
+  logger.info("streamStop");
   var cmd = 'cd /home/hyo/streaming/ffplayout-engine/ && sh ./FFplayout_restart.sh';
   router.streamCommand(req, res, cmd);
 }

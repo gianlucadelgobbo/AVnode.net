@@ -7,7 +7,7 @@ import put from './put.js';
 import * as post from './post.js';
 import ssh from './ssh.js';
 import upload from './upload.js';
-import { info, debugLog as debug, error } from '../../../utilities/logger.js'; // Logger
+import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js'; // Logger
 
 // Debugging Route (Only in DEBUG mode)
 if (process.env.DEBUG) {

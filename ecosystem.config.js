@@ -24,7 +24,8 @@ export default {
       followSymlinks: false
     },
     env: {
-      NODE_ENV: "production"
+      NODE_ENV: "production",
+      DEBUG: "false",
     }
   },{
     name: "avnode.net be",
@@ -49,7 +50,8 @@ export default {
       followSymlinks: false
     },
     env: {
-      NODE_ENV: "production"
+      NODE_ENV: "production",
+      DEBUG: "false",
     }
   },{
     name: "avnode.net de",

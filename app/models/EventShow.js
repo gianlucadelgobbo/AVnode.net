@@ -16,7 +16,7 @@ import Schedule from './shared/Schedule.js';
 import Package from './shared/Package.js';
 
 const adminsez = 'events';
-import { info, debugLog, error } from '../utilities/logger.js';
+import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
 import helper from '../utilities/helper.js';
 
@@ -188,7 +188,7 @@ const eventSchema = new Schema({
 }); */
 
 eventSchema.virtual('advanced').get(function (req) {
-  //debugLog("virtual advanced");
+  //logger.info("virtual advanced");
   //let programmebydayvenue = [];
   let performers = {
     performersN: 0,
@@ -673,7 +673,7 @@ eventSchema.virtual('fullSchedule').get(function (req) {
       }
       boxDates.push(eventSchema.boxDateCreator(starttime, endtime, boxVenue));
     }
-    debugLog(boxDates);
+    logger.info(boxDates);
 
     return boxDates;
   }
