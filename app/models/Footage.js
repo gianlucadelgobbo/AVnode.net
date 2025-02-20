@@ -2,7 +2,7 @@ import config from "getconfig";
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 //import indexPlugin from "../utilities/elasticsearch/Footage";
-import helper from "../utilities/helper.js";
+import helpers from "../utilities/helpers.js";
 
 
 import About from "./shared/About.js";
@@ -90,7 +90,7 @@ footageSchema.virtual("about").get(function(req) {
     }
     about = about.replace(new RegExp(/\n/gi), " <br />");
 
-    about = helper.linkify(about);
+    about = helpers.linkify(about);
 
     return about;
   }

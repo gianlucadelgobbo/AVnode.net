@@ -5,7 +5,7 @@ import moment from 'moment';
 //const indexPlugin from '../utilities/elasticsearch/User.js';
 //const async from 'async';
 //const imageUtil from '../utilities/image.js';
-import helper from '../utilities/helper.js';
+import helpers from '../utilities/helpers.js';
 import truncatise from 'truncatise';
 
 import MediaImage from './shared/MediaImage.js';
@@ -247,7 +247,7 @@ userSchema.virtual('about').get(function (req) {
     let str = about;
     str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
-    str = helper.linkify(str);
+    str = helpers.linkify(str);
 
     str = truncatise(str, options);
   
@@ -287,7 +287,7 @@ userSchema.virtual('aboutFull').get(function (req) {
 
     str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
-    str = helper.linkify(str);
+    str = helpers.linkify(str);
     //str = str.replace(new RegExp(/<br \/><br \/>+/gi), "<br />");
 
     str = str.replace(truncatise(str, options),"");
@@ -298,7 +298,7 @@ userSchema.virtual('aboutFull').get(function (req) {
 
 userSchema.virtual('description').get(function (req) {
   if (this.abouts && this.abouts.length) {
-    return helper.makeDescription(this.abouts);
+    return helpers.makeDescription(this.abouts);
   }
 });
 

@@ -1,7 +1,8 @@
 
 import createRouter from "../../router.js";
 const router = createRouter();
-import helpers from '../../admin/api/helpers.js';
+
+import helpers from '../../../utilities/helpers.js';
 import mongoose from 'mongoose';
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
@@ -15,6 +16,7 @@ const Category = mongoose.model('Category');
 import config from 'getconfig';
 
 import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
+import { setStatsAndActivity, setStatsAndActivitySingle } from "../../../utilities/userstats.js";
 
 
 /* router.unflatten = function( array, parent, tree ){
@@ -198,7 +200,7 @@ router.post('/', (req, res) => {
     logger.info(qq);
     var promises = [];
     for (item in qq) promises.push(helpers.consolidateUser(qq[item]));
-    for (item in qq) promises.push(helpers.setStatsAndActivity(qq[item]));
+    for (item in qq) promises.push(setStatsAndActivity(qq[item]));
     //for (item in qq) console.log(query[item])
     Promise.all(
       promises

@@ -1,5 +1,6 @@
 import createRouter from "./router.js";
 const router = createRouter();
+
 router.use('/', (req, res) => {
   res.render('search', {
     title: 'Search results',

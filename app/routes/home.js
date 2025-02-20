@@ -1,7 +1,9 @@
-import config from 'getconfig';
-import mongoose from 'mongoose';
 import createRouter from "./router.js";
 const router = createRouter();
+
+import config from 'getconfig';
+import mongoose from 'mongoose';
+
 
 const EventShow = mongoose.model('EventShow');
 const Performance = mongoose.model('Performance');
@@ -13,7 +15,6 @@ import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
 
 router.get('/', (req, res) => {
-
   if (req.originalUrl.indexOf("sitemap.xml")!==-1) {
   } else {
     let homedata = {stats:{}};

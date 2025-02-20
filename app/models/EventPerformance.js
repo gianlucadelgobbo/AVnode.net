@@ -2,7 +2,7 @@ import config from 'getconfig';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 //import indexPlugin from '../utilities/elasticsearch/Performance.js';
-import helper from '../utilities/helper.js';;
+import helpers from '../utilities/helpers.js';
 
 import About from './shared/About.js';
 import MediaImage from './shared/MediaImage.js';
@@ -78,7 +78,7 @@ performanceSchema.virtual('about').get(function (req) {
     }
     about = about.replace(new RegExp(/\n/gi)," <br />");
 
-    about = helper.linkify(about);
+    about = helpers.linkify(about);
 
     return about;
   }
@@ -86,7 +86,7 @@ performanceSchema.virtual('about').get(function (req) {
 
 performanceSchema.virtual('description').get(function (req) {
   if (this.abouts && this.abouts.length) {
-    return helper.makeDescription(this.abouts);
+    return helpers.makeDescription(this.abouts);
   }
 });
 

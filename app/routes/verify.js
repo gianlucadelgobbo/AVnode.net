@@ -1,5 +1,6 @@
 import createRouter from "./router.js";
 const router = createRouter();
+
 import axios from 'axios';
 
 import mongoose from 'mongoose';
@@ -16,6 +17,9 @@ import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 import config from 'getconfig';
 
 router.get('/:sez/:code', async (req, res) => {
+  logger.info("Verify");
+  logger.info(req.params.sez);
+  logger.info(req.params.code);
   if (req.params.sez == 'signup' && req.params.code) {
     try {
       const put = await UserTemp
@@ -119,51 +123,52 @@ router.get('/:sez/:code', async (req, res) => {
     }
   }
   if (req.params.sez == 'email' && req.params.code) {
+    let user;
     try {
-      const user = await User
+      user = await User
       .findOne({"emails.confirm":req.params.code})
       .select({emails: 1})
       .exec();
-      if (user) {
-        for(let item=0;item<user.emails.length;item++) {
-          if (user.emails[item].confirm === req.params.code) {
-            var sendyemail = user.emails[item].email;
-            user.emails[item].is_confirmed = true;
-            user.emails[item].mailinglists = { livevisuals: 1 };
-            //delete user.emails[item].confirm;
-          }
-        }
-        try {
-          await user.save()
-          await router.updateSendy(user, sendyemail); // Update mailing list
-          if (req.user) {
-            req.flash('success', { msg: __('Email verificated with success.') });
-            res.redirect('/admin/profile/'+req.user._id+'/emails');
-          } else {
-            res.render('verify/email', {
-              title: __('Email verify'),
-              err: false,
-            });  
-          }
-        } catch (err) {
-          res.render('verify/email', {
-            title: __('Email verify'),
-            err: true,
-          });
-        }
+      if (!user) {
+        logger.info("NON TROVATOOOO");
+        return res.render('verify/email', {
+          title: __('Email verify'),
+          err: true
+        });
+      }
+    } catch (err) {
+      return res.render('verify/email', {
+        title: __('Email verify'),
+        err: true,
+      });
+    };
+    for(let item=0;item<user.emails.length;item++) {
+      if (user.emails[item].confirm === req.params.code) {
+        var sendyemail = user.emails[item].email;
+        user.emails[item].is_confirmed = true;
+        user.emails[item].mailinglists = { livevisuals: 1 };
+        //delete user.emails[item].confirm;
+      }
+    }
+    try {
+      await user.save()
+      await router.updateSendy(user, sendyemail); // Update mailing list
+      if (req.user) {
+        req.flash('success', { msg: __('Email verificated with success.') });
+        res.redirect('/admin/profile/'+req.user._id+'/emails');
       } else {
         res.render('verify/email', {
           title: __('Email verify'),
-          err: true,
-        });
+          err: false,
+        });  
       }
     } catch (err) {
       res.render('verify/email', {
         title: __('Email verify'),
         err: true,
       });
-    };
-  }
+    }
+}
 });
 
 router.updateSendy = async (user, email) => {

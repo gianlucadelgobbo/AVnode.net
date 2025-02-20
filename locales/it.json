@@ -465,7 +465,6 @@
 	"Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.": "La verifica è andata a buon fine, per essere indicato come performer effettua il login e completa il tuo profilo con immagini e informazioni.",
 	"LOG IN": "ACCEDI",
 	"------------------CONTROL PANEL------------------": "------------------PANNELLO DI CONTROLLO------------------",
-	"Control Panel": "Pannello di controllo",
 	"Collapse": "Raccogli",
 	"SHOW": "MOSTRA",
 	"ADD SOCIAL": "AGGIUNGI SOCIAL",
@@ -754,5 +753,19 @@
 	"There are some errors": "Ci sono alcuni errori",
 	"Please select a call": "Seleziona una call",
 	"This person is already in with another act and can not be edited": "Questa persona ha già un altra submission e non può essere modificata",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
+	"Your Email": "Your Email",
+	"Your Password": "Your Password",
+	"For endless installations set 0": "For endless installations set 0",
+	"Email verify": "Email verify",
+	"Verification Failed": "Verification Failed",
+	"Verification was already done or someone subscribed with some of your data.": "Verification was already done or someone subscribed with some of your data.",
+	"Email verificated with success.": "Email verificated with success.",
+	"Hide Members on public pages": "Hide Members on public pages",
+	"Wait for the evaluation": "Wait for the evaluation",
+	"per person/per day": "per person/per day",
+	"days": "days",
+	"Total": "Total",
+	"Room name": "Room name",
+	"Break between every show (minutes)": "Break between every show (minutes)"
 }

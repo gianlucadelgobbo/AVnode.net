@@ -1,9 +1,11 @@
 import createRouter from "../router.js";
 const router = createRouter();
+
 import config from 'getconfig';
 import get from './api/get.js';
 import put from './api/put.js';
 import { logger, requestLogger, errorLogger } from '../../utilities/logger.js'; // Logger
+import dataprovider from '../../utilities/dataprovider.js'; // Logger
 
 // API Routes
 import apiRoutes from './api/index.js';
@@ -23,15 +25,15 @@ router.get('/:sez/:id/:form/', async (req, res) => {
       config.genres = await get.getPerfCategories(req, res);
       console.log("✅ genres loaded:", config.genres);
 
-      // 🔥 Ensure get.getData is only called *after* types and genres are set
-      await get.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
+      // 🔥 Ensure dataprovider.getData is only called *after* types and genres are set
+      await dataprovider.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
 
     } else if (req.params.sez === "subscriptions" && req.params.form === "private") {
       await get.getSubscriptions(req, res);
     } else if (req.params.sez === "events" && req.params.form === "partners") {
       await get.getPartners(req, res);
     } else {
-      await get.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
+      await dataprovider.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
     }
   } catch (err) {
     error("🔥 Error fetching data:", err);
@@ -58,14 +60,14 @@ router.post('/:sez/:id/:form/', async (req, res) => {
     } else if (req.params.sez === "events" && req.params.form === "partners") {
       get.getPartners(req, res);
     } else if (req.params.sez === "partners" && req.params.form === "message") {
-      get.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
+      dataprovider.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
     } else if (req.params.sez === "events" && req.params.form === "partners-message") {
-      get.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
+      dataprovider.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
     } else {
       put.putData(req, res, `admin/${req.params.sez}_${req.params.form}`);
     }
   } catch (err) {
-    error("Error processing data:", err);
+    logger.error("Error processing data:", err);
     res.status(500).send("Internal Server Error");
   }
 });

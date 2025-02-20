@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 import Schedule from './Schedule.js';
 import moment from 'moment';
+import config from 'getconfig';
 
 const Booking = new Schema({
   schedule: [Schedule],

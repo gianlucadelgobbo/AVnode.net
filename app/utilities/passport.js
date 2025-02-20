@@ -2,7 +2,6 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import mongoose from 'mongoose';
 import { logger, requestLogger, errorLogger } from '../utilities/logger.js'; // Logger
-import { mySendMailer } from '../utilities/mailer.js'; // Email sender
 
 const User = mongoose.model('User'); // Ensure User model is registered
 

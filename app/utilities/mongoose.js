@@ -5,7 +5,6 @@ import config from "getconfig"; // Assumendo che esista un file config.js
 
 let connectionAttempts = 0;
 const MAX_RETRIES = 5;
-const RETRY_INTERVAL = 5000; // 5 secondi tra i tentativi
 
 const connectDB = async (MONGO_URI) => {
   if (connectionAttempts >= MAX_RETRIES) {
@@ -16,17 +15,17 @@ const connectDB = async (MONGO_URI) => {
   try {
     console.log(`🔄 Attempting to connect to MongoDB... (${connectionAttempts + 1}/${MAX_RETRIES})`);
     await mongoose.connect(MONGO_URI, {
-      autoIndex: process.env.NODE_ENV !== "production",
-      serverSelectionTimeoutMS: 10000, // Timeout maggiore per evitare errori
-      socketTimeoutMS: 60000, // 1 minuto per evitare timeout improvvisi
-      retryWrites: true,
+      autoIndex: process.env.NODE_ENV !== "production", // Disabilitato in produzione
+      serverSelectionTimeoutMS: 5000, // Timeout per selezione server
+      socketTimeoutMS: 45000, // Timeout per connessioni inattive
+      retryWrites: true, // Riprova scritture fallite
     });
     console.log("✅ Connected to MongoDB:", MONGO_URI);
     connectionAttempts = 0; // Reset counter on success
   } catch (error) {
     console.error("❌ MongoDB Connection Error:", error.message);
     connectionAttempts++;
-    setTimeout(() => connectDB(MONGO_URI), RETRY_INTERVAL);
+    setTimeout(() => connectDB(MONGO_URI), 5000);
   }
 };
 

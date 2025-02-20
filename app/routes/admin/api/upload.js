@@ -10,7 +10,7 @@ import fs from 'fs';
 import path from "path";
 import imageUtil from "../../../utilities/image.js";
 import progress from 'progress-stream';
-import helpers from './helpers.js';
+import { setStatsAndActivity, setStatsAndActivitySingle } from "../../../utilities/userstats.js";
 import { logger, requestLogger, errorLogger } from "../../../utilities/logger.js";
 
 
@@ -293,7 +293,7 @@ upload.setImage = (req, res) => {
             imageUtil.resizer(
               files_checked,
               options,
-              (files_resized) => {
+              async (files_resized) => {
                 logger.info(`imageUtil.resizer`);
                 logger.info(files_resized);
                 logger.info(`imageUtil.resizer end`);
@@ -323,24 +323,27 @@ upload.setImage = (req, res) => {
                   //var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
                   logger.info(put);
                   const id = req.params.id;
-                  Models[config.cpanel[req.params.sez].model]
-                  .findOne({_id:id}, function(err, doc) {
-                    doc[options.fields.name] = put[options.fields.name];
-                    doc.save((err) => {
-                      if (err) {
-                        res.status(500).send({ message: `${JSON.stringify(err)}` });
-                      } else {
-                        Models[config.cpanel[req.params.sez].model]
-                        .findById(id, "image", (err, data) => {
-                          if (err) {
-                            res.status(500).send({ message: `${JSON.stringify(err)}` });
-                          } else {
-                            res.send(data);
-                          }
-                        });
-                      }
-                    });
-                  });              
+                  let doc;
+                  let data;
+                  try {
+                    doc = await Models[config.cpanel[req.params.sez].model]
+                    .findOne({_id:id});
+                  } catch (err) {
+                    return res.status(500).send({ message: `${JSON.stringify(err)}` });
+                  }
+                  doc[options.fields.name] = put[options.fields.name];
+                  try {
+                    doc.save()
+                  } catch (err) {
+                    return res.status(500).send({ message: `${JSON.stringify(err)}` });
+                  }
+                  try {
+                    data = await Models[config.cpanel[req.params.sez].model]
+                    .findById(id, "image")
+                    return res.send(data);
+                  } catch (err) {
+                    return res.status(500).send({ message: `${JSON.stringify(err)}` });
+                  }
                 }
               }
             );
@@ -517,7 +520,7 @@ upload.galleryAddImages = (req, res) => {
                             logger.info(data.users);
                             var query = {_id: {$in:data.users || data.members}};
                             Promise.all(
-                              [helpers.setStatsAndActivity(query)]
+                              [setStatsAndActivity(query)]
                             ).then( (results) => {
                               Models.Gallery
                               .findById(id, "medias image", (err, data) => {

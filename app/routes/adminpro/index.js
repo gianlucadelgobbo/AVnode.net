@@ -1,5 +1,6 @@
 import createRouter from "../router.js";
 const router = createRouter();
+
 import config from 'getconfig';
 
 import mongoose from 'mongoose';
@@ -23,6 +24,7 @@ import emailqueue  from './emailqueue/index.js';
 import consolidate  from './supertools/consolidate.js';
 
 import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
+//import dataprovider from "../../utilities/dataprovider.js";
 
 
 if (process.env.DEBUG) {
@@ -112,7 +114,7 @@ router.get('/*', (req, res) => {
 router.get('/api/profile/:form/', (req, res) => {
  req.params.id = req.user.id;
  req.params.sez = 'profile';
- get.getData(req, res);
+ dataprovider.getData(req, res);
 });
 router.put('/api/profile/:form/', (req, res) => {
  req.params.id = req.user.id;
@@ -133,7 +135,7 @@ router.put('/api/profile/:form/', (req, res) => {
 router.get('/api/profile/emails/verify/:email', (req, res)=>{
  req.params.id = req.user.id;
  req.params.sez = 'profile';
- get.sendEmailVericaition(req, res);
+ get.sendEmailVerification(req, res);
 });
 
 router.get('/api/:sez/new/slugs/:slug', (req, res)=>{
@@ -145,7 +147,7 @@ router.get('/api/:sez/:id/public/slugs/:slug', (req, res)=>{
 });
 
 router.get('/api/:sez/:id/:form/', (req, res) => {
- get.getData(req, res);
+ dataprovider.getData(req, res);
 });
 
 router.put('/api/:sez/:id/:form/', (req, res) => {

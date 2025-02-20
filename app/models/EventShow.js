@@ -18,7 +18,7 @@ import Package from './shared/Package.js';
 const adminsez = 'events';
 import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
-import helper from '../utilities/helper.js';
+import helpers from '../utilities/helpers.js';
 
 const datevenueSchema = new Schema({
   starttime: Date,
@@ -415,7 +415,7 @@ eventSchema.virtual('about').get(function (req) {
     let str = about;
     str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
-    str = helper.linkify(str);
+    str = helpers.linkify(str);
 
     str = truncatise(str, options);
   
@@ -455,7 +455,7 @@ eventSchema.virtual('aboutFull').get(function (req) {
 
     str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
-    str = helper.linkify(str);
+    str = helpers.linkify(str);
     //str = str.replace(new RegExp(/<br \/><br \/>+/gi), "<br />");
 
     str = str.replace(truncatise(str, options),"");
@@ -466,7 +466,7 @@ eventSchema.virtual('aboutFull').get(function (req) {
 });
 eventSchema.virtual('description').get(function (req) {
   if (this.abouts && this.abouts.length) {
-    return helper.makeDescription(this.abouts);
+    return helpers.makeDescription(this.abouts);
   }
 });
 
@@ -673,7 +673,7 @@ eventSchema.virtual('fullSchedule').get(function (req) {
       }
       boxDates.push(eventSchema.boxDateCreator(starttime, endtime, boxVenue));
     }
-    logger.info(boxDates);
+    //logger.info(boxDates);
 
     return boxDates;
   }

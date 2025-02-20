@@ -3,8 +3,7 @@ import mongoose from 'mongoose';
 const dataprovider = {};
 
 import config from 'getconfig';
-import helper from './helper.js';
-import helpers from '../routes/admin/api/helpers.js';
+import helpers from './helpers.js';
 
 
 const UserShow = mongoose.models.UserShow;
@@ -18,6 +17,22 @@ const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
 
+const Models = {
+  'Category': mongoose.model('Category'),
+  'User': mongoose.model('User'),
+  'Performance': mongoose.model('Performance'),
+  'Event': mongoose.model('Event'),
+  'EventShow': mongoose.model('EventShow'),
+  'Footage': mongoose.model('Footage'),
+  'Gallery': mongoose.model('Gallery'),
+  'News': mongoose.model('News'),
+  'Playlist': mongoose.model('Playlist'),
+  'Video': mongoose.model('Video'),
+  'VenueDB': mongoose.model('VenueDB'),
+  'AddressDB': mongoose.model('AddressDB'),
+  'Program': mongoose.model('Program'),
+  'Emailqueue': mongoose.model('Emailqueue')
+}
 import { logger, requestLogger, errorLogger } from './logger.js';
 
 var countries = [
@@ -209,10 +224,306 @@ for(var b=0;b<countries.length;b++){
   }
 }
 */
+const partners_categories = [
+  {
+    "_id" : ("5be8708afc396100000001e8"),
+    "name" : "CO-ORGANIZER"
+  },
+  {
+    "_id" : ("5be8708afc396100000000fe"),
+    "name" : "SUPPORTED BY"
+  },
+  {
+    "_id" : ("5be8708afc3961000000026c"),
+    "name" : "IN COLLABORATION"
+  },
+  {
+    "_id" : ("5be8708afc3961000000005e"),
+    "name" : "FRIENDS / CONTENTS"
+  },
+  {
+    "_id" : ("5be8708afc3961000000007a"),
+    "name" : "TECHNICAL PARTNERS"
+  },
+  {
+    "_id" : ("5be8708afc3961000000007b"),
+    "name" : "LPM NETWORK"
+  },
+  {
+    "_id" : ("5be8708afc396100000000e0"),
+    "name" : "TOP MEDIA PARTNERS"
+  },
+  {
+    "_id" : ("5be8708afc39610000000165"),
+    "name" : "MEDIA PARTNERS"
+  },
+  {
+    "_id" : ("5be8708afc396100000000e1"),
+    "name" : "APPROVED BY"
+  },
+  {
+    "_id" : ("5be8708afc39610000000164"),
+    "name" : "ISTITUZIONI"
+  },
+  {
+    "_id" : ("5be8708afc396100000000e2"),
+    "name" : "NETWORK EVENTS"
+  },
+  {
+    "_id" : ("63cd0ef5803a8b74799d1d7c"),
+    "name" : "SCHOOLS"
+  },
+  {
+    "_id" : ("5be8708afc396100000001eb"),
+    "name" : "VENUE"
+  }
+];
+//const partners_categories = await Models.Category.find({ type: "partner" }).lean().exec();
+
+dataprovider.getData = async (req, res, view) => {
+  logger.info("getDatagetDatagetData")
+  if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
+    const id = req.params.id;
+    const select = req.query.pure ? config.cpanel[req.params.sez].forms[req.params.form].select : Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
+    const populate = req.query.pure ? [] : config.cpanel[req.params.sez].forms[req.params.form].populate;
+    let data
+    logger.info(select)
+    logger.info(populate)
+    try {
+      data = await Models[config.cpanel[req.params.sez].model]
+      .findById(id)
+      .select(select)
+      .populate(populate)
+      .exec();
+      if (!data) {
+        if (view == "json") {
+          res.status(404).send({ message: `DOC_NOT_FOUND` });
+        } else {
+          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+        }  
+      } else {
+        if (helpers.editable(req, data, id)) {
+          let send = {_id: data._id};
+          for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
+          logger.info(send)
+
+          if (view == "json") {
+            res.json(send);
+          } else {
+            if (req.params.sez == "partners" && req.body.subject && req.body.submit=="send") {
+              router.addPartnersToQueque(req, res, data, () => {
+                req.flash('success', { msg: __('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+__("CHECK THE CUE")+'</b></a>' });
+                res.render(view, {
+                  title: view,
+                  scripts: [],
+                  currentUrl: req.originalUrl,
+                  get: req.params,
+                  query: req.query,
+                  body: req.body,
+                  countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                  languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                  msg_tmp: { }, 
+                  data: send,
+                  partners_categories: partners_categories
+                });
+              });
+            } else if (req.params.sez == "events" && req.body.subject && req.body.submit=="send") {
+              router.addPartnersEventToQueque(req, res, data, () => {
+                req.flash('success', { msg: __('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+__("CHECK THE CUE")+'</b></a>' });
+                res.render(view, {
+                  title: view,
+                  scripts: [],
+                  currentUrl: req.originalUrl,
+                  get: req.params,
+                  query: req.query,
+                  body: req.body,
+                  countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                  languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                  msg_tmp: { }, 
+                  data: send,
+                  partners_categories: partners_categories
+                });
+              });
+            } else {
+              res.render(view, {
+                title: view,
+                config: config,
+                scripts: [],
+                currentUrl: req.originalUrl,
+                get: req.params,
+                query: req.query,
+                body: req.body,
+                countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                msg_tmp: { }, 
+                data: send,
+                partners_categories: partners_categories
+              });
+            }
+          }  
+        } else {
+          if (view == "json") {
+            res.status(401).send({ message: `DOC_NOT_OWNED` });
+          } else {
+            res.status(401).render('401', {path: req.originalUrl, title:__("401: Access to the content is denied"), titleicon:"icon-warning"});
+          }  
+        }
+      }
+    } catch (err) {
+      console.error(`🔥 Error in getData:`, err);
+      if (view == "json") {
+        res.status(500).send({ message: `${JSON.stringify(err)}` });
+      } else {
+        res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+      }
+    }
+  } else {
+    if (view == "json") {
+      res.status(404).send({ message: `API_NOT_FOUND` });
+    } else {
+      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+    }  
+  }
+}
+
+dataprovider.addPartnersToQueque = async (req, res, data, cb) => {
+  var tosave = {};
+  tosave.organization = req.params.id;
+  if (req.params.event) tosave.event = req.params.event;
+  tosave.user = req.user._id;
+  tosave.subject = req.body.subject;
+  tosave.messages_tosend = [];
+  tosave.messages_sent = [];
+  if (req.query.is_active=="1") data.partners = data.partners.filter(partner => partner.is_active == (req.query.is_active=="1"));
+  if (req.query.is_event=="1") data.partners = data.partners.filter(partner => partner.is_event == (req.query.is_event=="1"));
+  if (req.query.is_selecta=="1") data.partners = data.partners.filter(partner => partner.is_selecta == (req.query.is_selecta=="1"));
+  //-each q in req.query.categories
+  if (req.query.categories) 
+    data.partners = data.partners.filter(partner => req.query.categories.some(r => partner.categories.map(item => {return item._id.toString()}).includes(r) ));
+  if (req.query.nokind) 
+    data.partners = data.partners.filter(partner => !partner.categories.length);
+
+  data.partners.forEach((item, index) => {
+    var message = {};
+    if (!req.body.exclude) req.body.exclude = [];
+    if (item.partner && item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && req.body.exclude.indexOf(item.partner._id.toString())===-1) {
+      message.to_html = "";
+      message.cc_html = [];
+
+      message.from_name = req.body.from_name;
+      message.from_email = req.body.from_email;
+      message.user_email = req.body.user_email;
+      message.user_password = req.body.user_password;
+      message.subject = req.body.subject.split("[org_name]").join(item.partner.stagename);
+
+      item.partner.organizationData.contacts.forEach((contact, cindex) => {
+        if (contact.email && message.to_html == "") {
+          message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
+          message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+          message.text = message.text.split("[name]").join(contact.name);
+          message.text = message.text.split("[slug]").join(item.partner.slug);
+        } else if (contact.email && message.to_html != "") {
+          message.cc_html.push((contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">")
+        }
+      });
+
+      if (message.to_html != "") {
+        tosave.messages_tosend.push(message);
+      } else {
+        logger.info(item);
+      }
+    } else {
+      logger.info(item);
+    }
+  });
+  try {
+    await Models.Emailqueue.create(tosave);
+    cb()
+  } catch (err) {
+    logger.info("Emailqueue.create")
+    cb(err)
+  }
+}
+
+dataprovider.addPartnersEventToQueque = async (req, res, data, cb) => {
+  var tosave = {};
+  tosave.organization = data.users[0];
+  if (req.params.event) tosave.event = req.params.id;
+  tosave.user = req.user._id;
+  tosave.subject = req.body.subject;
+  tosave.messages_tosend = [];
+  tosave.messages_sent = [];
+
+  var dest = [];
+  data.partners.forEach((group, index) => {
+    group.users.forEach((item, index) => {
+      logger.info(item);
+      if (!req.body.exclude || res.body.exclude.indexOf(item._id.toString())) dest.push(item._id.toString());
+    });
+  });
+
+  var populate = [{ "path": "partners.partner", "select": "stagename slug organizationData", "model": "User"}];
+  //const query = {"partner_owner.owner": {$in: event.users.map(item =>{return item._id})}};
+  const query = {"_id": {$in: data.users}};
+  try {
+    data = await Models.User.
+    find(query).
+    lean().
+    sort({stagename: 1}).
+    //select({stagename: 1, createdAt: 1, crews:1}).
+    populate(populate).
+    exec();
+  } catch (err) {
+    logger.info(`${JSON.stringify(err)}`);
+  }
+  var partners = []
+  for (var item in data) {
+    partners = partners.concat(data[item].partners);
+  }   
+  logger.info("partners");
+  logger.info(partners);
+  partners.forEach((item, index) => {
+    var message = {};
+    logger.info("req.body.exclude.indexOf(item._id.toString())===-1");
+    if (item && item.partner && item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && dest.indexOf(item.partner._id.toString())!==-1) {
+      message.to_html = "";
+      message.cc_html = [];
+
+      message.from_name = req.body.from_name;
+      message.from_email = req.body.from_email;
+      message.user_email = req.body.user_email;
+      message.user_password = req.body.user_password;
+      message.subject = req.body.subject.split("[org_name]").join(item.partner.stagename);
+
+      item.partner.organizationData.contacts.forEach((contact, cindex) => {
+        if (contact.email && message.to_html == "") {
+          message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
+          message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+          message.text = message.text.split("[name]").join(contact.name);
+          message.text = message.text.split("[slug]").join(item.partner.slug);
+        } else if (contact.email && message.to_html != "") {
+          message.cc_html.push((contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">")
+        }
+      });
+
+      if (message.to_html != "") tosave.messages_tosend.push(message)
+    } else {
+      //logger.info(item.partner.stagename);
+    }
+  });
+  logger.info("tosavetosavetosavetosavetosavetosave");
+  //logger.info(tosave);
+  try {
+    await Models.Emailqueue.create(tosave);
+    cb(err)
+  } catch (err) {
+    logger.info(`${JSON.stringify(err)}`);
+    cb(err)
+  }
+}
+
 dataprovider.fetchShow = async (req, section, subsection, model, populate, select, output, cb) => {
-  /* logger.info("populate");
-  logger.info(populate);
-  logger.info("req.query");
+  /* logger.info("req.query");
   logger.info(req.query);
   logger.info("subsection");
   logger.info(subsection);
@@ -497,14 +808,16 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         }
       }
     }
-    /* logger.info("BINGOOOOO");
-    logger.info(select);
-    logger.info({slug: req.params.sub ? req.params.sub : req.params.slug});
-    logger.info("model");
-    logger.info(model); */
     try {
-
-      const ddd = await model.
+      /* logger.info("populate");
+      logger.info(populate);
+      logger.info("BINGOOOOO");
+      logger.info("model");
+      logger.info(model.modelName);
+      logger.info("config.sections[section]");
+      logger.info(config.sections[section]);
+      logger.info({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}); */
+      let ddd = await model.
       findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
       // lean({ virtuals: true }).
       // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
@@ -512,6 +825,8 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
       select(select).
       exec()
       let data;
+      /* logger.info("ddd");
+      logger.info(ddd); */
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};
       if (data && data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
@@ -609,7 +924,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         res.advanced.programmenotscheduled = undefined;
       }
       if (res && res.advanced && res.advanced.performers && res.advanced.performers.performers && req.params.performer) {
-        //logger.info("BINGOOOOO");
+        logger.info("BINGOOOOO");
         for(let a=0; a<res.advanced.performers.performers.length;a++) {
           if (res.advanced.performers.performers[a].slug===req.params.performer) {
             res.performer = res.advanced.performers.performers[a];
@@ -650,6 +965,8 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
       cb(null, res);
       //cb(err, data);
     } catch (err) {
+      logger.info("ERRORERRORERRORERRORERRORERROR");
+      logger.error(err);
       cb(err);
     }
   }
@@ -1020,9 +1337,6 @@ dataprovider.fetchRandomPerformance = async (model, query, select, populate, lim
   }
 };
 
-
-
-
 dataprovider.fetchLists = async (model, query, select, populate, limit, skip, sorting, cb) => {
   try {
     query.is_public = true;
@@ -1032,7 +1346,7 @@ dataprovider.fetchLists = async (model, query, select, populate, limit, skip, so
 
     // Use Promises instead of callback
     const total = await model.countDocuments(query);
-    logger.info(total)
+    //logger.info(total)
 
     const data = await model.find(query)
       .populate(populate)
@@ -1051,7 +1365,6 @@ dataprovider.fetchLists = async (model, query, select, populate, limit, skip, so
     cb(err);
   }
 };
-
 
 dataprovider.makeTextPlainToRich = (str) => {
   str=str.replace('"','&quot;');
@@ -1087,13 +1400,14 @@ dataprovider.addCat = async (req, populate, cb) => {
   }
 };
 
-
 dataprovider.show = (req, res, section, subsection, model) => {
-  //logger.info(section);
-  //logger.info(subsection);
-  //logger.info(config.sections[section]);
+   logger.info(section);
+  logger.info(subsection);
+  /*logger.info("config.sections[section]");
+  logger.info(config.sections[section]); */
   let populate = JSON.parse(JSON.stringify(config.sections[section][subsection].populate));
-  //logger.info("populate PRE");
+  /* logger.info("populate PRE");
+  logger.info(model.modelName); */
   //logger.info(populate);
   dataprovider.addCat(req, populate, (populate, type) => {
     for(let item in populate) {
@@ -1135,8 +1449,9 @@ dataprovider.show = (req, res, section, subsection, model) => {
     const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
 
     dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
-      //logger.info("fetchShow END");
-      //logger.info(data);
+      logger.info("fetchShow END");
+
+          //logger.info(data);
       if (err || !data || data === null) {
         res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
       } else {
@@ -1259,7 +1574,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           let link = '/' + data.slug + '/' + subsection + '/page/';
           let page = (req.params.page ? parseFloat(req.params.page) : 1);
           let skip = (page - 1) * limit;
-          data.pages = helper.getPagination(link, skip, limit, total, "/"); 
+          data.pages = helpers.getPagination(link, skip, limit, total, "/"); 
         }
         /* let editable = false;
         if (req.user && req.user._id) {
@@ -1369,7 +1684,7 @@ dataprovider.list = (req, res, section, model) => {
             let lastmod = new Date();
             lastmod.setHours( lastmod.getHours() -2 );
             lastmod.setMinutes(0); */
-            let lastmod = helper.dateoW3CString(data.map(item => {
+            let lastmod = helpers.dateoW3CString(data.map(item => {
               return item.updatedAt ? item.updatedAt : item.createdAt;
             }).sort().reverse()[0]);
             res.set('Content-Type', 'text/xml');
@@ -1386,7 +1701,7 @@ dataprovider.list = (req, res, section, model) => {
         } else {
           let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
           let link = '/' + section + '/' + filter + '/' + sorting + '/';
-          let pages = helper.getPagination(link, skip, config.sections[section].limit, total, (req.query.country ? "?country="+req.query.country : ""));
+          let pages = helpers.getPagination(link, skip, config.sections[section].limit, total, (req.query.country ? "?country="+req.query.country : ""));
           var scripts = [];
           if (data && data.media && data.media[0] && data.media[0].file) scripts.push("video");
           if (section === "videos") scripts.push("video");
@@ -1413,5 +1728,6 @@ dataprovider.list = (req, res, section, model) => {
     }
   }
 };
+
 
 export default dataprovider;

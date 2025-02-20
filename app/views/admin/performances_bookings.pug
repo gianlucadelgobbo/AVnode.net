@@ -36,14 +36,14 @@ block content
 									img.img-fluid(src=booking.event.imageFormats.small)
 							td
 								b
-									//a(href='/admin/events/'+booking.event._id+'/public')
+									a(href='/admin/events/'+booking.event._id+'/public')
 										i.icon-edit
 										!=" | "  
 									a(href=booking.event.is_public ? '/events/'+booking.event.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
 										i.icon-eye
 									!=" | "  
 									!=booking.event.title 
-									//div
+									div
 										i.icon-circle(class=booking.event.is_public ? "text-success" : "text-danger")
 										!=" "  
 										!=__("Public")

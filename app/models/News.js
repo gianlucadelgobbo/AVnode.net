@@ -2,7 +2,7 @@ import config from 'getconfig';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import moment from 'moment';
-import helper from '../utilities/helper.js';
+import helpers from '../utilities/helpers.js';
 
 
 //const indexPlugin from '../utilities/elasticsearch/News');
@@ -80,7 +80,7 @@ newsSchema.virtual('about').get(function (req) {
     let str = about;
     str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
-    str = helper.linkify(str);
+    str = helpers.linkify(str);
 
     /* var options = {
       TruncateLength: 100,
@@ -96,7 +96,7 @@ newsSchema.virtual('about').get(function (req) {
 
 newsSchema.virtual('description').get(function (req) {
   if (this.abouts && this.abouts.length) {
-    return helper.makeDescription(this.abouts);
+    return helpers.makeDescription(this.abouts);
   }
 });
 

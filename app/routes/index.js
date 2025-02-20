@@ -1,10 +1,12 @@
-import express from 'express';
+import createRouter from "./router.js";
+const router = createRouter();
+
 import mongoose from 'mongoose';
 
 // Import route handlers
 import home from './home.js';
-import performers from './performers.js';
-import show from './performers/show.js';
+import performersList from './performers/list.js';
+import performersShow from './performers/show.js';
 import performances from './performances.js';
 import learnings from './learnings.js';
 import events from './events.js';
@@ -28,18 +30,18 @@ import organizations from './organizations.js';
 
 // Utilities
 import dataprovider from '../utilities/dataprovider.js';
-import helper from '../utilities/helper.js';
+import helpers from '../utilities/helpers.js';
 
-const router = express.Router();
 
 // Route mappings
 router.use('/contacts', pages);
+
 router.use('/terms', pages);
 router.use('/manifesto', pages);
 router.use('/privacy', pages);
 router.use('/cookies-in-use-on-this-site', pages);
 
-router.use('/performers', performers);
+router.use('/performers', performersList);
 router.use('/organizations', organizations);
 router.use('/performances', performances);
 router.use('/learnings', learnings);
@@ -57,7 +59,7 @@ router.use('/logout', logout);
 router.use('/password', password);
 router.use('/search', search);
 router.use('/signup', signup);
-router.use('/admin/api/signup', signup);
+//router.use('/admin/api/signup', signup);
 router.use('/verify', verify);
 
 router.use('/admin', admin);
@@ -74,6 +76,15 @@ const Models = {
   Playlist: mongoose.model('Playlist'),
   Video: mongoose.model('Video')
 };
+
+// Test locale route
+router.get('/testlocale', (req, res) => {
+  res.send('global.getLocale: ' + global.getLocale());
+});
+
+router.post('/testlocale', (req, res) => {
+  res.send('global.getLocale: ' + global.getLocale());
+});
 
 // Generate Sitemap XML
 router.get('/sitemap.xml', async (req, res) => {
@@ -106,13 +117,13 @@ router.get('/sitemap.xml', async (req, res) => {
     config.sections.news.sitemap_pages = Math.ceil(news.length / config.sections.news.limit);
 
     const lastmod = [
-      helper.dateoW3CString(performers.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
-      helper.dateoW3CString(organizations.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
-      helper.dateoW3CString(events.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
-      helper.dateoW3CString(performances.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
-      helper.dateoW3CString(galleries.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
-      helper.dateoW3CString(videos.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
-      helper.dateoW3CString(news.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0])
+      helpers.dateoW3CString(performers.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
+      helpers.dateoW3CString(organizations.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
+      helpers.dateoW3CString(events.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
+      helpers.dateoW3CString(performances.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
+      helpers.dateoW3CString(galleries.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
+      helpers.dateoW3CString(videos.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0]),
+      helpers.dateoW3CString(news.map(item => item.updatedAt || new Date("1970-01-01T00:00:00.00Z")).sort().reverse()[0])
     ];
 
     res.set('Content-Type', 'text/xml');
@@ -126,15 +137,6 @@ router.get('/sitemap.xml', async (req, res) => {
     console.error("Error generating sitemap:", err);
     res.status(500).send("Internal Server Error");
   }
-});
-
-// Test locale route
-router.get('/testlocale', (req, res) => {
-  res.send('global.getLocale: ' + global.getLocale());
-});
-
-router.post('/testlocale', (req, res) => {
-  res.send('global.getLocale: ' + global.getLocale());
 });
 
 // Dynamic Sitemap Routes
@@ -163,7 +165,13 @@ router.get('/:section-sitemap.xml', (req, res) => {
   }
 });
 
-router.use('/:slug', show);
+router.use('/:slug', performersShow);
 router.use('/', home);
 
+// Log all registered routes
+router.stack.forEach(middleware => {
+  if (middleware.route) {
+    console.log(`🛤 Registered route: ${middleware.route.path}`);
+  }
+});
 export default router;

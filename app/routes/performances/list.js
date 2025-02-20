@@ -1,5 +1,6 @@
-import createRouter from '../router.js'; // ✅ Import the router function
-const router = createRouter(); // ✅ Create an Express Router instance
+import createRouter from "../router.js";
+const router = createRouter(); // ✅ Import the router function
+ // ✅ Create an Express Router instance
 
 import config from 'getconfig';
 import dataprovider from '../../utilities/dataprovider.js';

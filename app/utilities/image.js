@@ -1,4 +1,4 @@
-//import {fileTypeFromStream} from 'file-type';
+import {fileTypeFromFile} from 'file-type';
 import sharp from 'sharp';
 import fs from 'fs';
 import { logger, requestLogger, errorLogger } from './logger.js';

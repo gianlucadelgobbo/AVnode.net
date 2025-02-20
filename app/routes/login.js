@@ -1,5 +1,6 @@
 import createRouter from "./router.js";
 const router = createRouter();
+
 import { passport, isAuthenticated } from '../utilities/passport.js';
 
 import { logger, requestLogger, errorLogger } from '../utilities/logger.js';

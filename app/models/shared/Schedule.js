@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 import Venue from './Venue.js';
 import moment from 'moment';
+import config from 'getconfig';
 
 const Schedule = new Schema({
   disableautoschedule: Boolean,

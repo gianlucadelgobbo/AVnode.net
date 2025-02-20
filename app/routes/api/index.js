@@ -1,7 +1,7 @@
 import config from 'getconfig';
 import createRouter from "../router.js";
 const router = createRouter();
-//import dataprovider from '../../utilities/dataprovider.js';
+
 import fs from 'fs';
 import imageUtil from '../../utilities/image.js';
 
@@ -52,9 +52,6 @@ router.get('/likes', async (req, res) => {
       inc = -1;
     }
     try {
-      console.log("req.user")
-      console.log(req.user._id)
-      console.log(req.user.likes)
       await User.updateOne({ _id: req.user._id }, { $set: { likes: req.user.likes } }).exec();
 
       if (req.query.img_slug) {
@@ -134,7 +131,7 @@ router.post('/emailqueue', async (req, res) => {
 });
 
 router.get('/tobeencoded/:sez', async (req, res) => {
-  Model = req.params.sez && req.params.sez == "videos" ? Video : Footage; 
+  const Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
   try {
     const data = await Model
     //.findOne({"media.encoded":{$exists:true},"media.encoded": {$ne:true},"media.encoded": {$ne:1}})
@@ -166,57 +163,59 @@ router.get('/tobeencoded/:sez', async (req, res) => {
   }
 });
 
+import ffprobe from 'ffprobe';
+import ffprobeStatic from 'ffprobe-static';
+
 router.get('/setdurationandsize/:sez/:id/', async (req, res) => {
   logger.info('/setencodingstatus/:sez/:id/');
   logger.info("existsSync");
-  Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
+  let Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
+  let data;
   try {
-    const data = await Model
+    data = await Model
     .findOne({_id:req.params.id})
     .exec();
-    logger.info(data);
-    if (fs.existsSync(config.appRoot+data.media.file)) {
-      data.media.filesize = fs.statSync(config.appRoot+data.media.file).size;
-      logger.info("ffprobe");
-      logger.info(config.appRoot+data.media.file);
-  
-      var ffprobe = require('ffprobe');
-      var ffprobeStatic = require('ffprobe-static');
-      ffprobe(config.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
-        if (!info || !info.streams || !info.streams.length) {
-          res.json({error: "NO_STREAMS"});
-        } else {
-          for (var a=0; a<info.streams.length; a++) {
-            if (info.streams[a].width && info.streams[a].height) {
-              data.media.width = info.streams[a].width;
-              data.media.height = info.streams[a].height;
-              data.media.duration = info.streams[a].duration*1000;
-            }
-          }
-          data.save((err) => {
-            if (err) {
-              res.json(err);
-            } else {
-              res.json(data);
-            }
-          });
-        }
-      });
-    } else {
-      res.json({error: "FILE NOT FOUND"});
+    if (!fs.existsSync(config.appRoot+data.media.file)) {
+      return res.json({error: "FILE NOT FOUND"});
     }
   } catch (err) {
-    res.status(500).send({ message: `${JSON.stringify(err)}` });
+    return res.status(500).send({ message: `${JSON.stringify(err)}` });
   }
+  data.media.filesize = fs.statSync(config.appRoot+data.media.file).size;
+  logger.info("ffprobe");
+  logger.info(config.appRoot+data.media.file);
+
+  ffprobe(config.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
+    logger.info("ffprobe");
+    logger.info(info);
+  
+      if (!info || !info.streams || !info.streams.length) {
+      res.json({error: "NO_STREAMS"});
+    } else {
+      for (var a=0; a<info.streams.length; a++) {
+        if (info.streams[a].width && info.streams[a].height) {
+          data.media.width = info.streams[a].width;
+          data.media.height = info.streams[a].height;
+          data.media.duration = info.streams[a].duration*1000;
+        }
+      }
+      try {
+        data.save();
+      } catch (err) {
+        return rres.json(err);
+      }
+    }
+  });
 });
 
 router.get('/setencodingstatus/:sez/:id/:encoding', async (req, res) => {
   logger.info('/setencodingstatus/:sez/:id/:encoding');
   logger.info(req.params.encoding);
-  Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
+  const Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
+  let data;
   if (req.params.encoding == 1) {
     try {
-      const data = await Model
+      data = await Model
       .findOne({_id:req.params.id})
       .exec()
       logger.info(data.media.original);
@@ -244,9 +243,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', async (req, res) => {
           } else {
             data.media.encoded = req.params.encoding;
             data.media.rencoded = req.params.encoding;
-            var ffprobe = require('ffprobe');
-            var ffprobeStatic = require('ffprobe-static');
-            ffprobe(config.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
+            ffprobe(config.appRoot+data.media.file, { path: ffprobeStatic.path }, async function (err, info) {
               if (!info || !info.streams || !info.streams.length) {
                 res.json({error: "NO_STREAMS"});
               } else {
@@ -257,13 +254,13 @@ router.get('/setencodingstatus/:sez/:id/:encoding', async (req, res) => {
                     data.media.duration = info.streams[a].duration*1000;
                   }
                 }
-                data.save((err) => {
-                  if (err) {
-                    res.json(err);
-                  } else {
-                    res.json(data);
-                  }
-                });
+                try {
+                  let result = await data.save();
+                  return res.json(result);
+                } catch (err) {
+                  return res.json(err);
+                  
+                }
               }
             });
               }
@@ -275,9 +272,15 @@ router.get('/setencodingstatus/:sez/:id/:encoding', async (req, res) => {
       res.status(500).send({ message: `${JSON.stringify(err)}` });
     }
   } else {
-    Model.updateOne({_id:req.params.id},{"media.encoded":req.params.encoding, "media.rencoded":req.params.encoding}, (err, raw) => {
+    try {
+      logger.info("setencodingstatus: "+req.params.id);
+      let raw = await Model.updateOne({_id:req.params.id},{ $set: {"media.encoded":req.params.encoding, "media.rencoded":req.params.encoding}})
+      logger.info(raw);
       res.json(raw);
-    });
+    } catch(err) {
+      logger.error(err);
+      res.json(err);
+    }
   }
 });
 

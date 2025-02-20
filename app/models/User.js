@@ -18,6 +18,7 @@ import bcrypt from 'bcrypt';
 
 import https from 'https';
 import querystring from 'querystring';
+import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
 
 const adminsez = 'profile';
@@ -417,18 +418,19 @@ userSchema.pre('save', function (next) {
     if (emailwithmailinglists.length>0) {
       let conta = 0;
       for (let item=0 ; item<emailwithmailinglists.length;item++) {
-        let mailinglists = [];
-        for (let mailinglist in this.emails[item].mailinglists) if (this.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);
         let formData = {
           list: 'AXRGq2Ftn2Fiab3skb5E892g',
           api_key: process.env.SENDYAPIKEY,
           email: this.emails[item].email,
-          Topics: mailinglists.join(','),
+          Topics: Object.keys(this.emails[item].mailinglists).filter(key => this.emails[item].mailinglists[key]).join(','),
           avnode_id: this._id.toString(),
           avnode_slug: this.slug,
           avnode_email: this.email,
           boolean: true
         };
+        logger.info("userSchema.pre('save'")
+        logger.info(formData)
+        logger.info(this.emails[item].mailinglists)
         if (this.old_id) formData.flxer_id = this.old_id;
         if (this.name) formData.name = this.name;
         if (this.surname) formData.Surname = this.surname;

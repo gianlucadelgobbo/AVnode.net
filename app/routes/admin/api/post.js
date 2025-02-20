@@ -1,10 +1,10 @@
 import createRouter from "../../router.js";
 const router = createRouter();
 
+
 import config from 'getconfig';
 import moment from 'moment';
-import helpers from './helpers.js';
-
+import helpers from '../../../utilities/helpers.js';
 import mongoose from 'mongoose';
 import axios from 'axios';
 
@@ -29,163 +29,155 @@ const Models = {
 import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
 
-export const postData = (req, res) => {
-  logger.info("postData");
-  logger.info("req.body");
-  logger.info('');
-  logger.info(req.body);
-  logger.info("req.params");
-  logger.info(req.params);
-  if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms.new) {
+router.postData = async (req, res) => {
+  try {
+    logger.info("postData");
+    logger.info("req.body");
+    logger.info('');
+    logger.info(req.body);
+    logger.info("req.params");
+    logger.info(req.params);
+    if (!config.cpanel[req.params.sez] || !config.cpanel[req.params.sez].forms.new) {
+      res.status(404).send({ message: `API_NOT_FOUND` });
+    }
     logger.info('BINGO');
     let select = Object. assign({}, config.cpanel[req.params.sez].forms.new.select);
     let selectaddon = config.cpanel[req.params.sez].forms.new.selectaddon;
     let post = {};
-
-    helpers.myExternalUrl(req, (err) => {
+    if (req.params.sez === 'videos' && req.body.externalurl) {
+      try {
+        await helpers.myExternalUrl(req);
+        req.body.is_public = 1;
+        if (req.body.media) {
+          select.image = 1;
+          select.media = 1;
+          select.is_public = 1;
+          select.abouts = 1;
+        }
+      } catch (err) {
+        logger.error("🔥 Error in myExternalUrl:", err);
+        return res.status(400).json({ message: "Invalid external URL", error: err.message });
+      }
       logger.info("myExternalUrl result");
       logger.info(req.body);
-      if (req.params.sez == "videos" && req.body.media && req.body.media.externalurl) {
-        select.image = 1;
-        select.media = 1;
-        //select.is_public = 1;
-        select.abouts = 1;
-      }
-      helpers.mySlugify(Models[config.cpanel[req.params.sez].model], req.body.stagename ? req.body.stagename : req.body.title, (slug) => {
-        req.body.slug = slug;
-        logger.info("slug");
-        logger.info(slug);
-        //for (const item in select) if(req.body[item]) post[item] = req.body[item];
-        // db.users.updateOne({slug:'gianlucadelgobbo'},{$unset: {oldpassword:""}});
-        logger.info('select');
-        logger.info(select);
-        for (const item in select) if(req.body[item]) {
-          post[item] = req.body[item];
-        }
-        for (const item in selectaddon) {
-          post[item] = selectaddon[item];
-        }
-        if (req.params.sez == "crews") {
-          post.members = [req.user.id];
-        } else if (req.params.sez == "partners") {
-        } else {
-          post.users = [req.user.id];
-        }
-        if (req.params.ancestor && req.params.id) {
-          post[req.params.ancestor] = [req.params.id];
-        }
-        logger.info('postpostpostpostpostpost');
-        logger.info(post);
-  
-        Models[config.cpanel[req.params.sez].model]
-        .create(post, (err, data) => {
-          if (!err) {
-            logger.info('create success');
-            logger.info(data);
-            var id;
-            if (req.params.sez==="partners") {
-              id = post.partner_owner[0].owner;
-            } else {
-              id = req.user.id;
-            }
-            Models['User']
-            .findById(id, req.params.sez, (err, user) => {
-              logger.info('findById user');
-              logger.info(user);
-              if (!err) {
-                if (user) {
-                  if (req.params.sez==="partners") {
-                    user[req.params.sez].push({
-                      is_selecta: true,
-                      is_active: true,
-                      partner: data._id
-                    });                
-                  } else {
-                    user[req.params.sez].push(data._id);
-                    logger.info('save user');
-                    logger.info(user);
-                  }
-                  user.save((err) => {
-                    if (err) {
-                      logger.info('save user err');
-                      logger.info(err);
-                      res.status(400).send(err);
-                    } else {
-                      logger.info('save user success 1');
-                      if (req.params.ancestor && req.params.id) {
-                        Models[config.cpanel[req.params.ancestor].model]
-                        .findById(req.params.id)
-                        .exec((err, ancestor) => {
-                          ancestor[req.params.sez].push(data._id);
-                          ancestor.save((err) => {
-                            if (err) {
-                              logger.info('save ancestor err');
-                              logger.info(err);
-                              res.status(400).send(err);
-                            } else {
-                              logger.info("save ancestor success");
-                              logger.info(data);
-                              logger.info("stocazzooooooooooo");
-                              logger.info(data);
-                              var cloneData = JSON.parse(JSON.stringify(data));
+    }
 
-                              if (req.body.admitted) cloneData.admitted = req.body.admitted
-                              res.json(cloneData);                    
-                            }
-                          });
-                        });
-                      } else {
-                        logger.info("stocazzo");
-                        logger.info(req.body.admitted);
-                        var cloneData = JSON.parse(JSON.stringify(data));
+    try {
+      req.body.slug = await helpers.mySlugify(Models[config.cpanel[req.params.sez].model], req.body.stagename || req.body.title);
+    } catch (err) {
+      logger.error("🔥 Error in mySlugify:", err);
+      return res.status(500).json({ message: "Error generating slug", error: err.message });
+    }
+    //helpers.mySlugify(Models[config.cpanel[req.params.sez].model], req.body.stagename ? req.body.stagename : req.body.title, (slug) => {
+    //req.body.slug = slug;
+    logger.info("mySlugify");
+    logger.info(req.body.slug);
+    //for (const item in select) if(req.body[item]) post[item] = req.body[item];
+    // db.users.updateOne({slug:'gianlucadelgobbo'},{$unset: {oldpassword:""}});
+    logger.info('select');
+    logger.info(select);
+    for (const item in select) if(req.body[item]) {
+      post[item] = req.body[item];
+    }
+    for (const item in selectaddon) {
+      post[item] = selectaddon[item];
+    }
+    if (req.params.sez == "crews") {
+      post.members = [req.user.id];
+    } else if (req.params.sez == "partners") {
+    } else {
+      post.users = [req.user.id];
+    }
+    if (req.params.ancestor && req.params.id) {
+      post[req.params.ancestor] = [req.params.id];
+    }
+    logger.info('postpostpostpostpostpost');
+    logger.info(post);
 
-                        if (req.body.admitted) cloneData.admitted = req.body.admitted;
-                        logger.info(cloneData);
-                        res.json(cloneData);                    
-                      }
-                      /* select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
-                      const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
-                        
-                      Models[config.cpanel[req.params.sez].list.model]
-                      .findById(id)
-                      .select(select)
-                      .populate(populate)
-                      .exec((err, data) => {
-                        if (err) {
-                          res.status(500).send({ message: `${JSON.stringify(err)}` });
-                        } else {
-                          let send = {_id: data._id};
-                          for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
-                          logger.info('sendsendsendsendsendsendsend');
-                          logger.info(send);
-                          res.json(send);
-                        }
-                      }); */
-                    }
-                  });  
-                } else {
-                  res.status(404).send({ message: `DOC_NOT_FOUND` });
-                }
-              } else {
-                res.status(500).send({ message: `${JSON.stringify(err)}` });
-              }
-            });
-          } else {
-            logger.info('create err');
-            logger.info(err);
-            res.status(400).send(err);
-          }
-        });
-      });
-    });
+    let data;
+    try {
+      data = await Models[config.cpanel[req.params.sez].model].create(post);
+    } catch (err) {
+      logger.error("🔥 Error creating entry in DB:", err);
+      res.status(400).send(err);
+      //return res.status(500).json({ message: "Error saving to database", error: err.message });
+    }
+    logger.info("Create success:", data);
 
+/*         var id;
+    if (req.params.sez==="partners") {
+      id = post.partner_owner[0].owner;
+    } else {
+      id = req.user.id;
+    }
     
-  } else {
-    res.status(404).send({ message: `API_NOT_FOUND` });
+    Models['User']
+    .findById(id, req.params.sez, (err, user) => { */
+
+    let userId = req.params.sez === "partners" ? post.partner_owner[0].owner : req.user.id;
+
+    let user;
+    try {
+      user = await Models["User"].findById(userId).select(req.params.sez).exec();
+      if (!user) {
+        res.status(404).send({ message: `DOC_NOT_FOUND` });
+      }
+      if (req.params.sez==="partners") {
+        user[req.params.sez].push({
+          is_selecta: true,
+          is_active: true,
+          partner: data._id
+        });                
+      } else {
+        user[req.params.sez].push(data._id);
+        logger.info('save user');
+        logger.info(user);
+      }
+      try {
+        await user.save();           
+        logger.info("Save success:");
+      } catch (err) {
+        logger.error("🔥 Error updating user:", err);
+        res.status(500).send({ message: `${JSON.stringify(err)}` });
+      }
+    } catch (err) {
+      logger.error("🔥 Error finding user:", err);
+      res.status(404).send({ message: `DOC_NOT_FOUND` });
+    }
+
+    if (req.params.ancestor && req.params.id) {
+      try {
+        let ancestor = await Models[config.cpanel[req.params.ancestor].model].findById(req.params.id).exec();
+        if (ancestor) {
+          ancestor[req.params.sez].push(data._id);
+          try {
+            await ancestor.save();
+            logger.info("Ancestor updated successfully");
+          } catch (err) {
+            logger.error("🔥 Error saving ancestor:", err);
+            return res.status(500).send(err);
+          }
+        }
+      } catch (err) {
+        logger.error("🔥 Error finding ancestor:", err);
+        return res.status(500).json({ message: "Error retrieving ancestor data", error: err.message });
+      }
+    }
+    logger.info("save ancestor success");
+    logger.info(data);
+    logger.info("stocazzooooooooooo");
+    logger.info(data);
+    var cloneData = JSON.parse(JSON.stringify(data));
+
+    if (req.body.admitted) cloneData.admitted = req.body.admitted
+    res.json(cloneData);      
+  } catch (error) {
+    logger.error("🔥 Unexpected Error in postData:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 }
 
-export const cancelSubscription = (req, res) => {
+router.cancelSubscription = (req, res) => {
   logger.info(req.body);
   var err = [];
   Models.Program
@@ -242,7 +234,7 @@ export const cancelSubscription = (req, res) => {
   });
 }
 
-export const editSubscriptionSave = (req, res) => {
+router.editSubscriptionSave = (req, res) => {
   logger.info("editSubscriptionSave");
   logger.info("req.body");
   logger.info(req.body);
@@ -358,7 +350,7 @@ export const editSubscriptionSave = (req, res) => {
   });
 }
 
-export const shareOnTelegram = (req, res) => {
+router.shareOnTelegram = (req, res) => {
 
   const api = new TG({
       token: process.env.TG_API
@@ -378,7 +370,7 @@ export const shareOnTelegram = (req, res) => {
   })
 }
 /**/
-export const setReordered = (req, res) => {
+router.setReordered = (req, res) => {
   logger.info(req.body);
   Models[req.body.model]
   .findOne({_id: req.body.id}, (err, item) => {
@@ -393,7 +385,7 @@ export const setReordered = (req, res) => {
     }
   });
 }
-export const setVideoCategory = (req, res) => {
+router.setVideoCategory = (req, res) => {
   logger.info(req.body);
   Models.Video
   .findOne({_id: req.body.id},'_id, categories', (err, video) => {
@@ -408,7 +400,7 @@ export const setVideoCategory = (req, res) => {
     }
   });
 }
-export const setVideoExclude = (req, res) => {
+router.setVideoExclude = (req, res) => {
   logger.info(req.body);
   Models.Video
   .findOne({_id: req.body.id},'_id', (err, video) => {
@@ -424,7 +416,7 @@ export const setVideoExclude = (req, res) => {
   });
 }
 
-export const editSubscription = (req, res) => {
+router.editSubscription = (req, res) => {
   logger.info(req.body);
   let populate = [
     { "path": "event", "select": "title slug schedule organizationsettings", "model": "Event", "populate":[{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]},
@@ -464,7 +456,7 @@ export const editSubscription = (req, res) => {
   });
 }
 
-export const editSubscriptionPrice = (req, res) => {
+router.editSubscriptionPrice = (req, res) => {
   logger.info(req.body);
   Models.Program
   .findOne({_id: req.body.id/* , members:req.user.id */})
@@ -476,7 +468,7 @@ export const editSubscriptionPrice = (req, res) => {
   });
 }
 
-export const editSubscriptionCost = (req, res) => {
+router.editSubscriptionCost = (req, res) => {
   logger.info(req.body);
   Models.Program
   .findOne({_id: req.body.id/* , members:req.user.id */})
@@ -488,7 +480,7 @@ export const editSubscriptionCost = (req, res) => {
   });
 }
 
-export const linkPartner = (req, res) => {
+router.linkPartner = (req, res) => {
   logger.info(req.body);
   Models.User
   .findOne({_id: req.body.id, is_crew: true},'_id partner_owner', (err, partner) => {
@@ -547,7 +539,7 @@ export const linkPartner = (req, res) => {
   });
 }
 
-export const unlinkPartner = (req, res) => {
+router.unlinkPartner = (req, res) => {
   logger.info("unlinkPartner");
   logger.info(req.body);
   Models.User
@@ -576,7 +568,7 @@ export const unlinkPartner = (req, res) => {
     }
   });
 }
-export const setStatus = (req, res) => {
+router.setStatus = (req, res) => {
   logger.info('/partners/status/');
   logger.info(req.body);
   if (!req.body || !req.body.owner || !req.body.id || !req.body.name || req.body.value === undefined) {
@@ -615,7 +607,7 @@ export const setStatus = (req, res) => {
   }
 }
 
-export const setCategories = (req, res) => {
+router.setCategories = (req, res) => {
   logger.info('/partners/categories/');
   logger.info(req.body);
   if (!req.body || !req.body.owner || !req.body.id || !req.body.category || req.body.value === undefined) {
@@ -661,7 +653,7 @@ export const setCategories = (req, res) => {
   }
 }
 
-export const addContacts = (req, res) => {
+router.addContacts = (req, res) => {
   logger.info('/partners/contacts/add/');
   logger.info(req.body);
   Models.User.
@@ -705,7 +697,7 @@ export const addContacts = (req, res) => {
   });
 }
 
-export const deleteContacts = (req, res) => {
+router.deleteContacts = (req, res) => {
   logger.info('/partners/contacts/deleteContacts/');
   logger.info(req.body);
   Models.User.
@@ -739,41 +731,67 @@ export const deleteContacts = (req, res) => {
 }
 
 
-export const updatePartnerships = (req, res) => {
+router.updatePartnerships = async (req, res) => {
   logger.info("updatePartnerships");
   logger.info("req.body");
   logger.info(req.body);
-  Models.Event
-  .findOne({_id: req.body.event},'partnerships', (err, event) => {
-    event.partners = req.body.partnerships;
-    event.save(err => {
-      if (req.body.partner) {
-        Models.User
-        .findOne({_id: req.body.partner},'partnerships', (err, partner) => {
-          if (req.body.category) {
-            if (partner.partnerships.map(item => {return item.toString()}).indexOf(req.body.event)) {
-              partner.partnerships.push(req.body.event);
-            }
-          } else {
-            for (var a=0;a<partner.partnerships.length;a++) {
-              if(partner.partnerships[a].toString() === req.body.event) {
-                partner.partnerships.splice(a, 1);
-              }
-            }
-          }
-          partner.stats.partnerships = partner.partnerships.length;
-          partner.save(err => {
-            res.json(err);
-          });
-        });
-      } else {
-        res.json(err);
+  let event;
+  try {
+    event = await   Models.Event
+    .findOne({_id: req.body.event},'partnerships');
+  
+    if (!event) {
+      logger.info(`${JSON.stringify(err)}`);
+      return res.status(500).json(err);
+    }
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+
+  event.partners = req.body.partnerships;
+  
+  try {
+    event.save()
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+
+  let partner;
+  if (req.body.partner) {
+    try {
+      partner = await Models.User
+      .findOne({_id: req.body.partner},'partnerships');  
+      if (!partner) {
+        logger.info(`${JSON.stringify(err)}`);
+        return res.status(500).json(err);
       }
-    });
-  });
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+
+    if (req.body.category) {
+      if (partner.partnerships.map(item => {return item.toString()}).indexOf(req.body.event)) {
+        partner.partnerships.push(req.body.event);
+      }
+    } else {
+      for (var a=0;a<partner.partnerships.length;a++) {
+        if(partner.partnerships[a].toString() === req.body.event) {
+          partner.partnerships.splice(a, 1);
+        }
+      }
+    }
+    partner.stats.partnerships = partner.partnerships.length;
+    try {
+      partner.save()
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  } else {
+    return res.status(500).json(err);
+  }
 }
 
-export const updateProgram = (req, res) => {
+router.updateProgram = (req, res) => {
   logger.info("updateProgram");
   logger.info("req.body");
   logger.info(req.body);
@@ -881,7 +899,7 @@ order: order,
 details: details,
 data: data
 */
-export const contact = (req, res) => {
+router.contact = (req, res) => {
   logger.info("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body");
   logger.info(req.body);
   if (req.body.user) {
@@ -982,7 +1000,7 @@ export const contact = (req, res) => {
   }
 }
 
-export const forceEmailChange = (req, res) => {
+router.forceEmailChange = (req, res) => {
   logger.info("forceEmailChange");
   logger.info(req.body);
   if (req.body._id) {
@@ -1143,7 +1161,7 @@ export const forceEmailChange = (req, res) => {
 
 
 
-export const bookingRequest = (req, res) => {
+router.bookingRequest = (req, res) => {
   logger.info(req.body);
   if (req.body.perf) {
     let message = {};
@@ -1235,7 +1253,7 @@ export const bookingRequest = (req, res) => {
   }
 }
 
-export const updateSubscription = (req, res) => {
+router.updateSubscription = (req, res) => {
   //logger.info("updateSubscription");
 
 /*   const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
@@ -1408,7 +1426,7 @@ export const updateSubscription = (req, res) => {
   }
 }
 
-export const updateSendy = function (req, res) {
+router.updateSendy = function (req, res) {
   let err = [];
   /*let conta = 0;
   let emailwithmailinglists = user.emails.filter(item => item.mailinglists);
@@ -1456,8 +1474,8 @@ export const updateSendy = function (req, res) {
       resres.on('data', function (chunk) {
         result += chunk;
       });
-      resres.on('end', function (error) {
-        res.json(error);
+      resres.on('end', function (err) {
+        res.json(err);
       });
       resres.on('error', function (err) {
         res.json(err);

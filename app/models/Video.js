@@ -2,7 +2,7 @@ import config from 'getconfig';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 //const indexPlugin from '../utilities/elasticsearch/Video.js';
-import helper from '../utilities/helper.js';
+import helpers from '../utilities/helpers.js';
 
 import About from './shared/About.js';
 import Media from './shared/Media.js';
@@ -84,7 +84,7 @@ videoSchema.virtual('about').get(function (req) {
     }
     about = about.replace(new RegExp(/\n/gi)," <br />");
 
-    about = helper.linkify(about);
+    about = helpers.linkify(about);
 
     return about;
   }
@@ -92,7 +92,7 @@ videoSchema.virtual('about').get(function (req) {
 
 videoSchema.virtual('description').get(function (req) {
   if (this.abouts && this.abouts.length) {
-    return helper.makeDescription(this.abouts);
+    return helpers.makeDescription(this.abouts);
   }
 });
 

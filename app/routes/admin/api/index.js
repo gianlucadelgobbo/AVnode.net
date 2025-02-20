@@ -1,13 +1,22 @@
 import createRouter from "../../router.js";
 const router = createRouter();
 
+
 import config from 'getconfig';
-import get from './get.js';
+import getRoutes from './get.js';
+import getUsersRoutes from './getusers.js';
+import getMembersRoutes from './getmembers.js';
+import getPerformances from './getperformances.js';
+import getVideos from './getvideos.js';
+import getGalleries from './getgalleries.js';
+import deleteRoutes from "./delete.js";
 import put from './put.js';
-import * as post from './post.js';
+import post from './post.js';
 import ssh from './ssh.js';
 import upload from './upload.js';
 import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js'; // Logger
+import { setStatsAndActivity, setStatsAndActivitySingle } from "../../../utilities/userstats.js";
+import dataprovider from "../../../utilities/dataprovider.js";
 
 // Debugging Route (Only in DEBUG mode)
 if (process.env.DEBUG) {
@@ -22,72 +31,68 @@ router.get('/stream-update-and-restart', ssh.streamUpdateAndRestart);
 router.get('/stream-restart', ssh.streamRestart);
 
 // Utilities
-router.get('/loggeduser', (req, res) => res.json(req.user));
-router.get('/countries', get.getCountries);
-router.get('/removeAddress', get.removeAddress);
-router.get('/getmembers/:q', get.getMembers);
-router.get('/getauthors/:q', get.getAuthors);
-router.get('/getperformances/:q', get.getPerformances);
-router.get('/getgalleries/:q', get.getGalleries);
-router.get('/getvideos/:q', get.getVideos);
-router.get('/setstatsandactivity/:id', get.setStatsAndActivity);
+//remove router.get('/loggeduser', (req, res) => res.json(req.user));
+router.get('/countries', getRoutes.getCountries);
+router.get('/setstatsandactivity/:id', setStatsAndActivity);
 
 // Profile Routes
 router.get('/profile/:form', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';
-  get.getData(req, res, "json");
-});
-
-router.get('/profile/public/slugs/:slug', (req, res) => {
-  req.params.id = req.user.id;
-  req.params.sez = 'profile';
-  get.getSlug(req, res);
+  dataprovider.getData(req, res, "json");
 });
 
 router.get('/profile/emails/verify/:email', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';
-  get.sendEmailVerification(req, res);
+  getRoutes.sendEmailVerification(req, res);
 });
 
-router.get('/profile/emails/email/:email', get.getEmail);
+//router.get('/profile/emails/email/:email', getRoutes.getEmail);
 
 // Generic GET Routes
-router.get('/:sez/:id/delete', get.getDelete);
-router.get('/:sez/:id/duplicate', get.getDuplicate);
-router.get('/getcategories/:rel/slug/:q', get.getCategories);
-router.get('/:sez/new/slugs/:slug', get.getSlug);
-router.get('/:sez/:id/public/slugs/:slug', get.getSlug);
+router.get('/:sez/:id/delete', deleteRoutes.getDelete);
+// TODO router.get('/:sez/:id/duplicate', getRoutes.getDuplicate);
+//router.get('/getcategories/:rel/slug/:q', getRoutes.getCategories);
+//remove router.get('/:sez/new/slugs/:slug', getRoutes.getSlug);
+//remove router.get('/:sez/:id/public/slugs/:slug', getRoutes.getSlug);
 
 // Membership & User Relationships
-router.get('/crews/:id/members/add/:member', get.addMember);
-router.get('/crews/:id/members/remove/:member', get.removeMember);
-router.get('/:sez/:id/users/add/:user', get.addUser);
-router.get('/:sez/:id/users/remove/:user', get.removeUser);
+router.get('/getmembers/:q', getMembersRoutes.getMembers);
+router.get('/crews/:id/members/add/:member', getMembersRoutes.addMember);
+router.get('/crews/:id/members/remove/:member', getMembersRoutes.removeMember);
 
-// Gallery & Media Management
-router.get('/galleries/:id/mediaremove/:image', (req, res) => {
+router.get('/getauthors/:q', getUsersRoutes.getUsers);
+router.get('/:sez/:id/users/add/:user', getUsersRoutes.addUser);
+router.get('/:sez/:id/users/remove/:user', getUsersRoutes.removeUser);
+
+///remove  Gallery & Media Management
+/* router.get('/galleries/:id/mediaremove/:image', (req, res) => {
   req.params.sez = 'galleries';
-  get.removeImage(req, res);
+  getRoutes.removeImage(req, res);
 });
 router.get('/playlists/:id/footageremove/:footage', (req, res) => {
   req.params.sez = 'playlists';
-  get.removeFootage(req, res);
-});
+  getRoutes.removeFootage(req, res);
+}); */
 
 // Event & Performance Management
-router.get('/events/:id/getfreezed', get.eventGetFreezed);
-router.get('/events/:id/performance/add/:performance', get.eventAddPerformance);
-router.get('/events/:id/performance/remove/:performance', get.eventRemovePerformance);
-router.get('/performances/:id/event/add/:event', get.performanceAddEvent);
-router.get('/performances/:id/event/remove/:event', get.performanceRemoveEvent);
+//remove router.get('/events/:id/getfreezed', getRoutes.eventGetFreezed);
+router.get('/getperformances/:q', getPerformances.getPerformances);
+router.get('/events/:id/performance/add/:performance', getPerformances.eventAddPerformance);
+router.get('/events/:id/performance/remove/:performance', getPerformances.eventRemovePerformance);
+
+//remove router.get('/performances/:id/event/add/:event', getRoutes.performanceAddEvent);
+//remove router.get('/performances/:id/event/remove/:event', getRoutes.performanceRemoveEvent);
 
 // Media Associations
-router.get('/:sez/:id/gallery/add/:gallery', get.addGallery);
-router.get('/:sez/:id/gallery/remove/:gallery', get.removeGallery);
-router.get('/:sez/:id/video/add/:video', get.addVideo);
-router.get('/:sez/:id/video/remove/:video', get.removeVideo);
+router.get('/getgalleries/:q', getGalleries.getGalleries);
+router.get('/:sez/:id/gallery/add/:gallery', getGalleries.addGallery);
+router.get('/:sez/:id/gallery/remove/:gallery', getGalleries.removeGallery);
+
+router.get('/getvideos/:q', getVideos.getVideos);
+router.get('/:sez/:id/video/add/:video', getVideos.addVideo);
+router.get('/:sez/:id/video/remove/:video', getVideos.removeVideo);
 
 // Profile & Subscription Routes
 router.get('/:sez/:id/:form/', async (req, res) => {
@@ -96,18 +101,18 @@ router.get('/:sez/:id/:form/', async (req, res) => {
       req.params.rel = "performances";
       
       req.params.q = "type";
-      const types = await get.getPerfCategories(req, res);
+      const types = await getRoutes.getPerfCategories(req, res);
       config.types = types;
 
       req.params.q = "genre";
-      const genres = await get.getPerfCategories(req, res);
+      const genres = await getRoutes.getPerfCategories(req, res);
       config.genres = genres;
 
-      get.getData(req, res, "json");
+      dataprovider.getData(req, res, "json");
     } else if (req.params.sez === "profile" && req.params.form === "subscriptions") {
-      get.getSubscriptions(req, res);
+      getRoutes.getSubscriptions(req, res);
     } else {
-      get.getData(req, res, "json");
+      dataprovider.getData(req, res, "json");
     }
   } catch (err) {
     error("Error fetching data:", err);
@@ -123,7 +128,7 @@ router.get('/:sez', (req, res) => {
     res.redirect(`/admin/api/subscriptions/${req.user.id}/public`);
   } else {
     req.params.id = req.user.id;
-    get.getList(req, res, "json");
+    getRoutes.getList(req, res, "json");
   }
 });
 
@@ -163,10 +168,10 @@ router.post('/:sez/:id/:form/', (req, res) => {
   if (req.params.sez === "performances" && req.params.form === "public") {
     req.params.rel = "performances";
     req.params.q = "type";
-    get.getPerfCategories(req, res, (types) => {
+    getRoutes.getPerfCategories(req, res, (types) => {
       config.types = types;
       req.params.q = "genre";
-      get.getPerfCategories(req, res, (genres) => {
+      getRoutes.getPerfCategories(req, res, (genres) => {
         config.genres = genres;
         put.putData(req, res, "json");
       });
