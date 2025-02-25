@@ -59,7 +59,29 @@ const programSchema = new Schema({
   schedule: [Schedule],
   performance: { type: Schema.ObjectId, ref: 'Performance' }
 }, {
-  _id : false
+  _id : false,
+  toObject: {
+    virtuals: true,
+    getters: true
+  },
+  toJSON: {
+    virtuals: true
+  }
+});
+
+const programFreezedSchema = new Schema({
+  subscription_id: { type: Schema.ObjectId, ref: 'EventFreezedProgram' },
+  schedule: [Schedule],
+  performance: { type: Schema.ObjectId, ref: 'EventFreezedPerformance' }
+}, {
+  _id : false,
+  toObject: {
+    virtuals: true,
+    getters: true
+  },
+  toJSON: {
+    virtuals: true
+  }
 });
 
 const callSchema = new Schema({
@@ -137,7 +159,7 @@ const eventSchema = new Schema({
   schedule: [datevenueSchema],
   partners: [partnershipSchema],
   program: [programSchema],
-  program_freezed: {},
+  program_freezed: [programFreezedSchema],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   type: { type: Schema.ObjectId, ref: 'Category' },
   users:  [{ type: Schema.ObjectId, ref: 'UserShow' }],

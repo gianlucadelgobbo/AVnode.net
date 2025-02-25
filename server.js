@@ -177,7 +177,7 @@ if (!routes) {
 app.use(routes);
 
 // Log route sources
-setTimeout(() => {
+/* setTimeout(() => {
   console.log("🛤 All Registered Routes in Express:");
   if (app._router) {
     app._router.stack.forEach((middleware, index) => {
@@ -192,7 +192,7 @@ setTimeout(() => {
   } else {
     console.error("❌ ERROR: app._router is undefined!");
   }
-}, 3000);
+}, 3000); */
 // ✅ ExpressWinston Middleware: Captures All Express Errors Automatically
 app.use(errorLogger); // Aggiungi il logger degli errori DOPO le route
 

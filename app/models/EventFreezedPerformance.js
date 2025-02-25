@@ -1,16 +1,17 @@
 import config from 'getconfig';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-//import indexPlugin from '../utilities/elasticsearch/Performance.js';
+//import indexPlugin from '../utilities/elasticsearch/EventFreezedPerformance.js';
 import helpers from '../utilities/helpers.js';
 
 import About from './shared/About.js';
 import MediaImage from './shared/MediaImage.js';
 import Booking from './shared/Booking.js';
 import moment from 'moment';
+import { logger } from 'express-winston';
 
 
-const adminsez = 'event_performances';
+const adminsez = 'performances';
 
 function ignoreEmpty (val) {
   if ("" === val) {
@@ -20,17 +21,19 @@ function ignoreEmpty (val) {
   }
 }
 const performanceSchema = new Schema({
-  old_id : String,
-
+  event : { type : Schema.ObjectId, ref : 'Event' },
+  performance_original : { type : Schema.ObjectId, ref : 'Performance' },
+  users: [{ type : Schema.ObjectId, ref : 'EventFreezedUserShow' }],
+  galleries: [{ type : Schema.ObjectId, ref : 'EventFreezedGallery' }],
+  videos: [{ type: Schema.ObjectId, ref: 'EventFreezedVideo' }],
   createdAt: Date,
   title: { type: String, trim: true, required: [true, 'PERFORMANCE_TITLE_IS_REQUIRED'], minlength: [3, 'PERFORMANCE_TITLE_IS_TOO_SHORT'], maxlength: [100, 'PERFORMANCE_TITLE_IS_TOO_LONG'] },
-  slug: { type: String, unique: true, trim: true, required: [true, 'PERFORMANCE_URL_IS_REQUIRED'], minlength: [3, 'PERFORMANCE_URL_IS_TOO_SHORT'], maxlength: [100, 'PERFORMANCE_URL_IS_TOO_LONG'],
+  slug: { type: String, trim: true, required: [true, 'PERFORMANCE_URL_IS_REQUIRED'], minlength: [3, 'PERFORMANCE_URL_IS_TOO_SHORT'], maxlength: [100, 'PERFORMANCE_URL_IS_TOO_LONG'],
     validate: [(slug) => {
       var re = /^[a-z0-9-_]+$/;
       return re.test(slug)
     }, 'PERFORMANCE_URL_IS_NOT_VALID']
   },
-  is_public: { type: Boolean, default: false },
   image: MediaImage,
   abouts: [About],
   stats: {
@@ -45,9 +48,6 @@ const performanceSchema = new Schema({
   bookings:[Booking],
 
 
-  users: [{ type : Schema.ObjectId, ref : 'User' }],
-  galleries: [{ type : Schema.ObjectId, ref : 'Gallery' }],
-  videos: [{ type: Schema.ObjectId, ref: 'Video' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }],
   type: { type : Schema.ObjectId, ref : 'Category' },
   tecnique: { type : Schema.ObjectId, set: ignoreEmpty, ref : 'Category' },
@@ -60,8 +60,9 @@ const performanceSchema = new Schema({
   toJSON: {
     virtuals: true
   },
-  collection: 'event_performances'
+  collection: 'event_freezed_performances'
 });
+performanceSchema.index({ event: 1, performance_original: 1 }, { unique: true });
 
 performanceSchema.virtual('about').get(function (req) {
   let about = __('Text is missing');
@@ -175,6 +176,6 @@ performanceSchema.pre('validate', function(next) {
 
 //performanceSchema.plugin(indexPlugin());
 
-const Performance = mongoose.model('EventPerformance', performanceSchema);
+const EventFreezedPerformance = mongoose.model('EventFreezedPerformance', performanceSchema);
 
-export default Performance;
+export default EventFreezedPerformance;

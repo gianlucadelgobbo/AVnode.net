@@ -5,8 +5,8 @@ import moment from 'moment';
 import config from 'getconfig';
 
 const Booking = new Schema({
-  schedule: [Schedule],
   subscription_id: { type: Schema.ObjectId, ref: 'Program' },
+  schedule: [Schedule],
   event: { type: Schema.ObjectId, ref: 'EventShow' }
 },{
   _id : false,

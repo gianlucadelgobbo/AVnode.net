@@ -12,10 +12,12 @@ const adminsez = 'event_videos';
 
 const videoSchema = new Schema({
   old_id : String,
+  event: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true },
+  video_original: { type: mongoose.Schema.Types.ObjectId, ref: 'Video', required: true },
 
   createdAt: Date,
   title: { type: String, trim: true, required: [true, 'VIDEO_TITLE_IS_REQUIRED'], minlength: [3, 'VIDEO_TITLE_IS_TOO_SHORT'], maxlength: [100, 'VIDEO_TITLE_IS_TOO_LONG'] },
-  slug: { type: String, unique: true, trim: true, required: [true, 'VIDEO_URL_IS_REQUIRED'], minlength: [3, 'VIDEO_URL_IS_TOO_SHORT'], maxlength: [100, 'VIDEO_URL_IS_TOO_LONG'],
+  slug: { type: String, trim: true, required: [true, 'VIDEO_URL_IS_REQUIRED'], minlength: [3, 'VIDEO_URL_IS_TOO_SHORT'], maxlength: [100, 'VIDEO_URL_IS_TOO_LONG'],
     validate: [(slug) => {
       var re = /^[a-z0-9-_]+$/;
       return re.test(slug)
@@ -38,7 +40,7 @@ const videoSchema = new Schema({
   users: [{ type : Schema.ObjectId, ref : 'User' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }]
 }, {
-  collection: 'event_videos',
+  collection: 'event_freezed_videos',
   id: false,
   timestamps: true,
   toObject: {
@@ -48,6 +50,7 @@ const videoSchema = new Schema({
     virtuals: true
   }
 });
+videoSchema.index({ event: 1, video_original: 1 }, { unique: true });
 
 // Return thumbnail
 videoSchema.virtual('imageFormats').get(function () {
@@ -112,6 +115,6 @@ videoSchema.virtual('description').get(function (req) {
 
 //videoSchema.plugin(indexPlugin());
 
-const Video = mongoose.model('EventVideo', videoSchema);
+const EventFreezedVideo = mongoose.model('EventFreezedVideo', videoSchema);
 
-export default Video;
+export default EventFreezedVideo;

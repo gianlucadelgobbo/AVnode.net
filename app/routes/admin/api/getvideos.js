@@ -5,20 +5,9 @@ import dataprovider from "../../../utilities/dataprovider.js";
 
 import mongoose from 'mongoose';
 const Models = {
-  'Category': mongoose.model('Category'),
-  'User': mongoose.model('User'),
   'Performance': mongoose.model('Performance'),
   'Event': mongoose.model('Event'),
-  'EventShow': mongoose.model('EventShow'),
-  'Footage': mongoose.model('Footage'),
-  'Gallery': mongoose.model('Gallery'),
-  'News': mongoose.model('News'),
-  'Playlist': mongoose.model('Playlist'),
-  'Video': mongoose.model('Video'),
-  'VenueDB': mongoose.model('VenueDB'),
-  'AddressDB': mongoose.model('AddressDB'),
-  'Program': mongoose.model('Program'),
-  'Emailqueue': mongoose.model('Emailqueue')
+  'Video': mongoose.model('Video')
 }
 import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 

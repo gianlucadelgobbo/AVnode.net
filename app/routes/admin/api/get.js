@@ -17,8 +17,6 @@ const Models = {
   'News': mongoose.model('News'),
   'Playlist': mongoose.model('Playlist'),
   'Video': mongoose.model('Video'),
-  'VenueDB': mongoose.model('VenueDB'),
-  'AddressDB': mongoose.model('AddressDB'),
   'Program': mongoose.model('Program'),
   'Emailqueue': mongoose.model('Emailqueue')
 }
@@ -206,8 +204,6 @@ router.getList = async (req, res, view) => {
   }
 }
 
-
-
 router.getPerfCategories = async (req, res) => {
   try {
     let genre = await Models.Category.find({ ancestor: "5be8708afc3961000000021c", rel: req.params.rel })
@@ -273,7 +269,6 @@ router.getCategoryByAncestor = async (cat) => {
     logger.info(`${JSON.stringify(err)}`);
   }
 }
-
 
 router.getEmailqueue = async (req, res) => {
   logger.info('/mailer/'+req.params.id);

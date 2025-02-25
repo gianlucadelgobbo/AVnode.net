@@ -5,32 +5,24 @@ const dataprovider = {};
 import config from 'getconfig';
 import helpers from './helpers.js';
 
-
-const UserShow = mongoose.models.UserShow;
-const Event = mongoose.model('Event');
-const EventShow = mongoose.model('EventShow');
-const Footage = mongoose.model('Footage');
-const Performance = mongoose.model('Performance');
-const Category = mongoose.model('Category');
-const Playlist = mongoose.model('Playlist');
-const Gallery = mongoose.model('Gallery');
-const Video = mongoose.model('Video');
-const News = mongoose.model('News');
-
 const Models = {
   'Category': mongoose.model('Category'),
   'User': mongoose.model('User'),
+  'UserShow': mongoose.model('UserShow'),
   'Performance': mongoose.model('Performance'),
   'Event': mongoose.model('Event'),
   'EventShow': mongoose.model('EventShow'),
-  'Footage': mongoose.model('Footage'),
-  'Gallery': mongoose.model('Gallery'),
-  'News': mongoose.model('News'),
-  'Playlist': mongoose.model('Playlist'),
-  'Video': mongoose.model('Video'),
-  'VenueDB': mongoose.model('VenueDB'),
-  'AddressDB': mongoose.model('AddressDB'),
   'Program': mongoose.model('Program'),
+  'Gallery': mongoose.model('Gallery'),
+  'Video': mongoose.model('Video'),
+  'EventFreezedPerformance': mongoose.model('EventFreezedPerformance'),
+  'EventFreezedUserShow': mongoose.model('EventFreezedUserShow'),
+  'EventFreezedGallery': mongoose.model('EventFreezedGallery'),
+  'EventFreezedVideo': mongoose.model('EventFreezedVideo'),
+  'EventFreezedProgram': mongoose.model('EventFreezedProgram'),
+  'News': mongoose.model('News'),
+  'Footage': mongoose.model('Footage'),
+  'Playlist': mongoose.model('Playlist'),
   'Emailqueue': mongoose.model('Emailqueue')
 }
 import { logger, requestLogger, errorLogger } from './logger.js';
@@ -279,6 +271,350 @@ const partners_categories = [
   }
 ];
 //const partners_categories = await Models.Category.find({ type: "partner" }).lean().exec();
+
+/**
+ * Duplica il programma di un evento in `program_freezed`
+ * @param {String} eventId - ID dell'evento originale
+ */
+/* 
+db.event_freezed_users.deleteMany({});
+db.event_freezed_performances.deleteMany({});
+db.event_freezed_program.deleteMany({});
+db.event_freezed_galleries.deleteMany({});
+db.event_freezed_videos.deleteMany({});
+
+*/
+// Funzione per la gestione degli errori
+function handleError(res, message, err) {
+  logger.error(`❌ ${message}:`, err);
+  return res.status(500).send({ message, error: err.message });
+}
+
+// Funzione per copiare una performance in EventFreezedPerformance
+async function copyFreezedPerformance(originalPerformance, eventId) {
+  logger.info("Starting copyFreezedPerformance: "+ originalPerformance._id)
+  let freezedPerformance
+  try {
+    freezedPerformance = await Models.EventFreezedPerformance.findOne({
+      performance_original: originalPerformance._id,
+      event: eventId
+    });
+  
+    if (!freezedPerformance) {
+      freezedPerformance = new Models.EventFreezedPerformance({
+        ...originalPerformance.toObject(),
+        _id: undefined,
+        bookings: undefined,
+        event: eventId,
+        performance_original: originalPerformance._id,
+        users: [],
+        galleries: [],
+        videos: []
+      });
+      await freezedPerformance.save();
+    }  
+  } catch (error) {
+    logger.error("Error Saving copyFreezedPerformance: "+ originalPerformance._id)
+    logger.error(error)
+  }
+  logger.info("Ending copyFreezedPerformance freezedPerformance: "+ originalPerformance._id + " to " + freezedPerformance._id)
+  return freezedPerformance;
+}
+
+// Funzione per copiare un programma in EventFreezedProgram
+async function copyFreezedProgram(programItem, freezedPerformance, eventId) {
+  logger.info("Starting copyFreezedProgram: "+ programItem._id)
+  let freezedProgramItem = await Models.EventFreezedProgram.findOne({
+    performance: freezedPerformance._id,
+    event: eventId
+  });
+
+  if (!freezedProgramItem) {
+    freezedProgramItem = new Models.EventFreezedProgram({
+      ...programItem.toObject(),
+      _id: undefined,
+      performance: freezedPerformance._id,
+      event: eventId
+    });
+    await freezedProgramItem.save();
+  }
+  logger.info("Ending copyFreezedProgram freezedProgramItem: "+ freezedProgramItem._id)
+  return freezedProgramItem;
+}
+
+// Funzione per copiare una galleria
+async function copyFreezedGallery(originalGallery, eventId, freezedPerformance) {
+  logger.info("Starting copyFreezedGallery: "+ originalGallery._id)
+  let freezedGallery = await Models.EventFreezedGallery.findOne({
+    gallery_original: originalGallery._id,
+    event: eventId
+  });
+
+  if (!freezedGallery) {
+    freezedGallery = new Models.EventFreezedGallery({
+      ...originalGallery.toObject(),
+      _id: undefined,
+      gallery_original: originalGallery._id,
+      event: eventId,
+      performance: freezedPerformance._id,
+      users: []
+    });
+    await freezedGallery.save();
+  }
+  logger.info("Ending copyFreezedGallery freezedGallery: "+ freezedGallery._id)
+  return freezedGallery;
+}
+
+// Funzione per copiare un video
+async function copyFreezedVideo(originalVideo, eventId, freezedPerformance) {
+  logger.info("Starting copyFreezedVideo: "+ originalVideo._id)
+
+  let freezedVideo = await Models.EventFreezedVideo.findOne({
+    video_original: originalVideo._id,
+    event: eventId
+  });
+
+  if (!freezedVideo) {
+    freezedVideo = new Models.EventFreezedVideo({
+      ...originalVideo.toObject(),
+      _id: undefined,
+      video_original: originalVideo._id,
+      event: eventId,
+      performance: freezedPerformance._id,
+      users: []
+    });
+    await freezedVideo.save();
+  }
+  logger.info("Ending copyFreezedVideo freezedVideo: "+ freezedVideo._id)
+
+  return freezedVideo;
+}
+
+// Funzione per copiare un User
+async function copyFreezedUser(originalUser, eventId) {
+  logger.info("Starting copyFreezedUser: "+ originalUser._id)
+  if (!originalUser) {
+    logger.error(`⚠️ copyFreezedUser called with undefined user! Skipping...`);
+    return null;
+  }
+  let freezedUser
+  try {
+    freezedUser = await Models.EventFreezedUserShow.findOne({
+      user_original: originalUser._id,
+      event: eventId
+    });
+  } catch (error) {
+    logger.error("Error Finding copyFreezedUser: "+ originalUser._id)
+    logger.error(error)
+  }  
+  if (!freezedUser) {
+    try {
+      logger.info("Starting creating: ");
+      console.log(originalUser)
+      freezedUser = new Models.EventFreezedUserShow({
+        ...originalUser.toObject(),
+        _id: undefined,
+        user_original: originalUser._id,
+        event: eventId
+      });
+      logger.info("Starting Saving: ");
+      console.log(freezedUser)
+      await freezedUser.save();
+    } catch (error) {
+      logger.error("Error Saving copyFreezedUser: "+ originalUser._id)
+      logger.error(error)
+    }
+  }
+  logger.info("Ending copyFreezedUser, freezedUser: "+ freezedUser._id)
+  return freezedUser;
+}
+
+dataprovider.freezeEventProgram = async (req, res) => {
+  logger.info("freezeEventProgram");
+  const eventId = req.params.id;
+  try {
+    logger.info(`🔄 Inizio congelamento del programma per l'evento ${eventId}`);
+
+    // 1️⃣ Recupera l'evento originale
+    let event;
+    try {
+      event = await Models.Event.findById(eventId).populate("program.performance").populate("program.performance.users").exec();
+    } catch (err) {
+      throw new Error(`Errore nel recupero dell'evento: ${err.message}`);
+    }
+    if (!event) {
+      throw new Error(`Evento con ID ${eventId} non trovato`);
+    }
+
+    logger.info(`📋 Programma originale trovato con ${event.program.length} elementi`);
+
+    let newEventProgramFreezed = [];
+
+    // 2️⃣ Itera su ogni elemento del programma originale
+    for (const entry of event.program) {
+      if (!entry.performance) {
+        logger.warn(`⚠️ Nessuna performance trovata per entry ${entry._id}`);
+        continue;
+      }
+      if (entry.performance.users && Array.isArray(entry.performance.users)) {
+        try {
+          logger.info(`🔄 Copiando performance ${entry.performance._id} per evento congelato`);
+
+          let freezedPerformance = await copyFreezedPerformance(entry.performance, eventId);
+
+          for (const performanceUser of entry.performance.users || []) {
+            let performanceUserItem = await Models.UserShow.findOne({_id:performanceUser}).exec();
+            if (!performanceUserItem) {
+              logger.warn(`⚠️ User ${performanceUser} not found in UserShow`);
+              continue;
+            }
+            //console.log(performanceUserItem)
+            if (performanceUserItem) {
+              let freezedPerformanceUser = await copyFreezedUser(performanceUserItem, eventId);
+              if (!freezedPerformanceUser) {
+                logger.error(`⚠️ Impossibile copiare l'utente ${performanceUserItem}`);
+                continue;
+              }
+              freezedPerformance.users.push(freezedPerformanceUser._id);
+            }
+          }
+          
+          // Salvo il nuovo elemento in EventFreezedProgram
+          console.log("stocazzo1")
+          console.log(entry.subscription_id)
+          let originalProgramItem
+          try {
+            originalProgramItem = await Models.Program.findOne({ _id: entry.subscription_id });
+          } catch (error) {
+            console.log(error)
+          }
+          console.log("stocazzo2")
+          let freezedProgramItem = await copyFreezedProgram(originalProgramItem, freezedPerformance, eventId);
+          console.log("stocazzo3")
+          try {
+            await freezedProgramItem.save();
+          } catch (err) {
+            logger.error(`Errore nel salvataggio di freezedProgramItem: ${err.message}`);
+            return res.status(500).send({ message: "Errore durante l'operazione save freezedProgramItem", error: err.message });
+          }
+          logger.info(`Salvataggio con successo di freezedProgramItem: ${freezedProgramItem._id}`);
+          //logger.info(freezedProgramItem._id)
+          //logger.info(freezedProgramItem.performance)
+          //logger.info(freezedProgramItem.schedule)
+          
+          let newEventProgramFreezeditem = {
+            subscription_id: freezedProgramItem._id,
+            performance: freezedProgramItem.performance,
+            schedule: freezedProgramItem.schedule, // Prendo il programma da Program vecchio
+            //schedule: entry.schedule; // Prendo il programma da Program dell'evento
+          }
+          newEventProgramFreezed.push(newEventProgramFreezeditem);
+
+          logger.info("Creo originalGalleries")
+          if (!entry.performance.galleries || !Array.isArray(entry.performance.galleries) || entry.performance.galleries.length === 0) {
+            logger.warn(`⚠️ No galleries found for performance ${entry.performance._id}`);
+          } else {
+            const originalGalleries = (await Models.Gallery.find({ _id: { $in: entry.performance.galleries } }).populate("users")) || [];
+            //logger.info(originalGalleries)
+            for (const gallery of entry.performance.galleries || []) {
+              let freezedGallery = await copyFreezedGallery(gallery, eventId, freezedPerformance);
+  
+              freezedPerformance.galleries.push(freezedGallery._id);
+  
+              if (!freezedGallery.users || !Array.isArray(freezedGallery.users)) {
+                freezedGallery.users = [];
+              }
+  
+              if (!gallery.users || !Array.isArray(gallery.users)) {
+                logger.warn(`⚠️ No users found for gallery ${gallery._id}`);
+                gallery.users = [];
+              }
+              for (const galleryUser of gallery.users) {
+                let freezedGalleryUser = await copyFreezedUser(galleryUser, eventId);
+                if (!freezedGalleryUser) {
+                  logger.error(`⚠️ Impossibile copiare l'utente ${galleryUser}`);
+                  continue;
+                }
+                freezedGallery.users.push(freezedGalleryUser._id);
+              }
+              try {
+                await freezedGallery.save();
+              } catch (err) {
+                logger.error(`Errore nel salvataggio di freezedGallery: ${err.message}`);
+                return res.status(500).send({ message: "Errore durante l'operazione", error: err.message });
+              }
+            }
+          }
+
+          logger.info("Creo originalVideos")
+          if (!entry.performance.videos || !Array.isArray(entry.performance.videos) || entry.performance.videos.length === 0) {
+            logger.warn(`⚠️ No videos found for performance ${entry.performance._id}`);
+          } else {
+            const originalVideos = (await Models.Video.find({ _id: { $in: entry.performance.videos } }).populate("users")) || [];
+            //logger.info(originalVideos)
+            for (const video of entry.performance.videos || []) {
+              let freezedVideo = await copyFreezedVideo(video, eventId, freezedPerformance);
+
+              freezedPerformance.videos.push(freezedVideo._id);
+
+              if (!freezedVideo.users || !Array.isArray(freezedVideo.users)) {
+                freezedVideo.users = [];
+              }
+              if (!video.users || !Array.isArray(video.users)) {
+                logger.warn(`⚠️ No users found for video ${video._id}`);
+                video.users = [];
+              }
+              for (const videoUser of video.users) {
+                let freezedVideoUser = await copyFreezedUser(videoUser, eventId);
+                if (!freezedVideoUser) {
+                  logger.error(`⚠️ Impossibile copiare l'utente ${videoUser}`);
+                  continue;
+                }
+               freezedVideo.users.push(freezedVideoUser._id);
+              }
+              try {
+                await freezedVideo.save();
+              } catch (err) {
+                logger.error(`Errore nel salvataggio di freezedVideo: ${err.message}`);
+                return res.status(500).send({ message: "Errore durante l'operazione", error: err.message });
+              }
+            }
+          }
+          try {
+            await freezedPerformance.save();
+          } catch (err) {
+            logger.error(`Errore nel salvataggio di freezedPerformance: ${err.message}`);
+            return res.status(500).send({ message: "Errore durante l'operazione", error: err.message });
+          }
+          logger.info(`Salvataggio con successo di freezedPerformance: ${freezedPerformance._id}`);
+        } catch (entryError) {
+          logger.error(`❌ Errore durante la copia della performance ${entry.performance._id}:`, entryError);
+          return res.status(400).send({ message: `${JSON.stringify(entryError)}` });
+        }
+      }
+    }
+
+    event.program_freezed = newEventProgramFreezed;
+    event.is_freezed = true;
+    await event.save();
+
+    logger.info(`🎉 Copia del programma completata con successo per l'evento ${eventId}`);
+    return res.send(event.program_freezed);
+  } catch (error) {
+    logger.error(`🔥 Errore durante il congelamento del programma:`, error);
+    return res.status(500).send({ message: `${JSON.stringify(error)}` });
+  }
+};
+
+
+
+
+
+
+
+
+
+
 
 dataprovider.getData = async (req, res, view) => {
   logger.info("getDatagetDatagetData")
@@ -542,7 +878,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         exec();
         var meandcrews = data.crews;
         meandcrews.push(data._id);
-        let submodel = (subsection == "performances" ? Performance : EventShow);
+        let submodel = (subsection == "performances" ? Models["Performance"] : Models["EventShow"]);
         let query = populate.filter(pop => pop.path == subsection)[0].match;
         if (subsection == "partnerships") {
           query["partners.users"] = {$in: meandcrews};
@@ -974,7 +1310,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
 
 dataprovider.getPerformanceByIds = async (req, ids, cb) => {
   try {
-    const data = await Performance.find({ users: { $in: ids } })
+    const data = await Models["Performance"].find({ users: { $in: ids } })
       .populate({ path: "type", select: "name" })
       .populate({
         path: "users",
@@ -992,7 +1328,7 @@ dataprovider.getPerformanceByIds = async (req, ids, cb) => {
 };
 
 /* dataprovider.getEmailById = (id, cb) => {
-  UserShow.findOne({'_id':id}, "email",(err, data) => {
+  Models["UserShow"]findOne({'_id':id}, "email",(err, data) => {
     //logger.info("getEmailById");  
     //logger.info(data);  
     cb(err, data);
@@ -1384,7 +1720,7 @@ dataprovider.makeTextPlainToRich = (str) => {
 dataprovider.addCat = async (req, populate, cb) => {
   try {
     if (req.params.type) {
-      const cat = await Category.findOne({ slug: req.params.type }).lean(); // Use lean() for performance
+      const cat = await Models["Category"].findOne({ slug: req.params.type }).lean(); // Use lean() for performance
 
       if (cat && populate[0].match) {
         populate[0].match.type = cat._id;
@@ -1412,34 +1748,36 @@ dataprovider.show = (req, res, section, subsection, model) => {
   dataprovider.addCat(req, populate, (populate, type) => {
     for(let item in populate) {
       if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
-      
-      if (populate[item].model === 'UserShow') populate[item].model = UserShow;
+      if (populate[item].model) populate[item].model = Model[populate[item].model]
+      /* if (populate[item].model === 'UserShow') populate[item].model = UserShow;
       if (populate[item].model === 'Performance') populate[item].model = Performance;
       if (populate[item].model === 'Event') populate[item].model = Event;
       if (populate[item].model === 'Video') populate[item].model = Video;
       if (populate[item].model === 'Footage') populate[item].model = Footage;
       if (populate[item].model === 'Playlist') populate[item].model = Playlist;
       if (populate[item].model === 'Category') populate[item].model = Category;
-      if (populate[item].model === 'News') populate[item].model = News;
+      if (populate[item].model === 'News') populate[item].model = News; */
   
-      if (populate[item].populate && populate[item].populate.model === 'UserShow') populate[item].populate.model = UserShow;
+      if (populate[item].populate && populate[item].populate.model) populate[item].populate.model = Model[populate[item].populate.model];
+     /*  if (populate[item].populate && populate[item].populate.model === 'UserShow') populate[item].populate.model = UserShow;
       if (populate[item].populate && populate[item].populate.model === 'Performance') populate[item].populate.model = Performance;
       if (populate[item].populate && populate[item].populate.model === 'Event') populate[item].populate.model = Event;
       if (populate[item].populate && populate[item].populate.model === 'Video') populate[item].populate.model = Video;
       if (populate[item].populate && populate[item].populate.model === 'Footage') populate[item].populate.model = Footage;
       if (populate[item].populate && populate[item].populate.model === 'Playlist') populate[item].populate.model = Playlist;
       if (populate[item].populate && populate[item].populate.model === 'Category') populate[item].populate.model = Category;
-      if (populate[item].populate && populate[item].populate.model === 'News') populate[item].populate.model = News;
+      if (populate[item].populate && populate[item].populate.model === 'News') populate[item].populate.model = News; */
       if (populate[item].populate) {
         for(let a=0;a<populate[item].populate.length;a++) {
-          if (populate[item].populate[a] && populate[item].populate[a].model === 'UserShow') populate[item].populate[a].model = UserShow;
+          if (populate[item].populate[a] && populate[item].populate[a].model) populate[item].populate[a].model = Model[populate[item].populate[a].model];
+          /* if (populate[item].populate[a] && populate[item].populate[a].model === 'UserShow') populate[item].populate[a].model = UserShow;
           if (populate[item].populate[a] && populate[item].populate[a].model === 'Performance') populate[item].populate[a].model = Performance;
           if (populate[item].populate[a] && populate[item].populate[a].model === 'Event') populate[item].populate[a].model = Event;
           if (populate[item].populate[a] && populate[item].populate[a].model === 'Video') populate[item].populate[a].model = Video;
           if (populate[item].populate[a] && populate[item].populate[a].model === 'Footage') populate[item].populate[a].model = Footage;
           if (populate[item].populate[a] && populate[item].populate[a].model === 'Playlist') populate[item].populate[a].model = Playlist;
           if (populate[item].populate[a] && populate[item].populate[a].model === 'Category') populate[item].populate[a].model = Category;
-          if (populate[item].populate[a] && populate[item].populate[a].model === 'News') populate[item].populate[a].model = News;
+          if (populate[item].populate[a] && populate[item].populate[a].model === 'News') populate[item].populate[a].model = News; */
         }
       }
     }

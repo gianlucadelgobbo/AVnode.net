@@ -27,7 +27,6 @@ router.get('/:sez/:id/:form/', async (req, res) => {
 
       // 🔥 Ensure dataprovider.getData is only called *after* types and genres are set
       await dataprovider.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
-
     } else if (req.params.sez === "subscriptions" && req.params.form === "private") {
       await get.getSubscriptions(req, res);
     } else if (req.params.sez === "events" && req.params.form === "partners") {

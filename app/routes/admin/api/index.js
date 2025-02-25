@@ -25,6 +25,13 @@ if (process.env.DEBUG) {
   });
 }
 
+// Event & Performance Management
+router.get('/events/:id/getfreezed', async (req, res) => {
+  logger.info("getfreezed");
+
+  await dataprovider.freezeEventProgram(req, res);
+});
+
 // SSH Routes
 router.get('/stream-stop', ssh.streamStop);
 router.get('/stream-update-and-restart', ssh.streamUpdateAndRestart);
@@ -76,8 +83,7 @@ router.get('/playlists/:id/footageremove/:footage', (req, res) => {
   getRoutes.removeFootage(req, res);
 }); */
 
-// Event & Performance Management
-//remove router.get('/events/:id/getfreezed', getRoutes.eventGetFreezed);
+
 router.get('/getperformances/:q', getPerformances.getPerformances);
 router.get('/events/:id/performance/add/:performance', getPerformances.eventAddPerformance);
 router.get('/events/:id/performance/remove/:performance', getPerformances.eventRemovePerformance);
@@ -107,6 +113,7 @@ router.get('/:sez/:id/:form/', async (req, res) => {
       req.params.q = "genre";
       const genres = await getRoutes.getPerfCategories(req, res);
       config.genres = genres;
+      logger.info("dataprovider.getData:", err);
 
       dataprovider.getData(req, res, "json");
     } else if (req.params.sez === "profile" && req.params.form === "subscriptions") {

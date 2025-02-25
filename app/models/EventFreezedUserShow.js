@@ -14,12 +14,15 @@ import About from './shared/About.js';
 import Link from './shared/Link.js';
 import OrganizationData from './shared/OrganizationData.js';
 
-const adminsez = 'event_profile';
+const adminsez = 'profile';
 
 const userSchema = new Schema({
+  event: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true },
+  user_original: { type: mongoose.Schema.Types.ObjectId, ref: 'UserShow', required: true },
+
   is_crew: Boolean,
   is_partner: Boolean,
-  partner_owner: [{
+  /* partner_owner: [{
     "owner": { type: Schema.ObjectId, ref: 'User' },
     "delegate": String,
     "is_selecta": Boolean,
@@ -35,24 +38,23 @@ const userSchema = new Schema({
     "is_satellite": {type: Boolean, default: false},
     "is_event": {type: Boolean, default: false},
     "is_active": {type: Boolean, default: false}
-  }],
+  }], */
   /* partner_owner: [{ type: Schema.ObjectId, ref: 'User' }],
   partners: [{ type: Schema.ObjectId, ref: 'User' }], */
-  partner_data: {},
+  /* partner_data: {},
   user_type : Number,
   activity: Number, // BL TODO frontend, issue #5, added
   activity_as_performer: Number,
-  activity_as_organization: Number,
+  activity_as_organization: Number, */
   hide_members: { type: Boolean, default: false },
 
-  stagename: { type: String, /*unique: true, TODO TO CHECK*/ required: [true, 'STAGE_NAME_IS_REQUIRED'], minlength: [1, 'STAGE_NAME_IS_TOO_SHORT'], maxlength: [100, 'STAGE_NAME_IS_TOO_LONG'] },
-  slug: { type: String, unique: true, trim: true, required: [true, 'PROFILE_URL_IS_REQUIRED'], minlength: [1, 'PROFILE_URL_IS_TOO_SHORT'], maxlength: [100, 'PROFILE_URL_IS_TOO_LONG'] ,
+  stagename: { type: String, trim: true, required: [true, 'STAGE_NAME_IS_REQUIRED'], minlength: [1, 'STAGE_NAME_IS_TOO_SHORT'], maxlength: [100, 'STAGE_NAME_IS_TOO_LONG'] },
+  slug: { type: String, trim: true, required: [true, 'PROFILE_URL_IS_REQUIRED'], minlength: [1, 'PROFILE_URL_IS_TOO_SHORT'], maxlength: [100, 'PROFILE_URL_IS_TOO_LONG'] ,
     validate: [(slug) => {
       var re = /^[a-z0-9-_]+$/;
       return re.test(slug)
     }, 'PROFILE_URL_IS_NOT_VALID']
   },
-  username: { type: String, /*unique: true TODO TO CHECK*/},
   email: { type: String, /*unique: true TODO TO CHECK*/ },
   image: MediaImage,
   teaserImage: MediaImage,
@@ -63,43 +65,7 @@ const userSchema = new Schema({
   lang: String, // BL TODO navigator or user.settings or subdomain language
   is_public: { type: Boolean, default: true },
   createdAt: Date,
-/*   stats: {
-    crews: Number,
-    members: Number,
-    events: Number,
-    partnerships: Number,
-    performances: Number,
-    learnings: Number,
-    galleries: Number,
-    videos: Number,
-    'lights-installation': Number,
-    mapping: Number,
-    'vj-set': Number,
-    workshop: Number,
-    'av-performance': Number,
-    'project-showcase': Number,
-    'dj-set': Number,
-    'video-installation': Number,
-    footage: Number,
-    playlists: Number,
-    news: Number,
-    lecture: Number,
-    recent:{ 
-      performances: Number,
-      learnings: Number,
-      events: Number,
-      news: Number,
-      partnerships: Number,
-      footage: Number,
-      playlists: Number,
-      videos: Number,
-      galleries: Number,
-      news: Number
-    },
-    visits: Number
-  },
-  likes: {},
-*/
+
   birthday: Date,
   citizenship: [], // NEW
 
@@ -129,13 +95,32 @@ const userSchema = new Schema({
 /*   partnerships : [{
     category: { type: Schema.ObjectId, ref: 'Category' },
     events: [{ type: Schema.ObjectId, ref: 'EventShow' }]
-  }], */
+  }], 
   footage : [{ type: Schema.ObjectId, ref: 'Footage' }],
-  playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],
+  playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],*/
   news : [{ type: Schema.ObjectId, ref: 'News' }],
+  pages: [],
+  /* A todo
+  videos : [{ type: Schema.ObjectId, ref: 'Gallery' }],
+  */
+
+  roles: [], // BL TODO frontend, issue #5, array of roles
+  connections: [], // BL TODO frontend, issue #5, added
+  // Organization Extra Data
+  organizationData: {},
+
+  /* password: String,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+  is_confirmed: { type: Boolean, default: false },
+  is_pro: { type: Boolean, default: false },
+  is_admin: { type: Boolean, default: false },
+  is_banned: { type: Boolean, default: false },
+  confirm: String,
+  tokens: Array */
 }, {
   timestamps: true,
-  collection: 'event_users',
+  collection: 'event_freezed_users',
   toObject: {
     virtuals: true // BL FIXME check http://mongoosejs.com/docs/api.html#schema_Schema-virtual
   },
@@ -208,19 +193,6 @@ userSchema.virtual('addressesFormatted').get(function () {
       addressesFormatted.push(" <b itemprop='addressCountry'>"+country+"</b> <span itemprop='addressLocality'>"+addresses[country].join(", ")+"</span>");
     }
     return addressesFormatted/* .join(", ") */;
-  }
-});
-
-userSchema.virtual('partnerships_ordered').get(function () {
-  if (this.partnerships && this.partnerships.length) {
-    /* let partnerships_ordered = [];
-    for(let partnership=0; partnership<this.partnerships.length; partnership++) {
-      for(let event=0; event<  this.partnerships[partnership].events.length; event++) {
-        this.partnerships[partnership].events[event].partnership_type = this.partnerships[partnership].category;
-        partnerships_ordered.push(this.partnerships[partnership].events[event]);
-      }
-    } */
-    return this.partnerships.sort(function(a,b){return b.schedule[0].starttime.getTime() - a.schedule[0].starttime.getTime()});
   }
 });
 
@@ -332,6 +304,7 @@ userSchema.virtual('imageFormats').get(function () {
   return imageFormats;
 });
 
-const UserShow = mongoose.model('EventUserShow', userSchema);
 
-export default UserShow;
+const EventFreezedUserShow = mongoose.model('EventFreezedUserShow', userSchema);
+
+export default EventFreezedUserShow;

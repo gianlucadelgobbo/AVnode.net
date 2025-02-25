@@ -15,8 +15,6 @@ const Models = {
   'News': mongoose.model('News'),
   'Playlist': mongoose.model('Playlist'),
   'Video': mongoose.model('Video'),
-  'VenueDB': mongoose.model('VenueDB'),
-  'AddressDB': mongoose.model('AddressDB'),
   'Program': mongoose.model('Program'),
   'Emailqueue': mongoose.model('Emailqueue')
 }
