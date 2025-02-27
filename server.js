@@ -59,7 +59,7 @@ app.use((req, res, next) => {
 });
 
 // View Engine Configuration
-app.set("port", config.ports[config.defaultLocale] || 3000);
+app.set("port", config.port || 8102);
 app.set("views", path.join(config.appRoot, "app/views"));
 app.set("view engine", "pug");
 app.set("view options", { debug: process.env.DEBUG });
