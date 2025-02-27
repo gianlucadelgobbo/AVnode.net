@@ -292,14 +292,14 @@ function handleError(res, message, err) {
 
 // Funzione per copiare una performance in EventFreezedPerformance
 async function copyFreezedPerformance(originalPerformance, eventId) {
-  logger.info("Starting copyFreezedPerformance: "+ originalPerformance._id)
-  let freezedPerformance
+  logger.info(`Starting copyFreezedPerformance: ${originalPerformance._id}`);
+
   try {
-    freezedPerformance = await Models.EventFreezedPerformance.findOne({
+    let freezedPerformance = await Models.EventFreezedPerformance.findOne({
       performance_original: originalPerformance._id,
-      event: eventId
+      event: eventId,
     });
-  
+
     if (!freezedPerformance) {
       freezedPerformance = new Models.EventFreezedPerformance({
         ...originalPerformance.toObject(),
@@ -309,60 +309,87 @@ async function copyFreezedPerformance(originalPerformance, eventId) {
         performance_original: originalPerformance._id,
         users: [],
         galleries: [],
-        videos: []
+        videos: [],
       });
+
       await freezedPerformance.save();
-    }  
+      logger.info(`Created new freezedPerformance: ${freezedPerformance._id}`);
+    } else {
+      logger.info(`Found existing freezedPerformance: ${freezedPerformance._id}`);
+    }
+
+    logger.info(`Ending copyFreezedPerformance: ${originalPerformance._id} to ${freezedPerformance._id}`);
+    return freezedPerformance;
   } catch (error) {
-    logger.error("Error Saving copyFreezedPerformance: "+ originalPerformance._id)
-    logger.error(error)
+    logger.error(`Error in copyFreezedPerformance: ${originalPerformance._id}`, error);
+    throw new Error(`Failed to copy performance: ${error.message}`);
   }
-  logger.info("Ending copyFreezedPerformance freezedPerformance: "+ originalPerformance._id + " to " + freezedPerformance._id)
-  return freezedPerformance;
 }
 
 // Funzione per copiare un programma in EventFreezedProgram
 async function copyFreezedProgram(programItem, freezedPerformance, eventId) {
-  logger.info("Starting copyFreezedProgram: "+ programItem._id)
-  let freezedProgramItem = await Models.EventFreezedProgram.findOne({
-    performance: freezedPerformance._id,
-    event: eventId
-  });
+  logger.info(`Starting copyFreezedProgram: ${programItem._id}`);
 
-  if (!freezedProgramItem) {
-    freezedProgramItem = new Models.EventFreezedProgram({
-      ...programItem.toObject(),
-      _id: undefined,
+  try {
+    let freezedProgramItem = await Models.EventFreezedProgram.findOne({
       performance: freezedPerformance._id,
-      event: eventId
+      event: eventId,
     });
-    await freezedProgramItem.save();
+
+    if (!freezedProgramItem) {
+      freezedProgramItem = new Models.EventFreezedProgram({
+        ...programItem.toObject(),
+        _id: undefined,
+        performance: freezedPerformance._id,
+        event: eventId,
+      });
+
+      await freezedProgramItem.save();
+      logger.info(`Created new freezedProgramItem: ${freezedProgramItem._id}`);
+    } else {
+      logger.info(`Found existing freezedProgramItem: ${freezedProgramItem._id}`);
+    }
+
+    logger.info(`Ending copyFreezedProgram: ${programItem._id} to ${freezedProgramItem._id}`);
+    return freezedProgramItem;
+  } catch (error) {
+    logger.error(`Error in copyFreezedProgram: ${programItem._id}`, error);
+    throw new Error(`Failed to copy program: ${error.message}`);
   }
-  logger.info("Ending copyFreezedProgram freezedProgramItem: "+ freezedProgramItem._id)
-  return freezedProgramItem;
 }
 
 // Funzione per copiare una galleria
 async function copyFreezedGallery(originalGallery, eventId, freezedPerformance) {
-  logger.info("Starting copyFreezedGallery: "+ originalGallery._id)
-  let freezedGallery = await Models.EventFreezedGallery.findOne({
-    gallery_original: originalGallery._id,
-    event: eventId
-  });
+  logger.info(`Starting copyFreezedGallery: ${originalGallery._id}`);
 
-  if (!freezedGallery) {
-    freezedGallery = new Models.EventFreezedGallery({
-      ...originalGallery.toObject(),
-      _id: undefined,
+  try {
+    let freezedGallery = await Models.EventFreezedGallery.findOne({
       gallery_original: originalGallery._id,
       event: eventId,
-      performance: freezedPerformance._id,
-      users: []
     });
-    await freezedGallery.save();
+
+    if (!freezedGallery) {
+      freezedGallery = new Models.EventFreezedGallery({
+        ...originalGallery.toObject(),
+        _id: undefined,
+        gallery_original: originalGallery._id,
+        event: eventId,
+        performance: freezedPerformance._id,
+        users: [],
+      });
+
+      await freezedGallery.save();
+      logger.info(`Created new freezedGallery: ${freezedGallery._id}`);
+    } else {
+      logger.info(`Found existing freezedGallery: ${freezedGallery._id}`);
+    }
+
+    logger.info(`Ending copyFreezedGallery: ${originalGallery._id} to ${freezedGallery._id}`);
+    return freezedGallery;
+  } catch (error) {
+    logger.error(`Error in copyFreezedGallery: ${originalGallery._id}`, error);
+    throw new Error(`Failed to copy gallery: ${error.message}`);
   }
-  logger.info("Ending copyFreezedGallery freezedGallery: "+ freezedGallery._id)
-  return freezedGallery;
 }
 
 // Funzione per copiare un video
@@ -392,217 +419,160 @@ async function copyFreezedVideo(originalVideo, eventId, freezedPerformance) {
 
 // Funzione per copiare un User
 async function copyFreezedUser(originalUser, eventId) {
-  logger.info("Starting copyFreezedUser: "+ originalUser._id)
   if (!originalUser) {
-    logger.error(`⚠️ copyFreezedUser called with undefined user! Skipping...`);
-    return null;
+    throw new Error(`⚠️ copyFreezedUser called with undefined user! EventID: ${eventId}`);
   }
-  let freezedUser
+  if (!originalUser._id) {
+    throw new Error(`⚠️ copyFreezedUser called with user without _id: ${JSON.stringify(originalUser)}`);
+  }
+
+  logger.info(`🛠️ Starting copyFreezedUser: ${originalUser._id} for event ${eventId}`);
+
   try {
-    freezedUser = await Models.EventFreezedUserShow.findOne({
+    let freezedUser = await Models.EventFreezedUserShow.findOne({
       user_original: originalUser._id,
-      event: eventId
+      event: eventId,
     });
-  } catch (error) {
-    logger.error("Error Finding copyFreezedUser: "+ originalUser._id)
-    logger.error(error)
-  }  
-  if (!freezedUser) {
-    try {
-      logger.info("Starting creating: ");
-      console.log(originalUser)
+
+    if (!freezedUser) {
+      const { password, tokens, stats, ...userData } = originalUser.toObject();
+
       freezedUser = new Models.EventFreezedUserShow({
-        ...originalUser.toObject(),
-        _id: undefined,
-        user_original: originalUser._id,
-        event: eventId
+        ...userData, // Spread all properties from the original user
+        _id: undefined, // Ensure a new _id is generated
+        event: eventId, // Add the event ID
       });
-      logger.info("Starting Saving: ");
-      console.log(freezedUser)
+
       await freezedUser.save();
-    } catch (error) {
-      logger.error("Error Saving copyFreezedUser: "+ originalUser._id)
-      logger.error(error)
+      logger.info(`✅ Successfully saved new freezedUser: ${freezedUser._id}`);
+    } else {
+      logger.info(`Found existing freezedUser: ${freezedUser._id}`);
     }
+
+    logger.info(`✅ Ending copyFreezedUser: ${originalUser._id} to ${freezedUser._id}`);
+    return freezedUser;
+  } catch (error) {
+    logger.error(`Error in copyFreezedUser: ${originalUser._id}`, error);
+    throw new Error(`Failed to copy user: ${error.message}`);
   }
-  logger.info("Ending copyFreezedUser, freezedUser: "+ freezedUser._id)
-  return freezedUser;
 }
 
+
 dataprovider.freezeEventProgram = async (req, res) => {
-  logger.info("freezeEventProgram");
+  logger.info("Starting freezeEventProgram");
+
   const eventId = req.params.id;
   try {
-    logger.info(`🔄 Inizio congelamento del programma per l'evento ${eventId}`);
+    logger.info(`🔄 Freezing program for event ${eventId}`);
 
-    // 1️⃣ Recupera l'evento originale
-    let event;
-    try {
-      event = await Models.Event.findById(eventId).populate("program.performance").populate("program.performance.users").exec();
-    } catch (err) {
-      throw new Error(`Errore nel recupero dell'evento: ${err.message}`);
-    }
+    // 1️⃣ Retrieve the original event
+    const event = await Models.Event.findById(eventId)
+      .populate("program.performance")
+      .populate("program.performance.users")
+      .exec();
+
     if (!event) {
-      throw new Error(`Evento con ID ${eventId} non trovato`);
+      throw new Error(`Event with ID ${eventId} not found`);
     }
 
-    logger.info(`📋 Programma originale trovato con ${event.program.length} elementi`);
+    logger.info(`📋 Original program found with ${event.program.length} entries`);
 
-    let newEventProgramFreezed = [];
+    const newEventProgramFreezed = [];
 
-    // 2️⃣ Itera su ogni elemento del programma originale
+    // 2️⃣ Iterate over each program entry
     for (const entry of event.program) {
       if (!entry.performance) {
-        logger.warn(`⚠️ Nessuna performance trovata per entry ${entry._id}`);
+        logger.warn(`⚠️ No performance found for entry ${entry._id}`);
         continue;
       }
-      if (entry.performance.users && Array.isArray(entry.performance.users)) {
-        try {
-          logger.info(`🔄 Copiando performance ${entry.performance._id} per evento congelato`);
 
-          let freezedPerformance = await copyFreezedPerformance(entry.performance, eventId);
+      try {
+        logger.info(`🔄 Copying performance ${entry.performance._id}`);
 
-          for (const performanceUser of entry.performance.users || []) {
-            let performanceUserItem = await Models.UserShow.findOne({_id:performanceUser}).exec();
-            if (!performanceUserItem) {
-              logger.warn(`⚠️ User ${performanceUser} not found in UserShow`);
-              continue;
-            }
-            //console.log(performanceUserItem)
-            if (performanceUserItem) {
-              let freezedPerformanceUser = await copyFreezedUser(performanceUserItem, eventId);
-              if (!freezedPerformanceUser) {
-                logger.error(`⚠️ Impossibile copiare l'utente ${performanceUserItem}`);
-                continue;
-              }
-              freezedPerformance.users.push(freezedPerformanceUser._id);
-            }
-          }
-          
-          // Salvo il nuovo elemento in EventFreezedProgram
-          console.log("stocazzo1")
-          console.log(entry.subscription_id)
-          let originalProgramItem
-          try {
-            originalProgramItem = await Models.Program.findOne({ _id: entry.subscription_id });
-          } catch (error) {
-            console.log(error)
-          }
-          console.log("stocazzo2")
-          let freezedProgramItem = await copyFreezedProgram(originalProgramItem, freezedPerformance, eventId);
-          console.log("stocazzo3")
-          try {
-            await freezedProgramItem.save();
-          } catch (err) {
-            logger.error(`Errore nel salvataggio di freezedProgramItem: ${err.message}`);
-            return res.status(500).send({ message: "Errore durante l'operazione save freezedProgramItem", error: err.message });
-          }
-          logger.info(`Salvataggio con successo di freezedProgramItem: ${freezedProgramItem._id}`);
-          //logger.info(freezedProgramItem._id)
-          //logger.info(freezedProgramItem.performance)
-          //logger.info(freezedProgramItem.schedule)
-          
-          let newEventProgramFreezeditem = {
-            subscription_id: freezedProgramItem._id,
-            performance: freezedProgramItem.performance,
-            schedule: freezedProgramItem.schedule, // Prendo il programma da Program vecchio
-            //schedule: entry.schedule; // Prendo il programma da Program dell'evento
-          }
-          newEventProgramFreezed.push(newEventProgramFreezeditem);
+        const freezedPerformance = await copyFreezedPerformance(entry.performance, eventId);
 
-          logger.info("Creo originalGalleries")
-          if (!entry.performance.galleries || !Array.isArray(entry.performance.galleries) || entry.performance.galleries.length === 0) {
-            logger.warn(`⚠️ No galleries found for performance ${entry.performance._id}`);
-          } else {
-            const originalGalleries = (await Models.Gallery.find({ _id: { $in: entry.performance.galleries } }).populate("users")) || [];
-            //logger.info(originalGalleries)
-            for (const gallery of entry.performance.galleries || []) {
-              let freezedGallery = await copyFreezedGallery(gallery, eventId, freezedPerformance);
-  
-              freezedPerformance.galleries.push(freezedGallery._id);
-  
-              if (!freezedGallery.users || !Array.isArray(freezedGallery.users)) {
-                freezedGallery.users = [];
-              }
-  
-              if (!gallery.users || !Array.isArray(gallery.users)) {
-                logger.warn(`⚠️ No users found for gallery ${gallery._id}`);
-                gallery.users = [];
-              }
+        // Copy users associated with the performance
+        for (const performanceUser of entry.performance.users || []) {
+          const performanceUserItem = await Models.UserShow.findOne({ _id: performanceUser }).exec();
+          if (!performanceUserItem) {
+            logger.warn(`⚠️ User ${performanceUser} not found in UserShow`);
+            continue;
+          }
+
+          const freezedPerformanceUser = await copyFreezedUser(performanceUserItem, eventId);
+          freezedPerformance.users.push(freezedPerformanceUser._id);
+        }
+
+        // Copy program item
+        const originalProgramItem = await Models.Program.findOne({ _id: entry.subscription_id });
+        if (!originalProgramItem) {
+          logger.error(`❌ No originalProgramItem found for subscription_id: ${entry.subscription_id}`);
+          continue;
+        }
+
+        const freezedProgramItem = await copyFreezedProgram(originalProgramItem, freezedPerformance, eventId);
+        await freezedProgramItem.save();
+
+        // Add to the new freezed program
+        newEventProgramFreezed.push({
+          subscription_id: freezedProgramItem._id,
+          performance: freezedProgramItem.performance,
+          schedule: freezedProgramItem.schedule,
+        });
+
+        // Copy galleries
+        if (entry.performance.galleries && Array.isArray(entry.performance.galleries)) {
+          for (const gallery of entry.performance.galleries) {
+            const freezedGallery = await copyFreezedGallery(gallery, eventId, freezedPerformance);
+
+            // Copy users associated with the gallery
+            if (gallery.users && Array.isArray(gallery.users)) {
               for (const galleryUser of gallery.users) {
-                let freezedGalleryUser = await copyFreezedUser(galleryUser, eventId);
-                if (!freezedGalleryUser) {
-                  logger.error(`⚠️ Impossibile copiare l'utente ${galleryUser}`);
-                  continue;
-                }
+                const freezedGalleryUser = await copyFreezedUser(galleryUser, eventId);
                 freezedGallery.users.push(freezedGalleryUser._id);
               }
-              try {
-                await freezedGallery.save();
-              } catch (err) {
-                logger.error(`Errore nel salvataggio di freezedGallery: ${err.message}`);
-                return res.status(500).send({ message: "Errore durante l'operazione", error: err.message });
-              }
             }
-          }
 
-          logger.info("Creo originalVideos")
-          if (!entry.performance.videos || !Array.isArray(entry.performance.videos) || entry.performance.videos.length === 0) {
-            logger.warn(`⚠️ No videos found for performance ${entry.performance._id}`);
-          } else {
-            const originalVideos = (await Models.Video.find({ _id: { $in: entry.performance.videos } }).populate("users")) || [];
-            //logger.info(originalVideos)
-            for (const video of entry.performance.videos || []) {
-              let freezedVideo = await copyFreezedVideo(video, eventId, freezedPerformance);
-
-              freezedPerformance.videos.push(freezedVideo._id);
-
-              if (!freezedVideo.users || !Array.isArray(freezedVideo.users)) {
-                freezedVideo.users = [];
-              }
-              if (!video.users || !Array.isArray(video.users)) {
-                logger.warn(`⚠️ No users found for video ${video._id}`);
-                video.users = [];
-              }
-              for (const videoUser of video.users) {
-                let freezedVideoUser = await copyFreezedUser(videoUser, eventId);
-                if (!freezedVideoUser) {
-                  logger.error(`⚠️ Impossibile copiare l'utente ${videoUser}`);
-                  continue;
-                }
-               freezedVideo.users.push(freezedVideoUser._id);
-              }
-              try {
-                await freezedVideo.save();
-              } catch (err) {
-                logger.error(`Errore nel salvataggio di freezedVideo: ${err.message}`);
-                return res.status(500).send({ message: "Errore durante l'operazione", error: err.message });
-              }
-            }
+            await freezedGallery.save();
+            freezedPerformance.galleries.push(freezedGallery._id);
           }
-          try {
-            await freezedPerformance.save();
-          } catch (err) {
-            logger.error(`Errore nel salvataggio di freezedPerformance: ${err.message}`);
-            return res.status(500).send({ message: "Errore durante l'operazione", error: err.message });
-          }
-          logger.info(`Salvataggio con successo di freezedPerformance: ${freezedPerformance._id}`);
-        } catch (entryError) {
-          logger.error(`❌ Errore durante la copia della performance ${entry.performance._id}:`, entryError);
-          return res.status(400).send({ message: `${JSON.stringify(entryError)}` });
         }
+
+        // Copy videos
+        if (entry.performance.videos && Array.isArray(entry.performance.videos)) {
+          for (const video of entry.performance.videos) {
+            const freezedVideo = await copyFreezedVideo(video, eventId, freezedPerformance);
+
+            // Copy users associated with the video
+            if (video.users && Array.isArray(video.users)) {
+              for (const videoUser of video.users) {
+                const freezedVideoUser = await copyFreezedUser(videoUser, eventId);
+                freezedVideo.users.push(freezedVideoUser._id);
+              }
+            }
+
+            await freezedVideo.save();
+            freezedPerformance.videos.push(freezedVideo._id);
+          }
+        }
+
+        await freezedPerformance.save();
+      } catch (entryError) {
+        logger.error(`❌ Error copying performance ${entry.performance._id}:`, entryError);
+        return handleError(res, "Error copying performance", entryError);
       }
     }
 
+    // Save the freezed program to the event
     event.program_freezed = newEventProgramFreezed;
     event.is_freezed = true;
     await event.save();
 
-    logger.info(`🎉 Copia del programma completata con successo per l'evento ${eventId}`);
+    logger.info(`🎉 Successfully froze program for event ${eventId}`);
     return res.send(event.program_freezed);
   } catch (error) {
-    logger.error(`🔥 Errore durante il congelamento del programma:`, error);
-    return res.status(500).send({ message: `${JSON.stringify(error)}` });
+    logger.error(`🔥 Error freezing program:`, error);
+    return handleError(res, "Error freezing program", error);
   }
 };
 

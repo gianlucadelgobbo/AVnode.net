@@ -9,8 +9,6 @@ package-lock.json
 __BUTTARE
 __IMPORT SCRIPTS
 ___MAINTENANCE_SCRIPTS
-config/ses.json
-log.log
 
 glacier/_manual/*
 space/*
