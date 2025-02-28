@@ -2,7 +2,7 @@ export default {
   apps: [
     {
       name: "avnode.net",
-      interpreter: "/home/hyo/.nvm/versions/node/v23.8.0/bin/node", // Fixed interpreter
+      //interpreter: "/home/hyo/.nvm/versions/node/v23.8.0/bin/node", // Fixed interpreter
       script: "./index.js", // Ensure correct path
       max_memory_restart: "4G",
       log_file: "/sites/logs/node_admin_avnode_net-2025-combined.log",
