@@ -1,9 +1,9 @@
-export default {
+module.exports = {
   apps: [
     {
       name: "avnode.net",
-      //interpreter: "/home/hyo/.nvm/versions/node/v23.8.0/bin/node", // Fixed interpreter
-      script: "./index.js", // Ensure correct path
+      //interpreter: "/home/hyo/.nvm/versions/node/v23.8.0/bin/node",
+      script: "/absolute/path/to/index.js",
       max_memory_restart: "4G",
       log_file: "/sites/logs/node_admin_avnode_net-2025-combined.log",
       out_file: "/sites/logs/node_admin_avnode_net-2025-out.log",
@@ -15,13 +15,8 @@ export default {
       exec_mode: "cluster",
       autorestart: true,
       watch: true,
-      watch_options: {
-        followSymlinks: false,
-      },
-      env: {
-        NODE_ENV: "production",
-        DEBUG: "false",
-      },
+      watch_options: { followSymlinks: false },
+      env: { NODE_ENV: "production", DEBUG: "false" },
     },
   ],
 };
