@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "avnode.net",
       //interpreter: "/home/hyo/.nvm/versions/node/v23.8.0/bin/node",
-      script: "/absolute/path/to/index.js",
+      script: "/sites/avnode.admin/index.js",
       max_memory_restart: "4G",
       log_file: "/sites/logs/node_admin_avnode_net-2025-combined.log",
       out_file: "/sites/logs/node_admin_avnode_net-2025-out.log",
