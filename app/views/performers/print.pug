@@ -48,9 +48,9 @@ block content
                       b="Web sites"
                     ul.pl-2.list-unstyled
                       li.mb-3
-                        a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug)
+                        a(href=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/"+data.slug)
                           i.icon-link.mr-2
-                          !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug
+                          !=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/"+data.slug
                       each item in data.web
                         if item.url
                           li.mb-3
@@ -122,9 +122,9 @@ block content
                           if !get.hideLinks
                             ul.list-unstyled.pt-3
                               li.mb-3
-                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug)
+                                a(href=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/"+item.slug)
                                   i.icon-link.mr-2
-                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug
+                                  !=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/"+item.slug
                               each web in item.web
                                 li.mb-3
                                   a(href=web.url)
@@ -229,9 +229,9 @@ block content
                           if !get.hideLinks
                             ul.list-unstyled.pt-3
                               li.mb-3
-                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug)
+                                a(href=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/performances/"+item.slug)
                                   i.icon-link.mr-2
-                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug
+                                  !=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/performances/"+item.slug
                           if !get.hideBookings && item.bookings && item.bookings.length
                             u.mb-2.mt-3!='Bookings'
                             - //item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
@@ -281,9 +281,9 @@ block content
                           if !get.hideLinks
                             ul.list-unstyled.pt-3
                               li.mb-3
-                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug)
+                                a(href=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/events/"+item.slug)
                                   i.icon-link.mr-2
-                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug
+                                  !=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/events/"+item.slug
                               each web in item.web
                                 li.mb-3
                                   a(href=web.url)
@@ -353,9 +353,9 @@ block content
                           if !get.hideLinks
                             ul.list-unstyled.pt-3
                               li.mb-3
-                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug)
+                                a(href=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/news/"+item.slug)
                                   i.icon-link.mr-2
-                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug
+                                  !=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/news/"+item.slug
                               
               //-if data.footage && data.footage.length
                 h2.main_title.indented_title!=__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
@@ -470,9 +470,9 @@ block content
                       b="Web sites"
                     ul.pl-2.list-unstyled
                       li.mb-3
-                        a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug)
+                        a(href=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/"+data.slug)
                           i.icon-link.mr-2
-                          !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+data.slug
+                          !=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/"+data.slug
                       each item in data.web
                         if item.url
                           li.mb-3
@@ -544,9 +544,9 @@ block content
                           if !get.hideLinks
                             ul.list-unstyled.pt-3
                               li.mb-3
-                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug)
+                                a(href=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/"+item.slug)
                                   i.icon-link.mr-2
-                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/"+item.slug
+                                  !=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/"+item.slug
                               each web in item.web
                                 li.mb-3
                                   a(href=web.url)
@@ -651,9 +651,9 @@ block content
                           if !get.hideLinks
                             ul.list-unstyled.pt-3
                               li.mb-3
-                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug)
+                                a(href=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/performances/"+item.slug)
                                   i.icon-link.mr-2
-                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/performances/"+item.slug
+                                  !=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/performances/"+item.slug
                           if !get.hideBookings && item.bookings && item.bookings.length
                             u.mb-2.mt-3!='Bookings'
                             - //item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
@@ -701,9 +701,9 @@ block content
                           if !get.hideLinks
                             ul.list-unstyled.pt-3
                               li.mb-3
-                                a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug)
+                                a(href=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/news/"+item.slug)
                                   i.icon-link.mr-2
-                                  !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug
+                                  !=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/news/"+item.slug
                             
 
 
@@ -740,9 +740,9 @@ block content
                   td
                     ul.list-unstyled.pt-3
                       li.mb-3
-                        a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug)
+                        a(href=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/events/"+item.slug)
                           i.icon-link.mr-2
-                          !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug
+                          !=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/events/"+item.slug
                       if item.web && item.web.length
                         each web in item.web
                           li.mb-3
@@ -799,9 +799,9 @@ block content
                   td
                     ul.list-unstyled.pt-3
                       li.mb-3
-                        a(href=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug)
+                        a(href=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/events/"+item.slug)
                           i.icon-link.mr-2
-                          !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/events/"+item.slug
+                          !=(host === "localhost:8102" ? "http" : "https")+"://"+host+"/events/"+item.slug
                       if item.web && item.web.length
                         each web in item.web
                           li.mb-3

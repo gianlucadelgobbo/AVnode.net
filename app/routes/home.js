@@ -68,16 +68,16 @@ router.get('/', (req, res) => {
               subtitle: req.__('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
               data: homedata,
               session: req.session,
-              canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
+              canonical: (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
               jsonld: {
                 "@context": "http://schema.org",
                 "@type": "WebSite",
-                "url": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl,
+                "url": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl,
                 "description": req.__('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
-                "image": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"images/sez/avnode.net-home.jpg",
+                "image": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"images/sez/avnode.net-home.jpg",
                 "potentialAction": {
                   "@type": "SearchAction",
-                  "target": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"search?&q={q}",
+                  "target": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"search?&q={q}",
                   "query-input": {
                     "@type": "PropertyValueSpecification",
                     "valueRequired": false,
