@@ -127,7 +127,7 @@ router.get('/:event/orders', async (req, res) => {
       } else {
         req.query.sez = "acts";
         res.render('adminpro/events/program-social', {
-          title: 'Events | '+data.event.title + ': '+__('Program Socials'),
+          title: 'Events | '+data.event.title + ': '+req.__('Program Socials'),
           data: data,
           currentUrl: req.originalUrl,
           
@@ -144,7 +144,7 @@ router.get('/:event/orders', async (req, res) => {
       } else {
         req.query.sez = "acts";
         res.render('adminpro/events/program-print', {
-          title: 'Events | '+data.title + ': '+__('Program Prints'),
+          title: 'Events | '+data.title + ': '+req.__('Program Prints'),
           data: data,
           currentUrl: req.originalUrl,
           
@@ -161,7 +161,7 @@ router.get('/:event/orders', async (req, res) => {
       } else {
         req.query.sez = "acts";
         res.render('adminpro/events/program-print-siae', {
-          title: 'Events | '+data.event.title + ': '+__('Program Prints Siae'),
+          title: 'Events | '+data.event.title + ': '+req.__('Program Prints Siae'),
           data: data,
           currentUrl: req.originalUrl,
           
@@ -178,7 +178,7 @@ router.get('/:event/orders', async (req, res) => {
       } else {
         req.query.sez = "acts";
         res.render('adminpro/events/program-print-comune', {
-          title: 'Events | '+data.event.title + ': '+__('Program Prints Comune'),
+          title: 'Events | '+data.event.title + ': '+req.__('Program Prints Comune'),
           data: data,
           currentUrl: req.originalUrl,
           
@@ -235,7 +235,7 @@ router.get('/:event/orders', async (req, res) => {
               let d = ('0'+date.getUTCDate()).substr(-2);
               let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
               let y = date.getUTCFullYear();
-              const lang = global.getLocale();
+              const lang = req.getLocale();
               let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
               if (!data.programmebydayvenue[y+"-"+m+"-"+d]) {
                 data.programmebydayvenue[y+"-"+m+"-"+d] = {
@@ -1053,7 +1053,7 @@ router.get('/:event/program', async (req, res) => {
         let d = ('0'+date.getUTCDate()).substr(-2);
         let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
         let y = date.getUTCFullYear();
-        const lang = global.getLocale();
+        const lang = req.getLocale();
         let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
         if (!data.programmebydayvenue[y+"-"+m+"-"+d]) {
           data.programmebydayvenue[y+"-"+m+"-"+d] = {
@@ -1219,7 +1219,7 @@ router.get('/:event/technical-riders', async (req, res) => {
           let d = ('0'+date.getUTCDate()).substr(-2);
           let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
           let y = date.getUTCFullYear();
-          const lang = global.getLocale();
+          const lang = req.getLocale();
           let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
           if (!data.programmebydayvenue[y+"-"+m+"-"+d]) {
             data.programmebydayvenue[y+"-"+m+"-"+d] = {
@@ -1353,7 +1353,7 @@ router.get('/:event/technical-riders', async (req, res) => {
             let d = ('0'+date.getUTCDate()).substr(-2);
             let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
             let y = date.getUTCFullYear();
-            const lang = global.getLocale();
+            const lang = req.getLocale();
             let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
             if (!data.programmebydayvenue[y+"-"+m+"-"+d]) {
               data.programmebydayvenue[y+"-"+m+"-"+d] = {

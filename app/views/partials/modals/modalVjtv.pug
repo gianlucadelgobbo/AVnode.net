@@ -33,23 +33,23 @@
             | Let’s get party with the best VJ from all over the world.
         u Get VJ Television contents on demand jumping on a day from the calendar up right.
       .modal-footer
-        button.btn(type='button', data-dismiss='modal')=global.__("Cancel")
+        button.btn(type='button', data-dismiss='modal')=__("Cancel")
         button.btn.btn-primary.disabled#loadingplay(type='button', data-dismiss='modal')
           i.icon-spinner.animate-spin.mr-2
-          span!=global.__("Loading current day programming")
+          span!=__("Loading current day programming")
 //-.modal.admindevmodal.fade#msg_modal(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
   .modal-dialog.modal-lg.modal-dialog-centered
     .modal-content
       .modal-header
-        h5#myLargeModalLabel.modal-title=global.__("Alert")
+        h5#myLargeModalLabel.modal-title=__("Alert")
         button.close(type='button', data-dismiss='modal', aria-label='Close')
           span(aria-hidden='true') ×
       .modal-body
-        p!=global.__("AVnode.net is now at Alpha Version, feel free to test it but read the following alerts:")
+        p!=__("AVnode.net is now at Alpha Version, feel free to test it but read the following alerts:")
         ul
-          li=global.__("The database will be resetted more than once in the alpha phase, you could loose some data you insert")
-          li=global.__("Control panel is still under development, some features are still not fully working")
-        p!=global.__("Please send any suggestion to:")+" "
+          li=__("The database will be resetted more than once in the alpha phase, you could loose some data you insert")
+          li=__("Control panel is still under development, some features are still not fully working")
+        p!=__("Please send any suggestion to:")+" "
           a(href="mailto:info@avnode.net") info@avnode.net
       .modal-footer
-        button.btn.btn-primary(type='button', data-dismiss='modal')=global.__("I have read, continue")
+        button.btn.btn-primary(type='button', data-dismiss='modal')=__("I have read, continue")

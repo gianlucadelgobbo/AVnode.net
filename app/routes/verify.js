@@ -70,7 +70,7 @@ router.get('/:sez/:code', async (req, res) => {
                 } catch (crewError) {
                   logger.info(crewError);
                   return res.render('verify/signup', {
-                    title: __('Signup verify'),
+                    title: req.__('Signup verify'),
                     err: crewError,
                     data: data
                   });
@@ -83,13 +83,13 @@ router.get('/:sez/:code', async (req, res) => {
                 logger.info('UserTemp records deleted');
                 
                 return res.render('verify/signup', {
-                  title: __('Signup verify'),
+                  title: req.__('Signup verify'),
                   data: data
                 });
               } catch (sendyError) {
                 logger.info(sendyError);
                 return res.render('verify/signup', {
-                  title: __('Signup verify'),
+                  title: req.__('Signup verify'),
                   err: sendyError,
                   data: data
                 });
@@ -97,13 +97,13 @@ router.get('/:sez/:code', async (req, res) => {
             } catch (userError) {
               logger.info(userError);
               return res.render('verify/signup', {
-                title: __('Signup verify'),
+                title: req.__('Signup verify'),
                 err: userError,
                 data: data
               });
             }          } else {
             res.render('verify/signup', {
-              title: __('Signup verify'),
+              title: req.__('Signup verify'),
               err: errors,
               data: data
             });
@@ -111,13 +111,13 @@ router.get('/:sez/:code', async (req, res) => {
         });      
       } else {
         res.render('verify/signup', {
-          title: __('Signup verify'),
+          title: req.__('Signup verify'),
           err: true,
         });
       }
     } catch (err) {
       res.render('verify/signup', {
-        title: __('Signup verify'),
+        title: req.__('Signup verify'),
         err: true,
       });
     }
@@ -132,13 +132,13 @@ router.get('/:sez/:code', async (req, res) => {
       if (!user) {
         logger.info("NON TROVATOOOO");
         return res.render('verify/email', {
-          title: __('Email verify'),
+          title: req.__('Email verify'),
           err: true
         });
       }
     } catch (err) {
       return res.render('verify/email', {
-        title: __('Email verify'),
+        title: req.__('Email verify'),
         err: true,
       });
     };
@@ -154,17 +154,17 @@ router.get('/:sez/:code', async (req, res) => {
       await user.save()
       await router.updateSendy(user, sendyemail); // Update mailing list
       if (req.user) {
-        req.flash('success', { msg: __('Email verificated with success.') });
+        req.flash('success', { msg: req.__('Email verificated with success.') });
         res.redirect('/admin/profile/'+req.user._id+'/emails');
       } else {
         res.render('verify/email', {
-          title: __('Email verify'),
+          title: req.__('Email verify'),
           err: false,
         });  
       }
     } catch (err) {
       res.render('verify/email', {
-        title: __('Email verify'),
+        title: req.__('Email verify'),
         err: true,
       });
     }

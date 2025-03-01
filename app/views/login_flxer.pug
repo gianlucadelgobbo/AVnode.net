@@ -9,13 +9,13 @@ block content
             input(type='hidden', name='_csrf', value=_csrf)
             input(type='hidden', name='returnTo', value=returnTo)
             .form-group
-              label(for='email')=global.__('FLxER Username')
-              input.form-control(type='input', name='email', id='email', placeholder=global.__('Username'), autofocus, required)
-              .badge=global.__('If your profile is https://flxer.net/USERNAME insert USERNAME')
+              label(for='email')=__('FLxER Username')
+              input.form-control(type='input', name='email', id='email', placeholder=__('Username'), autofocus, required)
+              .badge=__('If your profile is https://flxer.net/USERNAME insert USERNAME')
             .form-group
-              label(for='password')=global.__('Password')
-              input.form-control(type='password', name='password', id='password', placeholder=global.__('FLxER Password'), required)
+              label(for='password')=__('Password')
+              input.form-control(type='password', name='password', id='password', placeholder=__('FLxER Password'), required)
             .form-group
-              button.btn.btn-primary.btn-success(type='submit')=global.__('Login')
+              button.btn.btn-primary.btn-success(type='submit')=__('Login')
                 i.icon-sign-in-alt.fa-fw
-              a.btn.btn-link(href='/password/forgot')=global.__('Forgot your password?')
+              a.btn.btn-link(href='/password/forgot')=__('Forgot your password?')

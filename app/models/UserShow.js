@@ -245,17 +245,17 @@ userSchema.virtual('partnerships_ordered').get(function () {
 });
 
 userSchema.virtual('about').get(function (req) {
-  let about = __('Text is missing');
+  let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    aboutA = this.abouts.filter(item => item.lang === $locals.locale);
 
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
       aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
-        about = "["+__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+        about = "["+this.$locals.__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
     var options = {
@@ -277,16 +277,16 @@ userSchema.virtual('about').get(function (req) {
 
 
 userSchema.virtual('aboutFull').get(function (req) {
-  let about = __('Text is missing');
+  let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    aboutA = this.abouts.filter(item => item.lang === $locals.locale);
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
       aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
-        about = "["+__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+        about = "["+this.$locals.__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
     var options = {
@@ -318,13 +318,13 @@ userSchema.virtual('aboutFull').get(function (req) {
 
 userSchema.virtual('description').get(function (req) {
   if (this.abouts && this.abouts.length) {
-    return helpers.makeDescription(this.abouts);
+    return helpers.makeDescription(this.abouts, this.$locals);
   }
 });
 
 userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
-    const lang = global.getLocale();
+    const lang = $locals.locale;
     return moment(this.birthday).format(config.dateFormat[lang].weekdaydaymonthyear);
   }
 });

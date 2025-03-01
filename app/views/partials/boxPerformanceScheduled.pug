@@ -20,19 +20,19 @@
         .flex_left      
           if (item.performance.users.length > 1)
             div
-              img.img-fluid(src="/images/icon_authors.svg", width="50", height="50", alt=global.__("Multiple performers"))
+              img.img-fluid(src="/images/icon_authors.svg", width="50", height="50", alt=__("Multiple performers"))
             div
-              p.users_performance_item_name=item.performance.users.length+" "+global.__("performers")
-              p.users_performance_item_views=item.performance.stats.visits+" "+global.__("views")
+              p.users_performance_item_name=item.performance.users.length+" "+__("performers")
+              p.users_performance_item_views=item.performance.stats.visits+" "+__("views")
           else              
             each user in item.performance.users
               div
                 img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
               div
                 p.users_performance_item_name=user.stagename
-                p.users_performance_item_views=item.performance.stats.visits+" "+global.__("views")
+                p.users_performance_item_views=item.performance.stats.visits+" "+__("views")
         .flex_right      
           .users_performance_item_likes
             span.color2.icon-heart
             br
-            span.text-nowrap=item.performance.stats.likes+" "+global.__("likes")
+            span.text-nowrap=item.performance.stats.likes+" "+__("likes")

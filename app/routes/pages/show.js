@@ -20,7 +20,7 @@ console.log(router.stack.map(m => m.route ? m.route.path : "Middleware"));
 router.get('/', async (req, res) => {
   console.log(`🌍 Fetching CMS Page: ${req.originalUrl}`);
   try {
-    const response = await axios.get(`https://cms.avnode.net/${global.getLocale()}/wp-json/wp/v2/mypages${req.originalUrl}`);
+    const response = await axios.get(`https://cms.avnode.net/${req.getLocale()}/wp-json/wp/v2/mypages${req.originalUrl}`);
     logger.info(response.data);
     res.render('pages/show', { title: response.data.post_title, data: response.data });
   } catch (error) {

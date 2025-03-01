@@ -5,12 +5,12 @@ block content
     .row
       .col-md-6.offset-md-3
         .pb-5
-          p=global.__("Enter the email address associated with your account, and we’ll email you a link to reset your password.")
+          p=__("Enter the email address associated with your account, and we’ll email you a link to reset your password.")
           form(method='post')
             input(type='hidden', name='_csrf', value=_csrf)
             .form-group
-              label(for='email')=global.__('Email')
+              label(for='email')=__('Email')
               input.form-control(type='email', name='email', id='email', placeholder='example@foo.bar', value=email, autofocus, required)
             .form-group
-              button.btn.btn-primary.btn-success(type='submit')=global.__('reset password')
+              button.btn.btn-primary.btn-success(type='submit')=__('reset password')
                 i.icon-angle-right.fa-fw

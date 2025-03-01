@@ -10,27 +10,27 @@ block title
           h1.main_title=data.img && data.img.title ? data.title+": "+data.img.title : data.title
             if editable
               !="  "
-              a.badge.badge-danger(href="/admin/galleries/"+data._id+"/public")=global.__("EDIT")
+              a.badge.badge-danger(href="/admin/galleries/"+data._id+"/public")=__("EDIT")
           if data.img
             if data.img.stats
               .performance_stat_container
                 .performance_stat_wrapper
                   ul
                     if data.img.stats.visits
-                      li=data.img.stats.visits + ' ' + global.__('Views')
+                      li=data.img.stats.visits + ' ' + __('Views')
                     li
                       span.likes_count=data.img.stats.likes ? data.img.stats.likes : 0
-                      !=' ' + global.__('Likes')
+                      !=' ' + __('Likes')
           else 
             if data.stats
               .performance_stat_container
                 .performance_stat_wrapper
                   ul
                     if data.stats.visits
-                      li=data.stats.visits + ' ' + global.__('Views')
+                      li=data.stats.visits + ' ' + __('Views')
                     li
                       span.likes_count=data.stats.likes ? data.stats.likes : 0
-                      !=' ' + global.__('Likes')
+                      !=' ' + __('Likes')
         .col-lg-3.mt-md-4
           include ../partials/share_like
 
@@ -105,11 +105,11 @@ block content
               h3=__("Stats")
               ul
                 if data.stats.visits
-                  li=data.stats.visits + ' ' + global.__('Views')
+                  li=data.stats.visits + ' ' + __('Views')
                 if data.stats.likes
-                  li=data.stats.likes + ' ' + global.__('Likes')
+                  li=data.stats.likes + ' ' + __('Likes')
                 if data.stats.medias
-                  li=data.stats.medias + ' ' + global.__('Images')  
+                  li=data.stats.medias + ' ' + __('Images')  
 
           if data.about
             .data_footage_video_wrapper

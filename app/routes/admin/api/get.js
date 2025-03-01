@@ -43,14 +43,14 @@ router.sendEmailVerification = async (req, res) => {
     user = await User.findOne({"_id": req.user._id}).select("emails");
     if (!user) {
       logger.info("USER NOT FOUND");     
-      return res.json({error: true, msg: __("USER NOT FOUND")});
+      return res.json({error: true, msg: req.__("USER NOT FOUND")});
     } else if (req.user._id.toString() !== user._id.toString() /*&& !req.user.is_admin*/) {
       logger.info("EMAIL IS NOT YOUR");     
-      return res.json({error: true, msg: __("EMAIL IS NOT YOUR")});
+      return res.json({error: true, msg: req.__("EMAIL IS NOT YOUR")});
     }
   } catch (err) {
     logger.info("MAIL SEARCH ERROR");
-    return res.json({error: true, msg: __("MAIL SEARCH ERROR")});
+    return res.json({error: true, msg: req.__("MAIL SEARCH ERROR")});
   }
   logger.info("Email OK");
   let nothingToDo = true;
@@ -73,7 +73,7 @@ router.sendEmailVerification = async (req, res) => {
       } catch (err) {
         logger.info("Save failuresssss");
         logger.info(err);
-        return res.json({error: true, msg: __(err.message)});
+        return res.json({error: true, msg: req.__(err.message)});
       }
       logger.info("Save success");
       logger.info("mySendMailer");
@@ -85,12 +85,12 @@ router.sendEmailVerification = async (req, res) => {
           },
           email_content: {
             site:    (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
-            title:    __("Email Confirm"),
-            subject:  __("Email Confirm")+' | AVnode.net',
-            block_1:  __("We’ve received a request to add this new email")+": "+user.emails[item].email,
-            button:   __("Click here to confirm"),
-            block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"),
-            block_3:  __("Thanks."),
+            title:    req.__("Email Confirm"),
+            subject:  req.__("Email Confirm")+' | AVnode.net',
+            block_1:  req.__("We’ve received a request to add this new email")+": "+user.emails[item].email,
+            button:   req.__("Click here to confirm"),
+            block_2:  req.__("If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"),
+            block_3:  req.__("Thanks."),
             link:     (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host+'/verify/email/'+user.emails[item].confirm,
             html_sign: "The AVnode.net Team",
             text_sign:  "The AVnode.net Team"
@@ -100,10 +100,10 @@ router.sendEmailVerification = async (req, res) => {
       } catch (err) {
         logger.info("Email sending failure");
         logger.info(err);
-        return res.json({error: true, msg: __("Confirmation email sending failure, please try later"), err: err});
+        return res.json({error: true, msg: req.__("Confirmation email sending failure, please try later"), err: err});
       }
       logger.info("Email sending OK");
-      return res.json({error: false, msg: __("Confirmation Email sending success, please check your inbox and confirm")});
+      return res.json({error: false, msg: req.__("Confirmation Email sending success, please check your inbox and confirm")});
     }
   }
   if(nothingToDo) {
@@ -192,14 +192,14 @@ router.getList = async (req, res, view) => {
       if (view == "json") {
         res.status(500).send({ message: `${JSON.stringify(err)}` });
       } else {
-        res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+        res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
       }
     }
   } else {
     if (view == "json") {
       res.status(404).send({ message: `API_NOT_FOUND` });
     } else {
-      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+      res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
     }  
   }
 }
@@ -710,7 +710,7 @@ router.eventGetFreezed = (req, res) => {
               if (err) {
                 res.status(404).send({ message: err });
               } else {
-                res.send({ message: __("FREEZING SUCCESS") });
+                res.send({ message: req.__("FREEZING SUCCESS") });
               }
             });
           }

@@ -10,18 +10,18 @@ block title
           h1.main_title=data.title
             if editable
               !="  "
-              a.badge.badge-danger(href="/admin/videos/"+data._id+"/public")=global.__("EDIT")
+              a.badge.badge-danger(href="/admin/videos/"+data._id+"/public")=__("EDIT")
           if data.stats
             .performance_stat_container
               .performance_stat_wrapper
                 ul
                   if data.stats.visits
-                    li=data.stats.visits + ' ' + global.__('Views')
+                    li=data.stats.visits + ' ' + __('Views')
                   li
                     span.likes_count=data.stats.likes ? data.stats.likes : 0
-                    !=' ' + global.__('Likes')
+                    !=' ' + __('Likes')
                   if data.stats.downloads
-                    li=data.stats.downloads + ' ' + global.__('Downloads')
+                    li=data.stats.downloads + ' ' + __('Downloads')
         .col-lg-3.mt-md-4
           include ../partials/share_like
 
@@ -61,7 +61,7 @@ block content
                 source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
                 //-source(src='MY_VIDEO.webm', type='video/webm')
                 p.vjs-no-js
-                  !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
+                  !=__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
                   a(href='http://videojs.com/html5-video-support/', target='_blank')=!"HTML5 video"
             if data.media.iframe
               !=data.media.iframe
@@ -76,19 +76,19 @@ block content
           if data.media
             ul
               if data.media.originalname || data.media.file
-                li=global.__('File name')+": "
+                li=__('File name')+": "
                   b=data.media.originalname ? data.media.originalname : data.media.file.substring(data.media.file.lastIndexOf("/")+1)
               if data.media.filesizeHR
-                li=global.__('File size')+": "
+                li=__('File size')+": "
                   b=data.media.filesizeHR
               if data.media.duration
-                li=global.__('File duration')+": "
+                li=__('File duration')+": "
                   b=data.media.durationHR
               if data.media.mimetype
-                li=global.__('File type')+": "
+                li=__('File type')+": "
                   b=data.media.mimetype
               if data.media.width && data.media.height
-                li=global.__('Video dimensions')+": "
+                li=__('Video dimensions')+": "
                   b=data.media.width+"x"+data.media.height
         if (data.categories && data.categories.length) || (editable && data.media && !data.media.iframe)
           .data_footage_video_wrapper

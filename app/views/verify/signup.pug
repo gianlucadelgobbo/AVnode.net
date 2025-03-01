@@ -3,12 +3,12 @@ extends ../layout
 block content
   .container
     if err
-      h3=global.__("Verification Failed")
-      p=global.__("Verification was already done or someone subscribed with some of your data, please sign up again.")
+      h3=__("Verification Failed")
+      p=__("Verification was already done or someone subscribed with some of your data, please sign up again.")
       p.text-center
-        a.btn.btn-primary.btn-lg(href="/signup")=global.__("SIGN UP")
+        a.btn.btn-primary.btn-lg(href="/signup")=__("SIGN UP")
     else
-      h3=global.__("Verification Success!!!")
-      p=global.__("Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.")
+      h3=__("Verification Success!!!")
+      p=__("Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.")
       p.text-center
-        a.btn.btn-primary.btn-lg(href="/login")=global.__("LOG IN")
+        a.btn.btn-primary.btn-lg(href="/login")=__("LOG IN")

@@ -12,7 +12,7 @@ include ../partials/modals/modalContact
         a(href="/"+data.slug+"/")=data.stagename
         if editable
           !="  "
-          a.badge.badge-danger(href="/admin/crews/"+data._id+"/public")=global.__("EDIT")          
+          a.badge.badge-danger(href="/admin/crews/"+data._id+"/public")=__("EDIT")          
       ul.performer_address.list-inline
         each address in data.addresses
           li.list-inline-item(class=data.addresses.length<5 ? "big" : undefined)=address.locality + ", " + address.country
@@ -23,34 +23,34 @@ include ../partials/modals/modalContact
               ul.performer_stats_list.performer_stats_list_1.list-inline
                 if data.stats.events
                   li.list-inline-item
-                    a(href="/"+data.slug+"/events")!=global.__('Events')+" (<span>"+data.stats.events+"</span>)"
+                    a(href="/"+data.slug+"/events")!=__('Events')+" (<span>"+data.stats.events+"</span>)"
                 if data.stats.performances
                   li.list-inline-item
-                    a(href="/"+data.slug+"/performances")!=global.__('Performances')+" (<span>"+data.stats.performances+"</span>)"  
+                    a(href="/"+data.slug+"/performances")!=__('Performances')+" (<span>"+data.stats.performances+"</span>)"  
                 if data.stats.crews
                   li.list-inline-item
-                    a(href="/"+data.slug+"/crews")!=global.__('Crews')+" (<span>"+data.stats.crews+"</span>)"    
+                    a(href="/"+data.slug+"/crews")!=__('Crews')+" (<span>"+data.stats.crews+"</span>)"    
                 if data.stats.members
                   li.list-inline-item
-                    a(href="/"+data.slug+"/members")!=global.__('Members')+" (<span>"+data.stats.members+"</span>)"    
+                    a(href="/"+data.slug+"/members")!=__('Members')+" (<span>"+data.stats.members+"</span>)"    
           div.performer_stats_wrapper
             if data.stats
               ul.performer_stats_list.performer_stats_list_2.list-inline
                 if data.stats.footage
                   li.list-inline-item
-                    a(href="/"+data.slug+"/footage")!=global.__('Footage')+" (<span>"+data.stats.footage+"</span>)"
+                    a(href="/"+data.slug+"/footage")!=__('Footage')+" (<span>"+data.stats.footage+"</span>)"
                 if data.stats.playlists
                   li.list-inline-item
-                    a(href="/"+data.slug+"/playlists")!=global.__('Playlists')+" (<span>"+data.stats.playlists+"</span>)"  
+                    a(href="/"+data.slug+"/playlists")!=__('Playlists')+" (<span>"+data.stats.playlists+"</span>)"  
                 if data.stats.videos
                   li.list-inline-item
-                    a(href="/"+data.slug+"/videos")!=global.__('Videos')+" (<span>"+data.stats.videos+"</span>)"    
+                    a(href="/"+data.slug+"/videos")!=__('Videos')+" (<span>"+data.stats.videos+"</span>)"    
                 if data.stats.galleries
                   li.list-inline-item
-                    a(href="/"+data.slug+"/galleries")!=global.__('Galleries')+" (<span>"+data.stats.galleries+"</span>)"    
+                    a(href="/"+data.slug+"/galleries")!=__('Galleries')+" (<span>"+data.stats.galleries+"</span>)"    
                 if data.stats.news
                   li.list-inline-item
-                    a(href="/"+data.slug+"/news")!=global.__('News')+" (<span>"+data.stats.news+"</span>)"
+                    a(href="/"+data.slug+"/news")!=__('News')+" (<span>"+data.stats.news+"</span>)"
         .col-lg-12
           if (data.web && data.web.length) || (data.social && data.social.length) || (data.publicEmails && data.publicEmails.length)
             div

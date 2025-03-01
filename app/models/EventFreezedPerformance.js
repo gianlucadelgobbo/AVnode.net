@@ -65,7 +65,7 @@ const performanceSchema = new Schema({
 performanceSchema.index({ event: 1, performance_original: 1 }, { unique: true });
 
 performanceSchema.virtual('about').get(function (req) {
-  let about = __('Text is missing');
+  let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
     aboutA = this.abouts.filter(item => item.lang === global.getLocale());
@@ -74,7 +74,7 @@ performanceSchema.virtual('about').get(function (req) {
     } else {
       aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
-        about = "["+__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+        about = "["+this.$locals.__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
     about = about.replace(new RegExp(/\n/gi)," <br />");
@@ -87,12 +87,12 @@ performanceSchema.virtual('about').get(function (req) {
 
 performanceSchema.virtual('description').get(function (req) {
   if (this.abouts && this.abouts.length) {
-    return helpers.makeDescription(this.abouts);
+    return helpers.makeDescription(this.abouts, this.$locals);
   }
 });
 
 performanceSchema.virtual('tech_req').get(function (req) {
-  let tech_req = __('Nothing');
+  let tech_req = this.$locals.__('Nothing');
   let tech_reqA = [];
   if (this.tech_reqs && this.tech_reqs.length) {
     tech_reqA = this.tech_reqs.filter(item => item.lang === global.getLocale());
@@ -119,7 +119,7 @@ performanceSchema.virtual('humanDuration').get(function () {
 });
 
 performanceSchema.virtual('tech_art').get(function (req) {
-  let tech_art = __('Nothing');
+  let tech_art = this.$locals.__('Nothing');
   let tech_artA = [];
   if (this.tech_arts && this.tech_arts.length) {
     tech_artA = this.tech_arts.filter(item => item.lang === global.getLocale());

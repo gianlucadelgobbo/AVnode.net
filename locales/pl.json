@@ -1,4 +1,5 @@
 {
+	"404": " Page not found",
 	"------------------POPUP------------------": "------------------POPUP------------------",
 	"AVnode.net is now in Beta Version, feel free to test it but read the following alerts:": "AVnode.net jest teraz w wersji Beta, możesz go przetestować, ale przeczytaj następujące alerty:",
 	"Control panel is still under development, some features are still not fully working": "Panel sterowania jest wciąż w fazie rozwoju, niektóre funkcje wciąż nie działają w pełni",
@@ -465,7 +466,6 @@
 	"Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.": "Weryfikacja przebiegła pomyślnie, aby zostać wymienionym jako wykonawca, zaloguj się i uzupełnij swój profil zdjęciami i informacjami.",
 	"LOG IN": "ZALOGUJ SIE",
 	"------------------CONTROL PANEL------------------": "------------------PANEL STEROWANIA------------------",
-	"Control Panel": "Panel sterowania",
 	"Collapse": "Zawalić się",
 	"SHOW": "POKAZAĆ",
 	"ADD SOCIAL": "DODAJ SOCIAL",
@@ -754,5 +754,11 @@
 	"There are some errors": "Jest kilka błędów",
 	"Please select a call": "Wybierz połączenie",
 	"This person is already in with another act and can not be edited": "Ta osoba bierze już udział w innym akcie i nie można jej edytować",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
+	"Here some useful links": "Here some useful links",
+	"AVnode": {
+		"net is now in Beta Version, feel free to test it but read the following alerts": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts"
+	},
+	"Please send any bug and suggestion to": "Please send any bug and suggestion to",
+	"The list of Organizations": " All Most active"
 }

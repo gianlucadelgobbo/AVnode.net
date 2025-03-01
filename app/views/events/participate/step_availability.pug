@@ -20,7 +20,7 @@
                 h3(class=call.subscriptions[count].freezed ? "mb-0" : undefined)
                   !=call.admitted[call.performance].users[b].members[c].stagename
               if (call.subscriptions[count].freezed)
-                p!=global.__("This person is already in with another act and can not be edited")
+                p!=__("This person is already in with another act and can not be edited")
               else
                 .subscription(style=!call.subscriptions || !call.subscriptions[count] || !call.subscriptions[count].subscriber_id ? "display: none" : undefined)
                   - var dates = call.subscriptions && call.subscriptions[count] &&  call.subscriptions[count].days ? call.subscriptions[count].days : []
@@ -53,7 +53,7 @@
             h3(class=call.subscriptions[count].freezed ? "mb-0" : undefined)
               !=call.admitted[call.performance].users[b].stagename
           if (call.subscriptions[count].freezed)
-            p!=global.__("This person is already in with another act and can not be edited")
+            p!=__("This person is already in with another act and can not be edited")
           else
             .subscription(style=!call.subscriptions || !call.subscriptions[count] || !call.subscriptions[count].subscriber_id ? "display: none" : undefined)
               - var dates = call.subscriptions && call.subscriptions[count] &&  call.subscriptions[count].days ? call.subscriptions[count].days : []

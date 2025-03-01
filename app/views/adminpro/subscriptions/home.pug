@@ -4,23 +4,23 @@ block content
     .pb-2.mb-3.border-bottom
       .row
         .col-md-5
-          b=global.__('CALL/EVENT')
+          b=__('CALL/EVENT')
         .col-md-3
-          b=global.__('PERFORMANCE')
+          b=__('PERFORMANCE')
         .col-md-2
-          b=global.__('STATUS')
+          b=__('STATUS')
         .col-md-2
-          b=global.__('ACTION')
+          b=__('ACTION')
     if data.length
       each item, index in data
         .row(id='heading'+index)
           .col-md-5
             span.mr-2!=(index+1)
-            button.mr-2.btn.btn-primary.btn-sm.btn-inline(type='button', data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapseOne')=global.__('MORE')
+            button.mr-2.btn.btn-primary.btn-sm.btn-inline(type='button', data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapseOne')=__('MORE')
             span
               !=item.event.organizationsettings.call.calls[item.call].title
               !=" "
-              !=global.__('by')
+              !=__('by')
               !=" "
               a(href="/events/"+item.event.slug, target="_blank")=item.event.title
           .col-md-3
@@ -48,42 +48,42 @@ block content
               tr
                 th.table-firstcolumn-ID(scope="row")
                   .text-right
-                    b=global.__('Call')
+                    b=__('Call')
                 td
                   h4=item.event.organizationsettings.call.calls[item.call].title
-                  //p=global.__("Start date")+": "+item.event.organizationsettings.call.calls[item.call].start_date_formatted+" | "+global.__("End date")+": "+item.event.organizationsettings.call.calls[item.call].end_date+" | "+global.__("Email")+": "+item.event.organizationsettings.call.calls[item.call].email
+                  //p=__("Start date")+": "+item.event.organizationsettings.call.calls[item.call].start_date_formatted+" | "+__("End date")+": "+item.event.organizationsettings.call.calls[item.call].end_date+" | "+__("Email")+": "+item.event.organizationsettings.call.calls[item.call].email
                     - var admitted = []
                     - for(var b=0;b<item.event.organizationsettings.call.calls[item.call].admitted.length;b++)
                       - admitted.push(item.event.organizationsettings.call.calls[item.call].admitted[b])
                     - var topics = []
                     - for(var b=0;b<item.event.organizationsettings.call.calls[item.call].topics.length;b++)
                       - topics.push(item.event.organizationsettings.call.calls[item.call].topics[b].name)
-                    p=global.__("Admitted projects") + ": "
+                    p=__("Admitted projects") + ": "
                     ul
                       each cat in admitted
                         li=cat.name
-                    p=global.__("Topics") + ": " + topics.join(", ")
+                    p=__("Topics") + ": " + topics.join(", ")
                     p=item.event.organizationsettings.call.calls[item.call].excerpt
 
               tr
                 th(scope="row")
                   .text-right
-                    b=global.__('Topics')
+                    b=__('Topics')
                 td
                   p=item.topics.join(", ")
               tr
                 th(scope="row")
                   .text-right
-                    b=global.__('Proposal Name')
+                    b=__('Proposal Name')
                 td
                   h5=item.performance.title
               tr
                 th(scope="row")
                   .text-right
                     if item.performance.users.lenght>1
-                      b=global.__('Authors')
+                      b=__('Authors')
                     else
-                      b=global.__('Author')
+                      b=__('Author')
                 td
                   ul.mb-0
                     each performer in item.performance.users
@@ -91,25 +91,25 @@ block content
               tr
                 th(scope="row")
                   .text-right
-                    b=global.__('Reference')
+                    b=__('Reference')
                 td=user.name+" "+user.surname
               tr
                 th(scope="row")
                   .text-right
-                    b=global.__('Reference Email')
+                    b=__('Reference Email')
                 td=user.email
               tr
                 th(scope="row")
                   .text-right
-                    b=global.__('Reference Mobile')
+                    b=__('Reference Mobile')
                 td=user.mobile.map(function(item) {return item.url}).join(", ")
               tr
                 th(scope="row")
                   .text-right
                     if item.subscriptions.lenght>1
-                      b=global.__('Authors') + " " + global.__('availability')
+                      b=__('Authors') + " " + __('availability')
                     else
-                      b=global.__('Author') + " " + global.__('availability')
+                      b=__('Author') + " " + __('availability')
                 td
                   each subscription in item.subscriptions
                     if subscription.subscriber_id
@@ -124,7 +124,7 @@ block content
               tr
                 th(scope="row")
                   .text-right
-                    b=global.__('Packages')
+                    b=__('Packages')
                 td
                   table.table.table-fixed(style="background:none;")
                     - var total = 0;
@@ -137,7 +137,7 @@ block content
                         if subscription.freezed
                           tr
                             td(colspan="3")
-                              b!=global.__("This person is already in with another act and already choose his packages")
+                              b!=__("This person is already in with another act and already choose his packages")
                         else
                           each package in subscription.packages
                             tr
@@ -148,41 +148,41 @@ block content
                                 - total+=package.price
                                 - subscriber_total+=package.price
                               td
-                                h5!=package.name + (package.requested ? " ("+global.__("requested")+")" : "")
+                                h5!=package.name + (package.requested ? " ("+__("requested")+")" : "")
                                 div!=package.description
                                 - if (package.allow_options)
                                   p=package.options_name+": "+package.option
                               td
                                 .text-right
                                   if package.personal && package.daily
-                                    div=global.__("per person/per day")
+                                    div=__("per person/per day")
                                   else if package.personal 
-                                    div=global.__("per person")
+                                    div=__("per person")
                                   else if package.daily 
-                                    div=global.__("per day")
+                                    div=__("per day")
                               td
                                 .text-right="€ "+package.price
                             if package.daily
                               tr
                                 td(style="border-top:0;")
                                   if subscription.days.length == 1
-                                    !=subscription.days.length + " " + global.__('day')
+                                    !=subscription.days.length + " " + __('day')
                                   else
-                                    !=subscription.days.length + " " + global.__('days')
+                                    !=subscription.days.length + " " + __('days')
                                 td(style="border-top:0;")
                                   .text-right
-                                    !=global.__("Total")
+                                    !=__("Total")
                                 td(style="border-top:0;")
                                   .text-right
                                     !="€ "+(package.price*subscription.days.length)
                           tr
                             td(colspan="2")
-                              b=global.__('Total amount for')+" "+subscription.subscriber_id.stagename
+                              b=__('Total amount for')+" "+subscription.subscriber_id.stagename
                             td
                               .text-right
                                 b="€ "+subscriber_total
                                     
                     tr
-                      td(colspan="2", style="border-top:0;")=global.__("Amount to pay if the submission will be approved")
+                      td(colspan="2", style="border-top:0;")=__("Amount to pay if the submission will be approved")
                       td(style="border-top:0;")
                         .text-right="€ "+total

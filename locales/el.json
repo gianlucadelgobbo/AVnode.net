@@ -1,4 +1,5 @@
 {
+	"404": " Page not found",
 	"------------------POPUP------------------": "------------------POPUP------------------",
 	"AVnode.net is now in Beta Version, feel free to test it but read the following alerts:": "Το AVnode.net είναι πλέον σε έκδοση Beta, μη διστάσετε να το δοκιμάσετε, αλλά διαβάστε τις ακόλουθες ειδοποιήσεις:",
 	"Control panel is still under development, some features are still not fully working": "Ο πίνακας ελέγχου είναι ακόμη υπό ανάπτυξη, ορισμένες λειτουργίες εξακολουθούν να μην λειτουργούν πλήρως",
@@ -465,7 +466,6 @@
 	"Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.": "Η επαλήθευση ολοκληρώθηκε με επιτυχία, για να εμφανίζεται ως εκτελεστής, συνδεθείτε και συμπληρώστε το προφίλ σας με εικόνες και πληροφορίες.",
 	"LOG IN": "ΣΥΝΔΕΣΗ",
 	"------------------CONTROL PANEL------------------": "------------------ΠΙΝΑΚΑΣ ΕΛΕΓΧΟΥ------------------",
-	"Control Panel": "Πίνακας Ελέγχου",
 	"Collapse": "Κατάρρευση",
 	"SHOW": "ΠΡΟΒΟΛΗ",
 	"ADD SOCIAL": "ΠΡΟΣΘΗΚΗ ΚΟΙΝΩΝΙΚΗΣ",
@@ -754,5 +754,11 @@
 	"There are some errors": "Υπάρχουν κάποια λάθη",
 	"Please select a call": "Επιλέξτε μια κλήση",
 	"This person is already in with another act and can not be edited": "Αυτό το άτομο συμμετέχει ήδη σε άλλη πράξη και δεν είναι δυνατή η επεξεργασία του",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
+	"Here some useful links": "Here some useful links",
+	"AVnode": {
+		"net is now in Beta Version, feel free to test it but read the following alerts": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts"
+	},
+	"Please send any bug and suggestion to": "Please send any bug and suggestion to",
+	"The list of Organizations": " All Most active"
 }

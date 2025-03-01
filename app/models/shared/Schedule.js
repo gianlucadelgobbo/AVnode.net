@@ -51,7 +51,7 @@ const Schedule = new Schema({
 Schedule.virtual('boxDateFull').get(function () {
   let boxDate;
   if (this.starttime) {
-    const lang = global.getLocale();
+    const lang = $locals.locale;
     const start = new Date(this.starttime).getTime()
     const end = new Date(this.endtime).getTime()
     const days = Math.ceil((end-start)/(24*60*60*1000))
@@ -88,7 +88,7 @@ Schedule.virtual('boxDateFull').get(function () {
 /* Schedule.virtual('boxDateFull').get(function () {
   let boxDate;
   if (this.starttime) {
-    const lang = global.getLocale();
+    const lang = $locals.locale;
     const start = new Date(this.starttime-(10*60*60*1000)).getTime()
     const end = new Date(this.endtime-(10*60*60*1000)).getTime()
     const days = Math.ceil((end-start)/(24*60*60*1000))
@@ -113,7 +113,7 @@ Schedule.virtual('boxDateFull').get(function () {
 Schedule.virtual('boxDate').get(function () {
   let boxDate;
   if (this.starttime) {
-    const lang = global.getLocale();
+    const lang = $locals.locale;
     const start = new Date(this.starttime-(10*60*60*1000)).getTime()
     const end = new Date(this.endtime-(10*60*60*1000)).getTime()
     const days = Math.ceil((end-start)/(24*60*60*1000))
@@ -136,7 +136,7 @@ Schedule.virtual('boxDate').get(function () {
 Schedule.virtual('starttimeDay').get(function () {
   let boxDate;
   if (this.starttime) {
-    const lang = global.getLocale();
+    const lang = $locals.locale;
     const start = new Date(this.starttime-(10*60*60*1000)).getTime()
     const end = new Date(this.endtime-(10*60*60*1000)).getTime()
     const days = Math.ceil((end-start)/(24*60*60*1000))
@@ -157,7 +157,7 @@ Schedule.virtual('starttimeDay').get(function () {
 Schedule.virtual('starttimeTime').get(function () {
   let starttimeTime;
   if (this.starttime) {
-    const lang = global.getLocale();
+    const lang = $locals.locale;
     starttimeTime = moment.utc(new Date(this.starttime)).format('HH:mm');
   }
   return starttimeTime;

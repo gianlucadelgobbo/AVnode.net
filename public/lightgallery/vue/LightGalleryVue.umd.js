@@ -5098,8 +5098,8 @@ var extendStatics = function(d, b) {
 
 function __extends(d, b) {
     extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    function req.__() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new req.__());
 }
 
 var __assign = function() {

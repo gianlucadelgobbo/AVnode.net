@@ -62,7 +62,7 @@ router.putData = async (req, res, view) => {
       if (view == "json") {
         return res.status(404).send({ message: `DOC_NOT_FOUND` });
       } else {
-        return res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+        return res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
       }  
     }
   } catch (err) {
@@ -70,7 +70,7 @@ router.putData = async (req, res, view) => {
     if (view == "json") {
       return res.status(500).send({ message: `${JSON.stringify(err)}` });
     } else {
-      for (e in err.errors) err.errors[e].message = __(err.errors[e].message)
+      for (e in err.errors) err.errors[e].message = req.__(err.errors[e].message)
       req.flash('errors', {msg: `${JSON.stringify(err)}`});
       return res.status(500).render(view, {
         title: view,
@@ -139,7 +139,7 @@ router.putData = async (req, res, view) => {
     if (view == "json") {
       return res.status(401).send({ message: `DOC_NOT_OWNED` });
     } else {
-      return res.status(401).render('401', {path: req.originalUrl, title:__("401: Access to the content is denied"), titleicon:"icon-warning"});
+      return res.status(401).render('401', {path: req.originalUrl, title:req.__("401: Access to the content is denied"), titleicon:"icon-warning"});
     }
   }
 
@@ -151,7 +151,7 @@ router.putData = async (req, res, view) => {
     if (view === "json") {
       return res.status(400).send({ message: JSON.stringify(err) });
     } else {
-      for (let e in err.errors) err.errors[e].message = __(err.errors[e].message);
+      for (let e in err.errors) err.errors[e].message = req.__(err.errors[e].message);
       req.flash("errors", { msg: err });
       return res.status(400).render(view, {
         title: view,
@@ -184,7 +184,7 @@ router.putData = async (req, res, view) => {
       if (view == "json") {
         return res.status(404).send({ message: `DOC_NOT_FOUND` });
       } else {
-        return res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+        return res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
       }  
     }
   } catch (err) {
@@ -196,7 +196,7 @@ router.putData = async (req, res, view) => {
     if (view == "json") {
       return res.status(500).send({ message: `${JSON.stringify(err)}` });
     } else {
-      for (e in err.errors) err.errors[e].message = __(err.errors[e].message)
+      for (e in err.errors) err.errors[e].message = req.__(err.errors[e].message)
       req.flash('errors', {msg: `${JSON.stringify(err)}`});
       res.status(500).render(view, {
         title: view,
@@ -227,7 +227,7 @@ router.putData = async (req, res, view) => {
     }
     return res.json(send);
   } else {
-    req.flash('success', {msg: __("DATA_SAVED_WITH_SUCCESS")});
+    req.flash('success', {msg: req.__("DATA_SAVED_WITH_SUCCESS")});
     return res.render(view, {
       title: view,
       scripts: [],

@@ -43,13 +43,13 @@ router.use('/:type?', ({ params, query }, res) => {
       logger.info('Search returned this error:', err.message);
       res.render('search', {
         title: '😱 – Oh noo!',
-        subtitle: __('Search is currently unavailable…'),
+        subtitle: req.__('Search is currently unavailable…'),
         searchAvailable: false
       });
     } else {
       logger.info('Results', results.hits.hits);
       res.render('search', {
-        title: __('Results'),
+        title: req.__('Results'),
         data: results.hits.hits,
         resultCount: results.hits.total,
         searchAvailable: true,

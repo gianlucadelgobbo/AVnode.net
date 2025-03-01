@@ -16,12 +16,12 @@ import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
 
 router.get('/', (req, res) => {
-  logger.info('global.getLocale: '+global.getLocale());
+  //logger.info('global.getLocale: '+req.getLocale());
   if (req.user) {
     return res.redirect('/admin/profile/'+req.user._id+'/public');
   }
   res.render('admin/signup', {
-    title: __('Create Account'),
+    title: req.__('Create Account'),
     scripts: ['signup'],
     get: {}
   });
@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
     // Normalize request fields
     req.body.crewname = req.body.crewName || req.body.crewname;
     req.body.crewslug = req.body.crewUrl || req.body.crewslug;
-    req.body.lang = global.getLocale();
+    req.body.lang = req.getLocale();
 
     let select = config.cpanel.signup.forms.signup.select;
     let put = {};
@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
     if (Object.keys(errors.errors).length) {
       req.flash('errors', { msg: JSON.stringify(errors) });
       return res.render('admin/signup', {
-        title: __('Create Account'),
+        title: req.__('Create Account'),
         get: req.body,
         currentUrl: req.originalUrl,
         scripts: ['signup'],
@@ -88,20 +88,20 @@ router.post('/', async (req, res) => {
         stagename: savedUser.stagename,
         email: savedUser.email,
         confirm: savedUser.confirm,
-        title: __("Welcome!"),
-        subject: __("Welcome!") + ' | AVnode.net',
-        block_1: __("We're excited to have you get started. First, you need to confirm your account. Just press the button below."),
-        button: __("Confirm Account"),
-        block_2: __("If that doesn't work, copy and paste the following link in your browser:"),
-        block_3: __("If you have any questions, just reply to this email, we're always happy to help out."),
+        title: req.__("Welcome!"),
+        subject: req.__("Welcome!") + ' | AVnode.net',
+        block_1: req.__("We're excited to have you get started. First, you need to confirm your account. Just press the button below."),
+        button: req.__("Confirm Account"),
+        block_2: req.__("If that doesn't work, copy and paste the following link in your browser:"),
+        block_3: req.__("If you have any questions, just reply to this email, we're always happy to help out."),
         html_sign: "The AVnode.net Team",
         text_sign: "The AVnode.net Team"
       }
     });
 
-    req.flash('success', { msg: __("We have sent a confirmation email, please confirm activate your account") });
+    req.flash('success', { msg: req.__("We have sent a confirmation email, please confirm activate your account") });
     res.render('admin/signup', {
-      title: __('Create Account'),
+      title: req.__('Create Account'),
       get: req.body,
       currentUrl: req.originalUrl,
       scripts: ['signup'],
@@ -112,7 +112,7 @@ router.post('/', async (req, res) => {
     console.error("🔥 Signup Error:", err);
     req.flash('errors', { msg: JSON.stringify(err) });
     res.render('admin/signup', {
-      title: __('Create Account'),
+      title: req.__('Create Account'),
       get: req.body,
       currentUrl: req.originalUrl,
       scripts: ['signup'],
@@ -127,28 +127,28 @@ router.signupValidator = async (put) => {
   let errors = { errors: {}, _message: "", message: "", name: "" };
 
   if (put.crewname && put.crewname.trim() === put.stagename.trim()) {
-    errors.errors.crewname = { message: __("CREW_NAME_CAN_NOT_BE_THE_EQUAL_TO_THE_STAGE_NAME") };
+    errors.errors.crewname = { message: req.__("CREW_NAME_CAN_NOT_BE_THE_EQUAL_TO_THE_STAGE_NAME") };
   }
-  if (!put.stagename) errors.errors.stagename = { message: __("STAGE_NAME_IS_REQUIRED") };
-  if (!put.birthday) errors.errors.birthday = { message: __("BIRTHDAY_IS_REQUIRED") };
+  if (!put.stagename) errors.errors.stagename = { message: req.__("STAGE_NAME_IS_REQUIRED") };
+  if (!put.birthday) errors.errors.birthday = { message: req.__("BIRTHDAY_IS_REQUIRED") };
   if (!put.email) errors.errors.email = { message: "EMAIL_IS_REQUIRED" };
 
   if (!put.addresses || !put.addresses.length) {
-    errors.errors.addresses = [{ message: __("ADDRESS_IS_IN_A_WRONG_FORMAT") }];
+    errors.errors.addresses = [{ message: req.__("ADDRESS_IS_IN_A_WRONG_FORMAT") }];
   } else {
     put.addresses.forEach((address, i) => {
       if (!address.geometry || !address.formatted_address || !address.geometry.lat) {
         if (!errors.errors.addresses) errors.errors.addresses = [];
-        errors.errors.addresses[i] = { message: __("ADDRESS_IS_IN_A_WRONG_FORMAT") };
+        errors.errors.addresses[i] = { message: req.__("ADDRESS_IS_IN_A_WRONG_FORMAT") };
       }
     });
   }
 
-  if (!put.password) errors.errors.password = { message: __("PASSWORD_IS_REQUIRED") };
+  if (!put.password) errors.errors.password = { message: req.__("PASSWORD_IS_REQUIRED") };
   if (!put.confirmPassword) {
-    errors.errors.confirmPassword = { message: __("PASSWORD_CONFIRM_IS_REQUIRED") };
+    errors.errors.confirmPassword = { message: req.__("PASSWORD_CONFIRM_IS_REQUIRED") };
   } else if (put.password !== put.confirmPassword) {
-    errors.errors.confirmPassword = { message: __("Password confirm does not match") };
+    errors.errors.confirmPassword = { message: req.__("Password confirm does not match") };
   }
 
   if (Object.keys(errors.errors).length) return errors;
@@ -189,7 +189,7 @@ router.post('/', (req, res, next) => {
         return next(err);
       }
       if (existingUser) {
-        req.flash('errors', { msg: __('Account already exists.') });
+        req.flash('errors', { msg: req.__('Account already exists.') });
         return res.redirect('/signup');
       }
 
@@ -212,7 +212,7 @@ router.post('/', (req, res, next) => {
           if (err) {
             return next(err);
           }
-          req.flash('success', { msg: __('Please check your inbox and confirm your Email') });
+          req.flash('success', { msg: req.__('Please check your inbox and confirm your Email') });
           res.redirect('/');
         });
       });

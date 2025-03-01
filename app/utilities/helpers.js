@@ -305,15 +305,15 @@ const isYoutube = (url) => {
   return youtubeRegex.test(url);
 };
 
-const makeDescription = (abouts) => {
-  let about = __('Text is missing');
-  let aboutA = abouts.filter(item => item.lang === global.getLocale());
+const makeDescription = (abouts, locals) => {
+  let about = locals.__('Text is missing');
+  let aboutA = abouts.filter(item => item.lang === locals.locale);
   if (aboutA.length && aboutA[0].abouttext) {
     about = aboutA[0].abouttext.replace(/\r\n/g, ' ');
   } else {
     aboutA = abouts.filter(item => item.lang === "en");
     if (aboutA.length && aboutA[0].abouttext) {
-      about = "["+__("Text available only in English")+"] "+aboutA[0].abouttext;
+      about = "["+locals.__("Text available only in English")+"] "+aboutA[0].abouttext;
     }
   }
   about = about.replace(/\r\n/g, ' ').replace(/\n/g, ' ').replace(new RegExp(/<(?:.|\n)*?>/gm), " ").trim().replace(/  /g , " ");
@@ -323,7 +323,7 @@ const makeDescription = (abouts) => {
   for(let item in descriptionA) if ((descriptionShort+" "+descriptionA[item]).trim().length<300) descriptionShort+=descriptionA[item]+" ";
   descriptionShort = descriptionShort.trim();
   if (descriptionShort.length < about.length) descriptionShort+"...";
-  return descriptionShort;
+  return "descriptionShort";
 };
 
 const dateFix = (date) => { 

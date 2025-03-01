@@ -17,16 +17,16 @@ block title
                 h1.main_title=data.title
                   if editable
                     !="  "
-                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=global.__("EDIT")
+                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=__("EDIT")
                 if data.stats
                   .performance_stat_container
                     .performance_stat_wrapper
                       ul
                         if data.stats.visits
-                          li=data.stats.visits + ' ' + global.__('Views')
+                          li=data.stats.visits + ' ' + __('Views')
                         li
                           span.likes_count=data.stats.likes ? data.stats.likes : 0
-                          !=' ' + global.__('Likes')                      
+                          !=' ' + __('Likes')                      
               .col-lg-3.mt-md-4
                 include ../partials/share_like
             p.subtitle=data.subtitle && data.subtitle!= "Text is missing" ? data.subtitle : data.boxDate
@@ -35,7 +35,7 @@ block title
                 if data.boxVenue
                   p.boxVenue!=data.boxVenue
                   p
-                    a(data-toggle='collapse', href="javascript:void(0);", data-target='#fullSchedule', role='button', aria-expanded='false', aria-controls='fullSchedule')=global.__("Full schedule")
+                    a(data-toggle='collapse', href="javascript:void(0);", data-target='#fullSchedule', role='button', aria-expanded='false', aria-controls='fullSchedule')=__("Full schedule")
                   #fullSchedule.collapse
                     ul
                       each fullSchedule in data.fullSchedule
@@ -57,7 +57,7 @@ block content
         .container
           .row
             .col-lg-12
-              h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
+              h2.main_title.indented_title!=__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
               .row
                 each item in data.videos            
                   .col-lg-4.col-md-6.list_item

@@ -10,75 +10,75 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
       include menuSections
       ul.user_navbar.navbar-nav
         li.dropdown.mt-1.mr-2#dropdownContents(class=["ru", "de", "es", "fr", "pt"].indexOf(session.current_lang)!==-1 ? "d-md-block d-lg-none d-xl-block" : "")
-          button#dropdownMenuContents.btn.btn-primary.btn-sm.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')=global.__('New content')+" "
+          button#dropdownMenuContents.btn.btn-primary.btn-sm.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')=__('New content')+" "
           .dropdown-menu(aria-labelledby='dropdownMenuContents')
             a.dropdown-item(href='#'
-              data-labelfield=global.__("Performance Name")
-              data-title=global.__("Add Performance")
+              data-labelfield=__("Performance Name")
+              data-title=__("Add Performance")
               data-user=user && user._id ? user._id : undefined
               data-param="title"
-              data-sez="performances")=global.__('New Performance')
+              data-sez="performances")=__('New Performance')
             a.dropdown-item(href='#'
-              data-labelfield=global.__("Video Title")
-              data-title=global.__("Add VJ Television Video")
+              data-labelfield=__("Video Title")
+              data-title=__("Add VJ Television Video")
               data-param="title"
               data-user=user && user._id ? user._id : undefined
-              data-sez="videos")=global.__('New VJ Television Video')
+              data-sez="videos")=__('New VJ Television Video')
             a.dropdown-item(href='#'
-              data-labelfield=global.__("Learning Title")
-              data-title=global.__("Add Learning")
+              data-labelfield=__("Learning Title")
+              data-title=__("Add Learning")
               data-param="title"
               data-user=user && user._id ? user._id : undefined
-              data-sez="performances")=global.__('New Learning')
+              data-sez="performances")=__('New Learning')
             a.dropdown-item(href='#'
-              data-labelfield=global.__("Event Name")
-              data-title=global.__("Add Event")
+              data-labelfield=__("Event Name")
+              data-title=__("Add Event")
               data-param="title"
               data-user=user && user._id ? user._id : undefined
-              data-sez="events")=global.__('New Event')
+              data-sez="events")=__('New Event')
             a.dropdown-item(href='#'
-              data-labelfield=global.__("News Title")
-              data-title=global.__("Add News")
+              data-labelfield=__("News Title")
+              data-title=__("Add News")
               data-param="title"
               data-user=user && user._id ? user._id : undefined
-              data-sez="news")=global.__('New News')
+              data-sez="news")=__('New News')
             .dropdown-divider
             a.dropdown-item(href='#'
-              data-labelfield=global.__("Video Title")
-              data-title=global.__("Add Video")
+              data-labelfield=__("Video Title")
+              data-title=__("Add Video")
               data-param="title"
               data-user=user && user._id ? user._id : undefined
-              data-sez="videos")=global.__('New Video')
+              data-sez="videos")=__('New Video')
             a.dropdown-item(href='#'
-              data-labelfield=global.__("Gallery Name")
-              data-title=global.__("Add Gallery")
+              data-labelfield=__("Gallery Name")
+              data-title=__("Add Gallery")
               data-param="title"
               data-user=user && user._id ? user._id : undefined
-              data-sez="galleries")=global.__('New Gallery')
+              data-sez="galleries")=__('New Gallery')
             a.dropdown-item(href='#'
-              data-labelfield=global.__("Crew Name")
-              data-title=global.__("Add Crew")
+              data-labelfield=__("Crew Name")
+              data-title=__("Add Crew")
               data-param="stagename"
               data-user=user && user._id ? user._id : undefined
-              data-sez="crews")=global.__('New Crew')
+              data-sez="crews")=__('New Crew')
             a.dropdown-item(href='#'
-              data-labelfield=global.__("Organization Name")
-              data-title=global.__("Add Organization")
+              data-labelfield=__("Organization Name")
+              data-title=__("Add Organization")
               data-param="stagename"
               data-user=user && user._id ? user._id : undefined
-              data-sez="crews")=global.__('New Organization')
+              data-sez="crews")=__('New Organization')
             a.dropdown-item(href='#'
-              data-labelfield=global.__("Footage Title")
-              data-title=global.__("Add Footage")
+              data-labelfield=__("Footage Title")
+              data-title=__("Add Footage")
               data-param="title"
               data-user=user && user._id ? user._id : undefined
-              data-sez="footage")=global.__('New Footage')
+              data-sez="footage")=__('New Footage')
             a.dropdown-item(href='#'
-              data-labelfield=global.__("Playlist Name")
-              data-title=global.__("Add Playlist")
+              data-labelfield=__("Playlist Name")
+              data-title=__("Add Playlist")
               data-param="title"
               data-user=user && user._id ? user._id : undefined
-              data-sez="playlist")=global.__('New Playlist')
+              data-sez="playlist")=__('New Playlist')
 
         if user
           //li.nav-item.dropdown.user_menu.user_menu_logged                  
@@ -89,22 +89,22 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
             .dropdown-menu.dropdown-menu-right(aria-labelledby='userDropdown')
               a.dropdown-item(href='/'+user.slug)                    
                 i.pr-2.icon-eye
-                !=" "+global.__('Profile')
+                !=" "+__('Profile')
               a.dropdown-item(href='/admin/profile/'+user._id+'/public')                    
                 i.pr-2.icon-cog-outline
-                !=" "+global.__('Control Panel')
+                !=" "+__('Control Panel')
               a.dropdown-item(href='/logout')                    
                 i.pr-2.icon-exit
-                !=" "+global.__('Log out')
+                !=" "+__('Log out')
         else
           //-li.nav-item.signup_ico
             a.nav-link.disabled(href='#')
               i.pr-2.icon-user-outline
           li.nav-item.login
-            a.nav-link(href="/login?returnTo="+canonical, title=global.__('Login'))
-              !=global.__('Login')
+            a.nav-link(href="/login?returnTo="+canonical, title=__('Login'))
+              !=__('Login')
           li.nav-item.signup
-            a.nav-link(href='/signup', title=global.__('Sign up'))=global.__('Sign up')
+            a.nav-link(href='/signup', title=__('Sign up'))=__('Sign up')
         li.nav-item.search
           if url && url.indexOf("/search")===0
             a.nav-link(href='#')
@@ -116,5 +116,9 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
           a#langDropdown.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
             b=session.current_lang.toUpperCase()
           .dropdown-menu.dropdown-menu-right(aria-labelledby='langDropdown')
+            - var base = canonical.split(".")
+            - base.shift()   
+            - var base2 = base.join(".") 
+                  
             each lang,slug in config.locales_labels
-              a.dropdown-item(href='//'+(slug!='en' ? config.lang_to_domain[slug]+'.' : '')+basehost+current_url class=slug==session.current_lang ? 'disabled' : '')=lang
+              a.dropdown-item(href='//'+(slug!='en' ? config.lang_to_domain[slug]+'.' : '')+base2 class=slug==session.current_lang ? 'disabled' : '')=lang

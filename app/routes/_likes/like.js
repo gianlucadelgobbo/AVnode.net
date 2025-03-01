@@ -19,7 +19,7 @@ import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 router.get('/', (req, res) => {
     let res_send = "P";
     if (!req.user) {
-        res.send({err:true,msg:__("Please login to like"), status:""});
+        res.send({err:true,msg:req.__("Please login to like"), status:""});
     } else {
         let model;
         let inc;

@@ -49,10 +49,10 @@ const newsSchema = new Schema({
 });
 
 /* newsSchema.virtual('about').get(function (req) {
-  let about = __('Text is missing');
+  let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    aboutA = this.abouts.filter(item => item.lang === this.$locals.locale);
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
@@ -65,16 +65,27 @@ const newsSchema = new Schema({
   }
 }); */
 newsSchema.virtual('about').get(function (req) {
-  let about = __('Text is missing');
+  console.log("⚠️ DEBUG: Inside virtual 'about'", {
+    locals: this.$locals, // Check if `this.$locals` is undefined
+    translateFunctionType: typeof this.$locals?.__,
+    locale: this.$locals?.locale,
+  });
+
+  if (!this.$locals || typeof this.$locals.__ !== "function") {
+    console.error("🚨 ERROR: Missing or invalid `this.$locals.__` in virtual 'about'", this);
+    return "⚠️ Translation function is missing"; // Prevent crash
+  }
+  
+  let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    aboutA = this.abouts.filter(item => item.lang === this.$locals.locale);
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
       aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
-        about = "["+__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+        about = "["+this.$locals.__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
     let str = about;
@@ -95,22 +106,44 @@ newsSchema.virtual('about').get(function (req) {
 });
 
 newsSchema.virtual('description').get(function (req) {
+  console.log("⚠️ DEBUG: Inside virtual 'description'", {
+    locals: this.$locals, // Check if `this.$locals` is undefined
+    translateFunctionType: typeof this.$locals?.__,
+    locale: this.$locals?.locale,
+  });
+
+  if (!this.$locals || typeof this.$locals.__ !== "function") {
+    console.error("🚨 ERROR: Missing or invalid `this.$locals.__` in virtual 'about'", this);
+    return "⚠️ Translation function is missing"; // Prevent crash
+  }
+
   if (this.abouts && this.abouts.length) {
-    return helpers.makeDescription(this.abouts);
+    return helpers.makeDescription(this.abouts, this.$locals);
   }
 });
 
 newsSchema.virtual('excerpt').get(function (req) {
-  let about = __('Text is missing');
+  console.log("⚠️ DEBUG: Inside virtual 'excerpt'", {
+    locals: this.$locals, // Check if `this.$locals` is undefined
+    translateFunctionType: typeof this.$locals?.__,
+    locale: this.$locals?.locale,
+  });
+
+  if (!this.$locals || typeof this.$locals.__ !== "function") {
+    console.error("🚨 ERROR: Missing or invalid `this.$locals.__` in virtual 'about'", this);
+    return "⚠️ Translation function is missing"; // Prevent crash
+  }
+
+  let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    aboutA = this.abouts.filter(item => item.lang === this.$locals.locale);
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
       aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
-        about = "["+__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+        about = "["+this.$locals.__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
   }
@@ -140,7 +173,7 @@ newsSchema.virtual('imageFormats').get(function () {
 });
 
 newsSchema.virtual('creation_dateFormatted').get(function () {
-  const lang = global.getLocale();
+  const lang = this.$locals.locale;
   return moment(this.createdAt).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
 

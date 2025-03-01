@@ -25,7 +25,7 @@ import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 router.get('/likes', async (req, res) => {
   let res_send = "P";
   if (!req.user) {
-    res.send({err:true,msg:__("Please login to like"), status:""});
+    res.send({err:true,msg:req.__("Please login to like"), status:""});
   } else { 
     let model;
     let inc;
@@ -323,7 +323,7 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
           const mail = {
             from: event.organizationsettings.emailname + " <"+ event.organizationsettings.email + ">",
             to: req.body.details.payer.name.given_name + " " + req.body.details.payer.name.surname + " <"+ req.body.details.payer.email_address + ">",
-            subject: __("Payment Confirm") + " | " + event.title,
+            subject: req.__("Payment Confirm") + " | " + event.title,
             text: email
           };
           logger.info("pre gMailer")

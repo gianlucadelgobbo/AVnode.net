@@ -8,10 +8,10 @@ block content
         thead
           tr
             td.table-firstcolumn-ID="ID"
-            td=global.__("Title")
-            td=global.__("Production")
-            td=global.__("Web")
-            td=global.__("Socials")
+            td=__("Title")
+            td=__("Production")
+            td=__("Web")
+            td=__("Socials")
         tbody
           if data.events.length
             each item, index in data.events

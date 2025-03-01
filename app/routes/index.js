@@ -78,13 +78,13 @@ const Models = {
 };
 
 // Test locale route
-router.get('/testlocale', (req, res) => {
-  res.send('global.getLocale: ' + global.getLocale());
+/* router.get('/testlocale', (req, res) => {
+  res.send('global.getLocale: ' + $locals.locale);
 });
 
 router.post('/testlocale', (req, res) => {
-  res.send('global.getLocale: ' + global.getLocale());
-});
+  res.send('global.getLocale: ' + $locals.locale);
+}); */
 
 // Generate Sitemap XML
 router.get('/sitemap.xml', async (req, res) => {

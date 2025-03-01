@@ -219,9 +219,9 @@ async function deletePerformance(data, res) {
   } else {
     logger.info("getDelete 4");
     let errors = [];
-    if (data.bookings && data.bookings.length) errors.push({error:__("Performace is booked and can not be deleted"), bookings: data.bookings});
-    if (data.galleries && data.galleries.length) errors.push({error:__("Performace own galleries and can not be deleted"), galleries: data.galleries});
-    if (data.videos && data.videos.length) errors.push({error:__("Performace own videos and can not be deleted"), videos: data.videos});
+    if (data.bookings && data.bookings.length) errors.push({error:req.__("Performace is booked and can not be deleted"), bookings: data.bookings});
+    if (data.galleries && data.galleries.length) errors.push({error:req.__("Performace own galleries and can not be deleted"), galleries: data.galleries});
+    if (data.videos && data.videos.length) errors.push({error:req.__("Performace own videos and can not be deleted"), videos: data.videos});
     return res.json(errors);
   }
 }
@@ -251,9 +251,9 @@ async function deleteEvent(data, res) {
   } else {
     logger.info("getDelete 4");
     let errors = [];
-    if (data.schedule && data.schedule.length) errors.push({error:__("Event have a program and can not be deleted"), bookings: data.bookings});
-    if (data.galleries && data.galleries.length) errors.push({error:__("Event own galleries and can not be deleted"), galleries: data.galleries});
-    if (data.videos && data.videos.length) errors.push({error:__("Event own videos and can not be deleted"), videos: data.videos});
+    if (data.schedule && data.schedule.length) errors.push({error:req.__("Event have a program and can not be deleted"), bookings: data.bookings});
+    if (data.galleries && data.galleries.length) errors.push({error:req.__("Event own galleries and can not be deleted"), galleries: data.galleries});
+    if (data.videos && data.videos.length) errors.push({error:req.__("Event own videos and can not be deleted"), videos: data.videos});
     return res.json(errors);
   }
 }
@@ -298,7 +298,7 @@ async function deleteProfile(data, res) {
   } else {
     logger.info("getDelete 8");
     let errors = [];
-    if (data.activity != 0) errors.push({error:__("Performer is involved in some activities and can not be deleted"), activity: data.activity});
+    if (data.activity != 0) errors.push({error:req.__("Performer is involved in some activities and can not be deleted"), activity: data.activity});
     res.json(errors);
   }
 }

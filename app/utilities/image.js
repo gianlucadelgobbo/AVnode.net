@@ -97,11 +97,11 @@ image.resize = (file, sizeA) => {
       .then(() => {
         setTimeout(resolve, 100, file);
       }, () => {
-        file.err = __("FILE_IS_DAMAGED")
+        file.err = req.__("FILE_IS_DAMAGED")
         setTimeout(resolve, 100, file);
       });
     }, () => {
-      file.err = __("FILE_IS_DAMAGED")
+      file.err = req.__("FILE_IS_DAMAGED")
       setTimeout(resolve, 100, file);
     });
   });
@@ -131,15 +131,15 @@ image.checksize = (file, sizeA, options, req) => {
         if (dimensionError && req.params.sez == "galleries")
           if (dimensions.width >= options.minheight && dimensions.height >= options.minwidth) dimensionError = false;
         if (dimensionError) {
-          file.err = __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight;
-          logger.info( __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight);
+          file.err = req.__("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight;
+          logger.info( req.__("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight);
           setTimeout(resolve, 100, file);
         } else {
           setTimeout(resolve, 100, file);
           logger.info("Image minimum size is ok");
         }
       } else {
-        file.err = __("File is not an image");
+        file.err = req.__("File is not an image");
         setTimeout(resolve, 100, file);
       }
       //=> {ext: 'png', mime: 'image/png'}

@@ -2,7 +2,7 @@
   .modal-dialog.modal-lg.modal-dialog-centered
     .modal-content
       .modal-header
-        h5#myLargeModalLabel.modal-title=global.__("Contact")
+        h5#myLargeModalLabel.modal-title=__("Contact")
         button.close(type='button', data-dismiss='modal', aria-label='Close')
           span(aria-hidden='true') ×
       .modal-body
@@ -10,20 +10,20 @@
         if user
           form
             .form-group
-              !=global.__("From")+": "
+              !=__("From")+": "
               b=user.stagename
             .form-group
-              !=global.__("Subject")+": "
-              b=global.__("Contact request for")+" "+data.stagename
+              !=__("Subject")+": "
+              b=__("Contact request for")+" "+data.stagename
               input(type="hidden", name="user", value=data._id)
               input(type="hidden", name="subject", value="Contact request for "+data.stagename)
             .form-group
-              label(for='message')=global.__("Message")
+              label(for='message')=__("Message")
               textarea#message.form-control(name="message", rows='10')
-                !=global.__("Dear")+" "+data.stagename+",\n"
-                !=global.__("I'm")+" "+user.stagename+",\n\n"
-                !=global.__("Best regards")+"\n\n"
+                !=__("Dear")+" "+data.stagename+",\n"
+                !=__("I'm")+" "+user.stagename+",\n\n"
+                !=__("Best regards")+"\n\n"
                 !=user.stagename
       .modal-footer
-        button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("cancel")
-        button.btn.btn-primary(type='button')=global.__("SEND")
+        button.btn.btn-secondary(type='button', data-dismiss='modal')=__("cancel")
+        button.btn.btn-primary(type='button')=__("SEND")

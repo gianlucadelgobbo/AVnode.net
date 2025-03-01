@@ -16,13 +16,13 @@ if categories
               li(class="nav-item").mt-3.mt-md-0
                 if category === filter
                   - currentcat = category
-                  a(class="nav-link active", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+                  a(class="nav-link active", href="/"+section+"/"+category+"/"+sort+"/")=__(labels[category])
                 else
-                  a(class="nav-link", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+                  a(class="nav-link", href="/"+section+"/"+category+"/"+sort+"/")=__(labels[category])
           if (section == "performers")
             li(class="nav-item").btn-group.ml-md-3.mt-3.mt-md-0
               select.custom-select.bg-primary.text-white.border-primary(onChange="window.document.location.href='/performers/?country='+this.options[this.selectedIndex].value;" id="inputGroupSelect01")
-                option=global.__("By Country")
+                option=__("By Country")
                 each country in countries
                   option(value=country selected=selected_country==country ? "selected" : undefined)=country
 
@@ -34,14 +34,14 @@ if categories
                   if index > 4
                     if category === filter
                       - currentcat = category
-                      a(class="dropdown-item active", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+                      a(class="dropdown-item active", href="/"+section+"/"+category+"/"+sort+"/")=__(labels[category])
                     else
-                      a(class="dropdown-item", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+                      a(class="dropdown-item", href="/"+section+"/"+category+"/"+sort+"/")=__(labels[category])
       .float-left
           ul.nav.nav-pills
             each order in orderings
               li(class="nav-item").mt-3.mt-md-0
                 if order === sort
-                  a(class="nav-link active", href="/"+section+"/"+currentcat+"/"+order+"/")=global.__(labels[order])
+                  a(class="nav-link active", href="/"+section+"/"+currentcat+"/"+order+"/")=__(labels[order])
                 else
-                  a(class="nav-link", href="/"+section+"/"+currentcat+"/"+order+"/")=global.__(labels[order])
+                  a(class="nav-link", href="/"+section+"/"+currentcat+"/"+order+"/")=__(labels[order])

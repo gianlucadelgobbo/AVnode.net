@@ -10,18 +10,18 @@ block title
           h1.main_title=data.title
             if editable
               !="  "
-              a.badge.badge-danger(href="/admin/playlists/"+data._id+"/public")=global.__("EDIT")
+              a.badge.badge-danger(href="/admin/playlists/"+data._id+"/public")=__("EDIT")
           if data.stats
             .performance_stat_container
               .performance_stat_wrapper
                 ul
                   if data.stats.visits
-                    li=data.stats.visits + ' ' + global.__('Views')
+                    li=data.stats.visits + ' ' + __('Views')
                   li
                     span.likes_count=data.stats.likes ? data.stats.likes : 0
-                    !=' ' + global.__('Likes')
+                    !=' ' + __('Likes')
                   if data.stats.downloads
-                    li=data.stats.downloads + ' ' + global.__('Downloads')
+                    li=data.stats.downloads + ' ' + __('Downloads')
         .col-lg-3.mt-md-4
           include ../partials/share_like
 
@@ -39,13 +39,13 @@ block content
           h3=__("Stats")
           ul
             if data.stats.visits
-              li=data.stats.visits + ' ' + global.__('Views')
+              li=data.stats.visits + ' ' + __('Views')
             if data.stats.likes
-              li=data.stats.likes + ' ' + global.__('Likes')
+              li=data.stats.likes + ' ' + __('Likes')
             if data.stats.downloads
-              li=data.stats.downloads + ' ' + global.__('Downloads')  
+              li=data.stats.downloads + ' ' + __('Downloads')  
             if data.stats.footage
-              li=data.stats.footage + ' ' + global.__('Footage')  
+              li=data.stats.footage + ' ' + __('Footage')  
 
         if data.tags
           h3=__("Tags")

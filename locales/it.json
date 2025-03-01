@@ -1,4 +1,5 @@
 {
+	"404": " Page not found",
 	"------------------POPUP------------------": "------------------POPUP------------------",
 	"AVnode.net is now in Beta Version, feel free to test it but read the following alerts:": "AVnode.net è ora in versione Beta, non esitare a testarlo ma leggi i seguenti avvisi:",
 	"Control panel is still under development, some features are still not fully working": "Il pannello di controllo è ancora in fase di sviluppo, alcune funzionalità non sono ancora completamente funzionanti",
@@ -767,5 +768,11 @@
 	"days": "days",
 	"Total": "Total",
 	"Room name": "Room name",
-	"Break between every show (minutes)": "Break between every show (minutes)"
+	"Break between every show (minutes)": "Break between every show (minutes)",
+	"Here some useful links": "Here some useful links",
+	"AVnode": {
+		"net is now in Beta Version, feel free to test it but read the following alerts": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts"
+	},
+	"Please send any bug and suggestion to": "Please send any bug and suggestion to",
+	"The list of Organizations": " All Most active"
 }

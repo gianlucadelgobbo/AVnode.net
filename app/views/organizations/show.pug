@@ -47,26 +47,26 @@ block content
     if data.events && data.events.length
       section#events.row.performer_events_wrapper
         .col-lg-12
-          h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+          h2.main_title.indented_title.color1!=__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
           .owl-carousel.loop.owl-theme
             each item in data.events
               include ../partials/boxEvent
           .button_more.button_more_program
             a(href="/"+data.slug+"/events", title=data.stagename)
-              span.button_more_label!='+ '+global.__('All the events')
+              span.button_more_label!='+ '+__('All the events')
               span.button_more_bkg
           
   
     if data.partnerships_ordered && data.partnerships_ordered.length
       section#partnerships.row.performer_partnerships_wrapper
         .col-lg-12
-          h2.main_title.indented_title.color1!=global.__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
+          h2.main_title.indented_title.color1!=__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
           .owl-carousel.loop.owl-theme
             each item in data.partnerships_ordered
               include ../partials/boxEvent
           .button_more.button_more_program
             a(href="/"+data.slug+"/partnerships", title=data.stagename)
-              span.button_more_label!='+ '+global.__('All the partnerships')
+              span.button_more_label!='+ '+__('All the partnerships')
               span.button_more_bkg
           
   
@@ -83,14 +83,14 @@ block content
         .container
           .row
             .col-lg-12
-              h2.main_title.indented_title!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
+              h2.main_title.indented_title!=__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
               .performance_divider.basic_divider
               .owl-carousel.loop.owl-theme
                 each item in data.performances                
                   include ../partials/boxPerformance
               .button_more.button_more_grey
                 a(href="/"+data.slug+"/performances", title=data.stagename)
-                  span.button_more_label!='+ '+global.__('All the performances')
+                  span.button_more_label!='+ '+__('All the performances')
                   span.button_more_bkg                  
     .polygon_divider_bottom
       svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
@@ -105,7 +105,7 @@ block content
       .container
         .row
           .col-lg-12
-            h2.main_title.indented_title!=global.__('Crews')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
+            h2.main_title.indented_title!=__('Crews')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
             .performance_divider.basic_divider
             .row
               .col-sm-6
@@ -121,7 +121,7 @@ block content
       .container
         .row
           .col-lg-12
-            h2.main_title.indented_title!=global.__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
+            h2.main_title.indented_title!=__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
             .performance_divider.basic_divider
             .row
               .col-sm-6
@@ -146,37 +146,37 @@ block content
           if data.footage && data.footage.length
             #footage.row.performer_footage.mb-4
               .col-lg-12
-                h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
                 .owl-carousel.loop.owl-theme
                   each item in data.footage            
                     include ../partials/boxFootage 
                 .button_more.button_more_grey
                   a(href="/"+data.slug+"/footage", title=data.stagename)
-                    span.button_more_label!='+ '+global.__('All the footages')
+                    span.button_more_label!='+ '+__('All the footages')
                     span.button_more_bkg                     
 
           if data.videos && data.videos.length
             #videos.row.performer_video
               .col-lg-12
-                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
                 .owl-carousel.loop.owl-theme.mb-4
                   each item in data.videos            
                     include ../partials/boxVideo
                 .button_more.button_more_grey
                   a(href="/"+data.slug+"/videos", title=data.stagename)
-                    span.button_more_label!='+ '+global.__('All the videos')
+                    span.button_more_label!='+ '+__('All the videos')
                     span.button_more_bkg                    
 
           if data.playlists && data.playlists.length
             #playlists.row.performer_playlist
               .col-lg-12
-                h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
                 .owl-carousel.loop.owl-theme.mb-4
                   each item in data.playlists
                     include ../partials/boxPlaylist
                 .button_more.button_more_grey
                   a(href="/"+data.slug+"/playlists", title=data.stagename)
-                    span.button_more_label!='+ '+global.__('All the playlists')
+                    span.button_more_label!='+ '+__('All the playlists')
                     span.button_more_bkg
 
 
@@ -187,14 +187,14 @@ block content
         .container
           .row
             .col-lg-12
-              h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
+              h2.main_title.indented_title!=__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
               .performance_divider.basic_divider
               .owl-carousel.loop_3items.owl-theme
                 each item in data.galleries
                   include ../partials/boxGallery  
               .button_more.button_more_program
                 a(href="/"+data.slug+"/galleries", title=data.stagename)
-                  span.button_more_label!='+ '+global.__('All the galleries')
+                  span.button_more_label!='+ '+__('All the galleries')
                   span.button_more_bkg                        
 
   if data.events && data.news.length
@@ -203,7 +203,7 @@ block content
         .container
           .row
             .col-lg-12
-              h2.main_title.indented_title!=global.__('News')
+              h2.main_title.indented_title!=__('News')
               .owl-carousel.loop_2.owl-theme
                 - var conta = 0
                 - for (var a = 0; a<data.news.length;a++)
@@ -216,5 +216,5 @@ block content
                         include ../partials/boxNews
               .button_more.button_more_program
                 a(href="/"+data.slug+"/news", title=data.stagename)
-                  span.button_more_label!='+ '+global.__('All the news')
+                  span.button_more_label!='+ '+__('All the news')
                   span.button_more_bkg                        

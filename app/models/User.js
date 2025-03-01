@@ -236,7 +236,7 @@ userSchema.post('save', function(error, doc, next) {
 
 userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
-    const lang = global.getLocale();
+    const lang = $locals.locale;
     return moment(this.birthday).format(config.dateFormat[lang].weekdaydaymonthyear);
   }
 });

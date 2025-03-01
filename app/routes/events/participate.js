@@ -14,19 +14,20 @@ import { mySendMailer } from '../../utilities/mailer.js';
 import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 
 
-var participateMenu = [
-  {label:__('Active Calls'),slug:"calls"},        // 0
-  {label:__('Terms'),slug:"terms"},               // 1
-  {label:__('Artwork'),slug:"performance"},       // 2
-  {label:__('Topics'),slug:"topics"},             // 3
-  {label:__('Availability'),slug:"availability"}, // 4
-  {label:__('Packages'),slug:"packages"},         // 5
-  {label:__('Summary'),slug:"summary"},           // 6
-  {label:__('Submit'),slug:"submit"}              // 7
-];
-var slugsMenu = participateMenu.map(item =>{return item.slug})
 
 router.get('/', async (req, res) => {
+  var participateMenu = [
+    {label:req.__('Active Calls'),slug:"calls"},        // 0
+    {label:req.__('Terms'),slug:"terms"},               // 1
+    {label:req.__('Artwork'),slug:"performance"},       // 2
+    {label:req.__('Topics'),slug:"topics"},             // 3
+    {label:req.__('Availability'),slug:"availability"}, // 4
+    {label:req.__('Packages'),slug:"packages"},         // 5
+    {label:req.__('Summary'),slug:"summary"},           // 6
+    {label:req.__('Submit'),slug:"submit"}              // 7
+  ];
+  var slugsMenu = participateMenu.map(item =>{return item.slug})
+  
   logger.info("GETGETGETGETGET");
   //delete req.session.call;
   logger.info("req.session.call");
@@ -101,6 +102,18 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  var participateMenu = [
+    {label:req.__('Active Calls'),slug:"calls"},        // 0
+    {label:req.__('Terms'),slug:"terms"},               // 1
+    {label:req.__('Artwork'),slug:"performance"},       // 2
+    {label:req.__('Topics'),slug:"topics"},             // 3
+    {label:req.__('Availability'),slug:"availability"}, // 4
+    {label:req.__('Packages'),slug:"packages"},         // 5
+    {label:req.__('Summary'),slug:"summary"},           // 6
+    {label:req.__('Submit'),slug:"submit"}              // 7
+  ];
+  var slugsMenu = participateMenu.map(item =>{return item.slug})
+
   logger.info(req.session.call);
   if ((req.session.call && req.session.call.saved) || !req.body || !req.session.call) {
     if (req.body && req.body.step) delete req.body.step;
@@ -153,15 +166,15 @@ router.post('/', async (req, res) => {
           logger.info('case 0');
           if (!req.user.name) {
             if (!msg || !msg.e) msg = {e:[]};
-            msg.e.push({name:'index', m:__('Warning: You have no name available. Please add your name in your profile and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+__("ADD NOW")+"</a>"});
+            msg.e.push({name:'index', m:req.__('Warning: You have no name available. Please add your name in your profile and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+req.__("ADD NOW")+"</a>"});
           }
           if (!req.user.surname) {
             if (!msg || !msg.e) msg = {e:[]};
-            msg.e.push({name:'index', m:__('Warning: You have no surname available. Please add your surname in your profile and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+__("ADD NOW")+"</a>"});
+            msg.e.push({name:'index', m:req.__('Warning: You have no surname available. Please add your surname in your profile and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+req.__("ADD NOW")+"</a>"});
           }
           if (!req.user.email) {
             if (!msg || !msg.e) msg = {e:[]};
-            msg.e.push({name:'index', m:__('Warning: You have no email available. We need your email for all the communications. Please add an email and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+__("ADD NOW")+"</a>"});
+            msg.e.push({name:'index', m:req.__('Warning: You have no email available. We need your email for all the communications. Please add an email and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+req.__("ADD NOW")+"</a>"});
           }
           var results = req.user.mobile.reduce((results, item) => {
             if (item.url) results.push(item.url); // modify is a fictitious function that would apply some change to the items in the array
@@ -169,7 +182,7 @@ router.post('/', async (req, res) => {
           }, [])
           if (!results.length) {
             if (!msg || !msg.e) msg = {e:[]};
-            msg.e.push({name:'index', m:__('Warning: You have no mobile phone available. We need your mobile phone in case of urgent issue. Please add a mobile phone and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+__("ADD NOW")+"</a>"});
+            msg.e.push({name:'index', m:req.__('Warning: You have no mobile phone available. We need your mobile phone in case of urgent issue. Please add a mobile phone and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+req.__("ADD NOW")+"</a>"});
           }
           if (!msg) {
             if (data && typeof req.body.index!='undefined') {
@@ -213,7 +226,7 @@ router.post('/', async (req, res) => {
                 req.session.call.step = parseInt(req.body.step)+1;
                 req.session.call.admitted = admittedA;
               } else {
-                msg = {e:[{name:'index', m:__('Warning: You need at least one performance of this types to participate to the call selected: <b>'+ data.organizationsettings.call.calls[req.body.index].admitted.map(a => a.name.toString()).join(", ") +'</b>. Please create a performance and come back.')+" <a href=\"/admin/performances\">"+__("CREATE YOUR PERFORMANCE NOW")+"</a>"}]};
+                msg = {e:[{name:'index', m:req.__('Warning: You need at least one performance of this types to participate to the call selected: <b>'+ data.organizationsettings.call.calls[req.body.index].admitted.map(a => a.name.toString()).join(", ") +'</b>. Please create a performance and come back.')+" <a href=\"/admin/performances\">"+req.__("CREATE YOUR PERFORMANCE NOW")+"</a>"}]};
                 logger.info(msg);
               }
 
@@ -233,7 +246,7 @@ router.post('/', async (req, res) => {
                 });
               }
             } else {
-              msg = {e:[{name:'index', m:__('Please select a call')}]};
+              msg = {e:[{name:'index', m:req.__('Please select a call')}]};
             }  
           }
           break;
@@ -244,11 +257,11 @@ router.post('/', async (req, res) => {
           } else {
             if (req.body.accept!='1') {
               if (!msg || !msg.e) msg = {e:[]};
-              msg.e.push({name:'accept',m:__('Please accept the terms and conditions to go forward')});
+              msg.e.push({name:'accept',m:req.__('Please accept the terms and conditions to go forward')});
             }
             if (req.body.confirm_personal_data!='1') {
               if (!msg || !msg.e) msg = {e:[]};
-              msg.e.push({name:'confirm_personal_data',m:__('Please confirm your personal data to go forward')});
+              msg.e.push({name:'confirm_personal_data',m:req.__('Please confirm your personal data to go forward')});
             }
           }
           break;
@@ -308,7 +321,7 @@ router.post('/', async (req, res) => {
               msg: msg
             });
           } else {
-            msg = {e:[{name:'accept',m:__('Please select a performance to go forward')}]}
+            msg = {e:[{name:'accept',m:req.__('Please select a performance to go forward')}]}
           }
           break;
         case 'topics' :
@@ -316,7 +329,7 @@ router.post('/', async (req, res) => {
             req.session.call.step = parseInt(req.body.step)+1;
             req.session.call.topics = req.body.topics;
           } else {
-            msg = {e:[{name:'accept',m:__('Please select at least 1 topic to go forward')}]}
+            msg = {e:[{name:'accept',m:req.__('Please select at least 1 topic to go forward')}]}
           }
           break;
         case 'availability' :
@@ -348,10 +361,10 @@ router.post('/', async (req, res) => {
                 }
               }
             } else {
-              msg = {e:[{name:'accept',m:__('Please select at least 1 day for all the people availables to go forward')}]};
+              msg = {e:[{name:'accept',m:req.__('Please select at least 1 day for all the people availables to go forward')}]};
             }
           } else {
-            msg = {e:[{name:'accept',m:__('Please select at least 1 person to go forward')}]};
+            msg = {e:[{name:'accept',m:req.__('Please select at least 1 person to go forward')}]};
           }
           break;
         case 'packages' :
@@ -378,21 +391,21 @@ router.post('/', async (req, res) => {
                   }
                   console.log(alternative)
                   if (data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].allow_options && !req.body.subscriptions[a].packages[b].option ){
-                    msg = {e:[{name:'accept',m:__('Please select at least 1 option for the packages')+" "+data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].name}]}
+                    msg = {e:[{name:'accept',m:req.__('Please select at least 1 option for the packages')+" "+data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].name}]}
                   }
                 }
                 if (alternative.length){
                   if (msg && msg.e) {
-                    msg.e.push({name:'accept',m:__('Please select at least 1 of the required packages:')+" "+alternative.join(", ")})
+                    msg.e.push({name:'accept',m:req.__('Please select at least 1 of the required packages:')+" "+alternative.join(", ")})
                   } else {
-                    msg = {e:[{name:'accept',m:__('Please select at least 1 of the required packages:')+" "+alternative.join(", ")}]}
+                    msg = {e:[{name:'accept',m:req.__('Please select at least 1 of the required packages:')+" "+alternative.join(", ")}]}
                   }
                 }
             }
             }
             if (!msg) req.session.call.step = parseInt(req.body.step)+1;
           } else {
-            msg = {e:[{name:'accept',m:__('Please select at least 1 package to go forward')}]}
+            msg = {e:[{name:'accept',m:req.__('Please select at least 1 package to go forward')}]}
           }
           break;
         case 'summary' :
@@ -437,7 +450,7 @@ router.post('/', async (req, res) => {
           try {
             subsub = Program.create(req.session.call.save);
           } catch (err) {
-            msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
+            msg = {e:[{name:'index', m:req.__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
             res.render('events/participate', {
               title: data.title,
               canonical: (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
@@ -453,7 +466,7 @@ router.post('/', async (req, res) => {
           try {
             data.save()            
           } catch (err) {
-            msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
+            msg = {e:[{name:'index', m:req.__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
             res.render('events/participate', {
               title: data.title,
               canonical: (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
@@ -481,15 +494,15 @@ router.post('/', async (req, res) => {
                 imgalt:  data.organizationsettings.call.calls[req.session.call.index].imgalt,
                 html_sign:  data.organizationsettings.call.calls[req.session.call.index].html_sign,
                 text_sign:  data.organizationsettings.call.calls[req.session.call.index].text_sign,
-                title:   data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
-                subject: req.session.call.admitted[req.session.call.performance].title + " | " + data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
-                block_1:  __("We’ve received a request to participate to") + " <b>" + data.organizationsettings.call.calls[req.session.call.index].title + "</b> "+__("from")+" <b>"+req.user.stagename+"</b>",
-                block_1_plain:  __("We’ve received a request to participate to") + " " + data.organizationsettings.call.calls[req.session.call.index].title + " "+__("from")+" "+req.user.stagename+"",
+                title:   data.organizationsettings.call.calls[req.session.call.index].title + " | " + req.__("Call Submission"),
+                subject: req.session.call.admitted[req.session.call.performance].title + " | " + data.organizationsettings.call.calls[req.session.call.index].title + " | " + req.__("Call Submission"),
+                block_1:  req.__("We’ve received a request to participate to") + " <b>" + data.organizationsettings.call.calls[req.session.call.index].title + "</b> "+req.__("from")+" <b>"+req.user.stagename+"</b>",
+                block_1_plain:  req.__("We’ve received a request to participate to") + " " + data.organizationsettings.call.calls[req.session.call.index].title + " "+req.__("from")+" "+req.user.stagename+"",
                 user: req.user,
                 dett: data,
                 call: req.session.call,
-                block_2:  __("You will receive a feedback on your proposal as soon."),
-                block_3:  __("Thanks."),
+                block_2:  req.__("You will receive a feedback on your proposal as soon."),
+                block_3:  req.__("Thanks."),
                 link:  "",
                 link_plain: ""/* 
                 link:  "<a href=\""+(req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+(req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
@@ -501,7 +514,7 @@ router.post('/', async (req, res) => {
           } catch (err) {
             logger.info("Email sending failure");
             logger.info(err);
-            msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
+            msg = {e:[{name:'index', m:req.__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
           }
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json({
@@ -524,7 +537,7 @@ router.post('/', async (req, res) => {
           }
       }
     } else {
-      msg = {e:[{name:'index', m:__('Unknow error')}]};
+      msg = {e:[{name:'index', m:req.__('Unknow error')}]};
     }
 
     if (myasync) {
@@ -667,14 +680,14 @@ exports.post = function post(req, res) {
                         req.session.call.step = parseInt(req.body.step)+1;
                         req.session.call.index = parseInt(req.body.index);
                       } else {
-                        msg = {e:[{name:"index",m:__("Please select a call")}]}
+                        msg = {e:[{name:"index",m:req.__("Please select a call")}]}
                       }
                       break;
                     case 1 :
                       if (dett && req.body.accept=='1') {
                         req.session.call.step = parseInt(req.body.step)+1;
                       } else {
-                        msg = {e:[{name:"accept",m:__("Please accept the terms and conditions to go forward")}]}
+                        msg = {e:[{name:"accept",m:req.__("Please accept the terms and conditions to go forward")}]}
                       }
                       break;
                     case 2 :
@@ -706,7 +719,7 @@ exports.post = function post(req, res) {
                         }
 
                       } else {
-                        msg = {e:[{name:"accept",m:__("Please select a performance to go forward")}]}
+                        msg = {e:[{name:"accept",m:req.__("Please select a performance to go forward")}]}
                       }
                       break;
                     case 3 :
@@ -714,7 +727,7 @@ exports.post = function post(req, res) {
                         req.session.call.step = parseInt(req.body.step)+1;
                         req.session.call.topics = req.body.topics;
                       } else {
-                        msg = {e:[{name:"accept",m:__("Please select at least 1 topic to go forward")}]}
+                        msg = {e:[{name:"accept",m:req.__("Please select at least 1 topic to go forward")}]}
                       }
                       break;
                     case 4 :
@@ -729,7 +742,7 @@ exports.post = function post(req, res) {
                         }
                         req.session.call.subscriptions = subscriptions;
                       } else {
-                        msg = {e:[{name:"accept",m:__("Please select at least 1 person to go forward")}]}
+                        msg = {e:[{name:"accept",m:req.__("Please select at least 1 person to go forward")}]}
                       }
                       break;
                   }

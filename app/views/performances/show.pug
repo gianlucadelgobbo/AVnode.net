@@ -10,7 +10,7 @@ block title
           h1.main_title=data.title
             if editable
               !="  "
-              a.badge.badge-danger(href="/admin/performances/"+data._id+"/public")=global.__("EDIT")
+              a.badge.badge-danger(href="/admin/performances/"+data._id+"/public")=__("EDIT")
           if data.type
             ul.list-inline.d-block.d-sm-none
               li.list-inline-item
@@ -26,10 +26,10 @@ block title
               .performance_stat_wrapper
                 ul
                   if data.stats.visits
-                    li=data.stats.visits + ' ' + global.__('Views')
+                    li=data.stats.visits + ' ' + __('Views')
                   li
                     span.likes_count=data.stats.likes ? data.stats.likes : 0
-                    !=' ' + global.__('Likes')                      
+                    !=' ' + __('Likes')                      
         .col-lg-3.share_like_list_column
           include ../partials/share_like
 
@@ -52,14 +52,14 @@ block content
           if data.about
             li.nav-item
               a.tab_link.nav-link.active(href='#about', role='tab', data-toggle='tab') 
-                =global.__('About')
+                =__('About')
           li.nav-item
             a.tab_link.nav-link(href='#technical_specifications', role='tab', data-toggle='tab')    
-              =global.__('Technical specifications')
+              =__('Technical specifications')
           if data.paypal
             li.nav-item
               a.tab_link.nav-link(href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id='+data.paypal, target='_blank')    
-                =global.__('BUY NOW')
+                =__('BUY NOW')
         // Tab panes
         .tab-content
           //if data.about
@@ -68,15 +68,15 @@ block content
           #technical_specifications.tab-pane(role='tabpanel')
             if data.duration
               .tech_info_wrapper
-                h4.tech_info_title=global.__('Duration (minutes)')
+                h4.tech_info_title=__('Duration (minutes)')
                 p!=data.duration
             if data.tech_req
               .tech_info_wrapper
-                h4.tech_info_title=global.__('What is needed')
+                h4.tech_info_title=__('What is needed')
                 p!=data.tech_req
             if data.tech_art
               .tech_info_wrapper
-                h4.tech_info_title=global.__('What the artists brings')
+                h4.tech_info_title=__('What the artists brings')
                 p!=data.tech_art
 
       .col-sm-4.performance_info_sidebar-cnt
@@ -95,15 +95,15 @@ block content
             .row.mt-3.mb-4
               .col
                 a.performance_button.print-perf(href="/performances/"+data.slug+"/print", data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
-                  !=global.__('PRINT')
+                  !=__('PRINT')
                   br
-                  !=global.__('PDF')
+                  !=__('PDF')
               .col
                 a.performance_button.book-perf(href="#", data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
-                  !=global.__('REQUEST BOOKING')
+                  !=__('REQUEST BOOKING')
 
             .performance_users
-              h3=global.__('Authors')  
+              h3=__('Authors')  
               each user in data.users
                 .performance_users_item_wrapper
                   .performance_user_wrapper
@@ -116,7 +116,7 @@ block content
                         p.users_performance_item_country!=user.addressesFormatted.join(", ")
             if data.bookings.length
               .performance_events_wrapper
-                h3.mt-3=global.__('Events')  
+                h3.mt-3=__('Events')  
                 each booking in data.bookings
                     .performance_event_wrapper
                       .performance_event_image.mt-2
@@ -130,7 +130,7 @@ block content
                           if booking.schedule[0].paypal.indexOf("https")!==-1
                             br
                             a.btn.btn-primary(href=booking.schedule[0].paypal target="_blank")
-                              b=booking.schedule[0].price+",00 € | "+ global.__('BUY NOW')
+                              b=booking.schedule[0].price+",00 € | "+ __('BUY NOW')
                         //each schedule in booking.schedule
                           !=schedule.boxDate
                           br
@@ -146,7 +146,7 @@ block content
           .container
             .row
               .col-lg-12
-                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
                 .performance_divider.basic_divider
                 .owl-carousel.loop_3items.owl-theme
                   each item in data.galleries                    
@@ -158,7 +158,7 @@ block content
           .container
             .row
               .col-lg-12
-                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
                 .performance_divider.basic_divider
                 .owl-carousel.loop_3items.owl-theme
                   each item in data.videos            

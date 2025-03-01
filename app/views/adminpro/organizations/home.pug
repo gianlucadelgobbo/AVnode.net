@@ -6,10 +6,10 @@ block content
     thead
       tr
         td.table-firstcolumn-ID="ID"
-        td=global.__("Organization")
-        td=global.__("Members")
-        td=global.__("Web")
-        td=global.__("Socials")
+        td=__("Organization")
+        td=__("Members")
+        td=__("Web")
+        td=__("Socials")
     tbody
       if data.length
         each item, index in data
@@ -18,9 +18,9 @@ block content
             td
               h3!=item.stagename
               if user.is_admin
-                a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
+                a(href="/admin/crews/"+item._id+"/public", target="_blank")!=__("edit")
                 !=" | "
-              a(href="/"+item.slug, target="_blank")!=global.__("view")
+              a(href="/"+item.slug, target="_blank")!=__("view")
             td
               each user in item.members
                 .text-nowrap

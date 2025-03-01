@@ -1,7 +1,7 @@
 if messages.errors
   .container.mt-3
     .alert.alert-danger
-      h4=global.__("ERROR")
+      h4=__("ERROR")
       for error in messages.errors
         if error instanceof Object
           if (typeof error.msg === 'string' || error.msg instanceof String)

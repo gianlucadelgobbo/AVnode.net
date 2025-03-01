@@ -23,7 +23,7 @@ nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-t
             ul.pl-3#submenuEvent.collapse.navbar-nav(class=currentUrl.indexOf("/adminpro/events")===0 ? " show" : "")
               li.nav-item
                 small.menu-collapsed=data.event.title
-              - var menuEvent = [ {link:'/adminpro/events/'+data.event._id+'/acts/', icon: "icon-theater-masks", title:global.__('Acts')}, {link:'/adminpro/events/'+data.event._id+'/peoples/', icon: "icon-users", title:global.__('Peoples')}, {link:'/adminpro/events/'+data.event._id+'/program/', icon: "icon-calendar", title:global.__('Program')}, {link:'/adminpro/events/'+data.event._id+'/technical-riders/', icon: "icon-tasks", title:global.__('Technical Riders')}, {link:'/adminpro/events/'+data.event._id+'/orders/', icon: "icon-money-check-alt", title:global.__('Orders')}, {link:'/adminpro/events/'+data.event._id+'/program-social/', icon: "icon-rss-square", title:global.__('Program Social')}, {link:'/adminpro/events/'+data.event._id+'/program-print', icon: "icon-print", title:global.__('Program Prints')}, {link:'/adminpro/events/'+data.event._id+'/program-print', icon: "icon-print-siae", title:global.__('Program Prints Siae')}, {link:'/adminpro/events/'+data.event._id+'/program-print-comune', icon: "icon-print", title:global.__('Program Prints Comune')}, {link:'/adminpro/events/'+data.event._id+'/pass/', icon: "icon-print", title:global.__('Pass Prints')}, {link:'/adminpro/events/'+data.event._id+'/pass-sheet/', icon: "icon-print", title:global.__('Pass sheet Prints')}]
+              - var menuEvent = [ {link:'/adminpro/events/'+data.event._id+'/acts/', icon: "icon-theater-masks", title:__('Acts')}, {link:'/adminpro/events/'+data.event._id+'/peoples/', icon: "icon-users", title:__('Peoples')}, {link:'/adminpro/events/'+data.event._id+'/program/', icon: "icon-calendar", title:__('Program')}, {link:'/adminpro/events/'+data.event._id+'/technical-riders/', icon: "icon-tasks", title:__('Technical Riders')}, {link:'/adminpro/events/'+data.event._id+'/orders/', icon: "icon-money-check-alt", title:__('Orders')}, {link:'/adminpro/events/'+data.event._id+'/program-social/', icon: "icon-rss-square", title:__('Program Social')}, {link:'/adminpro/events/'+data.event._id+'/program-print', icon: "icon-print", title:__('Program Prints')}, {link:'/adminpro/events/'+data.event._id+'/program-print', icon: "icon-print-siae", title:__('Program Prints Siae')}, {link:'/adminpro/events/'+data.event._id+'/program-print-comune', icon: "icon-print", title:__('Program Prints Comune')}, {link:'/adminpro/events/'+data.event._id+'/pass/', icon: "icon-print", title:__('Pass Prints')}, {link:'/adminpro/events/'+data.event._id+'/pass-sheet/', icon: "icon-print", title:__('Pass sheet Prints')}]
               each menu in menuEvent
                 li.nav-item(class=currentUrl.indexOf(menu.link)==0 ? "active" : "")
                   a.nav-link(href=menu.link)
@@ -224,10 +224,10 @@ nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-t
           .dropdown-menu.dropdown-menu-right(aria-labelledby='userDropdown')
             a.dropdown-item(href='/'+user.slug)                    
               span.pr-2.icon-eye
-              !=" "+global.__('Profile')
+              !=" "+__('Profile')
             a.dropdown-item(href='/admin/profile/'+user._id+'/public')                    
               span.pr-2.icon-cog
-              !=" "+global.__('Control Panel')
+              !=" "+__('Control Panel')
             a.dropdown-item(href='/logout')                    
               span.pr-2.icon-exit
-              !=" "+global.__('Log out')
+              !=" "+__('Log out')

@@ -1,4 +1,5 @@
 {
+	"404": " Page not found",
 	"------------------POPUP------------------": "------------------POPUP------------------",
 	"AVnode.net is now in Beta Version, feel free to test it but read the following alerts:": "AVnode.net est maintenant en version bêta, n'hésitez pas à le tester mais lisez les alertes suivantes:",
 	"Control panel is still under development, some features are still not fully working": "Le panneau de contrôle est toujours en cours de développement, certaines fonctionnalités ne fonctionnent toujours pas pleinement",
@@ -56,7 +57,7 @@
 	"New VJ Television Video": "Nouvelle vidéo de télévision VJ",
 	"------------------MENU USER------------------": "------------------MENU USER------------------",
 	"Profile": "Profil",
-	"Control Panel": "Panneau de configuration",
+	"Control Panel": "Panneau de commande",
 	"Your Account": "Votre compte",
 	"Log out": "Se déconnecter",
 	"------------------MENU SEARCH------------------": "------------------MENU SEARCH------------------",
@@ -465,7 +466,6 @@
 	"Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.": "La vérification a été réussie, pour être répertorié comme artiste, veuillez vous connecter et compléter votre profil avec des images et des informations.",
 	"LOG IN": "CONNEXION",
 	"------------------CONTROL PANEL------------------": "------------------PANNEAU DE COMMANDE------------------",
-	"Control Panel": "Panneau de commande",
 	"Collapse": "S'effondrer",
 	"SHOW": "AFFICHER",
 	"ADD SOCIAL": "AJOUTER SOCIAL",
@@ -754,5 +754,11 @@
 	"There are some errors": "Il y a des erreurs",
 	"Please select a call": "Veuillez sélectionner un appel",
 	"This person is already in with another act and can not be edited": "Cette personne est déjà dans un autre acte et ne peut pas être modifiée",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
+	"Here some useful links": "Here some useful links",
+	"AVnode": {
+		"net is now in Beta Version, feel free to test it but read the following alerts": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts"
+	},
+	"Please send any bug and suggestion to": "Please send any bug and suggestion to",
+	"The list of Organizations": " All Most active"
 }

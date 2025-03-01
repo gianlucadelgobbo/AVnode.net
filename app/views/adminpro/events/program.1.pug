@@ -2,7 +2,7 @@ extends ../../layout_admin
 block content
   .row(style="height: 100vh;")
     .col-md-3(style="height: 100%;overflow-y: scroll;")
-      h2=global.__("TO BE SCHEDULED")
+      h2=__("TO BE SCHEDULED")
       #external-events
         each prg in data.program
           if !prg.schedule || !prg.schedule.starttime

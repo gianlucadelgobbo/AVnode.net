@@ -2,7 +2,7 @@ table.table.table-fixed.page-break-after-always
   thead.d-print-none
     tr
       td.table-firstcolumn-ID!="ID"
-      td!=global.__("Brand")
+      td!=__("Brand")
         !=" | "
         button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD"
 
@@ -14,12 +14,12 @@ table.table.table-fixed.page-break-after-always
         span.d-print-none
           if user.is_admin
           !=" "
-          a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
+          a(href="/admin/crews/"+item._id+"/public", target="_blank")!=__("edit")
           !=" | "
-          a.unlink(href="#", data-owner=owner, data-partner=item._id)!=global.__("unlink")
+          a.unlink(href="#", data-owner=owner, data-partner=item._id)!=__("unlink")
           !=" | "
           if item.members && item.members.length
-            a(href="/"+item.slug, target="_blank")!=global.__("view")
+            a(href="/"+item.slug, target="_blank")!=__("view")
           else
             .badge.badge-badge!="EXTERNAL"
     //tr

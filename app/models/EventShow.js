@@ -27,12 +27,12 @@ const datevenueSchema = new Schema({
 },{ _id : false });
 
 datevenueSchema.virtual('date_formatted').get(function () {
-  const lang = global.getLocale();
+  const lang = $locals.locale;
   const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
   return moment(startdatefake).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
 datevenueSchema.virtual('date').get(function () {
-  const lang = global.getLocale();
+  const lang = $locals.locale;
   const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
   return startdatefake;
 });
@@ -223,7 +223,7 @@ eventSchema.virtual('advanced').get(function (req) {
     //
     let programmebydayvenueObj = {};
     let ret = false;
-    const lang = global.getLocale();
+    const lang = $locals.locale;
     if (this.program && this.program.length) {
       for(let a=0;a<this.program.length;a++){
         // Artists
@@ -317,7 +317,7 @@ eventSchema.virtual('advanced').get(function (req) {
       performers.performers.sort((a,b) => (a.stagename.toLowerCase() > b.stagename.toLowerCase()) ? 1 : ((b.stagename.toLowerCase() > a.stagename.toLowerCase()) ? -1 : 0));
       advanced.performers = performers;
 
-      if (advanced.performers) advanced.menu.push({slug: "performers", name: global.__("Performers")});
+      if (advanced.performers) advanced.menu.push({slug: "performers", name: __("Performers")});
       let programmebydayvenue = ret ? Object.values(programmebydayvenueObj) : undefined;
       if (programmebydayvenue) {
         programmebydayvenue.sort((a,b) => (a.day > b.day) ? 1 : ((b.day > a.day) ? -1 : 0));
@@ -343,12 +343,12 @@ eventSchema.virtual('advanced').get(function (req) {
         }
 
         if (this.program) {
-          advanced.menu.push({slug: "program", name: global.__("Program"), days: dd, types:types});
+          advanced.menu.push({slug: "program", name: __("Program"), days: dd, types:types});
         }
       }
-      if (this.galleries && this.galleries.length) advanced.menu.push({slug: "galleries", name: global.__("Galleries")});
-      if (this.videos && this.videos.length) advanced.menu.push({slug: "videos", name: global.__("Videos")});
-      if (this.partners && this.partners.length) advanced.menu.push({slug: "partners", name: global.__("Partners")});
+      if (this.galleries && this.galleries.length) advanced.menu.push({slug: "galleries", name: __("Galleries")});
+      if (this.videos && this.videos.length) advanced.menu.push({slug: "videos", name: __("Videos")});
+      if (this.partners && this.partners.length) advanced.menu.push({slug: "partners", name: __("Partners")});
 
       advanced.performers.countries = advanced.performers.countries.sort();
       advanced.programmebydayvenue = programmebydayvenue;
@@ -410,16 +410,16 @@ eventSchema.virtual('advanced').get(function (req) {
 }); */
 
 eventSchema.virtual('about').get(function (req) {
-  let about = __('Text is missing');
+  let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    aboutA = this.abouts.filter(item => item.lang === $locals.locale);
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
       aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
-        about = "["+__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+        about = "["+this.$locals.__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
     var options = {
@@ -441,16 +441,16 @@ eventSchema.virtual('about').get(function (req) {
 
 
 eventSchema.virtual('aboutFull').get(function (req) {
-  let about = __('Text is missing');
+  let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    aboutA = this.abouts.filter(item => item.lang === $locals.locale);
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
       aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
-        about = "["+__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+        about = "["+this.$locals.__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
     var options = {
@@ -482,7 +482,7 @@ eventSchema.virtual('aboutFull').get(function (req) {
 });
 eventSchema.virtual('description').get(function (req) {
   if (this.abouts && this.abouts.length) {
-    return helpers.makeDescription(this.abouts);
+    return helpers.makeDescription(this.abouts, this.$locals);
   }
 });
 
@@ -494,7 +494,7 @@ eventSchema.virtual('subtitle').get(function (req) {
   let subtitleA = [];
   if (this.subtitles && this.subtitles.length) {
     let subtitle;
-    subtitleA = this.subtitles.filter(item => item.lang === global.getLocale());
+    subtitleA = this.subtitles.filter(item => item.lang === $locals.locale);
     if (subtitleA.length && subtitleA[0].abouttext) {
       subtitle = subtitleA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
@@ -531,7 +531,7 @@ eventSchema.virtual('imageFormats').get(function () {
 eventSchema.virtual('boxDate').get(function () {
   let boxDate;
   if (this.schedule && this.schedule.length) {
-    const lang = global.getLocale();
+    const lang = $locals.locale;
     const startdate = new Date(new Date(this.schedule[0].starttime).setUTCHours(0,0,0,0));
     const enddate = new Date(new Date(this.schedule[this.schedule.length-1].endtime).setUTCHours(0,0,0,0));
     const enddatefake = new Date(new Date(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).setUTCHours(0,0,0,0));
@@ -567,8 +567,6 @@ eventSchema.virtual('boxVenue').get(function () {
       //for (let venue in schedulebydayvenueObjGrouped[item].venues) {
         if (this.schedule[schedule].venue) {
           let v = this.schedule[schedule].venue;
-          console.log("this.schedule")
-          console.log(this.schedule)
           if (v.type != 'virtual') {
             if (v.location && v.location.country && !boxVenueO[v.location.country]) boxVenueO[v.location.country] = {};
             if (v.location && v.location.country && v.location.locality && !boxVenueO[v.location.country][v.location.locality]) boxVenueO[v.location.country][v.location.locality] = {};
@@ -613,7 +611,7 @@ eventSchema.virtual('fullSchedule').get(function (req) {
   let schedulebydayvenueObj = {};
   let ret = false;
   if (this.schedule && this.schedule.length) {
-    const lang = global.getLocale();
+    const lang = $locals.locale;
     for(let a=0;a<this.schedule.length;a++){
       const startdate = new Date(new Date(this.schedule[a].starttime).setUTCHours(0,0,0,0));
       const enddate = new Date(new Date(this.schedule[a].endtime).setUTCHours(0,0,0,0));
@@ -703,7 +701,7 @@ eventSchema.virtual('fullSchedule').get(function (req) {
 
 eventSchema.boxDateCreator = (starttime, endtime, boxVenue) => {
   let boxDate;
-  const lang = global.getLocale();
+  const lang = $locals.locale;
   const startdate = new Date(new Date(starttime).setUTCHours(0,0,0,0));
   const enddate = new Date(new Date(endtime).setUTCHours(0,0,0,0));
   const enddatefake = new Date(new Date(endtime-(10*60*60*1000)).setUTCHours(0,0,0,0));

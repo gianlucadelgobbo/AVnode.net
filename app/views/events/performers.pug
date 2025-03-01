@@ -17,16 +17,16 @@ block title
                 h1.main_title=data.title
                   if editable
                     !="  "
-                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=global.__("EDIT")
+                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=__("EDIT")
                 if data.stats
                   .performance_stat_container
                     .performance_stat_wrapper
                       ul
                         if data.stats.visits
-                          li=data.stats.visits + ' ' + global.__('Views')
+                          li=data.stats.visits + ' ' + __('Views')
                         li
                           span.likes_count=data.stats.likes ? data.stats.likes : 0
-                          !=' ' + global.__('Likes')                      
+                          !=' ' + __('Likes')                      
               .col-lg-3.mt-md-4
                 include ../partials/share_like
             p.subtitle=data.subtitle && data.subtitle!= "Text is missing" ? data.subtitle : data.boxDate
@@ -35,7 +35,7 @@ block title
                 if data.boxVenue
                   p.boxVenue!=data.boxVenue
                   p
-                    a(data-toggle='collapse', href="javascript:void(0);", data-target='#fullSchedule', role='button', aria-expanded='false', aria-controls='fullSchedule')=global.__("Full schedule")
+                    a(data-toggle='collapse', href="javascript:void(0);", data-target='#fullSchedule', role='button', aria-expanded='false', aria-controls='fullSchedule')=__("Full schedule")
                   #fullSchedule.collapse
                     ul
                       each fullSchedule in data.fullSchedule
@@ -68,7 +68,7 @@ block content
               !=data.performer.stagename
             if editable
               !="  "
-              a.badge.badge-danger(href="/admin/"+(data.performer.is_crew ? "crews" : "profile")+"/"+data.performer._id+"/public")=global.__("EDIT") 
+              a.badge.badge-danger(href="/admin/"+(data.performer.is_crew ? "crews" : "profile")+"/"+data.performer._id+"/public")=__("EDIT") 
           if data.performer.addressesFormatted && data.performer.addressesFormatted.length       
             ul.performer_address.list-inline
               each address in data.performer.addressesFormatted
@@ -81,37 +81,37 @@ block content
                     ul.performer_stats_list.performer_stats_list_1.list-inline
                       if data.performer.stats.events
                         li.list-inline-item
-                          a(href="/"+data.performer.slug+"/events")!=global.__('Events')+" (<span>"+data.performer.stats.events+"</span>)"
+                          a(href="/"+data.performer.slug+"/events")!=__('Events')+" (<span>"+data.performer.stats.events+"</span>)"
                       if data.performer.stats.performances
                         li.list-inline-item
-                          a(href="/"+data.performer.slug+"/performances")!=global.__('Performances')+" (<span>"+data.performer.stats.performances+"</span>)"  
+                          a(href="/"+data.performer.slug+"/performances")!=__('Performances')+" (<span>"+data.performer.stats.performances+"</span>)"  
                       if data.performer.stats.partnerships
                         li.list-inline-item
-                          a(href="/"+data.performer.slug+"/partnerships")!=global.__('Partnerships')+" (<span>"+data.performer.stats.partnerships+"</span>)"
+                          a(href="/"+data.performer.slug+"/partnerships")!=__('Partnerships')+" (<span>"+data.performer.stats.partnerships+"</span>)"
                       if data.performer.stats.crews
                         li.list-inline-item
-                          a(href="/"+data.performer.slug+"/crews")!=global.__('Crews')+" (<span>"+data.performer.stats.crews+"</span>)"    
+                          a(href="/"+data.performer.slug+"/crews")!=__('Crews')+" (<span>"+data.performer.stats.crews+"</span>)"    
                       if data.performer.stats.members
                         li.list-inline-item
-                          a(href="/"+data.performer.slug+"/members")!=global.__('Members')+" (<span>"+data.performer.stats.members+"</span>)"    
+                          a(href="/"+data.performer.slug+"/members")!=__('Members')+" (<span>"+data.performer.stats.members+"</span>)"    
                 div.performer_stats_wrapper
                   if data.performer.stats
                     ul.performer_stats_list.performer_stats_list_2.list-inline
                       if data.performer.stats.footage
                         li.list-inline-item
-                          a(href="/"+data.performer.slug+"/footage")!=global.__('Footage')+" (<span>"+data.performer.stats.footage+"</span>)"
+                          a(href="/"+data.performer.slug+"/footage")!=__('Footage')+" (<span>"+data.performer.stats.footage+"</span>)"
                       if data.performer.stats.playlists
                         li.list-inline-item
-                          a(href="/"+data.performer.slug+"/playlists")!=global.__('Playlists')+" (<span>"+data.performer.stats.playlists+"</span>)"  
+                          a(href="/"+data.performer.slug+"/playlists")!=__('Playlists')+" (<span>"+data.performer.stats.playlists+"</span>)"  
                       if data.performer.stats.videos
                         li.list-inline-item
-                          a(href="/"+data.performer.slug+"/videos")!=global.__('Videos')+" (<span>"+data.performer.stats.videos+"</span>)"    
+                          a(href="/"+data.performer.slug+"/videos")!=__('Videos')+" (<span>"+data.performer.stats.videos+"</span>)"    
                       if data.performer.stats.galleries
                         li.list-inline-item
-                          a(href="/"+data.performer.slug+"/galleries")!=global.__('Galleries')+" (<span>"+data.performer.stats.galleries+"</span>)"    
+                          a(href="/"+data.performer.slug+"/galleries")!=__('Galleries')+" (<span>"+data.performer.stats.galleries+"</span>)"    
                       if data.performer.stats.news
                         li.list-inline-item
-                          a(href="/"+data.performer.slug+"/news")!=global.__('News')+" (<span>"+data.performer.stats.news+"</span>)"
+                          a(href="/"+data.performer.slug+"/news")!=__('News')+" (<span>"+data.performer.stats.news+"</span>)"
               .col-lg-12
                 if (data.performer.web && data.performer.web.length) || (data.performer.social && data.performer.social.length) || (data.performer.publicEmails && data.performer.publicEmails.length)
                   div
@@ -158,7 +158,7 @@ block content
                         if data.performer.publicEmails && data.performer.publicEmails.length          
                           each email in data.performer.publicEmails
                             li.list-inline-item.mb-3
-                              a(href="mailto:"+email data-toggle="tooltip" data-placement="top" title=global.__("Write an email to")+" "+email)
+                              a(href="mailto:"+email data-toggle="tooltip" data-placement="top" title=__("Write an email to")+" "+email)
                                 i.icon-envelope.about_button
                                 
 
@@ -214,7 +214,7 @@ block content
         section.row.program_event_wrapper
             .col-lg-12
               .container
-                h2.main_title.indented_title.color1!=global.__('Program')
+                h2.main_title.indented_title.color1!=__('Program')
                 - addtit = false;
                 each day, index in programmebydayvenue
                   if programmebydayvenue[index+1] && JSON.stringify(programmebydayvenue[index].rooms) == JSON.stringify(programmebydayvenue[index+1].rooms)
@@ -244,11 +244,11 @@ block content
       .container
         section.row.performers_event_wrapper
           .col-lg-12
-            h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.advanced.performers.performersA+")</small>"
+            h2.main_title.indented_title.color1!=__('Performers')+" <small>("+data.advanced.performers.performersA+")</small>"
             h3.performers_infos
               b=data.advanced.performers.performersA
-              !=" "+global.__('performers')+" ("+data.advanced.performers.performersN + " " + global.__('peoples') +") "
-              !=global.__('from') + " " + data.advanced.performers.countries.join(', ')+ " " + global.__('playing')+ " ooooo"
+              !=" "+__('performers')+" ("+data.advanced.performers.performersN + " " + __('peoples') +") "
+              !=__('from') + " " + data.advanced.performers.countries.join(', ')+ " " + __('playing')+ " ooooo"
               b=data.advanced.performers.actsN
               !=" " + data.advanced.performers.acts.sort().join(', ') + "."      
             .row

@@ -9,7 +9,7 @@ block content
               .col
                 img(src='/images/logo_avnode_bar_black.svg', height='50', class='main_logo' alt='AVnode.net')
               .col(style="padding-top: 9px;font-size: 22px;")
-                .text-right!=global.__('CV GENERATOR')
+                .text-right!=__('CV GENERATOR')
 
       if !get.eventscolumns 
         tbody
@@ -98,7 +98,7 @@ block content
               .mb-5.text-justify!=data.aboutFull
 
               if data.crews && data.crews.length
-                h2!=global.__('Crews & Organizations')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
+                h2!=__('Crews & Organizations')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
                 ul.list-unstyled.mb-5
                   each item in data.crews
                     li.media.mt-3.pt-3
@@ -151,7 +151,7 @@ block content
 
               if data.members && data.members.length && !data.hide_members
                 .members
-                  h2!=global.__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
+                  h2!=__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
                   ul.list-unstyled.mb-5
                     each item in data.members
                       li.media.mt-3.pt-3
@@ -203,7 +203,7 @@ block content
 
               if data.performances && data.performances.length
                 .performances
-                  h2!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
+                  h2!=__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
                   ul.list-unstyled.mb-5
                     each item in data.performances
                       - item.bookings = item.bookings.filter(obj => obj.event !== undefined);           
@@ -258,7 +258,7 @@ block content
 
               if data.events && data.events.length
                 .events
-                  h2!=global.__('Productions')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+                  h2!=__('Productions')+" <small>(<span>"+data.stats.events+"</span>)</small>"
                   ul.list-unstyled.mb-5
                     each item in data.events
                       li.media.mt-3.pt-3
@@ -311,7 +311,7 @@ block content
                       
               if data.partnerships_ordered && data.partnerships_ordered.length
                 .partnerships
-                  h2!=global.__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
+                  h2!=__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
                   ul.list-unstyled.mb-5
                     each item in data.partnerships_ordered
                       li.media.mt-3.pt-3
@@ -332,7 +332,7 @@ block content
                       
               if data.news && data.news.length
                 .news
-                  h2.main_title.indented_title!=global.__('Publications')
+                  h2.main_title.indented_title!=__('Publications')
                   ul.list-unstyled.mb-5
                     each item in data.news            
                       li.media.mt-3.pt-3
@@ -358,7 +358,7 @@ block content
                                   !=(host === "localhost:8006" ? "http" : "https")+"://"+host+"/news/"+item.slug
                               
               //-if data.footage && data.footage.length
-                h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
                 ul.list-unstyled.mb-5
                   each item in data.footage            
                     li.media.mt-3.pt-3
@@ -377,7 +377,7 @@ block content
                           .text-justify!=item.about
 
               //-if data.videos && data.videos.length
-                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
                 ul.list-unstyled.mb-5
                   each item in data.videos            
                     li.media.mt-3.pt-3
@@ -396,7 +396,7 @@ block content
                           .text-justify!=item.about
 
               //-if data.playlists && data.playlists.length
-                h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
                 ul.list-unstyled.mb-5
                   each item in data.playlists
                     li.media.mt-3.pt-3
@@ -415,7 +415,7 @@ block content
                           .text-justify!=item.about
             
               //-if data.galleries && data.galleries.length    
-                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
                 ul.list-unstyled.mb-5
                   each item in data.galleries            
                     li.media.mt-3.pt-3
@@ -520,7 +520,7 @@ block content
               .mb-5.text-justify!=data.aboutFull
 
               if data.crews && data.crews.length
-                h2!=global.__('Crews & Organizations')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
+                h2!=__('Crews & Organizations')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
                 ul.list-unstyled.mb-5
                   each item in data.crews
                     li.media.mt-3.pt-3
@@ -573,7 +573,7 @@ block content
 
               if data.members && data.members.length && !data.hide_members
                 .members
-                  h2!=global.__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
+                  h2!=__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
                   ul.list-unstyled.mb-5
                     each item in data.members
                       li.media.mt-3.pt-3
@@ -625,7 +625,7 @@ block content
 
               if data.performances && data.performances.length
                 .performances
-                  h2!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
+                  h2!=__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
                   ul.list-unstyled.mb-5
                     each item in data.performances
                       - item.bookings = item.bookings.filter(obj => obj.event !== undefined);           
@@ -680,7 +680,7 @@ block content
 
               if data.news && data.news.length
                 .news
-                  h2.main_title.indented_title!=global.__('Publications')
+                  h2.main_title.indented_title!=__('Publications')
                   ul.list-unstyled.mb-5
                     each item in data.news            
                       li.media.mt-3.pt-3
@@ -717,7 +717,7 @@ block content
               -if(!get.hideLinks) colspan=colspan+1
               td(colspan=colspan)
                 .events
-                  h2!=global.__('Productions')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+                  h2!=__('Productions')+" <small>(<span>"+data.stats.events+"</span>)</small>"
             each item in data.events
               tr
                 if !get.hideImages
@@ -777,7 +777,7 @@ block content
               -if(!get.hideLinks) colspan=colspan+1
               td(colspan=colspan)
                .partnerships
-                  h2!=global.__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
+                  h2!=__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
             each item in data.partnerships_ordered
               tr
                 if !get.hideImages

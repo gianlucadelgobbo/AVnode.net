@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
   }])
   .exec((err, data) => {
     res.render('crews/list', {
-      title: __('Crews'),
+      title: req.__('Crews'),
       data: data
     });
   });

@@ -1,4 +1,5 @@
 {
+	"404": " Page not found",
 	"------------------POPUP------------------": "------------------POPUP------------------",
 	"AVnode.net is now in Beta Version, feel free to test it but read the following alerts:": "Az AVnode.net most béta verzióban van, nyugodtan tesztelje, de olvassa el a következő figyelmeztetéseket:",
 	"Control panel is still under development, some features are still not fully working": "A központ még fejlesztés alatt áll, néhány szolgáltatás még mindig nem működik teljesen",
@@ -56,7 +57,7 @@
 	"New VJ Television Video": "Új VJ televíziós videó",
 	"------------------MENU USER------------------": "------------------MENU USER------------------",
 	"Profile": "Profil",
-	"Control Panel": "Vezérlőpult",
+	"Control Panel": "Kezelőpanel",
 	"Your Account": "Fiókja",
 	"Log out": "Kijelentkezés",
 	"------------------MENU SEARCH------------------": "------------------MENU SEARCH------------------",
@@ -465,7 +466,6 @@
 	"Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.": "Az ellenőrzés sikeres volt, hogy fellépőként szerepeljen, kérjük, jelentkezzen be, és töltse ki profilját képekkel és infókkal.",
 	"LOG IN": "BELÉPÉS",
 	"------------------CONTROL PANEL------------------": "------------------KEZELŐPANEL------------------",
-	"Control Panel": "Kezelőpanel",
 	"Collapse": "Összeomlás",
 	"SHOW": "ELŐADÁS",
 	"ADD SOCIAL": "SZOCIÁLIS HOZZÁADÁS",
@@ -754,5 +754,11 @@
 	"There are some errors": "Van néhány hiba",
 	"Please select a call": "Kérjük, válasszon egy hívást",
 	"This person is already in with another act and can not be edited": "Ez a személy már részt vesz egy másik fellépésben, és nem szerkeszthető",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
+	"Here some useful links": "Here some useful links",
+	"AVnode": {
+		"net is now in Beta Version, feel free to test it but read the following alerts": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts"
+	},
+	"Please send any bug and suggestion to": "Please send any bug and suggestion to",
+	"The list of Organizations": " All Most active"
 }

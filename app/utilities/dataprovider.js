@@ -740,7 +740,7 @@ dataprovider.getData = async (req, res, view) => {
         if (view == "json") {
           res.status(404).send({ message: `DOC_NOT_FOUND` });
         } else {
-          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+          res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
         }  
       } else {
         if (helpers.editable(req, data, id)) {
@@ -753,7 +753,7 @@ dataprovider.getData = async (req, res, view) => {
           } else {
             if (req.params.sez == "partners" && req.body.subject && req.body.submit=="send") {
               router.addPartnersToQueque(req, res, data, () => {
-                req.flash('success', { msg: __('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+__("CHECK THE CUE")+'</b></a>' });
+                req.flash('success', { msg: req.__('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+req.__("CHECK THE CUE")+'</b></a>' });
                 res.render(view, {
                   title: view,
                   scripts: [],
@@ -770,7 +770,7 @@ dataprovider.getData = async (req, res, view) => {
               });
             } else if (req.params.sez == "events" && req.body.subject && req.body.submit=="send") {
               router.addPartnersEventToQueque(req, res, data, () => {
-                req.flash('success', { msg: __('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+__("CHECK THE CUE")+'</b></a>' });
+                req.flash('success', { msg: req.__('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+req.__("CHECK THE CUE")+'</b></a>' });
                 res.render(view, {
                   title: view,
                   scripts: [],
@@ -806,7 +806,7 @@ dataprovider.getData = async (req, res, view) => {
           if (view == "json") {
             res.status(401).send({ message: `DOC_NOT_OWNED` });
           } else {
-            res.status(401).render('401', {path: req.originalUrl, title:__("401: Access to the content is denied"), titleicon:"icon-warning"});
+            res.status(401).render('401', {path: req.originalUrl, title:req.__("401: Access to the content is denied"), titleicon:"icon-warning"});
           }  
         }
       }
@@ -815,14 +815,14 @@ dataprovider.getData = async (req, res, view) => {
       if (view == "json") {
         res.status(500).send({ message: `${JSON.stringify(err)}` });
       } else {
-        res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+        res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
       }
     }
   } else {
     if (view == "json") {
       res.status(404).send({ message: `API_NOT_FOUND` });
     } else {
-      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+      res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
     }  
   }
 }
@@ -1249,6 +1249,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         }
       }
     }
+    console.log("CE PROVO")
     try {
       /* logger.info("populate");
       logger.info(populate);
@@ -1266,8 +1267,8 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
       select(select).
       exec()
       let data;
-      /* logger.info("ddd");
-      logger.info(ddd); */
+      logger.info("ddd");
+      logger.info(ddd);
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};
       if (data && data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
@@ -1465,9 +1466,9 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
     if (subsection != "show") {
       jsonld["@type"] = "ItemList";
       jsonld.itemListElement = [];
-      jsonld.name = data.stagename+" "+__(config.sections[section][subsection].title);
+      jsonld.name = data.stagename+" "+req.__(config.sections[section][subsection].title);
       jsonld.image = data.imageFormats.large;
-      jsonld.description = __("The list of "+config.sections[section][subsection].title+" by")+" "+data.stagename;
+      jsonld.description = req.__("The list of "+config.sections[section][subsection].title+" by")+" "+data.stagename;
       jsonld.itemListElement = [];
       for(let a=0;a<data.length;a++) {
         if (data[a].stagename) {
@@ -1542,7 +1543,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
     if (subsection != "show" && !data.performer && !data.performance) {
       jsonld["@type"] = "ItemList";
       jsonld.itemListElement = [];
-      jsonld.name = data.title+" "+__(config.sections[section][subsection].title);
+      jsonld.name = data.title+" "+req.__(config.sections[section][subsection].title);
       if (type) jsonld.name+= ": "+type.name;
       if (req.params.day) jsonld.name+= ": "+req.params.day;
       jsonld.image = data.imageFormats.large;
@@ -1551,7 +1552,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
       } else if (data.performance) {
         jsonld.description = data.performance.description;
       } else {
-        jsonld.description = __("The "+config.sections[section][subsection].title+" of")+" "+(type ? type.name+" "+__("of")+" " : req.params.day ? req.params.day+" "+__("of")+" " : "") + data.title;
+        jsonld.description = req.__("The "+config.sections[section][subsection].title+" of")+" "+(type ? type.name+" "+req.__("of")+" " : req.params.day ? req.params.day+" "+req.__("of")+" " : "") + data.title;
       }
       jsonld.itemListElement = [];
       for(let a=0;a<data.length;a++) {
@@ -1657,7 +1658,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
           }
         }  
       }
-      jsonld.name = data.title+" "+__("Program")+": "+data.performance.title;
+      jsonld.name = data.title+" "+req.__("Program")+": "+data.performance.title;
       jsonld.description = data.performance.description;
       jsonld.image = data.performance.imageFormats.large;
       if ((data.performance.web && data.performance.web.length) || (data.performance.social && data.performance.social.length)) {
@@ -1730,7 +1731,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
     jsonld.itemListElement = [];
     jsonld.name = title;
     jsonld.image = "/images/sez/avnode.net-"+section+".jpg";
-    jsonld.description = __("The list of "+jsonld.name);
+    jsonld.description = req.__("The list of "+jsonld.name);
     jsonld.itemListElement = [];
     for(let a=0;a<data.length;a++) {
       if (data[a].stagename) {
@@ -1806,7 +1807,6 @@ dataprovider.fetchLists = async (model, query, select, populate, limit, skip, so
     const total = await model.countDocuments(query);
     //logger.info(total)
 
-    console.log(query)
     let data = await model.find(query)
       .populate(populate)
       .select(select)
@@ -1815,8 +1815,6 @@ dataprovider.fetchLists = async (model, query, select, populate, limit, skip, so
       .sort(sorting)
       .exec();
     
-      console.log(data)
-
     cb(null, data, total);
   } catch (err) {
     // 🔥 Enhanced Error Logging with File Name
@@ -1916,7 +1914,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
 
           //logger.info(data);
       if (err || !data || data === null) {
-        res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+        res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
       } else {
         // MAP
         if (data && data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
@@ -2066,7 +2064,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           });
         } else {
           let title = (data.stagename ? data.stagename : data.title)
-          title+= (config.sections[section] && subsection!="show" && config.sections[section][subsection] ? " "+__(config.sections[section][subsection].title) : "");
+          title+= (config.sections[section] && subsection!="show" && config.sections[section][subsection] ? " "+req.__(config.sections[section][subsection].title) : "");
           if (type) title+= ": "+type.name;
           if (req.params.day) title+= ": "+req.params.day;
           if (data.performance) title+= ": "+data.performance.title;
@@ -2108,7 +2106,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
 dataprovider.list = (req, res, section, model) => {
 
   if (!model) {
-    res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+    res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
   } else {
     const page = req.params.page;
     const filter = req.params.filter;
@@ -2125,7 +2123,7 @@ dataprovider.list = (req, res, section, model) => {
     const populate = config.sections[section].list_populate;
   
     if (notfound) {
-      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+      res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
     } else {
       //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
       let query = Object.assign({}, config.sections[section].categoriesQueries[filter]);
@@ -2159,7 +2157,7 @@ dataprovider.list = (req, res, section, model) => {
               nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
             });
           } else {
-            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+            res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
           }
         } else {
           let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;

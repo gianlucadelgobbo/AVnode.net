@@ -1,18 +1,19 @@
-import getconfig from 'getconfig';
-import i18n from 'i18n';
-import { fileURLToPath } from 'url';
-import path from 'path';
+import i18n from "i18n";
+import path from "path";
+import { fileURLToPath } from "url";
+import config from "getconfig";
 
-// Fix `__dirname` in ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Get the current directory
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 i18n.configure({
-  locales: getconfig.locales,
-  header: 'accept-language-disabled',
-  defaultLocale: getconfig.defaultLocale,
-  directory: path.join(__dirname, '../../locales'),
-  register: global
+  locales: config.locales,
+  header: "accept-language-disabled",
+  defaultLocale: config.defaultLocale,
+  directory: path.join(__dirname, "../../locales"), // ✅ Ensures correct path
+  autoReload: true, // ✅ Automatically reloads translations
+  syncFiles: true, // ✅ Keeps translation files in sync
+  objectNotation: true, // ✅ Allows nested JSON keys
 });
 
 export default i18n;

@@ -65,28 +65,28 @@ block content
           input(type='hidden', name="partner_owner", value=owner)
           //input(type='hidden', name="delegate", value=user.name)
           .modal-header
-            h5#modalAddPartnerLabel.modal-title=global.__("Add partner")
+            h5#modalAddPartnerLabel.modal-title=__("Add partner")
             button.close(type='button', data-dismiss='modal', aria-label='Close')
               span(aria-hidden='true') ×
           .modal-body
             .alert.d-none
             .form-group
-              label(for='formPartnerAddBrand')=global.__("Brand")
+              label(for='formPartnerAddBrand')=__("Brand")
               input#formPartnerAddBrand.form-control(type='text', name="stagename", placeholder='')
             .form-group
-              label(for='formPartnerAddWeb')=global.__("Web channels")
+              label(for='formPartnerAddWeb')=__("Web channels")
                 !=" "
-                small=global.__("one per line")
+                small=__("one per line")
               textarea#formPartnerAddWeb.form-control(name="web")
             .form-group
-              label(for='formPartnerAddSocial')=global.__("Social channels")
+              label(for='formPartnerAddSocial')=__("Social channels")
                 !=" "
-                small=global.__("one per line")
+                small=__("one per line")
               textarea#formPartnerAddSocial.form-control(name="social")
 
           .modal-footer
-            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
-            button.btn.btn-primary(type='submit')=global.__("Save")
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=__("Close")
+            button.btn.btn-primary(type='submit')=__("Save")
   
   // Modal Link Partner
   #modalLinkPartner.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalLinkPartnerLabel', aria-hidden='true')
@@ -97,16 +97,16 @@ block content
           //input(type='hidden', name="delegate", value=user.name)
           input(type='hidden', name="id")
           .modal-header
-            h5#modalAddPartnerLabel.modal-title=global.__("Add partner")
+            h5#modalAddPartnerLabel.modal-title=__("Add partner")
             button.close(type='button', data-dismiss='modal', aria-label='Close')
               span(aria-hidden='true') ×
           .modal-body
             .alert.d-none
             .form-group
-              label(for='formPartnerLinkName')=global.__("Brand")
+              label(for='formPartnerLinkName')=__("Brand")
               input#formPartnerLinkName.form-control(type='text', name="brand", placeholder='')
 
           .modal-footer
-            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
-            button.btn.btn-primary(type='submit')=global.__("Add")
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=__("Close")
+            button.btn.btn-primary(type='submit')=__("Add")
 

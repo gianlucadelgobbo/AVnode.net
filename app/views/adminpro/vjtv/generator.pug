@@ -6,22 +6,22 @@ block content
     .col.mb-2.mb-md-0.d-print-none
       form.d-print-none
         .from-group
-          label(for="datepicker")=global.__("Generator by day")
+          label(for="datepicker")=__("Generator by day")
           .input-group
-            input#datepicker.form-control(type="text", name="day", value=get.day placeholder=global.__("Select a day"))
+            input#datepicker.form-control(type="text", name="day", value=get.day placeholder=__("Select a day"))
             .input-group-append
               button.btn.btn-outline-secondary(type="button" onclick="$( '#datepicker' ).datepicker( 'show' );")
                 i.icon-calendar
         script.
           var dates = !{JSON.stringify(availabledays)};
-        button.btn.btn-primary.btn-sm.mt-2(type="submit")=global.__("GENERATE")
+        button.btn.btn-primary.btn-sm.mt-2(type="submit")=__("GENERATE")
     .col.mb-2.mb-md-0.d-print-none.mr-3
       form.d-print-none
         .from-group
-          label(for="monthpicker")=global.__("Generator by month")
+          label(for="monthpicker")=__("Generator by month")
           select#monthpicker.form-control(style="width:300px" name="month")
             //onchange="if (this.value) window.location.href='/adminpro/vjtv/?month='+this.value+''"
-            option(value=0)=global.__("Select month")
+            option(value=0)=__("Select month")
             - var now = new Date();
             - var mydate = new Date(now.setFullYear(now.getFullYear()-1))
             - var end = new Date(now.setFullYear(now.getFullYear()+2))
@@ -31,7 +31,7 @@ block content
               - mydate = new Date(mydate.setMonth(mydate.getMonth()+1));
 
             - }
-        button.btn.btn-primary.btn-sm.mt-2=global.__("GENERATE")
+        button.btn.btn-primary.btn-sm.mt-2=__("GENERATE")
 
         //.btn-group.mr-2
           button.btn.btn-sm.btn-outline-secondary(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD FROM AVNODE"
@@ -44,12 +44,12 @@ block content
   table.table.mt-5
     thead
       tr
-        th=global.__("Programming")
-        th=global.__("Duration")
-        th=global.__("Title")
-        th=global.__("Date")
-        th=global.__("CAT")
-        th=global.__("Link")
+        th=__("Programming")
+        th=__("Duration")
+        th=__("Title")
+        th=__("Date")
+        th=__("CAT")
+        th=__("Link")
     tbody
       if data.length  
         each item, index in data
@@ -60,6 +60,6 @@ block content
             td=item.video.createdAt.toDateString()
             td=item.category.name
             td
-              a(href="/admin/videos/"+item.video._id+"/public", target="_blank")!=global.__("edit")
+              a(href="/admin/videos/"+item.video._id+"/public", target="_blank")!=__("edit")
                 !=" | "
-              a(href="/videos/"+item.video.slug, target="_blank")!=global.__("view")
+              a(href="/videos/"+item.video.slug, target="_blank")!=__("view")

@@ -446,7 +446,7 @@ router.editSubscription = (req, res) => {
     daysdays.unshift(daysdays[0]-(24*60*60*1000));
     daysdays.push(daysdays[daysdays.length-1]+(24*60*60*1000));
     let days = [];
-    for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[global.getLocale()].weekdaydaymonthyear)});
+    for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[req.getLocale()].weekdaydaymonthyear)});
     
     res.render('adminpro/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
       logger.info(err);
@@ -1394,7 +1394,7 @@ router.updateSubscription = (req, res) => {
                 const mail = {
                   from: event.organizationsettings.call.calls[sub.call].emailname + " <"+ event.organizationsettings.call.calls[sub.call].email + ">",
                   to: sub.reference.name + " " + sub.reference.surname + " <"+ sub.reference.email + ">",
-                  subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
+                  subject: req.__("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
                   text: email
                 };
                 //logger.info("pre gMailer")

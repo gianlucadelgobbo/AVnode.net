@@ -56,13 +56,13 @@ block content
           td
             form(action="")
               .border-bottom.pb-1.mb-1
-                h4=global.__('STATUS')
+                h4=__('STATUS')
                 each status in data.status
                   .form-check.text-nowrap
                     input.form-check-input.change-status(id='status'+status._id+item._id, data-id=item._id, data-status=status._id, name='status'+item._id, type='radio', value=status._id, checked=item.status._id.toString()==status._id.toString() ? "checked" : undefined)
                     label.form-check-label(for='status'+status._id+item._id)=status.name
               .border-bottom.pb-1.mb-1
-                h4=global.__('SCHEDULE')
+                h4=__('SCHEDULE')
                 if item.schedule && item.schedule.length && item.schedule[0].boxDate
                   each schedule, index in item.schedule
                     if schedule.boxDate
@@ -72,20 +72,20 @@ block content
                         if schedule.price && schedule.price > 0
                           !="Price: <b>"+schedule.price+",00 €</b>"
                           if schedule.alleventschedulewithoneprice
-                            !=" | <b>"+global.__('PRICE INCLUDES ALL APPOINTMENTS')+"</b>"
+                            !=" | <b>"+__('PRICE INCLUDES ALL APPOINTMENTS')+"</b>"
                           if schedule.priceincludesothershows
-                            !=" | <b>"+global.__('PRICE IS FOR THE FULL DAY')+"</b>"
+                            !=" | <b>"+__('PRICE IS FOR THE FULL DAY')+"</b>"
                           if schedule.paypal
                             !=" | "
                             a(href=schedule.paypal target="_blank")
                               i.icon-money-check-alt
                         else
                           !="Price: "
-                          span.badge.badge-info=global.__('FREE ENTRY')
+                          span.badge.badge-info=__('FREE ENTRY')
                         !=" | "
                         b
                           a.edit-price(data-program=item._id, href="#")
-                            span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                            span(data-toggle="tooltip", data-placement="top", title=__("edit"))
                               i.icon-edit
 
                   //if item.schedule[0].price && item.schedule[0].alleventschedulewithoneprice
@@ -94,25 +94,25 @@ block content
                       !=" | "
                       b
                         a.edit-price(data-program=item._id, href="#")
-                          span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                          span(data-toggle="tooltip", data-placement="top", title=__("edit"))
                             i.icon-edit
                     else if !item.schedule[0].price
                       p.price
                         !="Price: "
-                        span.badge.badge-info=global.__('FREE ENTRY')
+                        span.badge.badge-info=__('FREE ENTRY')
                         !=" | "
                         b
                           a.edit-price(data-program=item._id, href="#")
-                            span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                            span(data-toggle="tooltip", data-placement="top", title=__("edit"))
                               i.icon-edit
                 else
-                  .badge.badge-danger=global.__('TO BE SCHEDULED')
+                  .badge.badge-danger=__('TO BE SCHEDULED')
                 div
                   b="Costs"
                   !=" | "
                   b
                     a.edit-cost(data-program=item._id, href="#")
-                      span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                      span(data-toggle="tooltip", data-placement="top", title=__("edit"))
                         i.icon-edit
                   br
                   if item.fee || item.accommodation_cost || item.transfer_cost
@@ -126,9 +126,9 @@ block content
                     br
                     !="Total: <b>"+((item.accommodation_cost ? item.accommodation_cost : 0)+(item.technical_cost ? item.technical_cost : 0)+(item.transfer_cost ? item.transfer_cost : 0)+(item.transfer_cost ? item.transfer_cost : 0))+" €</b>"
                   else 
-                    .badge.badge-info=global.__('NO COSTS')
+                    .badge.badge-info=__('NO COSTS')
               .text-right.pb-1.mb-1
-                button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Cancel subscription')
+                button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=__('Cancel subscription')
           td(style="max-width:35vw;overflow: hidden;")
             if index>0 && get.sortby=="sortby_perf_name" && item.performance._id == data.program[index-1].performance._id && item.call == data.program[index-1].call
               span.badge.badge-danger="DUPLICATE"+item.call+" "+data.program[index-1].call
@@ -137,11 +137,11 @@ block content
               !=" "
               if user.is_admin
                 a(href="/admin/performances/"+item.performance._id+"/public", target="_blank")
-                  span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                  span(data-toggle="tooltip", data-placement="top", title=__("edit"))
                     i.icon-edit
                 !=" | "
               a(href="/performances/"+item.performance.slug, target="_blank")
-                span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                span(data-toggle="tooltip", data-placement="top", title=__("View"))
                   i.icon-eye
               !=" | TYPE: "
               if item.performance.type
@@ -259,11 +259,11 @@ block content
                     !=" "
                     if user.is_admin
                       a(href="/admin/"+(useruser.is_crew ? "crews" : "profile")+"/"+useruser._id+"/public", target="_blank")
-                        span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                        span(data-toggle="tooltip", data-placement="top", title=__("edit"))
                           i.icon-edit
                       !=" | "
                     a(href="/"+useruser.slug, target="_blank")
-                      span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                      span(data-toggle="tooltip", data-placement="top", title=__("View"))
                         i.icon-eye
                     !=" | "
 
@@ -303,7 +303,7 @@ block content
               !=" | "
               b
                 a.edit-availability(data-program=item._id, href="#")
-                  span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                  span(data-toggle="tooltip", data-placement="top", title=__("edit"))
                     i.icon-edit
             if !item.subscriptions || !item.subscriptions.length
               .badge.badge-danger MISSING
@@ -414,7 +414,7 @@ block content
       .modal-content
         form#editSubscription
           .modal-header
-            h5#modalAddPartnerLabel.modal-title=global.__("Edit subscription")
+            h5#modalAddPartnerLabel.modal-title=__("Edit subscription")
             button.close(type='button', data-dismiss='modal', aria-label='Close')
               span(aria-hidden='true') ×
           .modal-body
@@ -423,8 +423,8 @@ block content
             .content
 
           .modal-footer
-            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
-            button.btn.btn-primary(type='submit')=global.__("Save")
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=__("Close")
+            button.btn.btn-primary(type='submit')=__("Save")
   
   //
     textarea.form-control(name='to')=del.join("\n")

@@ -1,4 +1,5 @@
 {
+	"404": " Page not found",
 	"------------------POPUP------------------": "------------------POPUP------------------",
 	"AVnode.net is now in Beta Version, feel free to test it but read the following alerts:": "AVnode.net ist jetzt in der Beta-Version. Sie können es gerne testen, aber liesen sie die folgenden Warnungen,bitte:",
 	"Control panel is still under development, some features are still not fully working": "Das Control Panel befindet sich noch in der Entwicklung. Einige Funktionen funktionieren noch nicht vollständig",
@@ -464,7 +465,6 @@
 	"Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.": "Die Überprüfung war erfolgreich. Um als Darsteller aufgeführt zu werden, melden Sie sich bitte an und vervollständigen Sie Ihr Profil mit Bildern und Infos.",
 	"LOG IN": "EINLOGGEN",
 	"------------------CONTROL PANEL------------------": "------------------SCHALTTAFEL------------------",
-	"Control Panel": "Schalttafel",
 	"Collapse": "Zusammenbruch",
 	"SHOW": "SHOW",
 	"ADD SOCIAL": "SOZIAL HINZUFÜGEN",
@@ -753,5 +753,11 @@
 	"Unable to submit the proposal, please try again.": "Das Angebot kann nicht gesendet werden. Bitte versuchen Sie es erneut.",
 	"There are some errors": "Es gibt einige Fehler",
 	"Please select a call": "Bitte wählen Sie einen Anruf aus",
-	"This person is already in with another act and can not be edited": "Diese Person ist bereits bei einem anderen Akt dabei und kann nicht bearbeitet werden."
+	"This person is already in with another act and can not be edited": "Diese Person ist bereits bei einem anderen Akt dabei und kann nicht bearbeitet werden.",
+	"Here some useful links": "Here some useful links",
+	"AVnode": {
+		"net is now in Beta Version, feel free to test it but read the following alerts": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts"
+	},
+	"Please send any bug and suggestion to": "Please send any bug and suggestion to",
+	"The list of Organizations": " All Most active"
 }

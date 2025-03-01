@@ -27,16 +27,16 @@ block title
                 h1.main_title=data.title
                   if editable
                     !="  "
-                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=global.__("EDIT")
+                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=__("EDIT")
                 if data.stats
                   .performance_stat_container
                     .performance_stat_wrapper
                       ul
                         if data.stats.visits
-                          li=data.stats.visits + ' ' + global.__('Views')
+                          li=data.stats.visits + ' ' + __('Views')
                         li
                           span.likes_count=data.stats.likes ? data.stats.likes : 0
-                          !=' ' + global.__('Likes')                      
+                          !=' ' + __('Likes')                      
               .col-lg-3.mt-md-4
                 include ../partials/share_like
             p.subtitle=data.subtitle && data.subtitle!= "Text is missing" ? data.subtitle : data.boxDate
@@ -45,7 +45,7 @@ block title
                 if data.boxVenue
                   p.boxVenue!=data.boxVenue
                   p
-                    a(data-toggle='collapse', href="javascript:void(0);", data-target='#fullSchedule', role='button', aria-expanded='false', aria-controls='fullSchedule')=global.__("Full schedule")
+                    a(data-toggle='collapse', href="javascript:void(0);", data-target='#fullSchedule', role='button', aria-expanded='false', aria-controls='fullSchedule')=__("Full schedule")
                   #fullSchedule.collapse
                     ul
                       each fullSchedule in data.fullSchedule
@@ -98,7 +98,7 @@ block content
           .container
             .row
               .col-lg-12
-                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
                 .performance_divider.basic_divider
                 .owl-carousel.loop_3items.owl-theme
                   each item in data.galleries
@@ -110,7 +110,7 @@ block content
           .container
             .row
               .col-lg-12
-                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
                 .performance_divider.basic_divider
                 .owl-carousel.loop_3items.owl-theme
                   each item in data.videos            
@@ -121,7 +121,7 @@ block content
       section.row.program_event_wrapper
           .col-lg-12
             .container
-              h2.main_title.indented_title.color1!=global.__('Program')
+              h2.main_title.indented_title.color1!=__('Program')
               - addtit = false;
               each day, index in data.advanced.programmebydayvenue
                 if data.advanced.programmebydayvenue[index+1] && JSON.stringify(data.advanced.programmebydayvenue[index].rooms) == JSON.stringify(data.advanced.programmebydayvenue[index+1].rooms)
@@ -143,7 +143,7 @@ block content
       section.row.program_event_wrapper
           .col-lg-12
             .container
-              h2.main_title.indented_title.color1!=global.__('Performances') + (data.advanced.programmebydayvenue ?  " " + global.__('to be scheduled') : "")
+              h2.main_title.indented_title.color1!=__('Performances') + (data.advanced.programmebydayvenue ?  " " + __('to be scheduled') : "")
               .owl-carousel.loop.owl-theme
                 each item in data.advanced.programmenotscheduled
                   if item
@@ -165,11 +165,11 @@ block content
       .container
         section.row.performers_event_wrapper
           .col-lg-12
-            h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.advanced.performers.performersA+")</small>"
+            h2.main_title.indented_title.color1!=__('Performers')+" <small>("+data.advanced.performers.performersA+")</small>"
             h3.performers_infos
               b=data.advanced.performers.performersA
-              !=" "+global.__('performers')+" ("+data.advanced.performers.performersN + " " + global.__('peoples') +") "
-              !=global.__('from') + " " + data.advanced.performers.countries.sort().join(', ')+ " " + global.__('playing')+ " "
+              !=" "+__('performers')+" ("+data.advanced.performers.performersN + " " + __('peoples') +") "
+              !=__('from') + " " + data.advanced.performers.countries.sort().join(', ')+ " " + __('playing')+ " "
               b=data.advanced.performers.actsN
               !=" " + data.advanced.performers.acts.sort().join(', ') + "."      
             .row
@@ -195,7 +195,7 @@ block content
     .container
       section.row.partners_event_wrapper
         .col-lg-8
-          h2.main_title.indented_title.color1!=global.__('Production')
+          h2.main_title.indented_title.color1!=__('Production')
         .col-lg-4
           img.img-fluid(src="/images/logo_avnode_symbol_dark.svg", width="300", height="143", alt="AVnode logo")
         .col-sm-12
@@ -219,14 +219,14 @@ block content
       .container
         section.row.partners_event_wrapper
           .col-lg-8
-            h2.main_title.indented_title.color1!=global.__('Partners')
+            h2.main_title.indented_title.color1!=__('Partners')
           .col-lg-4
             img.img-fluid(src="/images/logo_avnode_symbol_dark.svg", width="300", height="143", alt="AVnode logo")
           .col-sm-12
             .row
               each partners_block in data.partners
                 .col-sm-12.partners_block
-                  h4!=global.__('Partners')+ " / " +partners_block.category.name
+                  h4!=__('Partners')+ " / " +partners_block.category.name
                   .basic_divider
                   .row.partners_list_wrapper
                     each partner in partners_block.users

@@ -6,13 +6,13 @@ block content
       thead
         tr
           th.table-firstcolumn-ID="ID"
-          th=global.__("Organization")
-          th=global.__("Event")
-          th=global.__("User")
-          th=global.__("Subject")
-          th=global.__("Messages to send")
-          th=global.__("Messages sent")
-          th=global.__("Actions")
+          th=__("Organization")
+          th=__("Event")
+          th=__("User")
+          th=__("Subject")
+          th=__("Messages to send")
+          th=__("Messages sent")
+          th=__("Actions")
       tbody
         if data && data.length
           each item, index in data

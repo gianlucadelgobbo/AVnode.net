@@ -1,4 +1,5 @@
 {
+	"404": " Page not found",
 	"------------------POPUP------------------": "------------------POPUP------------------",
 	"AVnode.net is now in Beta Version, feel free to test it but read the following alerts:": "AVnode.net цяпер у бэта-версіі, не саромейцеся праверыць яго, але прачытайце наступныя абвесткі:",
 	"Control panel is still under development, some features are still not fully working": "Панэль кіравання ўсё яшчэ распрацоўваецца, некаторыя функцыі ўсё яшчэ не працуюць цалкам",
@@ -465,7 +466,6 @@
 	"Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.": "Праверка прайшла паспяхова, каб уключыць у спіс выканаўцаў, увайдзіце ў сістэму і запоўніце свой профіль выявамі і інфармацыяй.",
 	"LOG IN": "УВАЙСЦІ",
 	"------------------CONTROL PANEL------------------": "------------------ПАНЭЛЬ КІРАВАННЯ------------------",
-	"Control Panel": "Панэль кіравання",
 	"Collapse": "Згарнуць",
 	"SHOW": "ШОУ",
 	"ADD SOCIAL": "ДАДАЦЬ САЦЫЯЛЬНЫ",
@@ -754,5 +754,11 @@
 	"There are some errors": "Ёсць некаторыя памылкі",
 	"Please select a call": "Выберыце выклік",
 	"This person is already in with another act and can not be edited": "Гэты чалавек ужо ўдзельнічае ў іншым акце, і яго нельга рэдагаваць",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
+	"Here some useful links": "Here some useful links",
+	"AVnode": {
+		"net is now in Beta Version, feel free to test it but read the following alerts": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts"
+	},
+	"Please send any bug and suggestion to": "Please send any bug and suggestion to",
+	"The list of Organizations": " All Most active"
 }

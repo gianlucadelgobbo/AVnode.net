@@ -17,16 +17,16 @@ block title
                 h1.main_title=data.title
                   if editable
                     !="  "
-                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=global.__("EDIT")
+                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=__("EDIT")
                 if data.stats
                   .performance_stat_container
                     .performance_stat_wrapper
                       ul
                         if data.stats.visits
-                          li=data.stats.visits + ' ' + global.__('Views')
+                          li=data.stats.visits + ' ' + __('Views')
                         li
                           span.likes_count=data.stats.likes ? data.stats.likes : 0
-                          !=' ' + global.__('Likes')                      
+                          !=' ' + __('Likes')                      
               .col-lg-3.mt-md-4
                 include ../partials/share_like
             .row
@@ -50,18 +50,18 @@ block content
             h1.main_title=data.videos[0].title
               if editable
                 !="  "
-                a.badge.badge-danger(href="/admin/videos/"+data.videos[0]._id+"/public")=global.__("EDIT")
+                a.badge.badge-danger(href="/admin/videos/"+data.videos[0]._id+"/public")=__("EDIT")
             if data.videos[0].stats
               .performance_stat_container
                 .performance_stat_wrapper
                   ul
                     if data.videos[0].stats.visits
-                      li=data.videos[0].stats.visits + ' ' + global.__('Views')
+                      li=data.videos[0].stats.visits + ' ' + __('Views')
                     li
                       span.likes_count=data.videos[0].stats.likes ? data.videos[0].stats.likes : 0
-                      !=' ' + global.__('Likes')
+                      !=' ' + __('Likes')
                     if data.videos[0].stats.downloads
-                      li=data.videos[0].stats.downloads + ' ' + global.__('Downloads')
+                      li=data.videos[0].stats.downloads + ' ' + __('Downloads')
           .col-lg-3.mt-md-4
             include ../partials/share_like
         .row
@@ -72,7 +72,7 @@ block content
                   source(src=process.env.WAREHOUSE+data.videos[0].media.file, type='video/mp4')
                   //-source(src='MY_VIDEO.webm', type='video/webm')
                   p.vjs-no-js
-                    !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
+                    !=__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
                     a(href='http://videojs.com/html5-video-support/', target='_blank')=!"HTML5 video"
             if data.videos[0].media && data.videos[0].media.iframe
               !=data.videos[0].media.iframe
@@ -82,13 +82,13 @@ block content
               h3=__("Data")
               if data.videos[0].media && data.videos[0].media.file
                 ul
-                  li=global.__('File name')+": "
+                  li=__('File name')+": "
                     b=data.videos[0].media.file.substring(data.videos[0].media.file.lastIndexOf("/")+1)
-                  li=global.__('File size')+": "
+                  li=__('File size')+": "
                     b=data.videos[0].media.filesizeHR
-                  li=global.__('File duration')+": "
+                  li=__('File duration')+": "
                     b=data.videos[0].media.duration
-                  li=global.__('File type')+": "
+                  li=__('File type')+": "
                     b=ext
             if data.videos[0].tags
               .data_footage_video_wrapper
@@ -136,7 +136,7 @@ block content
           .container
             .row
               .col-lg-12
-                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
+                h2.main_title.indented_title!=__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
                 .performance_divider.basic_divider
                 .owl-carousel.loop_3items.owl-theme
                   - var basepath = "/performances/"+data.slug

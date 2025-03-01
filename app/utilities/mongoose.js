@@ -6,6 +6,77 @@ import config from "getconfig"; // Assumendo che esista un file config.js
 let connectionAttempts = 0;
 const MAX_RETRIES = 5;
 
+
+mongoose.plugin((schema) => {
+  schema.pre(["find", "findOne"], function (next) {
+    if (!this.$locals) this.$locals = {}; // ✅ Assicura che `$locals` esista sempre
+
+    if (this.options?.req) {
+      this.$locals.__ = typeof this.options.req.__ === "function" ? this.options.req.__ : (text) => text;
+      this.$locals.locale = this.options.req.session?.current_lang || "en";
+    } else {
+      console.log("❌ WARNING: No `req` found in query. Defaulting to 'en'.");
+      this.$locals.__ = (text) => text; // Fallback
+      this.$locals.locale = "en"; // Default
+    }
+
+    console.log("⚠️ DEBUG: Pre-find Hook Executed", {
+      queryLang: this.$locals.locale,
+    });
+
+    next();
+  });
+
+  schema.post("init", function (doc) {
+    if (!doc.$locals) {
+      doc.$locals = {};
+    }
+    if (typeof doc.$locals.__ !== "function") {
+      doc.$locals.__ = (text) => text;
+    }
+    doc.$locals.locale = global.currentRequest?.session?.current_lang || "en";
+
+    /* console.log("⚠️ DEBUG: Post-init Hook Executed", {
+      docLang: doc.$locals.locale,
+    }); */
+  });
+});
+
+
+
+
+const originalExec = mongoose.Query.prototype.exec;
+
+mongoose.Query.prototype.exec = async function (...args) {
+  if (!this.options.req && global.currentRequest) {
+    console.log("⚠️ DEBUG: Attaching `req.session.current_lang` to query", {
+      globalReqExists: !!global.currentRequest,
+      globalLang: global.currentRequest?.session?.current_lang || "⚠️ MISSING",
+    });
+
+    this.setOptions({ req: global.currentRequest });
+  }
+
+  try {
+    const result = await originalExec.apply(this, args);
+    console.log("✅ DEBUG: Query Executed, Checking $locals", {
+      queryLang: this.options.req?.session?.current_lang || "⚠️ MISSING",
+    });
+
+    return result;
+  } catch (error) {
+    console.error("❌ Mongoose Query Execution Error:", error);
+    throw error;
+  }
+};
+
+
+
+
+
+
+
+
 const connectDB = async (MONGO_URI) => {
   if (connectionAttempts >= MAX_RETRIES) {
     console.error("❌ Maximum MongoDB retries reached. Exiting...");
@@ -59,6 +130,5 @@ const loadModels = async () => {
     }
   }
 };
-
 // 🔹 Esportazione DEFINITIVA
 export { mongoose, connectDB, loadModels };

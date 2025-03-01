@@ -64,8 +64,8 @@ router.get('/', (req, res) => {
             //return next(err);
           } else {
             res.render('home', {
-              title: __('Welcome to AVnode network'),
-              subtitle: __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
+              title: req.__('Welcome to AVnode network'),
+              subtitle: req.__('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
               data: homedata,
               session: req.session,
               canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
@@ -73,7 +73,7 @@ router.get('/', (req, res) => {
                 "@context": "http://schema.org",
                 "@type": "WebSite",
                 "url": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl,
-                "description": __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
+                "description": req.__('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
                 "image": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"images/sez/avnode.net-home.jpg",
                 "potentialAction": {
                   "@type": "SearchAction",

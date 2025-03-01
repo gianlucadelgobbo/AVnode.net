@@ -13,8 +13,8 @@
     .col-11
       label(for=call.admitted[a]._id)
         h3=call.admitted[a].title
-        p=global.__("Type")+": "+ call.admitted[a].type.name
-        p=global.__("Authors") + ": "
+        p=__("Type")+": "+ call.admitted[a].type.name
+        p=__("Authors") + ": "
         ul
           each user in call.admitted[a].users
             li=user.stagename

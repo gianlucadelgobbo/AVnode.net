@@ -20,7 +20,7 @@ router.get('/:uuid', (req, res) => {
       });
       user.save(function() {
         req.session.returnTo = '/';
-        req.flash('success', { msg: __('Your account is confirmed, you can now log in.') });
+        req.flash('success', { msg: req.__('Your account is confirmed, you can now log in.') });
         res.redirect('/login');
       });
     }
@@ -43,7 +43,7 @@ router.get('/email/:uuid', (req, res, next) => {
       if (err) {
         return next(err);
       }
-      req.flash('success', { msg: __('Email confirmed') });
+      req.flash('success', { msg: req.__('Email confirmed') });
       res.redirect('/');
     });
   });

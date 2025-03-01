@@ -17,16 +17,16 @@ block title
                 h1.main_title=data.title
                   if editable
                     !="  "
-                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=global.__("EDIT")
+                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=__("EDIT")
                 if data.stats
                   .performance_stat_container
                     .performance_stat_wrapper
                       ul
                         if data.stats.visits
-                          li=data.stats.visits + ' ' + global.__('Views')
+                          li=data.stats.visits + ' ' + __('Views')
                         li
                           span.likes_count=data.stats.likes ? data.stats.likes : 0
-                          !=' ' + global.__('Likes')                      
+                          !=' ' + __('Likes')                      
               .col-lg-3.mt-md-4
                 include ../partials/share_like
                 if data.type
@@ -45,27 +45,27 @@ block content
               h1.main_title=data.galleries[0].img && data.galleries[0].img.title ? data.galleries[0].title+": "+data.galleries[0].img.title : data.galleries[0].title
                 if editable
                   !="  "
-                  a.badge.badge-danger(href="/admin/galleries/"+data.galleries[0]._id+"/public")=global.__("EDIT")
+                  a.badge.badge-danger(href="/admin/galleries/"+data.galleries[0]._id+"/public")=__("EDIT")
               if data.galleries[0].img
                 if data.galleries[0].img.stats
                   .performance_stat_container
                     .performance_stat_wrapper
                       ul
                         if data.galleries[0].img.stats.visits
-                          li=data.galleries[0].img.stats.visits + ' ' + global.__('Views')
+                          li=data.galleries[0].img.stats.visits + ' ' + __('Views')
                         li
                           span.likes_count=data.galleries[0].img.stats.likes ? data.galleries[0].img.stats.likes : 0
-                          !=' ' + global.__('Likes')
+                          !=' ' + __('Likes')
               else 
                 if data.galleries[0].stats
                   .performance_stat_container
                     .performance_stat_wrapper
                       ul
                         if data.galleries[0].stats.visits
-                          li=data.galleries[0].stats.visits + ' ' + global.__('Views')
+                          li=data.galleries[0].stats.visits + ' ' + __('Views')
                         li
                           span.likes_count=data.galleries[0].stats.likes ? data.galleries[0].stats.likes : 0
-                          !=' ' + global.__('Likes')
+                          !=' ' + __('Likes')
             .col-lg-3.mt-md-4
               include ../partials/share_like
       .container
@@ -138,11 +138,11 @@ block content
                   h3=__("Stats")
                   ul
                     if data.galleries[0].stats.visits
-                      li=data.galleries[0].stats.visits + ' ' + global.__('Views')
+                      li=data.galleries[0].stats.visits + ' ' + __('Views')
                     if data.galleries[0].stats.likes
-                      li=data.galleries[0].stats.likes + ' ' + global.__('Likes')
+                      li=data.galleries[0].stats.likes + ' ' + __('Likes')
                     if data.galleries[0].stats.medias
-                      li=data.galleries[0].stats.medias + ' ' + global.__('Images')  
+                      li=data.galleries[0].stats.medias + ' ' + __('Images')  
 
               if data.galleries[0].about
                 .data_footage_video_wrapper
@@ -193,7 +193,7 @@ block content
             .container
               .row
                 .col-lg-12
-                  h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
+                  h2.main_title.indented_title!=__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
                   .performance_divider.basic_divider
                   .owl-carousel.loop_3items.owl-theme
                     - var basepath = "/learnings/"+data.slug

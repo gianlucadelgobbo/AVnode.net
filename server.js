@@ -86,7 +86,7 @@ app.use((req, res, next) => {
   const host = req.get("host") || req.get("X-Forwarded-Host");
   if (blockedIPs.has(host)) {
     logger.warn(`⛔ Blocked access from IP: ${host}`);
-    return res.redirect("https://avnode.net" + req.originalUrl);
+    return res.redirect("https://admin.avnode.net" + req.originalUrl);
   }
   next();
 });
@@ -119,28 +119,46 @@ app.use((req, res, next) => {
   next();
 });
 
-// 🔥 Detect Language by Domain
 app.use((req, res, next) => {
-  const host = req.get("host") || "localhost";
+  global.currentRequest = req; // ✅ Ensure `req` is globally available
+
+  const host = req.get("host")?.toLowerCase() || "localhost";
   const parts = host.split(".");
-  const subdomain = parts.length > 2 && parts[0].length === 2 ? parts[0] : null;
+  let lang = config.defaultLocale || "en";
 
-  let lang = "en"; // Default to English
-
-  if (subdomain && config.domain_to_lang[subdomain]) {
-    lang = config.domain_to_lang[subdomain];
-  } else if (host === "localhost") {
-    lang = config.defaultLocale;
-  } else if (!/avnode\./.test(host)) {
-    lang = config.defaultLocale;
+  if (parts.length > 2) {
+    const subdomain = parts[0];
+    if (config.domain_to_lang[subdomain]) {
+      lang = config.domain_to_lang[subdomain]; // ✅ Detect language from subdomain
+    }
   }
 
-  req.session.current_lang = lang;
-  moment.locale(lang);
-  i18n?.setLocale?.(req, lang);
+  if (req.cookies?.lang && Object.values(config.domain_to_lang).includes(req.cookies.lang)) {
+    lang = req.cookies.lang; // ✅ Allow cookie override
+  }
+
+  req.session.current_lang = lang; // ✅ Store language in session
+  moment.locale(lang); // ✅ Set moment locale
+  req.setLocale(lang); // ✅ Ensures i18n uses the correct language
+  req.__ = i18n.__.bind(req); // ✅ Bind translation function
+  res.locals.__ = req.__; // ✅ Make translations available in templates
+
+  console.log("⚠️ DEBUG: Setting session language", {
+    detectedLang: lang,
+    sessionLang: req.session.current_lang,
+    momentLang: moment.locale(),
+    i18nLocale: req.getLocale(), // ✅ Check if i18n is using correct language
+  });
 
   next();
 });
+
+
+
+
+
+
+
 
 // 🔥 Admin Access Control
 const adminPathRegex = /^\/(admin|adminpro)/;

@@ -1,9 +1,9 @@
 #cookie-law-info-bar.d-none.pr-3.pl-3
   span
-    !=global.__("This website uses cookies to improve your experience. We'll assume you're ok with this, but you can opt-out if you wish.")
-    a#cookie_action_close_header.medium.cli-plugin-button.cli-plugin-main-button(href='#', title=global.__('Accept'))=global.__('Accept')
-    a#CONSTANT_OPEN_URL.cli-plugin-main-link(href='/cookies-in-use-on-this-site/', title=global.__('Read More about privacy'))
-      u=global.__('Read More about privacy')
+    !=__("This website uses cookies to improve your experience. We'll assume you're ok with this, but you can opt-out if you wish.")
+    a#cookie_action_close_header.medium.cli-plugin-button.cli-plugin-main-button(href='#', title=__('Accept'))=__('Accept')
+    a#CONSTANT_OPEN_URL.cli-plugin-main-link(href='/cookies-in-use-on-this-site/', title=__('Read More about privacy'))
+      u=__('Read More about privacy')
 script.
   //<![Cresult[
   document.addEventListener('DOMContentLoaded', (event) => {

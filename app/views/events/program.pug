@@ -17,16 +17,16 @@ block title
                 h1.main_title=data.title
                   if editable
                     !="  "
-                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=global.__("EDIT")
+                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=__("EDIT")
                 if data.stats
                   .performance_stat_container
                     .performance_stat_wrapper
                       ul
                         if data.stats.visits
-                          li=data.stats.visits + ' ' + global.__('Views')
+                          li=data.stats.visits + ' ' + __('Views')
                         li
                           span.likes_count=data.stats.likes ? data.stats.likes : 0
-                          !=' ' + global.__('Likes')                      
+                          !=' ' + __('Likes')                      
               .col-lg-3.mt-md-4
                 include ../partials/share_like
             p.subtitle=data.subtitle && data.subtitle!= "Text is missing" ? data.subtitle : data.boxDate
@@ -35,7 +35,7 @@ block title
                 if data.boxVenue
                   p.boxVenue!=data.boxVenue
                   p
-                    a(data-toggle='collapse', href="javascript:void(0);", data-target='#fullSchedule', role='button', aria-expanded='false', aria-controls='fullSchedule')=global.__("Full schedule")
+                    a(data-toggle='collapse', href="javascript:void(0);", data-target='#fullSchedule', role='button', aria-expanded='false', aria-controls='fullSchedule')=__("Full schedule")
                   #fullSchedule.collapse
                     ul
                       each fullSchedule in data.fullSchedule
@@ -56,7 +56,7 @@ block content
       section.row.program_event_wrapper
           .col-lg-12
             .container
-              h2.main_title.indented_title.color1!=global.__('Performances') + " " + global.__('to be scheduled')
+              h2.main_title.indented_title.color1!=__('Performances') + " " + __('to be scheduled')
                 .owl-carousel.loop.owl-theme
                   each item in data.advanced.programmenotscheduled
                     if item
@@ -71,7 +71,7 @@ block content
       section.row.program_event_wrapper
           .col-lg-12
             .container
-              h2.main_title.indented_title.color1!=global.__('Program')
+              h2.main_title.indented_title.color1!=__('Program')
               - addtit = false;
               each day, index in data.advanced.programmebydayvenue
                 if data.advanced.programmebydayvenue[index+1] && JSON.stringify(data.advanced.programmebydayvenue[index].rooms) == JSON.stringify(data.advanced.programmebydayvenue[index+1].rooms)
@@ -103,16 +103,16 @@ block content
             h1.main_title=data.performance.title
               if editable
                 !="  "
-                a.badge.badge-danger(href="/admin/performances/"+data.performance._id+"/public")=global.__("EDIT")
+                a.badge.badge-danger(href="/admin/performances/"+data.performance._id+"/public")=__("EDIT")
             if data.performance.stats
               .performance_stat_container
                 .performance_stat_wrapper
                   ul
                     if data.performance.stats.visits
-                      li=data.performance.stats.visits + ' ' + global.__('Views')
+                      li=data.performance.stats.visits + ' ' + __('Views')
                     li
                       span.likes_count=data.performance.stats.likes ? data.performance.stats.likes : 0
-                      !=' ' + global.__('Likes')                      
+                      !=' ' + __('Likes')                      
           .col-lg-3.mt-md-4
             include ../partials/share_like
 
@@ -133,10 +133,10 @@ block content
             if data.performance.about
               li.nav-item
                 a.tab_link.nav-link.active(href='#about', role='tab', data-toggle='tab') 
-                  =global.__('About')
+                  =__('About')
             li.nav-item
               a.tab_link.nav-link(href='#technical_specifications', role='tab', data-toggle='tab')    
-                =global.__('Technical specifications')
+                =__('Technical specifications')
           // Tab panes
           .tab-content
             //if data.performance.about
@@ -145,15 +145,15 @@ block content
             #technical_specifications.tab-pane(role='tabpanel')
               if data.performance.duration
                 .tech_info_wrapper
-                  h4.tech_info_title=global.__('Duration (minutes)')
+                  h4.tech_info_title=__('Duration (minutes)')
                   p!=data.performance.duration
               if data.performance.tech_req
                 .tech_info_wrapper
-                  h4.tech_info_title=global.__('What is needed')
+                  h4.tech_info_title=__('What is needed')
                   p!=data.performance.tech_req
               if data.performance.tech_art
                 .tech_info_wrapper
-                  h4.tech_info_title=global.__('What the artists brings')
+                  h4.tech_info_title=__('What the artists brings')
                   p!=data.performance.tech_art
 
         .col-sm-4.performance_info_sidebar
@@ -181,7 +181,7 @@ block content
                         p.users_performance_item_country!=user.addressesFormatted.join(", ")
           .performance_events_wrapper
             if data.performance.bookings.length
-              h3=global.__('Events')  
+              h3=__('Events')  
               .row.performance_event_wrapper
                 each booking in data.performance.bookings
                   .col-sm-3
@@ -197,7 +197,7 @@ block content
                         if booking.schedule[0].paypal.indexOf("https")!==-1
                           br
                           a.btn.btn-primary(href=booking.schedule[0].paypal target="_blank")
-                            b=booking.schedule[0].price+",00 € | "+ global.__('BUY NOW')
+                            b=booking.schedule[0].price+",00 € | "+ __('BUY NOW')
 
                       //each schedule in booking.schedule
                         !=schedule.boxDate
@@ -215,7 +215,7 @@ block content
             .container
               .row
                 .col-lg-12
-                  h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.performance.galleries.length+"</span>)</small>"  
+                  h2.main_title.indented_title!=__('Galleries')+" <small>(<span>"+data.performance.galleries.length+"</span>)</small>"  
                   .performance_divider.basic_divider
                   .owl-carousel.loop_3items.owl-theme
                     each item in data.performance.galleries                    
@@ -227,7 +227,7 @@ block content
             .container
               .row
                 .col-lg-12
-                  h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.performance.videos.length+"</span>)</small>"  
+                  h2.main_title.indented_title!=__('Videos')+" <small>(<span>"+data.performance.videos.length+"</span>)</small>"  
                   .performance_divider.basic_divider
                   .owl-carousel.loop_3items.owl-theme
                     each item in data.performance.videos            

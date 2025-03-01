@@ -75,10 +75,10 @@ upload.uploader = (req, res, options, done) => {
         logger.info("mime ok");
         cb(null, true);
       } else {
-        logger.info( __("File upload only supports the following filetypes") + ": " + options.fileext.join(", "));
+        logger.info( req.__("File upload only supports the following filetypes") + ": " + options.fileext.join(", "));
         const e = [{
           "fieldname":"image",
-          "err": __("File upload only supports the following filetypes") + ": " + options.fileext.join(", ")
+          "err": req.__("File upload only supports the following filetypes") + ": " + options.fileext.join(", ")
         }];
         cb(e);
       }

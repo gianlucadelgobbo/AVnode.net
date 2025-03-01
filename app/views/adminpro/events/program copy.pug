@@ -17,7 +17,7 @@ block content
           if Object.keys(day.rooms).length > cols
             - cols = Object.keys(day.rooms).length < 3 ? Object.keys(day.rooms).length : 3
         td(style="width:calc(100vw/"+(cols+2)+")")
-          h2=global.__("TO BE SCHEDULED")
+          h2=__("TO BE SCHEDULED")
           div(style="max-height: calc(100vh - 100px);overflow-y: scroll;")
             form(id="form"+conta)
               input(type="hidden", name="event", value=data.event._id)
@@ -70,14 +70,14 @@ block content
                         - let d = ('0'+date.getUTCDate()).substr(-2);
                         - let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                         - let y = date.getUTCFullYear();
-                        - const lang = global.getLocale();
+                        - const lang = $locals.locale;
                         - let newdate = data.moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
                         - if (new Date(schedule.endtime).getTime() > new Date(schedule.starttime).getTime()+(24*60*60*1000)+(24*60*60*1000)) {
                           - let endtime = new Date(schedule.endtime);  // dateStr you get from mongodb
                           - let dd = ('0'+date.getUTCDate()).substr(-2);
                           - let mm = ('0'+(date.getUTCMonth()+1)).substr(-2);
                           - let yy = date.getUTCFullYear();
-                          - const lang = global.getLocale();
+                          - const lang = $locals.locale;
                           - newdate+= " > " + data.moment(endtime).format(config.dateFormat[lang].weekdaydaymonthyear);
                         - }
 
@@ -136,7 +136,7 @@ block content
       .modal-content
         form#editSchedule
           .modal-header
-            h5#modalAddPartnerLabel.modal-title=global.__("Edit schedule")
+            h5#modalAddPartnerLabel.modal-title=__("Edit schedule")
             button.close(type='button', data-dismiss='modal', aria-label='Close')
               span(aria-hidden='true') ×
           .modal-body
@@ -191,5 +191,5 @@ block content
 
 
           .modal-footer
-            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
-            button.btn.btn-primary(type='submit')=global.__("Save")
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=__("Close")
+            button.btn.btn-primary(type='submit')=__("Save")

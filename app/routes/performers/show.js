@@ -116,12 +116,12 @@ router.get("/:user", (req, res) => {
   if (req.params.slug=="member") {
     res.redirect("/"+ req.params.user);
   } else {
-    res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+    res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
   }
 });
 
 router.get("/*", (req, res) => {
-  res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+  res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
 });
 
 export default router;

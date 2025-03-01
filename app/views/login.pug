@@ -9,12 +9,12 @@ block content
             input(type='hidden', name='_csrf', value=_csrf)
             input(type='hidden', name='returnTo', value=returnTo)
             .form-group
-              label(for='email')=global.__('Email')
-              input.form-control(type='email', name='email', id='email', placeholder=global.__('Your Email'), autofocus, required)
+              label(for='email')=__('Email')
+              input.form-control(type='email', name='email', id='email', placeholder=__('Your Email'), autofocus, required)
             .form-group
-              label(for='password')=global.__('Password')
-              input.form-control(type='password', name='password', id='password', placeholder=global.__('Your Password'), required)
+              label(for='password')=__('Password')
+              input.form-control(type='password', name='password', id='password', placeholder=__('Your Password'), required)
             .form-group
-              button.btn.btn-primary.btn-success(type='submit')=global.__('Login')
+              button.btn.btn-primary.btn-success(type='submit')=__('Login')
                 i.icon-sign-in-alt.fa-fw
-              a.btn.btn-link(href='/password/forgot')=global.__('Forgot your password?')
+              a.btn.btn-link(href='/password/forgot')=__('Forgot your password?')

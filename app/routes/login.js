@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
     return res.redirect (returnTo);
   }
   res.render('login', {
-    title: __('Login'),
+    title: req.__('Login'),
     returnTo: returnTo.replace("/admin/api/loggeduser" , "/")
   });
 });
@@ -67,7 +67,7 @@ router.post('/', (req, res, next) => {
         if (req.body.api=="1") {
           res.send(true);
         } else {
-          req.flash('success', { msg: __('You are logged in.') });
+          req.flash('success', { msg: req.__('You are logged in.') });
           res.redirect(returnTo);
         }
       });
@@ -81,9 +81,9 @@ export default router;
 const Joi = require('joi');
 const postLoginSchema = {
   body: {
-    _csrf: Joi.string().required().error(new Error(__('Sorry, malformed request.'))),
-    email: Joi.string().email().required().error(new Error(__('E-mail is not correct.'))),
-    password: Joi.string().required().error(new Error(__('PASSWORD_IS_REQUIRED!')))
+    _csrf: Joi.string().required().error(new Error(req.__('Sorry, malformed request.'))),
+    email: Joi.string().email().required().error(new Error(req.__('E-mail is not correct.'))),
+    password: Joi.string().required().error(new Error(req.__('PASSWORD_IS_REQUIRED!')))
   }
 };
 */

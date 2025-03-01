@@ -12,7 +12,7 @@
         .col-11
           label
             h3.mb-0!=call.subscriptions[c].stagename
-            p!=global.__("This person is already in with another act and already choose his packages")
+            p!=__("This person is already in with another act and already choose his packages")
 
     else 
       - for (var b=0;b<dett.organizationsettings.call.calls[call.index].packages.length;b++)
@@ -36,10 +36,10 @@
                       h3
                         if dett.organizationsettings.call.calls[call.index].packages[b].alternative
                           !="["+dett.organizationsettings.call.calls[call.index].packages[b].alternative_name+"] "
-                        !="<b>"+dett.organizationsettings.call.calls[call.index].packages[b].name + "</b> " + global.__("for") + " " + call.subscriptions[c].stagename + (dett.organizationsettings.call.calls[call.index].packages[b].requested ? " ("+global.__("Required")+")" : "")
+                        !="<b>"+dett.organizationsettings.call.calls[call.index].packages[b].name + "</b> " + __("for") + " " + call.subscriptions[c].stagename + (dett.organizationsettings.call.calls[call.index].packages[b].requested ? " ("+__("Required")+")" : "")
                       if dett.organizationsettings.call.calls[call.index].packages[b].alternative
                         p
-                          small!="<b>"+global.__("At least one of the following option is required: ")+ "<u> " + dett.organizationsettings.call.calls[call.index].packages[b].alternative_name + "</u></b>"
+                          small!="<b>"+__("At least one of the following option is required: ")+ "<u> " + dett.organizationsettings.call.calls[call.index].packages[b].alternative_name + "</u></b>"
 
                       !=dett.organizationsettings.call.calls[call.index].packages[b].description
                       - if (dett.organizationsettings.call.calls[call.index].packages[b].allow_options)
@@ -54,8 +54,8 @@
                 .col-md-3
                   .text-right
                     if dett.organizationsettings.call.calls[call.index].packages[b].daily
-                      h3!=global.__("per day")+" € "+dett.organizationsettings.call.calls[call.index].packages[b].price
-                      // + " " +global.__("total")+" € "+ (dett.organizationsettings.call.calls[call.index].packages[b].price*call.subscriptions[c].days.length)
+                      h3!=__("per day")+" € "+dett.organizationsettings.call.calls[call.index].packages[b].price
+                      // + " " +__("total")+" € "+ (dett.organizationsettings.call.calls[call.index].packages[b].price*call.subscriptions[c].days.length)
                     else
                       h3!=" € "+dett.organizationsettings.call.calls[call.index].packages[b].price_formatted
   else
