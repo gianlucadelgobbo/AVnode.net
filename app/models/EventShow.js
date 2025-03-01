@@ -557,23 +557,27 @@ eventSchema.virtual('boxDate').get(function () {
 }); */
 
 eventSchema.virtual('boxVenue').get(function () {
-  /* let boxVenue;
+  let boxVenue;
   if (this.schedule && this.schedule.length && this.schedule[0].venue && this.schedule[0].venue.location) {
     boxVenue = this.schedule[0].venue.name + ' ' + this.schedule[0].venue.location.locality + ' ' + this.schedule[0].venue.location.country;
-  } */
+  }
   if (this.schedule && this.schedule.length) {
     let boxVenueO = {};
     for (let schedule=0;schedule<this.schedule.length; schedule++) {
       //for (let venue in schedulebydayvenueObjGrouped[item].venues) {
-        let v = this.schedule[schedule].venue;
-        if (v.type != 'virtual') {
-          if (v.location && v.location.country && !boxVenueO[v.location.country]) boxVenueO[v.location.country] = {};
-          if (v.location && v.location.country && v.location.locality && !boxVenueO[v.location.country][v.location.locality]) boxVenueO[v.location.country][v.location.locality] = {};
-          if (v.location && v.location.country && v.location.locality && v.name && !boxVenueO[v.location.country][v.location.locality][v.name]) boxVenueO[v.location.country][v.location.locality][v.name] = [];
-          //if (v.location && v.location.country && v.location.locality && v.name && v.room && !boxVenueO[v.location.country][v.location.locality][v.name][v.room]) boxVenueO[v.location.country][v.location.locality][v.name][v.room] = {};
-        } else if (v.type == 'virtual') {
-          if (!boxVenueO['virtual']) boxVenueO['virtual'] = [];
-          boxVenueO['virtual'].push(v)
+        if (this.schedule[schedule].venue) {
+          let v = this.schedule[schedule].venue;
+          console.log("this.schedule")
+          console.log(this.schedule)
+          if (v.type != 'virtual') {
+            if (v.location && v.location.country && !boxVenueO[v.location.country]) boxVenueO[v.location.country] = {};
+            if (v.location && v.location.country && v.location.locality && !boxVenueO[v.location.country][v.location.locality]) boxVenueO[v.location.country][v.location.locality] = {};
+            if (v.location && v.location.country && v.location.locality && v.name && !boxVenueO[v.location.country][v.location.locality][v.name]) boxVenueO[v.location.country][v.location.locality][v.name] = [];
+            //if (v.location && v.location.country && v.location.locality && v.name && v.room && !boxVenueO[v.location.country][v.location.locality][v.name][v.room]) boxVenueO[v.location.country][v.location.locality][v.name][v.room] = {};
+          } else if (v.type == 'virtual') {
+            if (!boxVenueO['virtual']) boxVenueO['virtual'] = [];
+            boxVenueO['virtual'].push(v)
+          }
         }
       //}
     }
@@ -623,8 +627,10 @@ eventSchema.virtual('fullSchedule').get(function (req) {
         let d = ('0'+day.getUTCDate()).substr(-2);
         let m = ('0'+(day.getUTCMonth()+1)).substr(-2);      
         let y = day.getUTCFullYear();
-        if (!schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room]) schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room] = {dates:[], venue:this.schedule[a].venue};
-        schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room].dates.push(y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me);
+        if (this.schedule[a].venue) {
+          if (!schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room]) schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room] = {dates:[], venue:this.schedule[a].venue};
+          schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room].dates.push(y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me);
+        }
       }
     }
     let schedulebydayvenueObjSorted = {};

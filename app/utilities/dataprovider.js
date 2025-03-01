@@ -1413,7 +1413,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
   }
 };
 
-dataprovider.getPerformanceByIds = async (req, ids, cb) => {
+/* dataprovider.getPerformanceByIds = async (req, ids, cb) => {
   try {
     const data = await Models["Performance"].find({ users: { $in: ids } })
       .populate({ path: "type", select: "name" })
@@ -1429,6 +1429,23 @@ dataprovider.getPerformanceByIds = async (req, ids, cb) => {
   } catch (err) {
     console.error(`🔥 Error in getPerformanceByIds:`, err);
     return cb(err, null);
+  }
+}; */
+
+dataprovider.getPerformanceByIds = async (req, ids) => {
+  try {
+    return await Models["Performance"].find({ users: { $in: ids } })
+      .populate({ path: "type", select: "name" })
+      .populate({
+        path: "users",
+        select: "stagename slug members",
+        populate: { path: "members", select: "stagename slug" },
+      })
+      .select({ title: 1, categories: 1 })
+      .lean();
+  } catch (err) {
+    console.error(`🔥 Error in getPerformanceByIds:`, err);
+    throw err; // Allow the caller to handle the error
   }
 };
 
@@ -1789,19 +1806,22 @@ dataprovider.fetchLists = async (model, query, select, populate, limit, skip, so
     const total = await model.countDocuments(query);
     //logger.info(total)
 
-    const data = await model.find(query)
+    console.log(query)
+    let data = await model.find(query)
       .populate(populate)
       .select(select)
       .limit(limit)
       .skip(skip)
       .sort(sorting)
       .exec();
+    
+      console.log(data)
 
     cb(null, data, total);
   } catch (err) {
     // 🔥 Enhanced Error Logging with File Name
-    error(`🔥 ERROR in fetchLists: ${err.message}`);
-    error(err.stack);
+    logger.error(`🔥 ERROR in fetchLists: ${err.message}`);
+    logger.error(err.stack);
 
     cb(err);
   }
@@ -1853,7 +1873,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
   dataprovider.addCat(req, populate, (populate, type) => {
     for(let item in populate) {
       if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
-      if (populate[item].model) populate[item].model = Model[populate[item].model]
+      if (populate[item].model) populate[item].model = Models[populate[item].model]
       /* if (populate[item].model === 'UserShow') populate[item].model = UserShow;
       if (populate[item].model === 'Performance') populate[item].model = Performance;
       if (populate[item].model === 'Event') populate[item].model = Event;
@@ -1863,7 +1883,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
       if (populate[item].model === 'Category') populate[item].model = Category;
       if (populate[item].model === 'News') populate[item].model = News; */
   
-      if (populate[item].populate && populate[item].populate.model) populate[item].populate.model = Model[populate[item].populate.model];
+      if (populate[item].populate && populate[item].populate.model) populate[item].populate.model = Models[populate[item].populate.model];
      /*  if (populate[item].populate && populate[item].populate.model === 'UserShow') populate[item].populate.model = UserShow;
       if (populate[item].populate && populate[item].populate.model === 'Performance') populate[item].populate.model = Performance;
       if (populate[item].populate && populate[item].populate.model === 'Event') populate[item].populate.model = Event;
@@ -1874,7 +1894,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
       if (populate[item].populate && populate[item].populate.model === 'News') populate[item].populate.model = News; */
       if (populate[item].populate) {
         for(let a=0;a<populate[item].populate.length;a++) {
-          if (populate[item].populate[a] && populate[item].populate[a].model) populate[item].populate[a].model = Model[populate[item].populate[a].model];
+          if (populate[item].populate[a] && populate[item].populate[a].model) populate[item].populate[a].model = Models[populate[item].populate[a].model];
           /* if (populate[item].populate[a] && populate[item].populate[a].model === 'UserShow') populate[item].populate[a].model = UserShow;
           if (populate[item].populate[a] && populate[item].populate[a].model === 'Performance') populate[item].populate[a].model = Performance;
           if (populate[item].populate[a] && populate[item].populate[a].model === 'Event') populate[item].populate[a].model = Event;

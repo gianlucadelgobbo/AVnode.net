@@ -8,7 +8,7 @@ module.exports = {
       log_file: "/sites/logs/node_admin_avnode_net-2025-combined.log",
       out_file: "/sites/logs/node_admin_avnode_net-2025-out.log",
       error_file: "/sites/logs/node_admin_avnode_net-2025-err.log",
-      ignore_watch: ["public", "warehouse", "glacier", "node_modules", "locales"],
+      ignore_watch: ["public", "warehouse", "files", "glacier", "node_modules", "locales"],
       args: "",
       time: true,
       instances: 1,

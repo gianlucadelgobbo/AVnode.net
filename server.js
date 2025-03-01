@@ -13,7 +13,7 @@ import config from "getconfig";
 import i18n from "./app/utilities/i18n.js";
 import { passport } from './app/utilities/passport.js';
 import routes from "./app/routes/index.js";
-import { logger, requestLogger, errorLogger } from './app/utilities/logger.js'; // Importa il logger
+import { logger, requestLogger, errorLogger as expressErrorLogger } from './app/utilities/logger.js';
 
 // Initialize Express app
 const app = express();
@@ -194,7 +194,7 @@ app.use(routes);
   }
 }, 3000); */
 // ✅ ExpressWinston Middleware: Captures All Express Errors Automatically
-app.use(errorLogger); // Aggiungi il logger degli errori DOPO le route
+app.use(expressErrorLogger); // Aggiungi il logger degli errori DOPO le route
 
 // Global error handler
 app.use((err, req, res, next) => {
