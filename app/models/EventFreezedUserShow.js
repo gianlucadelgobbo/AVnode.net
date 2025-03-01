@@ -200,7 +200,7 @@ userSchema.virtual('about').get(function (req) {
   let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === $locals.locale);
+    aboutA = this.abouts.filter(item => item.lang === this.$locals.locale);
 
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
@@ -232,7 +232,7 @@ userSchema.virtual('aboutFull').get(function (req) {
   let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === $locals.locale);
+    aboutA = this.abouts.filter(item => item.lang === this.$locals.locale);
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
@@ -276,7 +276,7 @@ userSchema.virtual('description').get(function (req) {
 
 userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
-    const lang = $locals.locale;
+    const lang = this.$locals.locale;
     return moment(this.birthday).format(config.dateFormat[lang].weekdaydaymonthyear);
   }
 });

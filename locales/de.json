@@ -759,5 +759,9 @@
 		"net is now in Beta Version, feel free to test it but read the following alerts": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts"
 	},
 	"Please send any bug and suggestion to": "Please send any bug and suggestion to",
-	"The list of Organizations": " All Most active"
+	"The list of Organizations": " All Most active",
+	"Your Email": "Your Email",
+	"Your Password": "Your Password",
+	"The list of Events": " All Most recent",
+	"The list of Videos": " All Most recent"
 }

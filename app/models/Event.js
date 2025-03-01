@@ -28,13 +28,13 @@ const datevenueSchema = new Schema({
 },{ _id : false });
 
 datevenueSchema.virtual('date').get(function () {
-  const lang = $locals.locale;
+  const lang = this.$locals.locale;
   const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
   return startdatefake;
 });
 
 datevenueSchema.virtual('date_formatted').get(function () {
-  const lang = $locals.locale;
+  const lang = this.$locals.locale;
   const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
   return moment(startdatefake).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
@@ -203,7 +203,7 @@ const eventSchema = new Schema({
   let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === $locals.locale);
+    aboutA = this.abouts.filter(item => item.lang === this.$locals.locale);
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
@@ -220,7 +220,7 @@ eventSchema.virtual('subtitle').get(function (req) {
   let subtitle = this.$locals.__('Text is missing');
   let subtitleA = [];
   if (this.subtitles && this.subtitles.length) {
-    subtitleA = this.subtitles.filter(item => item.lang === $locals.locale);
+    subtitleA = this.subtitles.filter(item => item.lang === this.$locals.locale);
     if (subtitleA.length && subtitleA[0].abouttext) {
       subtitle = subtitleA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
