@@ -119,8 +119,5 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
             - var base = canonical.replace("http://", "").replace("https://", "").split(".")
             - if (base[0].length==2) base.shift()   
             - var base1 = base.join(".")
-            - console.log(base1)
             each lang,slug in config.locales_labels
-              - console.log(lang+" "+slug+" "+config.lang_to_domain[slug])
-              - console.log('//'+(slug!='en' ? config.lang_to_domain[slug]+'.' : '')+base1)
               a.dropdown-item(href='//'+(slug!='en' ? config.lang_to_domain[slug]+'.' : '')+base1 class=slug==session.current_lang ? 'disabled' : '')=lang
