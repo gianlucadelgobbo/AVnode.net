@@ -6817,7 +6817,6 @@
         "vj-set",
         "video-installation",
         "lights-installation",
-        "dvd-projection",
         "dj-set"
       ],
       "categoriesQueries": {
@@ -6827,8 +6826,7 @@
         "vj-set": {"type": "5be8708afc39610000000014" },
         "lights-installation": {"type": "5be8708afc39610000000017" },
         "video-installation": {"type": "5be8708afc3961000000019f" },
-        "dj-set": {"type": "5be8708afc3961000000011d" },
-        "dvd-projection": {"type": "5be8708afc39610000000015" }
+        "dj-set": {"type": "5be8708afc3961000000011d" }
       },
       "ordersQueries": {
         "mostrecent": {
@@ -6840,7 +6838,7 @@
         "mostliked": {
           "stats.likes": -1
         }
-      },
+      },  
       "labels": {
         "mostrecent": "Most recent",
         "mostviewed": "Most viewed",

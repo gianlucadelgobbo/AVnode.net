@@ -97,7 +97,14 @@ app.use(
     resave: false,
     saveUninitialized: false,
     secret: process.env.SESSION_SECRET,
-    cookie: { maxAge: 24 * 60 * 60 * 1000, secure: process.env.NODE_ENV === "production" },
+    cookie: {
+      domain: process.env.NODE_ENV === "production" ? ".avnode.net" : ".avnode.local",  // ✅ Share cookie across all subdomains
+      path: "/",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      sameSite: "lax",  // Allow cross-subdomain access
+    },
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
       dbName: process.env.MONGODB_NAME,
@@ -105,6 +112,7 @@ app.use(
     }),
   })
 );
+
 
 app.use((req, res, next) => {
   res.locals.session = req.session;
@@ -116,8 +124,37 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
   res.locals.user = req.user;
+
+  // ✅ Verifica che `req.get("host")` esista e sia valido
+  let host = req.get("host");
+  if (!host) {
+    console.error(`[ERROR] Host is undefined for request from ${req.ip}`);
+    host = process.env.NODE_ENV === "production" ? "admin.avnode.net" : "admin.avnode.local:8102"
+  }
+
+  const url = req.originalUrl ? req.originalUrl.split("?")[0] : "/";
+  res.locals.host = host;
+
+  const isLocal = host.endsWith(".admin.avnode.local:8102") || host.endsWith(".api.admin.avnode.local:8102");
+  res.locals.isLocal = isLocal;
+
+  res.locals.canonical = (isLocal ? "http" : "https") + "://" + host + url;
+
   next();
 });
+
+app.use((req, res, next) => {
+  if (!req.user && req.method === "GET" && !req.session.returnTo) {
+    const excludePaths = ["/login", "/signup", "/logout"]; // ✅ Excluded routes
+    if (!excludePaths.includes(req.path)) {
+      req.session.returnTo = req.originalUrl; // ✅ Save the page user was trying to visit
+      //logger.info("Stored returnTo:", req.session.returnTo);
+    }
+  }
+  next();
+});
+
+
 
 app.use((req, res, next) => {
   global.currentRequest = req; // ✅ Ensure `req` is globally available
@@ -143,7 +180,7 @@ app.use((req, res, next) => {
   req.__ = i18n.__.bind(req); // ✅ Bind translation function
   res.locals.__ = req.__; // ✅ Make translations available in templates
 
-  console.log("⚠️ DEBUG: Setting session language", {
+  logger.info("⚠️ DEBUG: Setting session language", {
     detectedLang: lang,
     sessionLang: req.session.current_lang,
     momentLang: moment.locale(),
@@ -152,13 +189,6 @@ app.use((req, res, next) => {
 
   next();
 });
-
-
-
-
-
-
-
 
 // 🔥 Admin Access Control
 const adminPathRegex = /^\/(admin|adminpro)/;
@@ -182,29 +212,29 @@ app.use((req, res, next) => {
 
 // ✅ Winston logs all HTTP requests
 app.use(requestLogger); // Aggiungi il logger delle richieste PRIMA delle route
-console.log("🚀 Debug: server.js loaded");
+//logger.info("🚀 Debug: server.js loaded");
 
 // Check if routes exist
-if (!routes) {
-  console.error("❌ ERROR: index.js (routes) is NOT being imported correctly!");
+/* if (!routes) {
+  logger.error("❌ ERROR: index.js (routes) is NOT being imported correctly!");
 } else {
-  console.log("✅ index.js (routes) is imported successfully.");
-}
+  logger.info("✅ index.js (routes) is imported successfully.");
+} */
 // ✅ Load Routes
 
 app.use(routes);
 
 // Log route sources
 /* setTimeout(() => {
-  console.log("🛤 All Registered Routes in Express:");
+  logger.info("🛤 All Registered Routes in Express:");
   if (app._router) {
     app._router.stack.forEach((middleware, index) => {
       if (middleware.route) {
-        console.log(`🛤 Route ${index}: ${middleware.route.path}`);
+        logger.info(`🛤 Route ${index}: ${middleware.route.path}`);
       } else if (middleware.name === "router") {
-        console.log(`🛠 Middleware ${index}: (Router Middleware)`);
+        logger.info(`🛠 Middleware ${index}: (Router Middleware)`);
       } else {
-        console.log(`🛠 Middleware ${index}: ${middleware.name}`);
+        logger.info(`🛠 Middleware ${index}: ${middleware.name}`);
       }
     });
   } else {

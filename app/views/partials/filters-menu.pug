@@ -30,7 +30,10 @@ if categories
             li(class="nav-item dropdown")
               a(class="nav-link dropdown-toggle", data-toggle="dropdown", href="#", role="button", aria-haspopup="true", aria-expanded="false")=""
               .dropdown-menu
+                - console.log(labels)
                 each category, index in categories
+                  - console.log(category)
+                  - console.log(index)
                   if index > 4
                     if category === filter
                       - currentcat = category

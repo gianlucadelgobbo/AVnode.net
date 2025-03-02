@@ -84,14 +84,14 @@ router.sendEmailVerification = async (req, res) => {
             to: user.emails[item].email
           },
           email_content: {
-            site:    (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
+            site:    res.locals.host,
             title:    req.__("Email Confirm"),
             subject:  req.__("Email Confirm")+' | AVnode.net',
             block_1:  req.__("We’ve received a request to add this new email")+": "+user.emails[item].email,
             button:   req.__("Click here to confirm"),
             block_2:  req.__("If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"),
             block_3:  req.__("Thanks."),
-            link:     (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host+'/verify/email/'+user.emails[item].confirm,
+            link:     res.locals.host+'/verify/email/'+user.emails[item].confirm,
             html_sign: "The AVnode.net Team",
             text_sign:  "The AVnode.net Team"
           }

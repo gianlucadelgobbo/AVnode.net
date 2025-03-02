@@ -89,8 +89,11 @@ router.get('/', async (req, res) => {
   } else {
     res.render('events/participate', {
       title: data.title,
-      //canonical: (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
-      canonical: (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+      //canonical: res.locals.canonical,
+//canonical: (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
+      //canonical: res.locals.canonical,
+//canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+      canonical: res.locals.canonical,
       dett: data,
       call: req.session.call,
       code: req.query.code,
@@ -118,7 +121,8 @@ router.post('/', async (req, res) => {
   if ((req.session.call && req.session.call.saved) || !req.body || !req.session.call) {
     if (req.body && req.body.step) delete req.body.step;
     delete req.session.call;
-    res.redirect((req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]);
+    //res.redirect((res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]);
+    res.redirect(res.locals.canonical);
   } else {
     let myasync = true;
     logger.info('POSTPOSTPOSTPOSTPOST');
@@ -237,7 +241,8 @@ router.post('/', async (req, res) => {
                 logger.info(msg);
                 res.render('events/participate', {
                   title: data.title,
-                  canonical: (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                  canonical: res.locals.canonical,
+//canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
                   dett: data,
                   call: req.session.call,
                   participateMenu: participateMenu,
@@ -313,7 +318,8 @@ router.post('/', async (req, res) => {
             //logger.info(allsubscriptions);
             res.render('events/participate', {
               title: data.title,
-              canonical: (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+              canonical: res.locals.canonical,
+//canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
               dett: data,
               call: req.session.call,
               participateMenu: participateMenu,
@@ -453,7 +459,8 @@ router.post('/', async (req, res) => {
             msg = {e:[{name:'index', m:req.__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
             res.render('events/participate', {
               title: data.title,
-              canonical: (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+              canonical: res.locals.canonical,
+//canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
               dett: data,
               call: req.session.call,
               participateMenu: participateMenu,
@@ -469,7 +476,8 @@ router.post('/', async (req, res) => {
             msg = {e:[{name:'index', m:req.__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
             res.render('events/participate', {
               title: data.title,
-              canonical: (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+              canonical: res.locals.canonical,
+//canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
               dett: data,
               call: req.session.call,
               participateMenu: participateMenu,
@@ -488,8 +496,8 @@ router.post('/', async (req, res) => {
                 from: data.organizationsettings.call.calls[req.session.call.index].title+" <"+data.organizationsettings.call.calls[req.session.call.index].email+">"
               },
               email_content: {
-                site:    (req.get('host') === "localhost:8102" ? "http" : "https")+"://"+req.headers.host,
-                imghead: (req.get('host') === "localhost:8102" ? "http" : "https")+"://"+req.headers.host + data.organizationsettings.call.calls[req.session.call.index].imghead,
+                site:    (res.locals.isLocal ? "http" : "https")+"://"+req.headers.host,
+                imghead: (res.locals.isLocal ? "http" : "https")+"://"+req.headers.host + data.organizationsettings.call.calls[req.session.call.index].imghead,
                 colBkg: data.organizationsettings.call.calls[req.session.call.index].colBkg,
                 imgalt:  data.organizationsettings.call.calls[req.session.call.index].imgalt,
                 html_sign:  data.organizationsettings.call.calls[req.session.call.index].html_sign,
@@ -505,8 +513,8 @@ router.post('/', async (req, res) => {
                 block_3:  req.__("Thanks."),
                 link:  "",
                 link_plain: ""/* 
-                link:  "<a href=\""+(req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+(req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
-                link_plain: (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0] */
+                link:  "<a href=\""+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
+                link_plain: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0] */
               }
             })
             req.session.call.step = parseInt(req.body.step)+1;
@@ -527,7 +535,8 @@ router.post('/', async (req, res) => {
           } else {
             res.render('events/participate', {
               title: data.title,
-              canonical: (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+              canonical: res.locals.canonical,
+//canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
               dett: data,
               call: req.session.call,
               participateMenu: participateMenu,
@@ -550,7 +559,8 @@ router.post('/', async (req, res) => {
         logger.info(msg);
         res.render('events/participate', {
           title: data.title,
-          canonical: (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+          canonical: res.locals.canonical,
+//canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
           dett: data,
           call: req.session.call,
           participateMenu: participateMenu,

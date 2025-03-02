@@ -206,13 +206,13 @@ var countries = [
 ];
 /*
 var countries_plugin = helpers.getCountries().map(item => {return item.label});
-console.log(countries.sort().slice(0, 100))
-console.log(countries.sort().slice(100, 200))
-console.log(countries.sort().slice(200, 250))
-console.log(countries.length)
+logger.info(countries.sort().slice(0, 100))
+logger.info(countries.sort().slice(100, 200))
+logger.info(countries.sort().slice(200, 250))
+logger.info(countries.length)
 for(var b=0;b<countries.length;b++){
   if (countries_plugin.indexOf(countries[b])===-1) {
-    console.log(countries[b]);
+    logger.info(countries[b]);
   }
 }
 */
@@ -1249,7 +1249,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         }
       }
     }
-    console.log("CE PROVO")
+    logger.info("CE PROVO")
     try {
       /* logger.info("populate");
       logger.info(populate);
@@ -1374,10 +1374,10 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         }
         //logger.info(res.performer);
         if (res.performer) {
-          //console.log("res.performer.performances")
-          //console.log(res.performer.performances)
+          //logger.info("res.performer.performances")
+          //logger.info(res.performer.performances)
           res.performer.performances = []
-          //console.log(res.advanced.programmebydayvenue)
+          //logger.info(res.advanced.programmebydayvenue)
           /*
           let a=0;
           while(a<res.performer.performances.length) {
@@ -1458,7 +1458,8 @@ dataprovider.getPerformanceByIds = async (req, ids) => {
   });
 }; */
 
-dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
+dataprovider.getJsonld = (data, req, title, section, subsection, type, res) => {
+  logger.info("getJsonld")
   let jsonld = {
     "@context": "http://schema.org",
   }
@@ -1476,14 +1477,14 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
             jsonld.itemListElement.push({
               '@type': 'ListItem',
               "position": a+1,
-              "url": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
+              "url": (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
             });
     
           } else {
             jsonld.itemListElement.push({
               '@type': 'ListItem',
               "position": a+1,
-              "url": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
+              "url": (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
             });
           }
     
@@ -1491,11 +1492,11 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
           jsonld.itemListElement.push({
             '@type': 'ListItem',
             "position": a+1,
-            "url": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
+            "url": (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
             /* "item": {
               '@type': 'CreativeWork',
               "name": data[a].title,
-              "url": (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl+data[a].slug
+              "url": (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl+data[a].slug
             } */
           });
         }
@@ -1561,14 +1562,14 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
             jsonld.itemListElement.push({
               '@type': 'ListItem',
               "position": a+1,
-              "url": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
+              "url": (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
             });
     
           } else {
             jsonld.itemListElement.push({
               '@type': 'ListItem',
               "position": a+1,
-              "url": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
+              "url": (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
             });
           }
     
@@ -1576,11 +1577,11 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
           jsonld.itemListElement.push({
             '@type': 'ListItem',
             "position": a+1,
-            "url": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
+            "url": (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
             /* "item": {
               '@type': 'CreativeWork',
               "name": data[a].title,
-              "url": (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl+data[a].slug
+              "url": (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl+data[a].slug
             } */
           });
         }
@@ -1739,14 +1740,14 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
           jsonld.itemListElement.push({
             '@type': 'ListItem',
             "position": a+1,
-            "url": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
+            "url": (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
           });
   
         } else {
           jsonld.itemListElement.push({
             '@type': 'ListItem',
             "position": a+1,
-            "url": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
+            "url": (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
           });
         }
   
@@ -1754,11 +1755,11 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
         jsonld.itemListElement.push({
           '@type': 'ListItem',
           "position": a+1,
-          "url": (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
+          "url": (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
           /* "item": {
             '@type': 'CreativeWork',
             "name": data[a].title,
-            "url": (req.get('host') === "localhost:8102" ? "http" : "https") + '://' + req.get('host') + req.originalUrl+data[a].slug
+            "url": (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl+data[a].slug
           } */
         });
       }
@@ -1987,6 +1988,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
               data.img.imageFormats = data.medias2[item].imageFormats;
             }
           }
+          logger.info("ecchime2")
           if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+data.img.slug).toString())===-1) {
             data.liked = false;
           } else {
@@ -2011,6 +2013,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
               data.galleries[0].img.imageFormats = data.galleries[0].medias2[item].imageFormats;
             }
           }
+          logger.info("ecchime3")
           if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+req.params.img).toString())===-1) {
             data.liked = false;
           } else {
@@ -2023,6 +2026,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
             data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
             model.updateOne({_id:data._id},{"stats.visits":data.stats.visits});
           }  
+          logger.info("ecchime4")
           if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
             data.liked = false;
           } else {
@@ -2072,8 +2076,9 @@ dataprovider.show = (req, res, section, subsection, model) => {
           if (req.query.oembed) {
             res.render(section + '/oembed', {
               title: title,
-              jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section, subsection, type),
-              canonical: (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
+              jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section, subsection, type, res),
+              canonical: res.locals.canonical,
+//canonical: (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
               data: data,
               section: section,
             });
@@ -2083,8 +2088,9 @@ dataprovider.show = (req, res, section, subsection, model) => {
             if (data && data.videos && data.videos && data.videos.length && data.videos[0].media) scripts.push("video");
             res.render(section + '/' + subsection, {
               title: title,
-              jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section, subsection, type),
-              canonical: (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
+              jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section, subsection, type, res),
+              canonical: res.locals.canonical,
+//canonical: (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
               editable: helpers.editable(req, data, data._id),
               get: req.query,
               data: data,
@@ -2140,17 +2146,12 @@ dataprovider.list = (req, res, section, model) => {
           }
         } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
           if (data.length) {
-            /* var dates = data.map(item => {return item.updatedAt}).sort().reverse()[0];
-            //logger.info(dates);
-            let lastmod = new Date();
-            lastmod.setHours( lastmod.getHours() -2 );
-            lastmod.setMinutes(0); */
             let lastmod = helpers.dateoW3CString(data.map(item => {
               return item.updatedAt ? item.updatedAt : item.createdAt;
             }).sort().reverse()[0]);
             res.set('Content-Type', 'text/xml');
             res.render('sitemaps/list', {
-              host: (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
+              host: (res.locals.isLocal ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
               data: data,
               lastmod: lastmod,
               basepath: config.sections[section].basepath,
@@ -2166,12 +2167,13 @@ dataprovider.list = (req, res, section, model) => {
           var scripts = [];
           if (data && data.media && data.media[0] && data.media[0].file) scripts.push("video");
           if (section === "videos") scripts.push("video");
+          logger.info("ecchime")
 
           res.render(config.sections[section].view_list, {
             title: title,
             section: section,
-            jsonld:dataprovider.getJsonld(data, req, title, section, null, null),
-            canonical: (req.get('host') === "localhost:8102" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
+            jsonld:dataprovider.getJsonld(data, req, title, section, null, null, res),
+            canonical: res.locals.canonical,
             sort: sorting,
             total: total,
             pages: pages,

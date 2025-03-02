@@ -15,14 +15,14 @@ mongoose.plugin((schema) => {
       this.$locals.__ = typeof this.options.req.__ === "function" ? this.options.req.__ : (text) => text;
       this.$locals.locale = this.options.req.session?.current_lang || "en";
     } else {
-      console.log("❌ WARNING: No `req` found in query. Defaulting to 'en'.");
+      //console.log("❌ WARNING: No `req` found in query. Defaulting to 'en'.");
       this.$locals.__ = (text) => text; // Fallback
       this.$locals.locale = "en"; // Default
     }
 
-    console.log("⚠️ DEBUG: Pre-find Hook Executed", {
+    /* console.log("⚠️ DEBUG: Pre-find Hook Executed", {
       queryLang: this.$locals.locale,
-    });
+    }); */
 
     next();
   });
@@ -49,33 +49,26 @@ const originalExec = mongoose.Query.prototype.exec;
 
 mongoose.Query.prototype.exec = async function (...args) {
   if (!this.options.req && global.currentRequest) {
-    console.log("⚠️ DEBUG: Attaching `req.session.current_lang` to query", {
+    /* console.log("⚠️ DEBUG: Attaching `req.session.current_lang` to query", {
       globalReqExists: !!global.currentRequest,
       globalLang: global.currentRequest?.session?.current_lang || "⚠️ MISSING",
-    });
+    }); */
 
     this.setOptions({ req: global.currentRequest });
   }
 
   try {
     const result = await originalExec.apply(this, args);
-    console.log("✅ DEBUG: Query Executed, Checking $locals", {
+    /* console.log("✅ DEBUG: Query Executed, Checking $locals", {
       queryLang: this.options.req?.session?.current_lang || "⚠️ MISSING",
-    });
+    }); */
 
     return result;
   } catch (error) {
-    console.error("❌ Mongoose Query Execution Error:", error);
+    //console.error("❌ Mongoose Query Execution Error:", error);
     throw error;
   }
 };
-
-
-
-
-
-
-
 
 const connectDB = async (MONGO_URI) => {
   if (connectionAttempts >= MAX_RETRIES) {
@@ -105,7 +98,7 @@ const connectDB = async (MONGO_URI) => {
 const loadModels = async () => {
   const folders = config.modelPaths || [path.join(config.appRoot, "app/models")];
 
-  console.log(`📂 Loading models from:`, folders);
+  //console.log(`📂 Loading models from:`, folders);
 
   for (const folder of folders) {
     if (!fs.existsSync(folder)) {
@@ -119,11 +112,11 @@ const loadModels = async () => {
     for (const file of modelFiles) {
       try {
         const { default: model } = await import(`file://${path.join(folder, file)}`);
-        if (model?.modelName) {
+        /* if (model?.modelName) {
           console.log(`✅ Model Loaded: ${model.modelName}`);
         } else {
           console.warn(`⚠️ No modelName found in ${file}`);
-        }
+        } */
       } catch (err) {
         console.error(`❌ Error loading model ${file}:`, err.message);
       }

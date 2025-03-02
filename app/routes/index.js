@@ -2,6 +2,7 @@ import createRouter from "./router.js";
 const router = createRouter();
 
 import mongoose from 'mongoose';
+import config from 'getconfig';
 
 // Import route handlers
 import home from './home.js';
@@ -94,7 +95,6 @@ router.get('/sitemap.xml', async (req, res) => {
       organizations,
       events,
       performances,
-      learnings,
       galleries,
       videos,
       news
@@ -129,7 +129,7 @@ router.get('/sitemap.xml', async (req, res) => {
     res.set('Content-Type', 'text/xml');
     res.render('sitemaps/index', {
       pretty: true,
-      host: (req.get('host') === "localhost:8102" ? "http" : "https") + "://" + req.headers.host,
+      host: res.locals.host,
       data: config.sections,
       lastmod: lastmod.sort().reverse()[0]
     });
@@ -169,9 +169,9 @@ router.use('/:slug', performersShow);
 router.use('/', home);
 
 // Log all registered routes
-router.stack.forEach(middleware => {
+/* router.stack.forEach(middleware => {
   if (middleware.route) {
     console.log(`🛤 Registered route: ${middleware.route.path}`);
   }
-});
+}); */
 export default router;
