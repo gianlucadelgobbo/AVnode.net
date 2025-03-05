@@ -27,17 +27,20 @@ const datevenueSchema = new Schema({
 },{ _id : false });
 
 datevenueSchema.virtual('date_formatted').get(function () {
+  logger.info("virtual date_formatted")
   const lang = this.$locals.locale;
   const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
   return moment(startdatefake).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
 datevenueSchema.virtual('date').get(function () {
+  logger.info("virtual date")
   const lang = this.$locals.locale;
   const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
   return startdatefake;
 });
 
 datevenueSchema.virtual('starttime_formatted').get(function () {
+  logger.info("virtual starttime_formatted")
   return moment(this.starttime).format('h:mm');
 });
 datevenueSchema.virtual('endtime_formatted').get(function () {
@@ -114,9 +117,11 @@ const callSchema = new Schema({
   }
 });
 callSchema.virtual('start_date_formatted').get(function () {
+  logger.info("virtual start_date_formatted")
   return moment(this.start_date).format('MMMM Do YYYY');
 });
 callSchema.virtual('end_date_formatted').get(function () {
+  logger.info("virtual end_date_formatted")
   return moment(this.end_date).format('MMMM Do YYYY, h:mm');
 });
 
@@ -204,7 +209,7 @@ const eventSchema = new Schema({
 }); */
 
 eventSchema.virtual('advanced').get(function (req) {
-  //logger.info("virtual advanced");
+  logger.info("virtual advanced");
   //let programmebydayvenue = [];
   let performers = {
     performersN: 0,
@@ -317,7 +322,7 @@ eventSchema.virtual('advanced').get(function (req) {
       performers.performers.sort((a,b) => (a.stagename.toLowerCase() > b.stagename.toLowerCase()) ? 1 : ((b.stagename.toLowerCase() > a.stagename.toLowerCase()) ? -1 : 0));
       advanced.performers = performers;
 
-      if (advanced.performers) advanced.menu.push({slug: "performers", name: __("Performers")});
+      if (advanced.performers) advanced.menu.push({slug: "performers", name: this.$locals.__("Performers")});
       let programmebydayvenue = ret ? Object.values(programmebydayvenueObj) : undefined;
       if (programmebydayvenue) {
         programmebydayvenue.sort((a,b) => (a.day > b.day) ? 1 : ((b.day > a.day) ? -1 : 0));
@@ -343,12 +348,12 @@ eventSchema.virtual('advanced').get(function (req) {
         }
 
         if (this.program) {
-          advanced.menu.push({slug: "program", name: __("Program"), days: dd, types:types});
+          advanced.menu.push({slug: "program", name: this.$locals.__("Program"), days: dd, types:types});
         }
       }
-      if (this.galleries && this.galleries.length) advanced.menu.push({slug: "galleries", name: __("Galleries")});
-      if (this.videos && this.videos.length) advanced.menu.push({slug: "videos", name: __("Videos")});
-      if (this.partners && this.partners.length) advanced.menu.push({slug: "partners", name: __("Partners")});
+      if (this.galleries && this.galleries.length) advanced.menu.push({slug: "galleries", name: this.$locals.__("Galleries")});
+      if (this.videos && this.videos.length) advanced.menu.push({slug: "videos", name: this.$locals.__("Videos")});
+      if (this.partners && this.partners.length) advanced.menu.push({slug: "partners", name: this.$locals.__("Partners")});
 
       advanced.performers.countries = advanced.performers.countries.sort();
       advanced.programmebydayvenue = programmebydayvenue;
@@ -410,6 +415,7 @@ eventSchema.virtual('advanced').get(function (req) {
 }); */
 
 eventSchema.virtual('about').get(function (req) {
+  logger.info("virtual about")
   let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
@@ -441,6 +447,7 @@ eventSchema.virtual('about').get(function (req) {
 
 
 eventSchema.virtual('aboutFull').get(function (req) {
+  logger.info("virtual aboutFull")
   let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
@@ -481,16 +488,19 @@ eventSchema.virtual('aboutFull').get(function (req) {
   }
 });
 eventSchema.virtual('description').get(function (req) {
+  logger.info("virtual description")
   if (this.abouts && this.abouts.length) {
     return helpers.makeDescription(this.abouts, this.$locals);
   }
 });
 
 eventSchema.virtual('call_is_active').get(function (req) {
+  logger.info("virtual description")
   return this.organizationsettings.call.calls && this.organizationsettings.call.calls.length;
 });
 
 eventSchema.virtual('subtitle').get(function (req) {
+  logger.info("virtual description")
   let subtitleA = [];
   if (this.subtitles && this.subtitles.length) {
     let subtitle;
@@ -511,6 +521,7 @@ eventSchema.virtual('subtitle').get(function (req) {
 
 
 eventSchema.virtual('imageFormats').get(function () {
+  logger.info("virtual imageFormats")
   let imageFormats = {};
   for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
     imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
@@ -529,6 +540,7 @@ eventSchema.virtual('imageFormats').get(function () {
 });
 
 eventSchema.virtual('boxDate').get(function () {
+  logger.info("virtual boxDate")
   let boxDate;
   if (this.schedule && this.schedule.length) {
     const lang = this.$locals.locale;
@@ -557,6 +569,7 @@ eventSchema.virtual('boxDate').get(function () {
 }); */
 
 eventSchema.virtual('boxVenue').get(function () {
+  logger.info("virtual boxVenue")
   let boxVenue;
   if (this.schedule && this.schedule.length && this.schedule[0].venue && this.schedule[0].venue.location) {
     boxVenue = this.schedule[0].venue.name + ' ' + this.schedule[0].venue.location.locality + ' ' + this.schedule[0].venue.location.country;
@@ -607,6 +620,7 @@ eventSchema.virtual('boxVenue').get(function () {
 });
 
 eventSchema.virtual('fullSchedule').get(function (req) {
+  logger.info("virtual fullSchedule")
   //let schedulebydayvenue = [];
   let schedulebydayvenueObj = {};
   let ret = false;
@@ -691,7 +705,7 @@ eventSchema.virtual('fullSchedule').get(function (req) {
           }
         }
       }
-      boxDates.push(eventSchema.boxDateCreator(starttime, endtime, boxVenue));
+      boxDates.push(eventSchema.boxDateCreator(starttime, endtime, boxVenue, this.$locals.locale));
     }
     //logger.info(boxDates);
 
@@ -699,9 +713,9 @@ eventSchema.virtual('fullSchedule').get(function (req) {
   }
 });
 
-eventSchema.boxDateCreator = (starttime, endtime, boxVenue) => {
+eventSchema.boxDateCreator = (starttime, endtime, boxVenue, lang) => {
+  logger.info("function boxDateCreator")
   let boxDate;
-  const lang = this.$locals.locale;
   const startdate = new Date(new Date(starttime).setUTCHours(0,0,0,0));
   const enddate = new Date(new Date(endtime).setUTCHours(0,0,0,0));
   const enddatefake = new Date(new Date(endtime-(10*60*60*1000)).setUTCHours(0,0,0,0));

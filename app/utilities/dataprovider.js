@@ -1251,14 +1251,14 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
     }
     logger.info("CE PROVO")
     try {
-      /* logger.info("populate");
+      logger.info("populate");
       logger.info(populate);
       logger.info("BINGOOOOO");
       logger.info("model");
       logger.info(model.modelName);
       logger.info("config.sections[section]");
       logger.info(config.sections[section]);
-      logger.info({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}); */
+      logger.info({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1});
       let ddd = await model.
       findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
       // lean({ virtuals: true }).

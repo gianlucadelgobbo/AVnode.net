@@ -29,6 +29,9 @@ router.get('/', async (req, res) => {
   var slugsMenu = participateMenu.map(item =>{return item.slug})
   
   logger.info("GETGETGETGETGET");
+  logger.info("req.query.api");
+  logger.info(req.query.api);
+  logger.info(req.query.code);
   //delete req.session.call;
   logger.info("req.session.call");
   //logger.info(req.session.call);
@@ -316,16 +319,29 @@ router.post('/', async (req, res) => {
             req.session.call.subscriptions = allsubscriptions;
             logger.info("allsubscriptions");
             //logger.info(allsubscriptions);
-            res.render('events/participate', {
-              title: data.title,
-              canonical: res.locals.canonical,
-//canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
-              dett: data,
-              call: req.session.call,
-              participateMenu: participateMenu,
-              user: req.user,
-              msg: msg
-            });
+            if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+              res.json({
+                title: data.title,
+                canonical: res.locals.canonical,
+  //canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                dett: data,
+                call: req.session.call,
+                participateMenu: participateMenu,
+                user: req.user,
+                msg: msg
+              });
+            } else {
+              res.render('events/participate', {
+                title: data.title,
+                canonical: res.locals.canonical,
+  //canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                dett: data,
+                call: req.session.call,
+                participateMenu: participateMenu,
+                user: req.user,
+                msg: msg
+              });
+            }
           } else {
             msg = {e:[{name:'accept',m:req.__('Please select a performance to go forward')}]}
           }
