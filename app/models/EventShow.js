@@ -27,20 +27,20 @@ const datevenueSchema = new Schema({
 },{ _id : false });
 
 datevenueSchema.virtual('date_formatted').get(function () {
-  logger.info("virtual date_formatted")
+  logger.info("EventShow virtual date_formatted")
   const lang = this.$locals.locale;
   const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
   return moment(startdatefake).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
 datevenueSchema.virtual('date').get(function () {
-  logger.info("virtual date")
+  logger.info("EventShow virtual date")
   const lang = this.$locals.locale;
   const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
   return startdatefake;
 });
 
 datevenueSchema.virtual('starttime_formatted').get(function () {
-  logger.info("virtual starttime_formatted")
+  logger.info("EventShow virtual starttime_formatted")
   return moment(this.starttime).format('h:mm');
 });
 datevenueSchema.virtual('endtime_formatted').get(function () {
@@ -117,11 +117,11 @@ const callSchema = new Schema({
   }
 });
 callSchema.virtual('start_date_formatted').get(function () {
-  logger.info("virtual start_date_formatted")
+  logger.info("EventShow virtual start_date_formatted")
   return moment(this.start_date).format('MMMM Do YYYY');
 });
 callSchema.virtual('end_date_formatted').get(function () {
-  logger.info("virtual end_date_formatted")
+  logger.info("EventShow virtual end_date_formatted")
   return moment(this.end_date).format('MMMM Do YYYY, h:mm');
 });
 
@@ -209,7 +209,7 @@ const eventSchema = new Schema({
 }); */
 
 eventSchema.virtual('advanced').get(function (req) {
-  logger.info("virtual advanced");
+  logger.info("EventShow virtual advanced");
   //let programmebydayvenue = [];
   let performers = {
     performersN: 0,
@@ -415,7 +415,7 @@ eventSchema.virtual('advanced').get(function (req) {
 }); */
 
 eventSchema.virtual('about').get(function (req) {
-  logger.info("virtual about")
+  logger.info("EventShow virtual about")
   let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
@@ -447,7 +447,7 @@ eventSchema.virtual('about').get(function (req) {
 
 
 eventSchema.virtual('aboutFull').get(function (req) {
-  logger.info("virtual aboutFull")
+  logger.info("EventShow virtual aboutFull")
   let about = this.$locals.__('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
@@ -488,19 +488,19 @@ eventSchema.virtual('aboutFull').get(function (req) {
   }
 });
 eventSchema.virtual('description').get(function (req) {
-  logger.info("virtual description")
+  logger.info("EventShow virtual description")
   if (this.abouts && this.abouts.length) {
     return helpers.makeDescription(this.abouts, this.$locals);
   }
 });
 
 eventSchema.virtual('call_is_active').get(function (req) {
-  logger.info("virtual description")
+  logger.info("EventShow virtual description")
   return this.organizationsettings.call.calls && this.organizationsettings.call.calls.length;
 });
 
 eventSchema.virtual('subtitle').get(function (req) {
-  logger.info("virtual description")
+  logger.info("EventShow virtual description")
   let subtitleA = [];
   if (this.subtitles && this.subtitles.length) {
     let subtitle;
@@ -521,7 +521,7 @@ eventSchema.virtual('subtitle').get(function (req) {
 
 
 eventSchema.virtual('imageFormats').get(function () {
-  logger.info("virtual imageFormats")
+  logger.info("EventShow virtual imageFormats")
   let imageFormats = {};
   for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
     imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
@@ -540,7 +540,7 @@ eventSchema.virtual('imageFormats').get(function () {
 });
 
 eventSchema.virtual('boxDate').get(function () {
-  logger.info("virtual boxDate")
+  logger.info("EventShow virtual boxDate")
   let boxDate;
   if (this.schedule && this.schedule.length) {
     const lang = this.$locals.locale;
@@ -569,7 +569,7 @@ eventSchema.virtual('boxDate').get(function () {
 }); */
 
 eventSchema.virtual('boxVenue').get(function () {
-  logger.info("virtual boxVenue")
+  logger.info("EventShow virtual boxVenue")
   let boxVenue;
   if (this.schedule && this.schedule.length && this.schedule[0].venue && this.schedule[0].venue.location) {
     boxVenue = this.schedule[0].venue.name + ' ' + this.schedule[0].venue.location.locality + ' ' + this.schedule[0].venue.location.country;
@@ -620,7 +620,7 @@ eventSchema.virtual('boxVenue').get(function () {
 });
 
 eventSchema.virtual('fullSchedule').get(function (req) {
-  logger.info("virtual fullSchedule")
+  logger.info("EventShow virtual fullSchedule")
   //let schedulebydayvenue = [];
   let schedulebydayvenueObj = {};
   let ret = false;

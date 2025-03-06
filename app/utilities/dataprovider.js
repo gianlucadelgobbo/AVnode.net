@@ -1251,14 +1251,14 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
     }
     logger.info("CE PROVO")
     try {
-      logger.info("populate");
+      /* logger.info("populate");
       logger.info(populate);
       logger.info("BINGOOOOO");
       logger.info("model");
       logger.info(model.modelName);
       logger.info("config.sections[section]");
       logger.info(config.sections[section]);
-      logger.info({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1});
+      logger.info({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}); */
       let ddd = await model.
       findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
       // lean({ virtuals: true }).
@@ -1268,7 +1268,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
       exec()
       let data;
       logger.info("ddd");
-      logger.info(ddd);
+      /* logger.info(ddd); */
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};
       if (data && data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
@@ -2051,7 +2051,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
             editable = true;
           }
         } */
-        if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
+        if (req.isApi) {
           //logger.info("fetchShow END");
           res.json(data);
           /* if (process.env.DEBUG) {
@@ -2138,7 +2138,7 @@ dataprovider.list = (req, res, section, model) => {
       }
       dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
         const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
-        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        if (req.isApi) {
           if (process.env.DEBUG) {
             res.render('json', {data: {total:total, skip:skip, data:data}});
           } else {

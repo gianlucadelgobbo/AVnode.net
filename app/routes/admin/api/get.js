@@ -138,7 +138,7 @@ router.getSubscriptions = async (req, res) => {
       .sort({createdAt:-1})
       .exec();
       //logger.info(data);
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         res.render('admin/subscriptions', {
@@ -300,7 +300,7 @@ router.getEmailqueue = async (req, res) => {
   }
   logger.info("data");
   logger.info(data);
-  if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+  if (req.isApi) {
     return res.json(data);
   } else {
     return res.render('admin/emailqueue', {
@@ -392,7 +392,7 @@ router.getPartners = async (req, res) => {
   for (var item in data) {
     partners = partners.concat(data[item].partners);
   }   
-  if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+  if (req.isApi) {
     return res.json(data);
   } else {
     var partnerships = event.partners.slice(0);
@@ -428,7 +428,7 @@ router.getPartners = async (req, res) => {
     for (var item in categories) {
       if (existingCat.indexOf(categories[item]._id.toString())===-1) pp.push({category:categories[item], users:[]});
     }
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       return res.json(data);
     } else {
       return res.render('admin/events_partners', {

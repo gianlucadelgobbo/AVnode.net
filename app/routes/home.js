@@ -55,7 +55,7 @@ router.get('/', (req, res) => {
         dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
           homedata.news = data;
           homedata.stats.news = total;
-          if (req.query.api || (req.headers.host && req.headers.host.split('.')[0]=='api') || (req.headers.host && req.headers.host.split('.')[1]=='api')) {
+          if (req.isApi) {
             if (process.env.DEBUG) {
               res.render('json', {data:homedata});
             } else {

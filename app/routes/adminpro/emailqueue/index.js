@@ -37,7 +37,7 @@ router.getEmailqueue = (req, res) => {
       exec((err, data) => {
         logger.info("data");
         logger.info(data);
-        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        if (req.isApi) {
           res.json(data);
         } else {
           res.render('adminpro/emailqueue/send', {

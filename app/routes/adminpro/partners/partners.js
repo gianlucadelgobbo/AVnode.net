@@ -33,7 +33,7 @@ router.get('/', (req, res) => {
   exec((err, data) => {
     //logger.info(Object.keys(data[0]));
 
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data);
     } else {
       res.render('adminpro/partners/home', {
@@ -114,7 +114,7 @@ router.post('/:id/event/:event/:sez', (req, res) => {
       //select({stagename: 1, createdAt: 1, crews:1}).
       populate(populate).
       exec((err, data) => {
-        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        if (req.isApi) {
           res.json(data);
         } else {
           res.redirect('/adminpro/emailqueue/')
@@ -165,7 +165,7 @@ router.getPartners = (req, res) => {
       //select({stagename: 1, createdAt: 1, crews:1}).
       populate(populate).
       exec((err, data) => {
-        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        if (req.isApi) {
           res.json(data);
         } else {
           if (req.body.subject && req.params.sez=="send") {
@@ -356,7 +356,7 @@ router.get('/:id/:event/grantsdata', (req, res) => {
   //select({stagename: 1, createdAt: 1, crews:1}).
   populate(populate).
   exec((err, data) => {
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data);
     } else {
       res.render('adminpro/partners/grantsdata', {
@@ -392,7 +392,7 @@ router.get('/:id/:event/mandates', (req, res) => {
     //select({stagename: 1, createdAt: 1, crews:1}).
     populate(populate).
     exec((err, data) => {
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         res.render('adminpro/partners/mandates', {
@@ -430,7 +430,7 @@ router.get('/:id/:event/grantsdata_table', (req, res) => {
     //select({stagename: 1, createdAt: 1, crews:1}).
     populate(populate).
     exec((err, data) => {
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         res.render('adminpro/partners/grantsdata_table', {
@@ -564,7 +564,7 @@ router.get('/:id/:event/grantsdata_events', (req, res) => {
     //select({stagename: 1, createdAt: 1, crews:1}).
     populate(populate).
     exec((err, data) => {
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         res.render('adminpro/partners/grantsdata_events', {
@@ -612,7 +612,7 @@ router.getManageables = (req, res) => {
       sort({title: 1}).
       //select({stagename: 1, createdAt: 1, crews:1}).
       exec((err, events) => {
-        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        if (req.isApi) {
           res.json(data);
         } else {
   
@@ -646,7 +646,7 @@ router.getManageables = (req, res) => {
             for (var item in categories) {
               if (existingCat.indexOf(categories[item]._id.toString())===-1) pp.push({category:categories[item], users:[]});
             }
-            if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+            if (req.isApi) {
               res.json(data);
             } else {
               res.render('adminpro/partners/organization_partners_manage', {
@@ -695,7 +695,7 @@ router.get('/:id/:event', (req, res) => {
       sort({title: 1}).
       //select({stagename: 1, createdAt: 1, crews:1}).
       exec((err, events) => {
-        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        if (req.isApi) {
           res.json(data);
         } else {
           res.render('adminpro/partners/organization_partners', {
@@ -812,7 +812,7 @@ router.get('/:event/acts', (req, res) => {
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
           data.rooms = [];
           for(let a=0;a<event.schedule.length;a++)  if (event.schedule[a].venue && event.schedule[a].venue.room) data.rooms.push(event.schedule[a].venue.room);
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          if (req.isApi) {
             res.json(data);
           } else {
             res.render('adminpro/organizations/acts', {
@@ -876,7 +876,7 @@ router.get('/:event/peoples', (req, res) => {
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
           data.rooms = [];
           for(let a=0;a<event.schedule.length;a++)  if (event.schedule[a].venue && event.schedule[a].venue.room) data.rooms.push(event.schedule[a].venue.room);
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          if (req.isApi) {
             res.json(data);
           } else {
             res.render('adminpro/organizations/peoples', {
@@ -921,7 +921,7 @@ router.get('/:event/program', (req, res) => {
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
           data.rooms = [];
           for(let a=0;a<event.schedule.length;a++)  if (event.schedule[a].venue && event.schedule[a].venue.room) data.rooms.push(event.schedule[a].venue.room);
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          if (req.isApi) {
             res.json(data);
           } else {
             res.render('adminpro/organizations/program', {

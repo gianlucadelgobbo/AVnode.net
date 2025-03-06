@@ -86,7 +86,7 @@ router.get('/userimages', (req, res) => {
       data.push(users[user].image);
     }
     logger.info(req.path);
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data);
     } else {
       res.render('adminpro/supertools/files/showall', {
@@ -217,7 +217,7 @@ router.get('/performanceimages', (req, res) => {
       data.push(performances[performance].image);
     }
     logger.info(req.path);
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data);
     } else {
       res.render('adminpro/supertools/files/showall', {
@@ -648,7 +648,7 @@ router.get('/footagefiles', (req, res) => {
       data.push(footages[footage].media);
     }
     logger.info(req.path);
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data);
     } else {
       res.render('adminpro/supertools/files/showall_videos', {
@@ -985,7 +985,7 @@ router.get('/videofilestodelete_videos', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1037,7 +1037,7 @@ router.get('/videofilestodelete_formats', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1087,7 +1087,7 @@ router.get('/videofilestodelete_previews', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1137,7 +1137,7 @@ router.get('/videofilestodelete_originals', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1189,7 +1189,7 @@ router.get('/eventfilestodelete_formats', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1239,7 +1239,7 @@ router.get('/eventfilestodelete_images', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1291,7 +1291,7 @@ router.get('/userfilestodelete_formats', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1341,7 +1341,7 @@ router.get('/usersfilestodelete_images', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1393,7 +1393,7 @@ router.get('/performancefilestodelete_formats', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1443,7 +1443,7 @@ router.get('/performancefilestodelete_images', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1495,7 +1495,7 @@ router.get('/newsfilestodelete_formats', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1545,7 +1545,7 @@ router.get('/newsfilestodelete_images', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1595,7 +1595,7 @@ router.get('/footagefilestodelete_videos', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1647,7 +1647,7 @@ router.get('/footagefilestodelete_formats', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1697,7 +1697,7 @@ router.get('/footagefilestodelete_previews', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 
@@ -1747,7 +1747,7 @@ router.get('/footagefilestodelete_originals', async (req, res) => {
       };
 
       //Do the stuff you need to do after renaming the files
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
 

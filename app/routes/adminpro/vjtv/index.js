@@ -257,7 +257,7 @@ router.get('/generator', (req, res) => {
                 logger.info("data[0]");
                 logger.info(data[0]);
                 //logger.info("adminpro");
-                if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+                if (req.isApi) {
                   res.json(data);
                 } else {
                   res.render('adminpro/vjtv/generator', {

@@ -252,7 +252,7 @@ router.get('/', (req, res) => {
               .populate([{path: "video", model: "Video", select: {title: 1, slug: 1, createdAt: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
               .exec((err, data) => {
                 //logger.info("adminpro");
-                if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+                if (req.isApi) {
                   res.json(data);
                 } else {
                   res.render('adminpro/vjtv/generator', {

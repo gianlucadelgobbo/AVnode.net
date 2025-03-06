@@ -163,10 +163,17 @@ app.use((req, res, next) => {
   const parts = host.split(".");
   let lang = config.defaultLocale || "en";
 
+  // ✅ Detect API vs Admin
+  let isApi = false;
+  if (parts.includes("api")) {
+    isApi = true; // ✅ Mark request as API
+  }
+
+  // ✅ Detect Language from Subdomain
   if (parts.length > 2) {
     const subdomain = parts[0];
     if (config.domain_to_lang[subdomain]) {
-      lang = config.domain_to_lang[subdomain]; // ✅ Detect language from subdomain
+      lang = config.domain_to_lang[subdomain]; // ✅ Assign language
     }
   }
 
@@ -175,16 +182,24 @@ app.use((req, res, next) => {
   }
 
   req.session.current_lang = lang; // ✅ Store language in session
-  moment.locale(lang); // ✅ Set moment locale
-  req.setLocale(lang); // ✅ Ensures i18n uses the correct language
-  req.__ = i18n.__.bind(req); // ✅ Bind translation function
-  res.locals.__ = req.__; // ✅ Make translations available in templates
+  req.isApi = isApi; // ✅ Store API flag in request
+  res.locals.isApi = isApi; // ✅ Make available in templates
+
+  // ✅ Localized moment instances (prevent global race conditions)
+  req.moment = () => moment().locale(lang);
+  res.locals.moment = (date) => moment(date).locale(lang);
+
+  // ✅ i18n Setup
+  req.setLocale(lang);
+  req.__ = i18n.__.bind(req);
+  res.locals.__ = req.__;
 
   logger.info("⚠️ DEBUG: Setting session language", {
     detectedLang: lang,
     sessionLang: req.session.current_lang,
-    momentLang: moment.locale(),
-    i18nLocale: req.getLocale(), // ✅ Check if i18n is using correct language
+    momentLang: req.moment().locale(),
+    i18nLocale: req.getLocale(),
+    isApi: req.isApi, // ✅ Log API status
   });
 
   next();

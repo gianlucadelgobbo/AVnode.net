@@ -78,7 +78,7 @@ router.get('/', (req, res) => {
   select({stagename: 1, createdAt: 1, crews:1}).
   populate({path: "crews", select: {stagename:1, slug:1, social:1, web:1}, model:"User", populate: {path: "members", select: {stagename:1}, options:{sort:{stagename:1}}, model:"User"}}).
   exec((err, data) => {
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data.crews);
     } else {
       logger.info(data);
@@ -102,7 +102,7 @@ router.get('/:event', (req, res) => {
   exec((err, event) => {
     data.event = event;
     data.status = status;
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data);
     } else {
       logger.info(data);
@@ -151,7 +151,7 @@ router.get('/:event/acts', (req, res) => {
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
           data.rooms = [];
           for(let a=0;a<event.schedule.length;a++)  if (event.schedule[a].venue && event.schedule[a].venue.room) data.rooms.push(event.schedule[a].venue.room);
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          if (req.isApi) {
             res.json(data);
           } else {
             res.render('adminpro/organizations/acts', {
@@ -215,7 +215,7 @@ router.get('/:event/peoples', (req, res) => {
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
           data.rooms = [];
           for(let a=0;a<event.schedule.length;a++)  if (event.schedule[a].venue && event.schedule[a].venue.room) data.rooms.push(event.schedule[a].venue.room);
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          if (req.isApi) {
             res.json(data);
           } else {
             res.render('adminpro/organizations/peoples', {
@@ -260,7 +260,7 @@ router.get('/:event/program', (req, res) => {
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
           data.rooms = [];
           for(let a=0;a<event.schedule.length;a++)  if (event.schedule[a].venue && event.schedule[a].venue.room) data.rooms.push(event.schedule[a].venue.room);
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          if (req.isApi) {
             res.json(data);
           } else {
             res.render('adminpro/organizations/program', {

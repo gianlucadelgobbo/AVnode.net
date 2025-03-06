@@ -817,5 +817,8 @@
 	"The list of Videos": " All Most recent",
 	"The list of Performers": " All Most active",
 	"The list of Performances": " All Most recent",
-	"The list of Learnings": " All Most recent"
+	"The list of Learnings": " All Most recent",
+	"To have your profile at https": "//avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)",
+	"To have your event at https": "//avnode.net/events/mybeautyfulevent, please insert mybeautyfulevent (lower case, no spaces, no special characters)",
+	"DD/MM/YYYY HH": "MM"
 }

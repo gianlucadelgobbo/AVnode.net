@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
     sort({"schedule.starttime":-1}).
     exec();
     results.events = data;
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(results);
     } else {
       res.render('adminpro/events/home', {
@@ -64,7 +64,7 @@ router.get('/:event', async (req, res) => {
     exec();
     data.event = event;
     data.status = config.cpanel["events_advanced"].status;
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data);
     } else {
       res.render('adminpro/events/dett', {
@@ -100,7 +100,7 @@ router.get('/:event/orders', async (req, res) => {
       exec();
       data.event = event;
       data.orders = orders;
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         req.query.sez = "acts";
@@ -122,7 +122,7 @@ router.get('/:event/orders', async (req, res) => {
 
   router.get('/:event/program-social', (req, res) => {
     router.getActsData(req, res, data => {
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         req.query.sez = "acts";
@@ -139,7 +139,7 @@ router.get('/:event/orders', async (req, res) => {
   
   router.get('/:event/program-print', (req, res) => {
     router.getPrintData(req, res, data => {
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         req.query.sez = "acts";
@@ -156,7 +156,7 @@ router.get('/:event/orders', async (req, res) => {
   
   router.get('/:event/program-print-siae', (req, res) => {
     router.getActsData(req, res, data => {
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         req.query.sez = "acts";
@@ -173,7 +173,7 @@ router.get('/:event/orders', async (req, res) => {
   
   router.get('/:event/program-print-comune', (req, res) => {
     router.getActsData(req, res, data => {
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         req.query.sez = "acts";
@@ -293,7 +293,7 @@ router.get('/:event/orders', async (req, res) => {
                 data.programmebydayvenue[item].rooms[room].program.sort((a,b) => (a.schedule.starttime > b.schedule.starttime) ? 1 : ((b.schedule.starttime > a.schedule.starttime) ? -1 : 0));
               }
             }
-            if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+            if (req.isApi) {
               res.json(data);
             } else {
               req.query.sez = "program-social";
@@ -314,7 +314,7 @@ router.get('/:event/orders', async (req, res) => {
  */  
 router.get('/:event/acts', (req, res) => {
   router.getActsData(req, res, data => {
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data);
     } else {
       req.query.sez = "acts";
@@ -631,7 +631,7 @@ router.getPrintData = async (req, res, cb) => {
 router.getMessageActs = (req, res) => {
   router.getActsData(req, res, data => {
     req.query.sez = "acts";
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data);
     } else {
       //logger.info(query);
@@ -719,7 +719,7 @@ router.post('/:event/peoples/message', (req, res) => {
 router.get('/:event/peoples', (req, res) => {
   logger.info('/events/'+req.params.event+'/peoples');
   router.getPeoplesData(req, res, data => {
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data);
     } else {
       req.query.sez = "peoples";
@@ -898,7 +898,7 @@ router.getMessagePeoples = (req, res) => {
   router.getPeoplesData(req, res, data => {
     console.log(data)
     req.query.sez = "peoples";
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+    if (req.isApi) {
       res.json(data);
     } else {
       //logger.info(query);
@@ -1136,7 +1136,7 @@ router.get('/:event/program', async (req, res) => {
           data.programmebydayvenue[item].rooms[room].program.sort((a,b) => (a.schedule.starttime > b.schedule.starttime) ? 1 : ((b.schedule.starttime > a.schedule.starttime) ? -1 : 0));
         }
       }
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         req.query.sez = "program";
@@ -1278,7 +1278,7 @@ router.get('/:event/technical-riders', async (req, res) => {
             data.programmebydayvenue[item].rooms[room].program.sort((a,b) => (a.schedule.starttime > b.schedule.starttime) ? 1 : ((b.schedule.starttime > a.schedule.starttime) ? -1 : 0));
           }
         }
-        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        if (req.isApi) {
           res.json(data);
         } else {
           req.query.sez = "technical-riders";
@@ -1411,7 +1411,7 @@ router.get('/:event/technical-riders', async (req, res) => {
               data.programmebydayvenue[item].rooms[room].program.sort((a,b) => (a.schedule.starttime > b.schedule.starttime) ? 1 : ((b.schedule.starttime > a.schedule.starttime) ? -1 : 0));
             }
           }
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          if (req.isApi) {
             res.json(data);
           } else {
             req.query.sez = "program-print";
@@ -1535,7 +1535,7 @@ router.get('/:event/pass-sheet', async (req, res) => {
         
         data.sortby = [
         ];
-        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        if (req.isApi) {
           res.json(data);
         } else {
           req.query.sez = "pass-sheet";
@@ -1656,7 +1656,7 @@ router.get('/:event/pass', async (req, res) => {
       
       data.sortby = [
       ];
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         req.query.sez = "pass";

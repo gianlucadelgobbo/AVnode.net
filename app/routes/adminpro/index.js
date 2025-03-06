@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
       select({ title: 1, createdAt: 1 }).
       exec();
       results.events = data;
-      if (req.query.api || req.headers.host.split('.')[0] == 'api' || req.headers.host.split('.')[1] == 'api') {
+      if (req.isApi) {
         res.json(results);
       } else {
         res.render('adminpro/home', {

@@ -80,7 +80,7 @@ router.get('/', async (req, res) => {
     logger.info(data.organizationsettings.call.calls[req.session.call.index].availability);
     logger.info(slugsMenu);
   }
-  if (req.query.api || req.headers.host.split('.')[0] == 'api' || req.headers.host.split('.')[1] == 'api') {
+  if (req.isApi) {
     res.json({
       call: req.session.call,
       code: req.query.code,
@@ -237,7 +237,7 @@ router.post('/', async (req, res) => {
                 logger.info(msg);
               }
 
-              if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+              if (req.isApi) {
                 res.json(data);
               } else {
                 logger.info('STOCAZZO ');
@@ -319,7 +319,7 @@ router.post('/', async (req, res) => {
             req.session.call.subscriptions = allsubscriptions;
             logger.info("allsubscriptions");
             //logger.info(allsubscriptions);
-            if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+            if (req.isApi) {
               res.json({
                 title: data.title,
                 canonical: res.locals.canonical,
@@ -540,7 +540,7 @@ router.post('/', async (req, res) => {
             logger.info(err);
             msg = {e:[{name:'index', m:req.__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
           }
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          if (req.isApi) {
             res.json({
               dett: data,
               call: req.session.call,
@@ -566,7 +566,7 @@ router.post('/', async (req, res) => {
     }
 
     if (myasync) {
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.isApi) {
         res.json(data);
       } else {
         logger.info('JUST BEFORE RENDER');
