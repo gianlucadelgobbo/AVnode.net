@@ -29,10 +29,13 @@ mongoose.plugin((schema) => {
 
   // ✅ Ensure `isApi`, translations, and moment are available in Mongoose documents
   schema.post("init", function (doc) {
-    if (!doc.$locals) {
-      doc.$locals = {};
+    if (!doc.$locals) doc.$locals = {};
+    if (typeof doc.$locals.__ !== "function") {
+      doc.$locals.__ = function (text) {
+        return text; // ✅ Returns text as fallback if translation function is missing
+      };
     }
-    doc.$locals.__ = doc.$locals.__ || (text) => text;
+    
     doc.$locals.locale = global.currentRequest?.session?.current_lang || "en";
     doc.$locals.isApi = global.currentRequest?.isApi ?? false; // ✅ Attach API flag
     doc.$locals.moment = (date) => moment(date).locale(doc.$locals.locale);

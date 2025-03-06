@@ -2,7 +2,6 @@ import config from 'getconfig';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
-import moment from 'moment';
 import truncatise from 'truncatise';
 //const indexPlugin from '../utilities/elasticsearch/Event');
 
@@ -30,7 +29,7 @@ datevenueSchema.virtual('date_formatted').get(function () {
   logger.info("EventShow virtual date_formatted")
   const lang = this.$locals.locale;
   const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
-  return moment(startdatefake).format(config.dateFormat[lang].weekdaydaymonthyear);
+  return this.$locals.moment(startdatefake).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
 datevenueSchema.virtual('date').get(function () {
   logger.info("EventShow virtual date")
@@ -41,10 +40,10 @@ datevenueSchema.virtual('date').get(function () {
 
 datevenueSchema.virtual('starttime_formatted').get(function () {
   logger.info("EventShow virtual starttime_formatted")
-  return moment(this.starttime).format('h:mm');
+  return this.$locals.moment(this.starttime).format('h:mm');
 });
 datevenueSchema.virtual('endtime_formatted').get(function () {
-  return moment(this.endtime).format('h:mm');
+  return this.$locals.moment(this.endtime).format('h:mm');
 });
 
 const partnershipSchema = new Schema({
@@ -118,11 +117,11 @@ const callSchema = new Schema({
 });
 callSchema.virtual('start_date_formatted').get(function () {
   logger.info("EventShow virtual start_date_formatted")
-  return moment(this.start_date).format('MMMM Do YYYY');
+  return this.$locals.moment(this.start_date).format('MMMM Do YYYY');
 });
 callSchema.virtual('end_date_formatted').get(function () {
   logger.info("EventShow virtual end_date_formatted")
-  return moment(this.end_date).format('MMMM Do YYYY, h:mm');
+  return this.$locals.moment(this.end_date).format('MMMM Do YYYY, h:mm');
 });
 
 const eventSchema = new Schema({
@@ -268,7 +267,7 @@ eventSchema.virtual('advanced').get(function (req) {
                   let d = ('0'+date.getUTCDate()).substr(-2);
                   let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                   let y = date.getUTCFullYear();
-                  let newdate = moment(date).utc().format(config.dateFormat[lang].weekdaydaymonthyear);
+                  let newdate = this.$locals.moment(date).utc().format(config.dateFormat[lang].weekdaydaymonthyear);
                   if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
                     day: y+"-"+m+"-"+d,
                     date: newdate,
@@ -290,7 +289,7 @@ eventSchema.virtual('advanced').get(function (req) {
                     let d = ('0'+date.getUTCDate()).substr(-2);
                     let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                     let y = date.getUTCFullYear();
-                    let newdate = moment(date).utc().format(config.dateFormat[lang].weekdaydaymonthyear);
+                    let newdate = this.$locals.moment(date).utc().format(config.dateFormat[lang].weekdaydaymonthyear);
                     if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
                       day: y+"-"+m+"-"+d,
                       date: newdate,
@@ -548,15 +547,15 @@ eventSchema.virtual('boxDate').get(function () {
     const enddate = new Date(new Date(this.schedule[this.schedule.length-1].endtime).setUTCHours(0,0,0,0));
     const enddatefake = new Date(new Date(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).setUTCHours(0,0,0,0));
     if(startdate.toString()===enddatefake.toString()) {
-      boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].weekdaydaymonthyear);
+      boxDate = this.$locals.moment(this.schedule[0].starttime).format(config.dateFormat[lang].weekdaydaymonthyear);
     } else {
       if (this.schedule[0].starttime.getFullYear()!==this.schedule[this.schedule.length-1].endtime.getFullYear()) {
-        boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].weekdaydaymonthyear) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
+        boxDate = this.$locals.moment(this.schedule[0].starttime).format(config.dateFormat[lang].weekdaydaymonthyear) + ' // ' + this.$locals.moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
       } else {
         if (this.schedule[0].starttime.getMonth()!==this.schedule[this.schedule.length-1].endtime.getMonth()) {
-          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].daymonthyear);
+          boxDate = this.$locals.moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + this.$locals.moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].daymonthyear);
         } else {
-          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].day2);
+          boxDate = this.$locals.moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + this.$locals.moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].day2);
         }
       }
     }
@@ -705,7 +704,7 @@ eventSchema.virtual('fullSchedule').get(function (req) {
           }
         }
       }
-      boxDates.push(eventSchema.boxDateCreator(starttime, endtime, boxVenue, this.$locals.locale));
+      boxDates.push(eventSchema.boxDateCreator(starttime, endtime, boxVenue, this.$locals.locale,this.$locals.moment));
     }
     //logger.info(boxDates);
 
@@ -713,22 +712,22 @@ eventSchema.virtual('fullSchedule').get(function (req) {
   }
 });
 
-eventSchema.boxDateCreator = (starttime, endtime, boxVenue, lang) => {
+eventSchema.boxDateCreator = (starttime, endtime, boxVenue, lang, myMoment) => {
   logger.info("function boxDateCreator")
   let boxDate;
   const startdate = new Date(new Date(starttime).setUTCHours(0,0,0,0));
   const enddate = new Date(new Date(endtime).setUTCHours(0,0,0,0));
   const enddatefake = new Date(new Date(endtime-(10*60*60*1000)).setUTCHours(0,0,0,0));
   if(startdate.toString()===enddatefake.toString()) {
-    boxDate = moment(starttime).format(config.dateFormat[lang].weekdaydaymonthyear);
+    boxDate = myMoment(starttime).format(config.dateFormat[lang].weekdaydaymonthyear);
   } else {
     if (starttime.getFullYear()!==endtime.getFullYear()) {
-      boxDate = moment(starttime).format(config.dateFormat[lang].weekdaydaymonthyear) + ' // ' + moment(endtime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
+      boxDate = myMoment(starttime).format(config.dateFormat[lang].weekdaydaymonthyear) + ' // ' + myMoment(endtime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
     } else {
       if (starttime.getMonth()!==endtime.getMonth()) {
-        boxDate = moment(starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(endtime-(10*60*60*1000)).format(config.dateFormat[lang].daymonthyear);
+        boxDate = myMoment(starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + myMoment(endtime-(10*60*60*1000)).format(config.dateFormat[lang].daymonthyear);
       } else {
-        boxDate = moment(starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(endtime-(10*60*60*1000)).format(config.dateFormat[lang].day2);
+        boxDate = myMoment(starttime).format(config.dateFormat[lang].day1) + ' // ' + myMoment(endtime-(10*60*60*1000)).format(config.dateFormat[lang].day2);
       }
     }
   }

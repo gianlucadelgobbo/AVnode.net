@@ -1,8 +1,6 @@
 import config from 'getconfig';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-import moment from 'moment';
-
 
 //const indexPlugin from '../utilities/elasticsearch/Event');
 
@@ -36,14 +34,14 @@ datevenueSchema.virtual('date').get(function () {
 datevenueSchema.virtual('date_formatted').get(function () {
   const lang = this.$locals.locale;
   const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
-  return moment(startdatefake).format(config.dateFormat[lang].weekdaydaymonthyear);
+  return this.$locals.moment(startdatefake).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
 
 datevenueSchema.virtual('starttime_formatted').get(function () {
-  return moment(this.starttime).format('h:mm');
+  return this.$locals.moment(this.starttime).format('h:mm');
 });
 datevenueSchema.virtual('endtime_formatted').get(function () {
-  return moment(this.endtime).format('h:mm');
+  return this.$locals.moment(this.endtime).format('h:mm');
 });
 
 
@@ -119,10 +117,10 @@ const callSchema = new Schema({
   }
 });
 callSchema.virtual('start_date_formatted').get(function () {
-  return moment(this.start_date).utc().format('MMMM Do YYYY');
+  return this.$locals.moment(this.start_date).utc().format('MMMM Do YYYY');
 });
 callSchema.virtual('end_date_formatted').get(function () {
-  return moment(this.end_date).utc().format('MMMM Do YYYY, HH:mm');
+  return this.$locals.moment(this.end_date).utc().format('MMMM Do YYYY, HH:mm');
 });
 
 const eventSchema = new Schema({

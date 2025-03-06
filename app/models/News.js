@@ -1,7 +1,6 @@
 import config from 'getconfig';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-import moment from 'moment';
 import helpers from '../utilities/helpers.js';
 
 
@@ -174,7 +173,7 @@ newsSchema.virtual('imageFormats').get(function () {
 
 newsSchema.virtual('creation_dateFormatted').get(function () {
   const lang = this.$locals.locale;
-  return moment(this.createdAt).format(config.dateFormat[lang].weekdaydaymonthyear);
+  return this.$locals.moment(this.createdAt).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
 
 /* newsSchema.pre('remove', function(next) {

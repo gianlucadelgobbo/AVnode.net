@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-import moment from 'moment';
-
 import Schedule from './shared/Schedule.js';
 import Package from './shared/Package.js';
 
@@ -62,7 +60,7 @@ subSchema.virtual('daysFormatted').get(function () {
   let daysFormatted = [];
   if (this.days && this.days.length) {
     this.days.forEach((day) => {
-      daysFormatted.push(moment(day).format('DD-MM-YYYY'));
+      daysFormatted.push(this.$locals.moment(day).format('DD-MM-YYYY'));
     });
     return daysFormatted;
   }

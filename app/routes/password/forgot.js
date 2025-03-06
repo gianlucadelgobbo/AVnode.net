@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 const setIdentifier = () => {
   return uuidv4();
 };
-import moment from 'moment';
+
 import { mySendMailer } from '../../utilities/mailer.js';
 import _ from 'lodash';
 
@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
       const token = setIdentifier();
       const expiresInHours = _.parseInt(process.env.PASSWORD_RESET_EXPIRES);
       user.passwordResetToken = token;
-      user.passwordResetExpires = moment().add(expiresInHours, 'hours').toDate();
+      user.passwordResetExpires = req.moment().add(expiresInHours, 'hours').toDate();
 
       user.save((err) => {
         if (err) {
