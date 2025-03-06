@@ -339,18 +339,19 @@ router.post('/:event/acts/message', (req, res) => {
 });
 
 router.getActsData = async (req, res, cb) => {
+  logger.info('getActsData');
   logger.info('/events/'+req.params.event+'/acts');
-  logger.info(req.query)
+  //logger.info(req.query)
   let data = {};
   try {
     let event = await Event.
     findOne({"_id": req.params.event}).
-    select({title: 1, schedule: 1, organizationsettings: 1}).
+    select({title: 1, schedule: 1, organizationsettings: 1, program: 1}).
     populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
     exec();
     logger.info("pre-populate");
     const native_populate = JSON.parse(JSON.stringify(config.cpanel["events_advanced"].forms["acts"].populate));
-    logger.info(native_populate);
+    //logger.info(native_populate);
     const select = config.cpanel["events_advanced"].forms["acts"].select;
     let populate = req.query.pure ? [] : native_populate;
     let query = {"event": req.params.event};
@@ -362,15 +363,16 @@ router.getActsData = async (req, res, cb) => {
     }
     for(var item in populate) {
       if (populate[item].path == "performance") {
-        if (req.query['performance_category'] && req.query['performance_category']!='0') {
+        delete populate[item];
+        /* if (req.query['performance_category'] && req.query['performance_category']!='0') {
           populate[item].match = {type: req.query['not2'] ? {$ne :req.query['performance_category']} : req.query['performance_category']};
         }
         if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
           populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
-        }
+        } */
       }
     }
-    logger.info("populate")
+    logger.info("populate program")
     logger.info(populate)
     try {
       let program = await Program.
@@ -380,7 +382,9 @@ router.getActsData = async (req, res, cb) => {
       exec()
       data.event = event;
       data.status = config.cpanel["events_advanced"].status;
-      data.program = JSON.parse(JSON.stringify(program));
+      logger.info("data.program")
+      logger.info(event.program)
+      data.program = JSON.parse(JSON.stringify(event.program));
       for(let a=0;a<data.program.length;a++) {
         if(data.program[a].performance) {
           if (data.program[a].performance.abouts) delete data.program[a].performance.abouts;

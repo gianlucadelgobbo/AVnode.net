@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-import moment from 'moment';
-
 import Schedule from './shared/Schedule.js';
 import Package from './shared/Package.js';
 

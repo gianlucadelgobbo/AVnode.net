@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 import Schedule from './Schedule.js';
-import moment from 'moment';
 import config from 'getconfig';
 
 const Booking = new Schema({
@@ -27,15 +26,15 @@ Booking.virtual('boxDate').get(function () {
     const enddate = new Date(new Date(this.schedule[this.schedule.length-1].endtime).setUTCHours(0,0,0,0));
     const enddatefake = new Date(new Date(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).setUTCHours(0,0,0,0));
     if(startdate.toString()===enddatefake.toString()) {
-      boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].weekdaydaymonthyear);
+      boxDate =moment(this.schedule[0].starttime).format(config.dateFormat[lang].weekdaydaymonthyear);
     } else {
       if (this.schedule[0].starttime.getFullYear()!==this.schedule[this.schedule.length-1].endtime.getFullYear()) {
-        boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].weekdaydaymonthyear) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
+        boxDate =moment(this.schedule[0].starttime).format(config.dateFormat[lang].weekdaydaymonthyear) + ' // ' +moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
       } else {
         if (this.schedule[0].starttime.getMonth()!==this.schedule[this.schedule.length-1].endtime.getMonth()) {
-          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].daymonthyear);
+          boxDate =moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' +moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].daymonthyear);
         } else {
-          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].day2);
+          boxDate =moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' +moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].day2);
         }
       }
     }

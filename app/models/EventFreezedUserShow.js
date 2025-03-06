@@ -1,7 +1,6 @@
 import config from 'getconfig';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-import moment from 'moment';
 //const indexPlugin from '../utilities/elasticsearch/User.js';
 //const async from 'async';
 //const imageUtil from '../utilities/image.js';
@@ -277,7 +276,7 @@ userSchema.virtual('description').get(function (req) {
 userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
     const lang = this.$locals.locale;
-    return moment(this.birthday).format(config.dateFormat[lang].weekdaydaymonthyear);
+    returnmoment(this.birthday).format(config.dateFormat[lang].weekdaydaymonthyear);
   }
 });
 

@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import fs from "fs";
 import path from "path";
 import config from "getconfig"; // Assumendo che esista un file config.js
-import moment from "moment";
 
 let connectionAttempts = 0;
 const MAX_RETRIES = 5;
@@ -10,32 +9,36 @@ const MAX_RETRIES = 5;
 
 mongoose.plugin((schema) => {
   schema.pre(["find", "findOne"], function (next) {
-    if (!this.$locals) this.$locals = {}; // ✅ Ensure `$locals` exists
+    if (!this.$locals) this.$locals = {}; // ✅ Assicura che `$locals` esista sempre
 
     if (this.options?.req) {
       this.$locals.__ = typeof this.options.req.__ === "function" ? this.options.req.__ : (text) => text;
       this.$locals.locale = this.options.req.session?.current_lang || "en";
-      this.$locals.isApi = this.options.req.isApi ?? false; // ✅ Store API flag
-      this.$locals.moment = (date) => moment(date).locale(this.$locals.locale);
     } else {
+      //console.log("❌ WARNING: No `req` found in query. Defaulting to 'en'.");
       this.$locals.__ = (text) => text; // Fallback
       this.$locals.locale = "en"; // Default
-      this.$locals.isApi = false;
-      this.$locals.moment = (date) => moment(date).locale("en");
     }
+
+    /* console.log("⚠️ DEBUG: Pre-find Hook Executed", {
+      queryLang: this.$locals.locale,
+    }); */
 
     next();
   });
 
-  // ✅ Ensure `isApi`, translations, and moment are available in Mongoose documents
   schema.post("init", function (doc) {
     if (!doc.$locals) {
       doc.$locals = {};
     }
-    doc.$locals.__ = doc.$locals.__ || (text) => text;
+    if (typeof doc.$locals.__ !== "function") {
+      doc.$locals.__ = (text) => text;
+    }
     doc.$locals.locale = global.currentRequest?.session?.current_lang || "en";
-    doc.$locals.isApi = global.currentRequest?.isApi ?? false; // ✅ Attach API flag
-    doc.$locals.moment = (date) => moment(date).locale(doc.$locals.locale);
+
+    /* console.log("⚠️ DEBUG: Post-init Hook Executed", {
+      docLang: doc.$locals.locale,
+    }); */
   });
 });
 
@@ -95,7 +98,7 @@ const connectDB = async (MONGO_URI) => {
 const loadModels = async () => {
   const folders = config.modelPaths || [path.join(config.appRoot, "app/models")];
 
-  //console.log(`📂 Loading models from:`, folders);
+  console.log(`📂 Loading models from:`, folders);
 
   for (const folder of folders) {
     if (!fs.existsSync(folder)) {

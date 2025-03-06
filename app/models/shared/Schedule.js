@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 import Venue from './Venue.js';
-import moment from 'moment';
 import config from 'getconfig';
 
 const Schedule = new Schema({
@@ -68,7 +67,7 @@ Schedule.virtual('boxDateFull').get(function () {
       boxDateA.push(boxDateTMP);
       /*for(let a=0;a<=days-1;a++) {
         let boxDateTMP = "";
-        boxDateTMP = moment.utc((new Date(this.starttime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
+        boxDateTMP =moment.utc((new Date(this.starttime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
         boxDateTMP+= " | "+moment.utc(this.starttime).format('HH:mm');
         boxDateTMP+= " > "+moment.utc(this.endtime).format('HH:mm');
         boxDateA.push(boxDateTMP);
@@ -77,7 +76,7 @@ Schedule.virtual('boxDateFull').get(function () {
       boxDate+= "<br />"+moment.utc(this.starttime).format('HH:mm');
       boxDate+= " > "+moment.utc(this.endtime).format('HH:mm');
     } else {
-      boxDate = moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
+      boxDate =moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
       boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
       boxDate+= " > "+moment.utc(this.endtime).format('HH:mm');
     }
@@ -96,14 +95,14 @@ Schedule.virtual('boxDateFull').get(function () {
       let boxDateA = []
       for(let a=0;a<=days;a++) {
         let boxDateTMP = "";
-        boxDateTMP = moment.utc((new Date(this.starttime-(10*60*60*1000)).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
+        boxDateTMP =moment.utc((new Date(this.starttime-(10*60*60*1000)).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
         boxDateTMP+= " | "+moment.utc(this.starttime).format('HH:mm');
         boxDateTMP+= " > "+moment.utc(this.endtime).format('HH:mm');
         boxDateA.push(boxDateTMP);
       }
       boxDate = boxDateA.join("<br />");
     } else {
-      boxDate = moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
+      boxDate =moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
       boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
       boxDate+= " > "+moment.utc(this.endtime).format('HH:mm');
     }
@@ -117,8 +116,8 @@ Schedule.virtual('boxDate').get(function () {
     const start = new Date(this.starttime-(10*60*60*1000)).getTime()
     const end = new Date(this.endtime-(10*60*60*1000)).getTime()
     const days = Math.ceil((end-start)/(24*60*60*1000))
-    let startformattedA = moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear).split(" ");
-    let endformattedA = moment.utc(this.endtime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear).split(" ");
+    let startformattedA =moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear).split(" ");
+    let endformattedA =moment.utc(this.endtime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear).split(" ");
     if (startformattedA[startformattedA.length-1] == endformattedA[startformattedA.length-1]) startformattedA.pop()
     if (startformattedA[startformattedA.length-1] == endformattedA[startformattedA.length-1]) startformattedA.pop()
     if (days>1) {
@@ -144,11 +143,11 @@ Schedule.virtual('starttimeDay').get(function () {
       let boxDateA = []
       for(let a=0;a<=days;a++) {
         let boxDateTMP = "";
-        boxDateTMP = moment.utc((new Date(this.starttime-(10*60*60*1000)).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdayday);
+        boxDateTMP =moment.utc((new Date(this.starttime-(10*60*60*1000)).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdayday);
       }
       boxDate = boxDateA.join("<br />");
     } else {
-      boxDate = moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdayday);
+      boxDate =moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdayday);
     }
   }
   return boxDate;
@@ -158,7 +157,7 @@ Schedule.virtual('starttimeTime').get(function () {
   let starttimeTime;
   if (this.starttime) {
     const lang = this.$locals.locale;
-    starttimeTime = moment.utc(new Date(this.starttime)).format('HH:mm');
+    starttimeTime =moment.utc(new Date(this.starttime)).format('HH:mm');
   }
   return starttimeTime;
 });
@@ -166,8 +165,8 @@ Schedule.virtual('starttimeTime').get(function () {
 Schedule.virtual('endtimeTime').get(function () {
   let endtimeTime;
   if (this.endtime) {
-    endtimeTime = moment.utc(this.endtime).format('HH:mm');
-    endtimeTime = moment.utc(new Date(this.endtime)).format('HH:mm');
+    endtimeTime =moment.utc(this.endtime).format('HH:mm');
+    endtimeTime =moment.utc(new Date(this.endtime)).format('HH:mm');
   }
   return endtimeTime;
 });

@@ -7,7 +7,6 @@ import helpers from '../utilities/helpers.js';
 import About from './shared/About.js';
 import MediaImage from './shared/MediaImage.js';
 import Booking from './shared/Booking.js';
-import moment from 'moment';
 import { logger } from 'express-winston';
 
 
@@ -110,7 +109,7 @@ performanceSchema.virtual('tech_req').get(function (req) {
 performanceSchema.virtual('humanDuration').get(function () {
   if (this.duration) {
     if (this.duration > 59) {
-      return moment.duration({"minutes": this.duration}).humanize()
+      returnmoment.duration({"minutes": this.duration}).humanize()
     } else {
       return this.duration + " min."
     }
