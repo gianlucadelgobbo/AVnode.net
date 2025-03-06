@@ -3,7 +3,6 @@ const router = createRouter();
 
 
 import config from 'getconfig';
-import moment from 'moment';
 import helpers from '../../../utilities/helpers.js';
 import mongoose from 'mongoose';
 import axios from 'axios';
@@ -446,7 +445,7 @@ router.editSubscription = (req, res) => {
     daysdays.unshift(daysdays[0]-(24*60*60*1000));
     daysdays.push(daysdays[daysdays.length-1]+(24*60*60*1000));
     let days = [];
-    for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[req.getLocale()].weekdaydaymonthyear)});
+    for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted: req.moment(daysdays[a]).format(config.dateFormat[req.getLocale()].weekdaydaymonthyear)});
     
     res.render('adminpro/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
       logger.info(err);

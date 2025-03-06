@@ -173,7 +173,7 @@ newsSchema.virtual('imageFormats').get(function () {
 
 newsSchema.virtual('creation_dateFormatted').get(function () {
   const lang = this.$locals.locale;
-  returnmoment(this.createdAt).format(config.dateFormat[lang].weekdaydaymonthyear);
+  return this.$locals.moment(this.createdAt).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
 
 /* newsSchema.pre('remove', function(next) {

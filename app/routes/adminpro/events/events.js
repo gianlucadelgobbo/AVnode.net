@@ -15,10 +15,7 @@ const Program = mongoose.model('Program');
 const Order = mongoose.model('Order');
 const Emailqueue = mongoose.model('Emailqueue');
 
-import fs from 'fs';
 import config from 'getconfig';
-import sharp from 'sharp';
-import moment from 'moment';
 
 import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
 
@@ -236,7 +233,7 @@ router.get('/:event/orders', async (req, res) => {
               let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
               let y = date.getUTCFullYear();
               const lang = req.getLocale();
-              let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
+              let newdate = req.moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
               if (!data.programmebydayvenue[y+"-"+m+"-"+d]) {
                 data.programmebydayvenue[y+"-"+m+"-"+d] = {
                   day: y+"-"+m+"-"+d,
@@ -1058,7 +1055,7 @@ router.get('/:event/program', async (req, res) => {
         let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
         let y = date.getUTCFullYear();
         const lang = req.getLocale();
-        let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
+        let newdate = req.moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
         if (!data.programmebydayvenue[y+"-"+m+"-"+d]) {
           data.programmebydayvenue[y+"-"+m+"-"+d] = {
             day: y+"-"+m+"-"+d,
@@ -1224,7 +1221,7 @@ router.get('/:event/technical-riders', async (req, res) => {
           let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
           let y = date.getUTCFullYear();
           const lang = req.getLocale();
-          let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
+          let newdate = req.moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
           if (!data.programmebydayvenue[y+"-"+m+"-"+d]) {
             data.programmebydayvenue[y+"-"+m+"-"+d] = {
               day: y+"-"+m+"-"+d,
@@ -1358,7 +1355,7 @@ router.get('/:event/technical-riders', async (req, res) => {
             let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
             let y = date.getUTCFullYear();
             const lang = req.getLocale();
-            let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
+            let newdate = req.moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
             if (!data.programmebydayvenue[y+"-"+m+"-"+d]) {
               data.programmebydayvenue[y+"-"+m+"-"+d] = {
                 day: y+"-"+m+"-"+d,

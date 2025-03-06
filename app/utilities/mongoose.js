@@ -28,11 +28,11 @@ mongoose.plugin((schema) => {
   });
 
   schema.post("init", function (doc) {
-    if (!doc.$locals) {
-      doc.$locals = {};
-    }
+    if (!doc.$locals) doc.$locals = {};
     if (typeof doc.$locals.__ !== "function") {
-      doc.$locals.__ = (text) => text;
+      doc.$locals.__ = function (text) {
+        return text; // ✅ Returns text as fallback if translation function is missing
+      };
     }
     doc.$locals.locale = global.currentRequest?.session?.current_lang || "en";
 

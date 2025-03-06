@@ -1,7 +1,6 @@
 import config from 'getconfig';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-import momentDurationFormatSetup from 'moment-duration-format';
 
 const Media = new Schema({
   title: String,
@@ -40,7 +39,7 @@ const Media = new Schema({
 
 Media.virtual('durationHR').get(function (req) {
   if (this.duration) {
-    returnmoment.duration(this.duration).format('hh:mm:ss', {trim: false});
+    return this.$locals.moment.duration(this.duration).format('hh:mm:ss', {trim: false});
   }
 });
 Media.virtual('filesizeHR').get(function (req) {

@@ -60,7 +60,7 @@ subSchema.virtual('daysFormatted').get(function () {
   let daysFormatted = [];
   if (this.days && this.days.length) {
     this.days.forEach((day) => {
-      daysFormatted.push(moment(day).format('DD-MM-YYYY'));
+      daysFormatted.push(this.$locals.moment(day).format('DD-MM-YYYY'));
     });
     return daysFormatted;
   }
