@@ -6,12 +6,14 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 const Event = mongoose.model('Event');
 const Program = mongoose.model('Program');
+const Performance = mongoose.model('Performance');
 import dataprovider from '../../utilities/dataprovider.js';
 
 import { mySendMailer } from '../../utilities/mailer.js';
 
 
 import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
+import { title } from "process";
 
 
 
@@ -37,9 +39,63 @@ router.get('/', async (req, res) => {
   //logger.info(req.session.call);
   const data = await Event.
   findOne({slug: req.params.slug}).
-  //select({slug: 1}).
+  select({title: 1, organizationsettings: 1}).
   populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
+  lean().
   exec();
+
+  let ids = req.user ? [req.user._id, ...req.user.crews.map(item => item._id)] : [];
+
+  const performances = await Performance.
+  find({users: {$in:ids}}).
+  select({slug: 1, title: 1}).
+  populate([{path: 'type', select: {name: 1}},{path: 'users', select: {stagename: 1, members: 1}}]).
+  lean().
+  exec();
+  logger.info("performances");
+  //logger.info(performances);
+  const userIds = new Set();
+  const seen = new Set(); // Tracks encountered IDs
+
+  performances.forEach(performance => {
+      performance.users.forEach(user => {
+          const userId = user._id.toString(); // Normalize to string
+          if (!seen.has(userId)) {
+              seen.add(userId);
+              userIds.add(userId);
+          }
+
+          if (user.members && user.members.length > 0) {
+              user.members.forEach(memberId => {
+                  const memberIdStr = memberId.toString(); // Normalize to string
+                  if (!seen.has(memberIdStr)) {
+                      seen.add(memberIdStr);
+                      userIds.add(memberIdStr);
+                  }
+              });
+          }
+      });
+  });
+
+  let authors = [...userIds]; // Convert Set to Array
+
+  logger.info("authors");
+  //logger.info(authors);
+
+  const subscriptions = await Program.
+  find({"subscriptions.subscriber_id": {$in:authors}, event:data._id}).
+  select({"event": 1,
+      "call": 1,
+      "topics": 1,
+      "performance": 1,
+      "reference": 1,
+      "status": 1,
+      "subscriptions": 1}).
+  exec();
+  logger.info("subscriptions");
+  //logger.info(subscriptions);
+
+  //subscriptions.type.subscriber_id
   /*let ids = [];
   if (req.user) ids = [req.user._id].concat(req.user.crews);
   //logger.info(performances);
@@ -84,6 +140,8 @@ router.get('/', async (req, res) => {
     res.json({
       call: req.session.call,
       code: req.query.code,
+      performances: performances,
+      subscriptions: subscriptions,
       participateMenu: participateMenu,
       dett: data,
       user: req.user,
@@ -98,6 +156,8 @@ router.get('/', async (req, res) => {
 //canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
       canonical: res.locals.canonical,
       dett: data,
+      performances: performances,
+      subscriptions: subscriptions,
       call: req.session.call,
       code: req.query.code,
       participateMenu: participateMenu,

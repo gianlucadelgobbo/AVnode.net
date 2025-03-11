@@ -92,6 +92,8 @@ const callSchema = new Schema({
   imgalt: String,
   imghead: String,
   colBkg: String,
+  text_sign: String,
+  html_sign: String,
   permalink: String,
   start_date: Date,
   end_date: Date,
@@ -99,6 +101,10 @@ const callSchema = new Schema({
   excerpt: String,
   terms: String,
   availability: Boolean,
+  availabilityDates: {
+    start: Date,
+    end: Date
+  },
   packages: [Package],
   topics: [{
     name: String,

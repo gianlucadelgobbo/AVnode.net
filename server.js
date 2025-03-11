@@ -80,6 +80,11 @@ app.use(flash());
 // Initialize i18n
 app.use(i18n.init);
 
+app.use((req, res, next) => {
+  console.log("✅ Setting global.currentRequest:", req.originalUrl);
+  global.currentRequest = req;
+  next();
+});
 // 🔥 Block access from certain IPs
 const blockedIPs = new Set((process.env.BLOCKED_IPS || "").split(","));
 app.use((req, res, next) => {
@@ -157,7 +162,6 @@ app.use((req, res, next) => {
 
 
 app.use((req, res, next) => {
-  global.currentRequest = req; // ✅ Ensure `req` is globally available
 
   const host = req.get("host")?.toLowerCase() || "localhost";
   const parts = host.split(".");

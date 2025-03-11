@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import moment from "moment";
 import fs from "fs";
 import path from "path";
 import config from "getconfig"; // Assumendo che esista un file config.js
@@ -9,38 +10,51 @@ const MAX_RETRIES = 5;
 
 mongoose.plugin((schema) => {
   schema.pre(["find", "findOne"], function (next) {
-    if (!this.$locals) this.$locals = {}; // ✅ Assicura che `$locals` esista sempre
+    if (!this.$locals) this.$locals = {}; // ✅ Ensure `$locals` exists
 
     if (this.options?.req) {
       this.$locals.__ = typeof this.options.req.__ === "function" ? this.options.req.__ : (text) => text;
       this.$locals.locale = this.options.req.session?.current_lang || "en";
+
+      // ✅ Use req.moment if available, otherwise use the default moment instance
+      this.$locals.moment = this.options.req.moment || moment;
+      
+      if (!this.options.req.moment) {
+        // ✅ Only set locale if we're using the default moment instance
+        this.$locals.moment.locale(this.$locals.locale);
+      }
     } else {
-      //console.log("❌ WARNING: No `req` found in query. Defaulting to 'en'.");
+      console.warn("❌ WARNING: No `req` found in query. Defaulting to 'en'.");
       this.$locals.__ = (text) => text; // Fallback
       this.$locals.locale = "en"; // Default
+      this.$locals.moment = moment; // ✅ Assign full moment object
+      this.$locals.moment.locale("en"); // ✅ Set default locale only if moment is newly assigned
     }
-
-    /* console.log("⚠️ DEBUG: Pre-find Hook Executed", {
-      queryLang: this.$locals.locale,
-    }); */
 
     next();
   });
 
   schema.post("init", function (doc) {
     if (!doc.$locals) doc.$locals = {};
+
     if (typeof doc.$locals.__ !== "function") {
       doc.$locals.__ = function (text) {
         return text; // ✅ Returns text as fallback if translation function is missing
       };
     }
+
     doc.$locals.locale = global.currentRequest?.session?.current_lang || "en";
+
+    // ✅ Assign the full moment object instead of a function wrapper
+    doc.$locals.moment = moment;
+    doc.$locals.moment.locale(doc.$locals.locale);
 
     /* console.log("⚠️ DEBUG: Post-init Hook Executed", {
       docLang: doc.$locals.locale,
     }); */
   });
 });
+
 
 
 

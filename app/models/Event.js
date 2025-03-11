@@ -100,6 +100,10 @@ const callSchema = new Schema({
   excerpt: String,
   terms: String,
   availability: Boolean,
+  availabilityDates: {
+    start: Date,
+    end: Date
+  },
   packages: [Package],
   topics: [{
     name: String,
