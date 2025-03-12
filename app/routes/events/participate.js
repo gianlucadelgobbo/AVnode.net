@@ -18,6 +18,11 @@ import { title } from "process";
 
 
 router.get('/', async (req, res) => {
+  if (!req.user && req.isApi) {
+    return res.json({
+      error: "Please login"      
+    });
+  }
   var participateMenu = [
     {label:req.__('Active Calls'),slug:"calls"},        // 0
     {label:req.__('Terms'),slug:"terms"},               // 1

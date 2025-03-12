@@ -64,11 +64,11 @@ const newsSchema = new Schema({
   }
 }); */
 newsSchema.virtual('about').get(function (req) {
-  console.log("⚠️ DEBUG: Inside virtual 'about'", {
+  /* console.log("⚠️ DEBUG: Inside virtual 'about'", {
     locals: this.$locals, // Check if `this.$locals` is undefined
     translateFunctionType: typeof this.$locals?.__,
     locale: this.$locals?.locale,
-  });
+  }); */
 
   if (!this.$locals || typeof this.$locals.__ !== "function") {
     console.error("🚨 ERROR: Missing or invalid `this.$locals.__` in virtual 'about'", this);
@@ -105,11 +105,11 @@ newsSchema.virtual('about').get(function (req) {
 });
 
 newsSchema.virtual('description').get(function (req) {
-  console.log("⚠️ DEBUG: Inside virtual 'description'", {
+  /* console.log("⚠️ DEBUG: Inside virtual 'description'", {
     locals: this.$locals, // Check if `this.$locals` is undefined
     translateFunctionType: typeof this.$locals?.__,
     locale: this.$locals?.locale,
-  });
+  }); */
 
   if (!this.$locals || typeof this.$locals.__ !== "function") {
     console.error("🚨 ERROR: Missing or invalid `this.$locals.__` in virtual 'about'", this);
@@ -122,11 +122,11 @@ newsSchema.virtual('description').get(function (req) {
 });
 
 newsSchema.virtual('excerpt').get(function (req) {
-  console.log("⚠️ DEBUG: Inside virtual 'excerpt'", {
+  /* console.log("⚠️ DEBUG: Inside virtual 'excerpt'", {
     locals: this.$locals, // Check if `this.$locals` is undefined
     translateFunctionType: typeof this.$locals?.__,
     locale: this.$locals?.locale,
-  });
+  }); */
 
   if (!this.$locals || typeof this.$locals.__ !== "function") {
     console.error("🚨 ERROR: Missing or invalid `this.$locals.__` in virtual 'about'", this);
