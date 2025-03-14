@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "avnode.net",
+      name: "admin.avnode.net",
       //interpreter: "/home/hyo/.nvm/versions/node/v23.8.0/bin/node",
       script: "/sites/avnode.admin/index.js",
       max_memory_restart: "4G",
