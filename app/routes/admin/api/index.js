@@ -19,7 +19,7 @@ import { setStatsAndActivity, setStatsAndActivitySingle } from "../../../utiliti
 import dataprovider from "../../../utilities/dataprovider.js";
 
 // Debugging Route (Only in DEBUG mode)
-if (process.env.DEBUG) {
+if (process.env.DEBUG === true) {
   router.get('/config', (req, res) => {
     res.render('json', { data: config.cpanel });
   });

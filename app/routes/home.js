@@ -57,7 +57,6 @@ router.get('/', (req, res) => {
           homedata.stats.news = total;
           if (req.isApi) {
             if (process.env.DEBUG === true) {
-              console.log("DEBUG")
               res.render('json', {data:homedata});
             } else {
               res.json({data:homedata});

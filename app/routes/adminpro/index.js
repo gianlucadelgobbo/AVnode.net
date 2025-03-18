@@ -27,7 +27,7 @@ import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 //import dataprovider from "../../utilities/dataprovider.js";
 
 
-if (process.env.DEBUG) {
+if (process.env.DEBUG === true) {
   router.get('/api/config', (req, res) => {
     res.render('json', { data: require('getconfig').cpanel });
   });

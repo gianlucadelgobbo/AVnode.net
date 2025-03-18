@@ -2139,7 +2139,7 @@ dataprovider.list = (req, res, section, model) => {
       dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
         const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
         if (req.isApi) {
-          if (process.env.DEBUG) {
+          if (process.env.DEBUG === true) {
             res.render('json', {data: {total:total, skip:skip, data:data}});
           } else {
             res.json({total:total, skip:skip, data:data});
