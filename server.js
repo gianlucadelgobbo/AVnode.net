@@ -7,6 +7,7 @@ import path from "path";
 import MongoStore from "connect-mongo";
 import flash from "express-flash";
 import moment from "moment";
+import "moment-duration-format";
 
 // Import utilities and config
 import config from "getconfig";

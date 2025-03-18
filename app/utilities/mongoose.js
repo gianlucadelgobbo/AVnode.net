@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import moment from "moment";
+import "moment-duration-format";
+
 import fs from "fs";
 import path from "path";
 import config from "getconfig"; // Assumendo che esista un file config.js
