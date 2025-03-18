@@ -13,7 +13,7 @@ if (!fs.existsSync(logDir)) {
 
 // 🔥 Environment Config
 const isDev = process.env.NODE_ENV === 'development';
-const isDebug = process.env.DEBUG;
+const isDebug = process.env.DEBUG === "true";
 console.log("process.env.DEBUG")
 console.log(process.env.DEBUG)
 const logLevel = isDebug ? 'debug' : isDev ? 'info' : 'warn';
