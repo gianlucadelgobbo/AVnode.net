@@ -2283,8 +2283,8 @@ router.setStatsAndActivity = (req, res) => {
   });
 }
 
-router.sendEmailVericaition = (req, res) => {
-  logger.debug("sendEmailVericaition");
+router.sendEmailVerification = (req, res) => {
+  logger.debug("sendEmailVerification");
   logger.debug(req.headers.host);
   const uid = require('uuid');
   const mongoose = require('mongoose');

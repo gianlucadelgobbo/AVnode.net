@@ -92,7 +92,7 @@ router.get('/profile/public/slugs/:slug', (req, res)=>{
 router.get('/profile/emails/verify/:email', (req, res)=>{
   req.params.id = req.user.id;
   req.params.sez = 'profile';
-  get.sendEmailVericaition(req, res);
+  get.sendEmailVerification(req, res);
 });
 
 router.get('/profile/emails/email/:email', (req, res)=>{

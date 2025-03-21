@@ -3821,7 +3821,7 @@
             "is_public": 1,
             "title": 1
           },
-          "populate": [{ "path": "bookings.event", "select": "title image imageFormats", "model": "Event"},{ "path": "bookings.schedule.status", "select": "name", "model": "Category"}]
+          "populate": [{ "path": "bookings.event", "select": "title image imageFormats is_public slug", "model": "Event"},{ "path": "bookings.schedule.status", "select": "name", "model": "Category"}]
         }
       },
       "list": {

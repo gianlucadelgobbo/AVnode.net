@@ -128,7 +128,7 @@ router.put('/api/profile/:form/', (req, res) => {
 router.get('/api/profile/emails/verify/:email', (req, res)=>{
   req.params.id = req.user.id;
   req.params.sez = 'profile';
-  get.sendEmailVericaition(req, res);
+  get.sendEmailVerification(req, res);
 });
 
 router.get('/api/:sez/new/slugs/:slug', (req, res)=>{

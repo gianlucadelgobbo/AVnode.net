@@ -39,6 +39,7 @@ router.putData = (req, res, view) => {
           let select = config.cpanel[req.params.sez].forms[req.params.form].select;
           //if (select.is_public)
           req.body.is_public = req.body.is_public ? req.body.is_public : false;
+          if(req.params.sez) req.body.hide_members = req.body.hide_members || false;
           let put = {};
           logger.debug('Data');
           logger.debug(data);
