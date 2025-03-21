@@ -18,7 +18,7 @@ table.table
       th="gender"
       th="country"
       th="city"
-      if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 || get['subscriptions.packages.name'].indexOf("Full subscription") !== -1)
+      if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 || get['subscriptions.packages.name'].indexOf("House/Tend") !== -1)
         th="Hotel"
         th="Room"
       each pack in data.event.organizationsettings.call.calls[call].packages
@@ -108,7 +108,7 @@ table.table
               td
                 if subscription.subscription.subscriber_id.addresses && subscription.subscription.subscriber_id.addresses.length
                   !=subscription.subscription.subscriber_id.addresses.map((item)=>{return item.locality}).join(", ")
-              if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 || get['subscriptions.packages.name'].indexOf("Full subscription") !== -1)
+              if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 || get['subscriptions.packages.name'].indexOf("House/Tend") !== -1)
                   - var option = "0";
                   - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
                   - var option_value = "";
@@ -206,7 +206,7 @@ table.table
       th=""
       th=""
       th=""
-      if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 || get['subscriptions.packages.name'].indexOf("Full subscription") !== -1)
+      if get['subscriptions.packages.name'] && (get['subscriptions.packages.name'].indexOf("Accommodation") !== -1 || get['subscriptions.packages.name'].indexOf("House/Tend") !== -1)
         th=""
         th=""
       each pack in data.event.organizationsettings.call.calls[call].packages
