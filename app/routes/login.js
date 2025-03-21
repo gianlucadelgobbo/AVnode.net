@@ -21,14 +21,19 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res, next) => {
-  const returnTo = req.session.returnTo ? req.session.returnTo : req.body.returnTo ? req.body.returnTo : "/";
+  const returnTo = req.session.returnTo ? req.session.returnTo : req.query.returnTo ? req.query.returnTo : "/";
   logger.info("req.body login");
   logger.info(req.session.returnTo);
+  logger.info(req.query.returnTo);
+  logger.info(returnTo);
 
   passport.authenticate('local', (err, user, info) => {
+    logger.info("authenticate");
+    logger.info(returnTo);
+
     if (err) {
       logger.info('passport.authenticate error:' + JSON.stringify(err));
-      if (req.body.api == "1") {
+      if (req.isApi) {
         return res.send(err);
       } else {
         return next(err);
@@ -37,7 +42,7 @@ router.post('/', (req, res, next) => {
     
     if (!user) {
       logger.info('passport.authenticate !user:' + JSON.stringify(info));
-      if (req.body.api == "1") {
+      if (req.isApi) {
         return res.status(500).send(info);
       } else {
         req.flash('errors', info);
@@ -46,9 +51,10 @@ router.post('/', (req, res, next) => {
     } 
     
     req.logIn(user, (err) => {
+      logger.info("logInlogInlogInlogInlogInlogIn");
       if (err) {
         logger.info('passport.authenticate req.logIn error:' + JSON.stringify(err));
-        if (req.body.api == "1") {
+        if (req.isApi) {
           return res.status(500).send(err);
         } else {
           return next(err);
@@ -80,17 +86,20 @@ router.post('/', (req, res, next) => {
       logger.log("User stored in session:", req.session.user);
 
       // ✅ Retrieve and delete `returnTo` after login
-      const redirectTo = req.session.returnTo || '/';
       delete req.session.returnTo; // ✅ Remove `returnTo` after using it
 
-      logger.info('passport.authenticate auth success');
-      logger.info(redirectTo);
-      if (req.body.api=="1") {
-        res.send(true);
+      logger.info('passport.authenticate auth success 2');
+      logger.info(returnTo);
+      if (req.isApi) {
+        res.send({
+          "loggedIn": true,
+          "user": req.session.user,
+          returnTo: returnTo
+        });
       } else {
         logger.info('flash');
         req.flash('success', { msg: req.__('You are logged in.') });
-        res.redirect(redirectTo);
+        res.redirect(returnTo);
       }
     });
   })(req, res, next);

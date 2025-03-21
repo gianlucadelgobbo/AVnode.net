@@ -121,10 +121,14 @@ const callSchema = new Schema({
   }
 });
 callSchema.virtual('start_date_formatted').get(function () {
+  console.log("irtual('start_date_formatted')")
   return this.$locals.moment(this.start_date).utc().format('MMMM Do YYYY');
 });
 callSchema.virtual('end_date_formatted').get(function () {
-  return this.$locals.moment(this.end_date).utc().format('MMMM Do YYYY, HH:mm');
+  console.log("irtual('end_date_formatted')")
+  var bella = this.$locals.moment(this.end_date).utc().format('MMMM Do YYYY, HH:mm');
+  console.log("irtual('end_date_formatted') fine")
+  return bella
 });
 
 const eventSchema = new Schema({

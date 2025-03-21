@@ -4,6 +4,7 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import path from "path";
+import cors from "cors";
 import MongoStore from "connect-mongo";
 import flash from "express-flash";
 import moment from "moment";
@@ -48,7 +49,7 @@ app.use((req, res, next) => {
 });
 
 // Set up headers for CORS
-const allowedOrigins = ["https://avnode.net", "https://avnode.org"];
+/* const allowedOrigins = ["https://avnode.net", "https://dev.avnode.net", "*.avnode.net"];
 app.use((req, res, next) => {
   const origin = req.get("origin");
   if (allowedOrigins.includes(origin)) {
@@ -57,8 +58,66 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   res.header("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
   next();
-});
+}); */
+const allowedOrigins = [
+  "https://avnode.net",
+  "https://by.avnode.net",
+  "https://de.avnode.net",
+  "https://es.avnode.net",
+  "https://fr.avnode.net",
+  "https://gr.avnode.net",
+  "https://hu.avnode.net",
+  "https://it.avnode.net",
+  "https://pl.avnode.net",
+  "https://pt.avnode.net",
+  "https://ru.avnode.net",
+  "https://dev.avnode.net",
+  "https://avnode.local",
+  "https://by.avnode.local",
+  "https://de.avnode.local",
+  "https://es.avnode.local",
+  "https://fr.avnode.local",
+  "https://gr.avnode.local",
+  "https://hu.avnode.local",
+  "https://it.avnode.local",
+  "https://pl.avnode.local",
+  "https://pt.avnode.local",
+  "https://ru.avnode.local",
+  "https://by.dev.avnode.net",
+  "https://de.dev.avnode.net",
+  "https://es.dev.avnode.net",
+  "https://fr.dev.avnode.net",
+  "https://gr.dev.avnode.net",
+  "https://hu.dev.avnode.net",
+  "https://it.dev.avnode.net",
+  "https://pl.dev.avnode.net",
+  "https://pt.dev.avnode.net",
+  "https://ru.dev.avnode.net"
+];
 
+function isAllowed(origin) {
+  if (!origin) return true; // allow non-browser requests
+  const { hostname } = new URL(origin);
+
+  // Allow direct matches
+  if (allowedOrigins.includes(origin)) return true;
+
+  // Allow subdomains of avnode.net
+  if (hostname.endsWith('.avnode.net')) return true;
+
+  return false;
+}
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (isAllowed(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 // View Engine Configuration
 app.set("port", config.port || 8102);
 app.set("views", path.join(config.appRoot, "app/views"));

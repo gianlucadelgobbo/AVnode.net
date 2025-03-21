@@ -46,8 +46,62 @@ const Schedule = new Schema({
     }
   }
 });
-
 Schedule.virtual('boxDateFull').get(function () {
+  console.log("virtual('boxDateFull')");
+  console.log(this.starttime);
+  console.log(this.endtime);
+
+  if (!this?.$locals?.moment || !this?.$locals?.locale) {
+    console.warn(`⚠️ moment or locale is missing in $locals for _id ${this._id}`);
+    return ''; // ✅ questo evita l'errore .utc of undefined
+  }
+
+  if (!this.starttime || !this.endtime) {
+    console.warn(`⚠️ Missing starttime or endtime for _id ${this._id}`);
+    return '';
+  }
+
+  try {
+    const moment = this.$locals.moment;
+    const lang = this.$locals.locale;
+
+    const start = new Date(this.starttime).getTime();
+    const end = new Date(this.endtime).getTime();
+    const days = Math.ceil((end - start) / (24 * 60 * 60 * 1000));
+
+    let boxDate;
+
+    if (days > 1) {
+      boxDate = `From: ${moment.utc(start).format(config.dateFormat[lang].weekdaydaymonthyear)}<br />` +
+                `To: ${moment.utc(end).format(config.dateFormat[lang].weekdaydaymonthyear)}<br />` +
+                `${moment.utc(this.starttime).format("HH:mm")} > ${moment.utc(this.endtime).format("HH:mm")}`;
+    } else {
+      boxDate = moment.utc(this.starttime - 10 * 60 * 60 * 1000).format(config.dateFormat[lang].weekdaydaymonthyear);
+      boxDate += " | " + moment.utc(this.starttime).format("HH:mm");
+      boxDate += " > " + moment.utc(this.endtime).format("HH:mm");
+    }
+
+    console.log("virtual('boxDateFull') end");
+    return boxDate;
+  } catch (err) {
+    console.error(`❌ Error in virtual boxDateFull for _id=${this._id}:`, err);
+    return '';
+  }
+});
+
+/* Schedule.virtual('boxDateFull').get(function () {
+  console.log("virtual('boxDateFull')")
+  console.log(this.starttime)
+  console.log(this.endtime)
+  if (!this?.$locals?.moment || !this?.$locals?.locale) {
+    console.warn("⚠️ moment or locale is missing in $locals");
+    return '';
+  }
+
+  if (!this.starttime || !this.endtime) {
+    console.warn(`⚠️ Missing starttime or endtime in document ${this._id}`);
+    return '';
+  }
   let boxDate;
   if (this.starttime) {
     const lang = this.$locals.locale;
@@ -65,13 +119,7 @@ Schedule.virtual('boxDateFull').get(function () {
       a<=days-1
       boxDateTMP = "To: "+this.$locals.moment.utc((new Date(this.endtime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
       boxDateA.push(boxDateTMP);
-      /*for(let a=0;a<=days-1;a++) {
-        let boxDateTMP = "";
-        boxDateTMP = this.$locals.moment.utc((new Date(this.starttime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
-        boxDateTMP+= " | "+this.$locals.moment.utc(this.starttime).format('HH:mm');
-        boxDateTMP+= " > "+this.$locals.moment.utc(this.endtime).format('HH:mm');
-        boxDateA.push(boxDateTMP);
-      }*/
+
       boxDate = boxDateA.join("<br />");
       boxDate+= "<br />"+this.$locals.moment.utc(this.starttime).format('HH:mm');
       boxDate+= " > "+this.$locals.moment.utc(this.endtime).format('HH:mm');
@@ -81,8 +129,9 @@ Schedule.virtual('boxDateFull').get(function () {
       boxDate+= " > "+this.$locals.moment.utc(this.endtime).format('HH:mm');
     }
   }
+  console.log("virtual('boxDateFull') end")
   return boxDate;
-});
+}); */
 
 /* Schedule.virtual('boxDateFull').get(function () {
   let boxDate;
@@ -110,6 +159,7 @@ Schedule.virtual('boxDateFull').get(function () {
   return boxDate;
 }); */
 Schedule.virtual('boxDate').get(function () {
+  //console.log("virtual('boxDate')")
   let boxDate;
   if (this.starttime) {
     const lang = this.$locals.locale;
@@ -130,9 +180,11 @@ Schedule.virtual('boxDate').get(function () {
     boxDate+= " | "+this.$locals.moment.utc(this.starttime).format('HH:mm');
     boxDate+= " > "+this.$locals.moment.utc(this.endtime).format('HH:mm');
   }
+  //console.log("virtual('boxDate') end")
   return boxDate;
 });
 Schedule.virtual('starttimeDay').get(function () {
+  //console.log("virtual('starttimeDay')")
   let boxDate;
   if (this.starttime) {
     const lang = this.$locals.locale;
@@ -150,15 +202,18 @@ Schedule.virtual('starttimeDay').get(function () {
       boxDate = this.$locals.moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdayday);
     }
   }
+  //console.log("virtual('starttimeDay') end")
   return boxDate;
 });
 
 Schedule.virtual('starttimeTime').get(function () {
+  //console.log("virtual('starttimeTime')")
   let starttimeTime;
   if (this.starttime) {
     const lang = this.$locals.locale;
     starttimeTime = this.$locals.moment.utc(new Date(this.starttime)).format('HH:mm');
   }
+  //console.log("virtual('starttimeTime') end")
   return starttimeTime;
 });
 

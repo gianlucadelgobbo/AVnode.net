@@ -535,15 +535,6 @@ async function copyFreezedUser(originalUser, eventId) {
 
 
 
-
-
-
-
-
-
-
-
-
 dataprovider.freezeEventProgram = async (req, res) => {
   logger.info("Starting freezeEventProgram");
 
@@ -552,7 +543,7 @@ dataprovider.freezeEventProgram = async (req, res) => {
     logger.info(`🔄 Freezing program for event ${eventId}`);
 
     // 1️⃣ Retrieve the original event
-    const event = await Models.Event.findById(eventId)
+    let event = await Models.Event.findById(eventId)
       .populate("program.performance")
       .exec();
 
@@ -703,8 +694,10 @@ dataprovider.freezeEventProgram = async (req, res) => {
     event.is_freezed = true;
     await event.save();
 
+    let eventnew = await Models.Event.findById(eventId);
+
     logger.info(`🎉 Successfully froze program for event ${eventId}`);
-    return res.send(event.program_freezed);
+    return res.send(eventnew);
   } catch (error) {
     logger.error(`🔥 Error freezing program:`, error);
     return handleError(res, "Error freezing program", error);

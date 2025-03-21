@@ -61,7 +61,7 @@ const performanceSchema = new Schema({
   },
   collection: 'event_freezed_performances'
 });
-performanceSchema.index({ event: 1, performance_original: 1 }, { unique: true });
+//performanceSchema.index({ event: 1, performance_original: 1 }, { unique: true });
 
 performanceSchema.virtual('about').get(function (req) {
   let about = this.$locals.__('Text is missing');

@@ -86,7 +86,12 @@ const Models = {
 router.post('/testlocale', (req, res) => {
   res.send('global.getLocale: ' + $locals.locale);
 }); */
-
+router.post("/session", (req, res) => {
+  if (req.session && req.session.user) {
+    return res.status(200).json({ loggedIn: true, user: req.session.user });
+  }
+  return res.status(401).json({ loggedIn: false, message: "Not authenticated" });
+});
 // Generate Sitemap XML
 router.get('/sitemap.xml', async (req, res) => {
   try {
