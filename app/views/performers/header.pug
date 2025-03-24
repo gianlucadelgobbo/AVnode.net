@@ -47,12 +47,6 @@ include ../partials/modals/modalContact
           div.performer_stats_wrapper
             if data.stats
               ul.performer_stats_list.performer_stats_list_2.list-inline
-                if data.stats.footage
-                  li.list-inline-item
-                    a(href="/"+data.slug+"/footage")!=__('Footage')+" (<span>"+data.stats.footage+"</span>)"
-                if data.stats.playlists
-                  li.list-inline-item
-                    a(href="/"+data.slug+"/playlists")!=__('Playlists')+" (<span>"+data.stats.playlists+"</span>)"  
                 if data.stats.videos
                   li.list-inline-item
                     a(href="/"+data.slug+"/videos")!=__('Videos')+" (<span>"+data.stats.videos+"</span>)"    

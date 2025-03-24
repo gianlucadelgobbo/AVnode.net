@@ -5,10 +5,7 @@ const Models = {
   'User': mongoose.model('User'),
   'Performance': mongoose.model('Performance'),
   'Event': mongoose.model('Event'),
-  'Footage': mongoose.model('Footage'),
-  'Gallery': mongoose.model('Gallery'),
   'News': mongoose.model('News'),
-  'Playlist': mongoose.model('Playlist'),
   'Program': mongoose.model('Program'),
   'Video': mongoose.model('Video'),
   'Order': mongoose.model('Order')
@@ -71,8 +68,6 @@ const setStatsAndActivitySingle = async function(query) {
       Models['Gallery'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
       Models['Video'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
       Models['News'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
-      Models['Footage'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
-      Models['Playlist'].find({ "users": { $in: myids }, "is_public": true }).select("_id"),
 
       // ✅ Fix countDocuments() calls
       Models['Performance'].countDocuments({ "users": { $in: myids }, "is_public": true, "type": "5be8708afc39610000000017" }),
@@ -92,17 +87,15 @@ const setStatsAndActivitySingle = async function(query) {
       Models['Gallery'].countDocuments({ "users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
       Models['Video'].countDocuments({ "users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
       Models['News'].countDocuments({ "users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
-      Models['Footage'].countDocuments({ "users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
-      Models['Playlist'].countDocuments({ "users": { $in: myids }, "is_public": true, createdAt: { "$gte": new Date(new Date().getTime() - (365 * 3 * 24 * 60 * 60 * 1000)) } }),
     ]);
 
     const [
       crews, members, events, partnerships, performances,
-      performances_only, learnings, galleries, videos, news, footage, playlists,
+      performances_only, learnings, galleries, videos, news,
       lightsinstallation, mapping, vjset, workshop, avperformance,
       projectshowcase, djset, videoinstallation, lecture,
       recent_events, recent_partnerships, recent_performances, recent_learnings,
-      recent_galleries, recent_videos, recent_news, recent_footage, recent_playlists
+      recent_galleries, recent_videos, recent_news
     ] = results;
 
     // ✅ You can now safely use these counts

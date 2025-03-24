@@ -13,6 +13,12 @@ import Media from './shared/Media.js';
 
 const adminsez = 'news';
 
+const isValidDate = (date) => {
+  console.log("isValidDate")
+  console.log(date instanceof Date && !isNaN(date.getTime()))
+  return date instanceof Date && !isNaN(date.getTime());
+};
+
 const newsSchema = new Schema({
   old_id : String,
 
@@ -25,6 +31,16 @@ const newsSchema = new Schema({
     }, 'NEWS_URL_IS_NOT_VALID']
   },
   is_public: { type: Boolean, default: false },
+  privacy: {
+    type: Date,
+    required: [true, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED'],
+    validate: [isValidDate, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED']
+  },
+  terms: {
+    type: Date,
+    required: [true, 'TERMS_ACCEPTANCE_IS_REQUIRED'],
+    validate: [isValidDate, 'TERMS_ACCEPTANCE_IS_REQUIRED']
+  },
   image: MediaImage,
   media: Media,
   abouts: [About],
@@ -155,8 +171,8 @@ newsSchema.virtual('excerpt').get(function (req) {
 // Return thumbnail
 newsSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
-    imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.public.components.image.config.sizes[format].default;
+  for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+    imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.public.image.config.sizes[format].default;
   }
   if (this.image && this.image.file) {
     const serverPath = this.image.file;
@@ -164,8 +180,8 @@ newsSchema.virtual('imageFormats').get(function () {
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/news_originals/', '/warehouse/news/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
-      imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.public.components.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
+    for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+      imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.public.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
     }
   }
   return imageFormats;

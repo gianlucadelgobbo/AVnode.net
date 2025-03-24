@@ -11,8 +11,6 @@ import performersShow from './performers/show.js';
 import performances from './performances.js';
 import learnings from './learnings.js';
 import events from './events.js';
-import footage from './footage.js';
-import playlists from './playlists.js';
 import videos from './videos.js';
 import galleries from './galleries.js';
 import news from './news.js';
@@ -47,8 +45,6 @@ router.use('/organizations', organizations);
 router.use('/performances', performances);
 router.use('/learnings', learnings);
 router.use('/events', events);
-router.use('/footage', footage);
-router.use('/playlists', playlists);
 router.use('/videos', videos);
 router.use('/galleries', galleries);
 router.use('/news', news);
@@ -71,10 +67,8 @@ const Models = {
   User: mongoose.model('User'),
   Performance: mongoose.model('Performance'),
   Event: mongoose.model('Event'),
-  Footage: mongoose.model('Footage'),
   Gallery: mongoose.model('Gallery'),
   News: mongoose.model('News'),
-  Playlist: mongoose.model('Playlist'),
   Video: mongoose.model('Video')
 };
 

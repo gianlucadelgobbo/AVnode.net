@@ -9,9 +9,7 @@ import mongoose from 'mongoose';
 
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
-const Footage = mongoose.model('Footage');
 const Performance = mongoose.model('Performance');
-const Playlist = mongoose.model('Playlist');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
 const Gallery = mongoose.model('Gallery');
@@ -33,8 +31,6 @@ router.get('/likes', async (req, res) => {
     if (req.query.section ==='performances') model = Performance;
     if (req.query.section ==='events') model = Event;
     if (req.query.section ==='videos') model = Video;
-    if (req.query.section ==='footage') model = Footage;
-    if (req.query.section ==='playlists') model = Playlist;
     if (req.query.section ==='news') model = News;
     if (req.query.section ==='galleries') model = Gallery;
     console.log("req.userreq.userreq.userreq.userreq.user")
@@ -131,7 +127,7 @@ router.post('/emailqueue', async (req, res) => {
 });
 
 router.get('/tobeencoded/:sez', async (req, res) => {
-  const Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
+  const Model = Video;
   try {
     const data = await Model
     //.findOne({"media.encoded":{$exists:true},"media.encoded": {$ne:true},"media.encoded": {$ne:1}})
@@ -169,7 +165,7 @@ import ffprobeStatic from 'ffprobe-static';
 router.get('/setdurationandsize/:sez/:id/', async (req, res) => {
   logger.info('/setencodingstatus/:sez/:id/');
   logger.info("existsSync");
-  let Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
+  let Model = Video;
   let data;
   try {
     data = await Model
@@ -211,7 +207,7 @@ router.get('/setdurationandsize/:sez/:id/', async (req, res) => {
 router.get('/setencodingstatus/:sez/:id/:encoding', async (req, res) => {
   logger.info('/setencodingstatus/:sez/:id/:encoding');
   logger.info(req.params.encoding);
-  const Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
+  const Model = Video;
   let data;
   if (req.params.encoding == 1) {
     try {
@@ -228,7 +224,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', async (req, res) => {
       logger.info(config.appRoot+data.media.file);
       if (fs.existsSync(config.appRoot+data.media.file)) {
         data.media.filesize = fs.statSync(config.appRoot+data.media.file).size;
-        const options = config.cpanel[req.params.sez].forms.video.components.media.config;
+        const options = config.cpanel[req.params.sez].forms.public.media.config;
         logger.info("data.media.filesize");
         logger.info(data.media.filesize);
         logger.info(imageUtil);

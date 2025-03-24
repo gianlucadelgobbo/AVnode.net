@@ -39,8 +39,8 @@ const GalleryItem = new Schema({
 
 GalleryItem.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
-    imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.public.components.image.config.sizes[format].default;
+  for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+    imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.public.image.config.sizes[format].default;
   }
   if (this.file) {
     //const serverPath = this.medias[0].file;
@@ -49,8 +49,8 @@ GalleryItem.virtual('imageFormats').get(function () {
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/galleries_originals/', '/warehouse/galleries/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
-      imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.public.components.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
+    for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+      imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.public.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
     }
   }
   return imageFormats;

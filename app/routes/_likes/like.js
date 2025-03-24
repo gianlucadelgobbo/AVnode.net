@@ -6,9 +6,7 @@ import mongoose from 'mongoose';
 const User = mongoose.model('User');
 
 const Event = mongoose.model('Event');
-const Footage = mongoose.model('Footage');
 const Performance = mongoose.model('Performance');
-const Playlist = mongoose.model('Playlist');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
 const Gallery = mongoose.model('Gallery');
@@ -27,8 +25,6 @@ router.get('/', (req, res) => {
         if (req.query.section ==='performances') model = Performance;
         if (req.query.section ==='events') model = Event;
         if (req.query.section ==='videos') model = Video;
-        if (req.query.section ==='footage') model = Footage;
-        if (req.query.section ==='playlists') model = Playlist;
         if (req.query.section ==='news') model = News;
         if (req.query.section ==='galleries') model = Gallery;
         if (!req.user.likes || !req.user.likes[req.query.section] || req.user.likes[req.query.section].map(function(e) { return e.id.toString(); }).indexOf(likeid.toString())===-1) {

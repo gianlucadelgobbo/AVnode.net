@@ -10,8 +10,6 @@ const Performance = mongoose.model('Performance');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
-const Footage = mongoose.model('Footage');
-const Playlist = mongoose.model('Playlist');
 const Category = mongoose.model('Category');
 import config from 'getconfig';
 
@@ -102,8 +100,6 @@ router.consolidateUser = (user, req, res, cb) => {
     news: [],
     galleries: [],
     videos: [],
-    footage: [],
-    playlists: []
   }
   const id = user._id
   Performance.find({users: id}).
@@ -148,38 +144,20 @@ router.consolidateUser = (user, req, res, cb) => {
               console.log("videosvideosvideosvideosvideosvideosvideosvideosvideosvideos")
               console.log(videos)
               update.videos = videos.map(item =>{return item._id})
-              Footage.find({users:id}).
-              lean().
-              select({_id:1}).
-              exec((err, footage) => {
-                console.log("footagefootagefootagefootagefootagefootagefootagefootagefootage")
-                console.log(footage)
-                update.footage = footage.map(item =>{return item._id})
-                Playlist.find({users:id}).
-                lean().
-                select({_id:1}).
-                exec((err, playlists) => {
-                  console.log("playlistsplaylistsplaylistsplaylistsplaylistsplaylistsplaylistsplaylistsplaylists")
-                  console.log(playlists)
-                  update.playlists = playlists.map(item =>{return item._id})
-                  console.log("updateupdateupdateupdateupdateupdateupdateupdateupdateupdate")
-                  console.log(update)
-                  var stats = {
-                    performances: update.performances.length,
-                    events: update.events.length,
-                    partnerships: update.partnerships.length,
-                    news: update.news.length,
-                    galleries: update.galleries.length,
-                    videos: update.videos.length,
-                    footage: update.footage.length,
-                    playlists: update.playlists.length
-                  }
-                  console.log(stats)
+              console.log("updateupdateupdateupdateupdateupdateupdateupdateupdateupdate")
+              console.log(update)
+              var stats = {
+                performances: update.performances.length,
+                events: update.events.length,
+                partnerships: update.partnerships.length,
+                news: update.news.length,
+                galleries: update.galleries.length,
+                videos: update.videos.length
+              }
+              console.log(stats)
 
-                  cb(update)
+              cb(update)
 
-                });
-              });
             });
           });
         });

@@ -17,10 +17,8 @@ const Models = {
   'User': mongoose.model('User'),
   'Performance': mongoose.model('Performance'),
   'Event': mongoose.model('Event'),
-  'Footage': mongoose.model('Footage'),
   'Gallery': mongoose.model('Gallery'),
   'News': mongoose.model('News'),
-  'Playlist': mongoose.model('Playlist'),
   'Program': mongoose.model('Program'),
   'Video': mongoose.model('Video'),
   'Order': mongoose.model('Order')

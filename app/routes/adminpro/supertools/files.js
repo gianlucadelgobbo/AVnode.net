@@ -72,10 +72,10 @@ router.get('/userimages', (req, res) => {
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
         // logger.info('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
           users[user].image.imageFormatsExists[format] = fs.existsSync(config.appRoot+users[user].image.imageFormats[format]);
         }
         if (!users[user].image.exists) {
@@ -127,19 +127,19 @@ router.get('/userformatsgenerator', (req, res) => {
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
         // logger.info('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
           users[user].image.imageFormatsExists[format] = fs.existsSync(config.appRoot+users[user].image.imageFormats[format]);
           if (!users[user].image.imageFormatsExists[format]) {
             const folder = users[user].image.imageFormats[format].substring(0, users[user].image.imageFormats[format].lastIndexOf('/'))
             router.checkAndCreate(folder, () => {
               sharp(config.appRoot+users[user].image.file)
-              .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
+              .resize(config.cpanel[adminsez].forms.public.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.image.config.sizes[format].h)
               .toFile(config.appRoot+users[user].image.imageFormats[format], (err, info) => {
                 sharp(config.appRoot+users[user].image.file)
-                .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
+                .resize(config.cpanel[adminsez].forms.public.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.image.config.sizes[format].h)
                 .webp()
                 .toFile(config.appRoot+users[user].image.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
                   logger.info(err);
@@ -203,10 +203,10 @@ router.get('/performanceimages', (req, res) => {
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
         // logger.info('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-          performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+          performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
           performances[performance].image.imageFormatsExists[format] = fs.existsSync(config.appRoot+performances[performance].image.imageFormats[format]);
         }
         if (!performances[performance].image.exists) {
@@ -258,19 +258,19 @@ router.get('/performanceformatsgenerator', (req, res) => {
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
         // logger.info('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-          performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+          performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
           performances[performance].image.imageFormatsExists[format] = fs.existsSync(config.appRoot+performances[performance].image.imageFormats[format]);
           if (!performances[performance].image.imageFormatsExists[format]) {
             let folder = performances[performance].image.imageFormats[format].substring(0, performances[performance].image.imageFormats[format].lastIndexOf('/'))
             router.checkAndCreate(folder, () => {
               sharp(config.appRoot+performances[performance].image.file)
-              .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
+              .resize(config.cpanel[adminsez].forms.public.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.image.config.sizes[format].h)
               .toFile(config.appRoot+performances[performance].image.imageFormats[format], (err, info) => {
                 sharp(config.appRoot+performances[performance].image.file)
-                .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
+                .resize(config.cpanel[adminsez].forms.public.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.image.config.sizes[format].h)
                 .webp()
                 .toFile(config.appRoot+performances[performance].image.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
                   logger.info(err);
@@ -318,10 +318,10 @@ router.get('/eventimages', (req, res) => {
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
         // logger.info('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-          events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+          events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
           events[event].image.imageFormatsExists[format] = fs.existsSync(config.appRoot+events[event].image.imageFormats[format]);
         }
       //}
@@ -366,12 +366,12 @@ router.get('/eventformatsgenerator', (req, res) => {
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
         // logger.info('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-          events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+          events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
         logger.info('image.config.sizes');
-        logger.info(config.cpanel[adminsez].forms.image.components.image.config.sizes);
-        for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+        logger.info(config.cpanel[adminsez].forms.public.image.config.sizes);
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
           logger.info('image.exists');
           logger.info(events[event].image.file);
           events[event].image.imageFormatsExists[format] = fs.existsSync(config.appRoot+events[event].image.imageFormats[format]);
@@ -382,10 +382,10 @@ router.get('/eventformatsgenerator', (req, res) => {
             let folder = events[event].image.imageFormats[format].substring(0, events[event].image.imageFormats[format].lastIndexOf('/'))
             router.checkAndCreate(folder, () => {
               sharp(config.appRoot+events[event].image.file)
-              .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
+              .resize(config.cpanel[adminsez].forms.public.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.image.config.sizes[format].h)
               .toFile(config.appRoot+events[event].image.imageFormats[format], (err, info) => {
                 sharp(config.appRoot+events[event].image.file)
-                .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
+                .resize(config.cpanel[adminsez].forms.public.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.image.config.sizes[format].h)
                 .webp()
                 .toFile(config.appRoot+events[event].image.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
                   logger.info(err);
@@ -432,10 +432,10 @@ router.get('/newsimages', (req, res) => {
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
         // logger.info('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
-        for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
-          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
-        for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
           newss[news].image.imageFormatsExists[format] = fs.existsSync(config.appRoot+newss[news].image.imageFormats[format]);
         }
       //}
@@ -483,19 +483,19 @@ router.get('/newsformatsgenerator', (req, res) => {
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
         // logger.info('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
-        for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
-          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
-        for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
           newss[news].image.imageFormatsExists[format] = fs.existsSync(config.appRoot+newss[news].image.imageFormats[format]);
           //if (!newss[news].image.imageFormatsExists[format]) {
             let folder = newss[news].image.imageFormats[format].substring(0, newss[news].image.imageFormats[format].lastIndexOf('/'))
             router.checkAndCreate(folder, () => {
               sharp(config.appRoot+newss[news].image.file)
-              .resize(config.cpanel[adminsez].forms.public.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.image.config.sizes[format].h)
+              .resize(config.cpanel[adminsez].forms.public.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.image.config.sizes[format].h)
               .toFile(config.appRoot+newss[news].image.imageFormats[format], (err, info) => {
                 sharp(config.appRoot+newss[news].image.file)
-                .resize(config.cpanel[adminsez].forms.public.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.image.config.sizes[format].h)
+                .resize(config.cpanel[adminsez].forms.public.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.image.config.sizes[format].h)
                 .webp()
                 .toFile(config.appRoot+newss[news].image.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
                   logger.info(err);
@@ -538,283 +538,6 @@ router.get('/playlistimages', (req, res) => {
     currentUrl: req.originalUrl,
       data: data,
       script: false
-    });
-  });
-});
-
-router.get('/footagefiles', (req, res) => {
-  logger.info('/adminpro/supertools/files/footagefiles');
-  let data = [];
-  const adminsez = 'footage';
-  var valid = [
-    "mp4",
-    "mov",
-    "MOV",
-    "m4v",
-    "MP4",
-    "AVI",
-    "flv",
-    "avi",
-    "mpg"
-  ];
-  Footage.
-  find({"media.file": {$exists: true}}).
-  lean().
-
-  select({media: 1, createdAt: 1}).
-  exec((err, footages) => {
-    for (let footage in footages) {
-      footages[footage].media.exists = fs.existsSync(config.appRoot+footages[footage].media.file);
-      footages[footage].media.imageFormats = {};
-      footages[footage].media.imageFormatsExists = {};
-      const file = footages[footage].media.file;
-      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
-      const publicPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/footage/"); // /warehouse/2017/03
-      const oldPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/"); // /warehouse/2017/03
-      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
-      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-      if (fileExtension == "swf" || fileExtension == "flv") {
-        footages[footage].media.original = footages[footage].media.file;
-      }
-      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
-      let originalFileName = '';
-      if (!footages[footage].media.exists) {
-        footages[footage].media.find = `mkdir /sites/avnode.net${fileFolder}<br />find /space/PhpMysql2015/sites/flxer${oldPath.replace("/warehouse/footage", "/warehouse")} -name '${fileName}' -exec cp "{}" /sites/avnode.net${fileFolder}/${fileName} \\;`;
-      }
-
-      if (valid.indexOf(originalFileExtension)===-1) {
-        originalFileName = fileNameWithoutExtension;
-        originalFileExtension = fileNameWithoutExtension;
-      } else {
-        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
-      }
-      /*
-      for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
-        logger.info(footages[footage].media);
-        footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
-      }
-      for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
-        footages[footage].media.imageFormatsExists[format] = fs.existsSync(config.appRoot+footages[footage].media.imageFormats[format]);
-      }
-      */
-      logger.info("stocazzo1 "+footages[footage].media.preview);
-      if (footages[footage].media.preview) {
-        logger.info("stocazzo2 "+config.appRoot+footages[footage].media.preview);
-        footages[footage].media.previewexists = fs.existsSync(config.appRoot+footages[footage].media.preview);
-        logger.info("stocazzo3 "+footages[footage].media.preview);
-        const previewFile = footages[footage].media.preview;
-        const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
-        const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
-        const publicPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/footage_previews/"); // /warehouse/2017/03
-        const oldPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/"); // /warehouse/2017/03
-        const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
-        const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
-        if (!footages[footage].media.previewexists) {
-          footages[footage].media.previewexists = fs.existsSync(config.appRoot+footages[footage].media.preview.replace('.png','.jpg'));
-          if (footages[footage].media.previewexists) {
-            footages[footage].media.findpreview = `mv ${config.appRoot+footages[footage].media.preview} ${config.appRoot+footages[footage].media.preview.replace('.png','.jpg')}`;
-          } else {
-            footages[footage].media.findpreview = `mkdir /sites/avnode.net${previewFileFolder}<br />find /space/PhpMysql2015/sites/flxer${oldPath.replace("/warehouse/footage", "warehouse/")} -name '${previewFileName}' -exec cp "{}" /sites/avnode.net${previewFileFolder}/${previewFileName} \\;`;
-          }
-        }
-        if (footages[footage].media.previewexists) {
-          // logger.info('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-          for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-            footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
-          }
-          for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-            footages[footage].media.imageFormatsExists[format] = fs.existsSync(config.appRoot+footages[footage].media.imageFormats[format]);
-          }
-        } else {
-          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse/", "warehouse/")} -name '${previewFileName.replace('.png','*.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \\;`;
-          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse/ -name '${previewFileName.replace('.png','.jpg')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")} \\;`;
-          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse/ -name '${previewFileName.replace('.png','_flv.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \\;`;
-          //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_previews/')+'/'+fileNameWithoutExtension+'.png';
-          //footages[footage].media.previewexists = fs.existsSync(config.appRoot+footages[footage].media.preview);
-        }
-      }
-      if (footages[footage].media.original) {
-        const originalFile = footages[footage].media.original;
-        const originalFileName = originalFile.substring(originalFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
-        const originalFileFolder = originalFile.substring(0, originalFile.lastIndexOf('/')); // /warehouse/2017/03
-        const oldPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/"); // /warehouse/2017/03
-        //footages[footage].media.original = fileFolder.replace('/warehouse/footage/', '/glacier/footage_originals/')+'/'+originalFileName+'.'+originalFileExtension;
-        footages[footage].media.originalexists = fs.existsSync(config.appRoot+footages[footage].media.original);
-        if (!footages[footage].media.originalexists) {
-          footages[footage].media.findoriginal= `mkdir /sites/avnode.net${originalFileFolder}<br />find /space/PhpMysql2015/sites/flxer${oldPath.replace("/warehouse/footage", "/warehouse")} -name '${originalFileName}' -exec cp "{}" /sites/avnode.net${originalFileFolder}/${originalFileName} \\;`;
-        }
-      }
-      data.push(footages[footage].media);
-    }
-    logger.info(req.path);
-    if (req.isApi) {
-      res.json(data);
-    } else {
-      res.render('adminpro/supertools/files/showall_videos', {
-        title: 'Footage images',
-        
-        currentUrl: req.originalUrl,
-        data: data,
-        script: false
-      });
-    }
-  });
-});
-
-router.get('/footagerenamer', (req, res) => {
-  logger.info('/adminpro/supertools/files/footagefiles');
-  let data = [];
-  const adminsez = 'footage';
-  var valid = [
-    "mp4",
-    "mov",
-    "MOV",
-    "m4v",
-    "MP4",
-    "AVI",
-    "flv",
-    "avi",
-    "mpg"
-  ];
-  Footage.
-  find({"media.file": {$exists: true}}).
-  lean().
-
-  select({media: 1, createdAt: 1}).
-  exec((err, footages) => {
-    for (let footage in footages) {
-     if (footages[footage].media.preview) {
-        footages[footage].media.previewexists = fs.existsSync(config.appRoot+footages[footage].media.preview);
-        if (!footages[footage].media.previewexists) {
-          footages[footage].media.previewexists = fs.existsSync(config.appRoot+footages[footage].media.preview.replace('.png','.jpg'));
-          if (footages[footage].media.previewexists) footages[footage].media.renamepreview = `db.footage.find({'media.preview': '${footages[footage].media.preview}'}).forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','.jpg')}';db.footage.save(e)});`;
-        }
-        if (!footages[footage].media.previewexists) {
-          footages[footage].media.previewexists = fs.existsSync(config.appRoot+footages[footage].media.preview.replace('.png','_swf.jpg'));
-          if (footages[footage].media.previewexists) footages[footage].media.renamepreview = `db.footage.find({'media.preview': '${footages[footage].media.preview}'}).forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','_swf.jpg')}';db.footage.save(e)});`;
-        }
-        if (footages[footage].media.renamepreview) {
-          data.push(footages[footage].media);
-        }
-      }
-    }
-    res.render('adminpro/supertools/files/renamer', {
-      title: 'Footage renamer',
-      
-    currentUrl: req.originalUrl,
-      data: data,
-      script: false
-    });
-  });
-});
-
-router.get('/footageformatsgenerator', (req, res) => {
-  logger.info('/adminpro/supertools/files/footageformatsgenerator');
-  var limit = 50;
-  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
-  let data = [];
-  const adminsez = 'footage';
-  var valid = [
-    "mp4",
-    "mov",
-    "MOV",
-    "m4v",
-    "MP4",
-    "AVI",
-    "flv",
-    "avi",
-    "mpg"
-  ];
-  Footage.
-  find({"media.file": {$exists: true}}).
-  lean().
-  limit(limit).
-  skip(skip).
-  select({media: 1, createdAt: 1}).
-  exec((err, footages) => {
-    for (let footage in footages) {
-      footages[footage].media.exists = fs.existsSync(config.appRoot+footages[footage].media.file);
-      footages[footage].media.imageFormats = {};
-      footages[footage].media.imageFormatsExists = {};
-      const file = footages[footage].media.file;
-      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
-      const publicPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/footage/"); // /warehouse/2017/03
-      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
-      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
-      let originalFileName = '';
-
-      if (valid.indexOf(originalFileExtension)===-1) {
-        originalFileName = fileNameWithoutExtension;
-        originalFileExtension = fileNameWithoutExtension;
-      } else {
-        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
-      }
-      /*
-      for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-        logger.info(footages[footage].media);
-        footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
-      }
-      for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-        footages[footage].media.imageFormatsExists[format] = fs.existsSync(config.appRoot+footages[footage].media.imageFormats[format]);
-      }
-      */
-     logger.info("stocazzo1 "+footages[footage].media.preview);
-     if (footages[footage].media.preview) {
-        logger.info("stocazzo2 "+config.appRoot+footages[footage].media.preview);
-        footages[footage].media.previewexists = fs.existsSync(config.appRoot+footages[footage].media.preview);
-        if (footages[footage].media.previewexists) {
-          logger.info("stocazzo3 "+footages[footage].media.preview);
-          const previewFile = footages[footage].media.preview;
-          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
-          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
-          const publicPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/footage_previews/"); // /warehouse/2017/03
-          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
-          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
-          // logger.info('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-          for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-            footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
-          }
-          for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-            footages[footage].media.imageFormatsExists[format] = fs.existsSync(config.appRoot+footages[footage].media.imageFormats[format]);
-            if (!footages[footage].media.imageFormatsExists[format]) {
-              let folder = footages[footage].media.imageFormats[format].substring(0, footages[footage].media.imageFormats[format].lastIndexOf('/'))
-              router.checkAndCreate(folder, () => {
-                logger.info("stocazzo "+config.appRoot+previewFile);
-                sharp(config.appRoot+previewFile)
-                .resize(config.cpanel[adminsez].forms.public.components.media.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.media.config.sizes[format].h)
-                .toFile(config.appRoot+footages[footage].media.imageFormats[format], (err, info) => {
-                  sharp(config.appRoot+previewFile)
-                  .resize(config.cpanel[adminsez].forms.public.components.media.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.media.config.sizes[format].h)
-                  .webp()
-                  .toFile(config.appRoot+footages[footage].media.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
-                    logger.info(err);
-                    logger.info(info);
-                  });
-                });
-              });
-            }
-          }
-        }
-      } else {
-        //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_previews/')+'/'+fileNameWithoutExtension+'.png';
-        //footages[footage].media.previewexists = fs.existsSync(config.appRoot+footages[footage].media.preview);
-      }
-      if (fileExtension=="mp4") {
-        footages[footage].media.original = fileFolder.replace('/warehouse/footage/', '/glacier/footage_originals/')+'/'+originalFileName+'.'+originalFileExtension;
-        footages[footage].media.originalexists = fs.existsSync(config.appRoot+footages[footage].media.original);
-      }
-      data.push(footages[footage].media);
-    }
-    logger.info(req.path);
-    res.render('adminpro/supertools/files/showall', {
-      title: 'Footage images generator',
-      
-      currentUrl: req.originalUrl,
-      data: data,
-      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/adminpro/supertools/files/footageformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
     });
   });
 });
@@ -871,11 +594,11 @@ router.get('/videofiles', (req, res) => {
         videos[video].media.exists = false;
       }
       /*
-      for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      for(let format in config.cpanel[adminsez].forms.public.media.config.sizes) {
         logger.info(videos[video].media);
-        videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
       }
-      for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      for(let format in config.cpanel[adminsez].forms.public.media.config.sizes) {
         videos[video].media.imageFormatsExists[format] = fs.existsSync(config.appRoot+videos[video].media.imageFormats[format]);
       }
       */
@@ -903,10 +626,10 @@ router.get('/videofiles', (req, res) => {
           if (!videos[video].media.imageFormatsExists) videos[video].media.imageFormatsExists = {};
 
           // logger.info('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-          for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
-            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          for(let format in config.cpanel[adminsez].forms.public.media.config.sizes) {
+            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
           }
-          for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+          for(let format in config.cpanel[adminsez].forms.public.media.config.sizes) {
             videos[video].media.imageFormatsExists[format] = fs.existsSync(config.appRoot+videos[video].media.imageFormats[format]);
           }
         }
@@ -1888,9 +1611,9 @@ router.get('/videocleaner', (req, res) => {
                 const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos_previews/"); // /warehouse/2017/03
                 const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
                 const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
-                for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+                for(let format in config.cpanel[adminsez].forms.public.media.config.sizes) {
                   if (!files.previews_formats.filelist[format]) files.previews_formats.filelist[format] = [];
-                  files.previews_formats.filelist.push(`${config.appRoot}${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`);
+                  files.previews_formats.filelist.push(`${config.appRoot}${publicPath}/${config.cpanel[adminsez].forms.public.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`);
                 }
               }
             }
@@ -1961,11 +1684,11 @@ router.get('/videoformatsgenerator', (req, res) => {
         originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
       }
       /*
-      for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+      for(let format in config.cpanel[adminsez].forms.public.media.config.sizes) {
         logger.info(videos[video].media);
-        videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
       }
-      for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+      for(let format in config.cpanel[adminsez].forms.public.media.config.sizes) {
         videos[video].media.imageFormatsExists[format] = fs.existsSync(config.appRoot+videos[video].media.imageFormats[format]);
       }
       */
@@ -1979,19 +1702,19 @@ router.get('/videoformatsgenerator', (req, res) => {
           const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
           const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
           // logger.info('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-          for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
-            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          for(let format in config.cpanel[adminsez].forms.public.media.config.sizes) {
+            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
           }
-          for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+          for(let format in config.cpanel[adminsez].forms.public.media.config.sizes) {
             videos[video].media.imageFormatsExists[format] = fs.existsSync(config.appRoot+videos[video].media.imageFormats[format]);
             if (!videos[video].media.imageFormatsExists[format]) {
               let folder = videos[video].media.imageFormats[format].substring(0, videos[video].media.imageFormats[format].lastIndexOf('/'))
               router.checkAndCreate(folder, () => {
                 sharp(config.appRoot+previewFile)
-                .resize(config.cpanel[adminsez].forms.video.components.media.config.sizes[format].w, config.cpanel[adminsez].forms.video.components.media.config.sizes[format].h)
+                .resize(config.cpanel[adminsez].forms.public.media.config.sizes[format].w, config.cpanel[adminsez].forms.public.media.config.sizes[format].h)
                 .toFile(config.appRoot+videos[video].media.imageFormats[format], (err, info) => {
                   sharp(config.appRoot+previewFile)
-                  .resize(config.cpanel[adminsez].forms.video.components.media.config.sizes[format].w, config.cpanel[adminsez].forms.video.components.media.config.sizes[format].h)
+                  .resize(config.cpanel[adminsez].forms.public.media.config.sizes[format].w, config.cpanel[adminsez].forms.public.media.config.sizes[format].h)
                   .webp()
                   .toFile(config.appRoot+videos[video].media.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
                     logger.info(err);
@@ -2056,10 +1779,10 @@ router.get('/galleryimages', (req, res) => {
         const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
         const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
         //logger.info('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-        for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
-          galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.image.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+          galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.image.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
         }
-        for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
+        for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
           galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(config.appRoot+galleries[gallery].medias[media].imageFormats[format]);
         }
         if (!galleries[gallery].medias[media].exists) {
@@ -2116,19 +1839,19 @@ router.get('/gallerygenerator', (req, res) => {
             const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
             const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
             // logger.info('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-            for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
-              galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.image.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+            for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+              galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.image.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
             }
-            for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
+            for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
               galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(config.appRoot+galleries[gallery].medias[media].imageFormats[format]);
               if (!galleries[gallery].medias[media].imageFormatsExists[format]) {
                 let folder = galleries[gallery].medias[media].imageFormats[format].substring(0, galleries[gallery].medias[media].imageFormats[format].lastIndexOf('/'))
                 router.checkAndCreate(folder, () => {
                   sharp(config.appRoot+previewFile)
-                  .resize(config.cpanel[adminsez].forms.public.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.image.config.sizes[format].h)
+                  .resize(config.cpanel[adminsez].forms.public.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.image.config.sizes[format].h)
                   .toFile(config.appRoot+galleries[gallery].medias[media].imageFormats[format], (err, info) => {
                     sharp(config.appRoot+previewFile)
-                    .resize(config.cpanel[adminsez].forms.public.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.image.config.sizes[format].h)
+                    .resize(config.cpanel[adminsez].forms.public.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.image.config.sizes[format].h)
                     .webp()
                     .toFile(config.appRoot+galleries[gallery].medias[media].imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
                       logger.info(err);

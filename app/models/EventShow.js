@@ -129,6 +129,12 @@ callSchema.virtual('end_date_formatted').get(function () {
   return this.$locals.moment(this.end_date).format('MMMM Do YYYY, h:mm');
 });
 
+const isValidDate = (date) => {
+  console.log("isValidDate")
+  console.log(date instanceof Date && !isNaN(date.getTime()))
+  return date instanceof Date && !isNaN(date.getTime());
+};
+
 const eventSchema = new Schema({
   createdAt: Date,
   old_id: String,
@@ -151,6 +157,16 @@ const eventSchema = new Schema({
   emails: [Link],
   phones: [Link],
   is_public: { type: Boolean, default: false },
+  privacy: {
+    type: Date,
+    required: [true, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED'],
+    validate: [isValidDate, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED']
+  },
+  terms: {
+    type: Date,
+    required: [true, 'TERMS_ACCEPTANCE_IS_REQUIRED'],
+    validate: [isValidDate, 'TERMS_ACCEPTANCE_IS_REQUIRED']
+  },
   gallery_is_public: { type: Boolean, default: false },
   is_freezed: { type: Boolean, default: false },
   participate: { type: Boolean, default: false },
@@ -535,8 +551,8 @@ eventSchema.virtual('imageFormats').get(function () {
   logger.info("EventShow virtual imageFormats")
   logger.info(config.cpanel[adminsez].forms)
   let imageFormats = {};
-  for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-    imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
+  for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+    imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.public.image.config.sizes[format].default;
   }
   if (this.image && this.image.file) {
     const serverPath = this.image.file;
@@ -544,8 +560,8 @@ eventSchema.virtual('imageFormats').get(function () {
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/events_originals/', '/warehouse/events/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-      imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
+    for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+      imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.public.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
     }
   }
   return imageFormats;

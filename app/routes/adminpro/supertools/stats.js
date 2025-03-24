@@ -10,8 +10,6 @@ const Performance = mongoose.model('Performance');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
-const Footage = mongoose.model('Footage');
-const Playlist = mongoose.model('Playlist');
 const Category = mongoose.model('Category');
 import config from 'getconfig';
 

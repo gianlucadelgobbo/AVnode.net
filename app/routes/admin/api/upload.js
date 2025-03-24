@@ -19,10 +19,8 @@ const Models = {
   User: mongoose.model("User"),
   Performance: mongoose.model("Performance"),
   Event: mongoose.model("Event"),
-  Footage: mongoose.model("Footage"),
   Gallery: mongoose.model("Gallery"),
   News: mongoose.model("News"),
-  Playlist: mongoose.model("Playlist"),
   Video: mongoose.model("Video")
 };
 
@@ -259,7 +257,7 @@ upload.uploader = (req, res, options, done) => {
 };
 
 upload.setImage = (req, res) => {
-  const options = config.cpanel[req.params.sez].forms.image.components.image.config;
+  const options = config.cpanel[req.params.sez].forms.public.image.config;
   upload.uploader(req, res, options, (err, p) => {
     logger.info(err);
     logger.info("p.files");
@@ -357,7 +355,7 @@ upload.setImage = (req, res) => {
 }
 
 upload.setVideo = (req, res) => {
-  const options = config.cpanel[req.params.sez].forms.video.components.media.config;
+  const options = config.cpanel[req.params.sez].forms.public.media.config;
   upload.uploader(req, res, options, (err, p) => {
     logger.info(err);
     logger.info("p.files");
@@ -401,7 +399,6 @@ upload.setVideo = (req, res) => {
 
 upload.galleryAddImages = (req, res) => {
 //if (helpers.editable(req, data, req.params.id)) {
-  //const options = config.cpanel.galleries.forms.medias.components.image.config;
   const options = {
     "fields": {
       "name": "image",

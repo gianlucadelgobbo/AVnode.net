@@ -166,7 +166,7 @@ export async function myExternalUrl(req) {
         // ✅ Resize image
         await imageUtil.resizer(
           [{ path: glacierFile }],
-          config.cpanel.videos.forms.video.components.media.config
+          config.cpanel.videos.forms.public.media.config
         );
         logger.info("✅ Thumbnail resized successfully");
       } catch (err) {
@@ -245,8 +245,6 @@ const getActivity = (stats) => {
   activity+= (stats.performances ? stats.performances * 100 : 0);
   activity+= (stats.learnings ? stats.learnings       * 100 : 0);
   activity+= (stats.events ? stats.events             * 50 : 0);
-  //activity+= (stats.footage ? stats.footage           * 1 : 0);
-  //activity+= (stats.playlists ? stats.playlists       * 2 : 0);
   activity+= (stats.videos ? stats.videos             * 3 : 0);
   activity+= (stats.galleries ? stats.galleries       * 1 : 0);
   activity+= (stats.news ? stats.news                 * 1 : 0);
@@ -256,8 +254,6 @@ const getActivity = (stats) => {
   activity+= (stats.recent.performances ? stats.recent.performances * 1000 : 0);
   activity+= (stats.recent.learnings ? stats.recent.learnings       * 1000 : 0);
   activity+= (stats.recent.events ? stats.recent.events             * 500 : 0);
-  //activity+= (stats.recent.footage ? stats.recent.footage           * 10 : 0);
-  //activity+= (stats.recent.playlists ? stats.recent.playlists       * 20 : 0);
   activity+= (stats.recent.videos ? stats.recent.videos             * 30 : 0);
   activity+= (stats.recent.galleries ? stats.recent.galleries       * 10 : 0);
   activity+= (stats.recent.news ? stats.recent.news                 * 10 : 0);
@@ -270,13 +266,9 @@ const getActivityAsPerformer = (stats) => {
   let activity_as_performer = 0;
   activity_as_performer+= (stats.performances ? stats.performances * 100 : 0);
   activity_as_performer+= (stats.learnings ? stats.learnings       * 100 : 0);
-  //activity_as_performer+= (stats.footage ? stats.footage           * 1 : 0);
-  //activity_as_performer+= (stats.playlists ? stats.playlists       * 1 : 0);
 
   activity_as_performer+= (stats.recent.performances ? stats.recent.performances * 1000 : 0);
   activity_as_performer+= (stats.recent.learnings ? stats.recent.learnings * 1000 : 0);
-  //activity_as_performer+= (stats.recent.footage ? stats.recent.footage           * 10 : 0);
-  //activity_as_performer+= (stats.recent.playlists ? stats.recent.playlists       * 10 : 0);
   return activity_as_performer;
 }
 

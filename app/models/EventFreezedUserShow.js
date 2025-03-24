@@ -15,6 +15,12 @@ import OrganizationData from './shared/OrganizationData.js';
 
 const adminsez = 'profile';
 
+const isValidDate = (date) => {
+  console.log("isValidDate")
+  console.log(date instanceof Date && !isNaN(date.getTime()))
+  return date instanceof Date && !isNaN(date.getTime());
+};
+
 const userSchema = new Schema({
   event: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true },
   user_original: { type: mongoose.Schema.Types.ObjectId, ref: 'UserShow', required: true },
@@ -71,6 +77,16 @@ const userSchema = new Schema({
   emails: [{
     email: String,
     is_public: { type: Boolean, default: false },
+  privacy: {
+    type: Date,
+    required: [true, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED'],
+    validate: [isValidDate, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED']
+  },
+  terms: {
+    type: Date,
+    required: [true, 'TERMS_ACCEPTANCE_IS_REQUIRED'],
+    validate: [isValidDate, 'TERMS_ACCEPTANCE_IS_REQUIRED']
+  },
     is_primary: { type: Boolean, default: false },
     is_confirmed: { type: Boolean, default: false },
     mailinglists: {},
@@ -95,8 +111,6 @@ const userSchema = new Schema({
     category: { type: Schema.ObjectId, ref: 'Category' },
     events: [{ type: Schema.ObjectId, ref: 'EventShow' }]
   }], 
-  footage : [{ type: Schema.ObjectId, ref: 'Footage' }],
-  playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],*/
   news : [{ type: Schema.ObjectId, ref: 'News' }],
   pages: [],
   /* A todo
@@ -283,11 +297,11 @@ userSchema.virtual('birthdayFormatted').get(function () {
 // Return thumbnail
 userSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-    imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
+  for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+    imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.public.image.config.sizes[format].default;
   }
   if (this.organizationData && this.organizationData.logo) {
-    for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+    for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
       imageFormats[format] = process.env.WAREHOUSE+this.organizationData.logo;
     }
   } else if (this.image && this.image.file) {
@@ -296,8 +310,8 @@ userSchema.virtual('imageFormats').get(function () {
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/users_originals/', '/warehouse/users/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-      imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
+    for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+      imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.public.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
     }
   }
   return imageFormats;

@@ -26,6 +26,12 @@ const hasNumber = (str) => /\d/.test(str);
 const hasLowerCase = (str) => /[a-z]/.test(str);
 const hasUpperCase = (str) => /[A-Z]/.test(str);
 
+const isValidDate = (date) => {
+  console.log("isValidDate")
+  console.log(date instanceof Date && !isNaN(date.getTime()))
+  return date instanceof Date && !isNaN(date.getTime());
+};
+
 const userSchema = new Schema({
   old_id: String,
   is_crew: Boolean,
@@ -75,8 +81,6 @@ const userSchema = new Schema({
     'project-showcase': Number,
     'dj-set': Number,
     'video-installation': Number,
-    footage: Number,
-    playlists: Number,
     news: Number,
     lecture: Number,
     recent:{ 
@@ -85,8 +89,6 @@ const userSchema = new Schema({
       events: Number,
       news: Number,
       partnerships: Number,
-      footage: Number,
-      playlists: Number,
       videos: Number,
       galleries: Number,
       news: Number
@@ -140,6 +142,16 @@ const userSchema = new Schema({
         }, 'EMAIL_IS_NOT_VALID']
       },
       is_public: { type: Boolean, default: false },
+  privacy: {
+    type: Date,
+    required: [true, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED'],
+    validate: [isValidDate, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED']
+  },
+  terms: {
+    type: Date,
+    required: [true, 'TERMS_ACCEPTANCE_IS_REQUIRED'],
+    validate: [isValidDate, 'TERMS_ACCEPTANCE_IS_REQUIRED']
+  },
       is_primary: { type: Boolean, default: false },
       is_confirmed: { type: Boolean, default: false },
       mailinglists: {
@@ -186,8 +198,6 @@ const userSchema = new Schema({
     category: { type: Schema.ObjectId, ref: 'Category' },
     events: [{ type: Schema.ObjectId, ref: 'EventShow' }]
   }], */
-  footage : [{ type: Schema.ObjectId, ref: 'Footage' }],
-  playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],
   news : [{ type: Schema.ObjectId, ref: 'News' }],
 
   roles: [],
@@ -258,8 +268,8 @@ userSchema.virtual('birthdayFormatted').get(function () {
 // Return thumbnail
 userSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-    imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
+  for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+    imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.public.image.config.sizes[format].default;
   }
   if (this.image && this.image.file) {
     const serverPath = this.image.file;
@@ -267,8 +277,8 @@ userSchema.virtual('imageFormats').get(function () {
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/users_originals/', '/warehouse/users/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-      imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
+    for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
+      imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.public.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
     }
   }
   return imageFormats;

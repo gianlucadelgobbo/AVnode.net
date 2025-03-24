@@ -29,22 +29,6 @@ router.get("/partnerships/page/:page", (req, res) => {
   dataprovider.show(req, res, section, "partnerships", Model);
 });
 
-router.get("/footage", (req, res) => {
-  dataprovider.show(req, res, section, "footage", Model);
-});
-
-router.get("/footage/page/:page", (req, res) => {
-  dataprovider.show(req, res, section, "footage", Model);
-});
-
-router.get("/playlists", (req, res) => {
-  dataprovider.show(req, res, section, "playlists", Model);
-});
-
-router.get("/playlists/page/:page", (req, res) => {
-  dataprovider.show(req, res, section, "playlists", Model);
-});
-
 router.get("/galleries", (req, res) => {
   dataprovider.show(req, res, section, "galleries", Model);
 });

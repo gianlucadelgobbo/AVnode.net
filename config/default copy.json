@@ -102,6 +102,8 @@
       "model": "UserTemp",
       "forms": {
         "signup": {
+          "components": {
+          },
           "select": {
             "subscribe": 1,
             "stagename": 1,
@@ -129,6 +131,8 @@
       "model": "Program",
       "forms": {
         "subscriptions": {
+          "components": {
+          },
           "select": {
             "topics": 1,
             "call": 1,
@@ -310,6 +314,8 @@
         },
         "connections": {
           "title": "Connections",
+            "connections": []
+          },
           "select": {
             "connections": 1
           },
@@ -602,6 +608,34 @@
       "model": "Event",
       "forms": {
         "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Event url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Event name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
           "select": {
             "slug": 1,
             "title": 1
@@ -613,6 +647,160 @@
         },
         "public": {
           "title": "Public data",
+          "components": {
+            "type": [
+              {
+                "comp": "simpleselect",
+                "label": "Event name",
+                "required": true,
+                "unique": true,
+                "validators": {
+                  "Array_max_length": 2
+                }
+              }
+            ],
+            "schedule": [
+              {
+                "date": {
+                  "comp": "date_picker",
+                  "label": "Date",
+                  "required": true,
+                  "unique": false,
+                  "validators": {
+                    "is_date": {}
+                  }
+                },
+                "starttime": {
+                  "comp": "time_picker",
+                  "label": "Start time",
+                  "required": true,
+                  "unique": false,
+                  "validators": {
+                    "is_date": {}
+                  }
+                },
+                "endtime": {
+                  "comp": "time_picker",
+                  "label": "End time",
+                  "required": true,
+                  "unique": false,
+                  "validators": {
+                    "is_date": {}
+                  }
+                },
+                "venue": {
+                  "venue": {
+                    "comp": "google_venue",
+                    "label": "Venue name",
+                    "required": true,
+                    "unique": false,
+                    "validators": {
+                      "String": {
+                        "min": 3,
+                        "max": 50
+                      },
+                      "geolocation": {
+                        "min": 3,
+                        "max": 50
+                      }
+                    }
+                  },
+                  "room": {
+                    "comp": "simpletext",
+                    "label": "Room name",
+                    "required": false,
+                    "unique": false,
+                    "validators": {
+                      "String": {
+                        "min": 3,
+                        "max": 50
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "slug": {
+              "comp": "simpletext",
+              "label": "Event url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Event name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "subtitles": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "Event subtitle",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 300
+                }
+              }
+            },
+            "abouts": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "Event description",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            },
+            "web": {
+              "schema": "shared/Link",
+              "comp": "multilink",
+              "label": "Websites",
+              "validators": {
+                "Url": {}
+              }
+            },
+            "social": {
+              "schema": "shared/Link",
+              "comp": "multilink",
+              "label": "Social networks",
+              "validators": {
+                "Url": {}
+              }
+            },
+            "emails": {
+              "schema": "shared/Link",
+              "comp": "multilink",
+              "label": "Email contacts",
+              "validators": {
+                "Email": {}
+              }
+            },
+            "phones": {
+              "schema": "shared/Link",
+              "comp": "multilink",
+              "label": "Phone contacts",
+              "validators": {
+                "Phone": {}
+              }
+            }
+          },
           "select": {
             "type": 1,
             "schedule": 1,
@@ -633,45 +821,92 @@
           "selectaddon": {
             "imageFormats": 1
           },
-          "image": {
-            "config":{
-              "fields": {
-                "name": "image",
-                "maxCount": 1
-              },
-              "fileext": ["jpg","jpeg","png","gif","svg"],
-              "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
-              "storage": "/glacier/events_originals/",
-              "maxsize": 20971520,
-              "minwidth": 1280,
-              "minheight": 720,
-              "sizes": {
-                "small": {
-                  "w": 400,
-                  "h": 225,
-                  "folder": "400x225",
-                  "default": "/images/default-item.svg"
+          "populate": [{ "path": "type" , "select": "name" },{ "path": "users" , "select": "stagename image organizationData.logo" }]
+        },
+        "image": {
+          "components": {
+            "image": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
                 },
-                "large": {
-                  "w": 1140,
-                  "h": 641,
-                  "folder": "1140x641",
-                  "default": "/images/default-item.svg"
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
+                "storage": "/glacier/events_originals/",
+                "maxsize": 20971520,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
                 }
+              },
+              "comp": "uploader",
+              "label": "Event Image",
+              "validators": {
+                "Mime": {},
+                "Weight": {},
+                "Size": {}
               }
-            },
-            "comp": "uploader",
-            "label": "Event Image",
-            "validators": {
-              "Mime": {},
-              "Weight": {},
-              "Size": {}
             }
           },
-          "populate": [{ "path": "type" , "select": "name" },{ "path": "users" , "select": "stagename image organizationData.logo" }]
+          "select": {
+            "image": 1,
+            "users": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "is_public": 1,
+            "title": 1,
+            "imageFormats": 1
+          },
+          "populate": []
         },
         "partners": {
           "title": "Partners",
+          "components": {
+            "partners": {
+              "comp": "list_and_add_to_category",
+              "rel_obj": "User",
+              "list_fields": [
+                "Stage name",
+                "partnership_category",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "remove",
+                "edit_partnership_category",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Stage name",
+                "set_partnership_category"
+              ],
+              "view_sort_modes": [
+                "Stage name",
+                "custom_order",
+                "partnership_category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Event Production and partners",
+              "validators": {
+                "Confirm": {}
+              }
+            }
+          },
           "select": {
             "partners": 1
           },
@@ -684,6 +919,38 @@
         },
         "partners-message": {
           "title": "Partners message",
+          "components": {
+            "partners": {
+              "comp": "list_and_add_to_category",
+              "rel_obj": "User",
+              "list_fields": [
+                "Stage name",
+                "partnership_category",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "remove",
+                "edit_partnership_category",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Stage name",
+                "set_partnership_category"
+              ],
+              "view_sort_modes": [
+                "Stage name",
+                "custom_order",
+                "partnership_category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Event Production and partners",
+              "validators": {
+                "Confirm": {}
+              }
+            }
+          },
           "select": {
             "partners": 1,
             "users": 1
@@ -697,6 +964,131 @@
         },
         "program": {
           "title": "Program",
+          "components": {
+            "program": [
+              {
+                "schedule": {
+                  "programday": {
+                    "comp": "date_picker",
+                    "label": "Date",
+                    "required": true,
+                    "unique": false,
+                    "validators": {
+                      "is_date": {}
+                    }
+                  },
+                  "startdate": {
+                    "comp": "date_picker",
+                    "label": "Start time",
+                    "required": true,
+                    "unique": false,
+                    "validators": {
+                      "is_date": {}
+                    }
+                  },
+                  "starttime": {
+                    "comp": "time_picker",
+                    "label": "Start date",
+                    "required": true,
+                    "unique": false,
+                    "validators": {
+                      "is_date": {}
+                    }
+                  },
+                  "enddate": {
+                    "comp": "date_picker",
+                    "label": "End date",
+                    "required": true,
+                    "unique": false,
+                    "validators": {
+                      "is_date": {}
+                    }
+                  },
+                  "endtime": {
+                    "comp": "time_picker",
+                    "label": "End time",
+                    "required": true,
+                    "unique": false,
+                    "validators": {
+                      "is_date": {}
+                    }
+                  },
+                  "venue": {
+                    "venue": {
+                      "comp": "google_venue",
+                      "label": "Venue name",
+                      "required": true,
+                      "unique": false,
+                      "validators": {
+                        "String": {
+                          "min": 3,
+                          "max": 50
+                        },
+                        "geolocation": {
+                          "min": 3,
+                          "max": 50
+                        }
+                      }
+                    },
+                    "room": {
+                      "comp": "simpletext",
+                      "label": "Room name",
+                      "required": false,
+                      "unique": false,
+                      "validators": {
+                        "String": {
+                          "min": 3,
+                          "max": 50
+                        }
+                      }
+                    }
+                  },
+                  "categories": [
+                    {
+                      "comp": "simpleselect",
+                      "label": "Event name",
+                      "required": true,
+                      "unique": true,
+                      "validators": {
+                        "Array_max_length": 2
+                      }
+                    }
+                  ]
+                },
+                "performance": {
+                  "comp": "list_and_add",
+                  "rel_obj": "Performace",
+                  "list_fields": [
+                    "Performance name",
+                    "users",
+                    "category",
+                    "stats",
+                    "duration",
+                    "slug"
+                  ],
+                  "list_actions": [
+                    "add",
+                    "remove",
+                    "sort",
+                    "view_sort"
+                  ],
+                  "add_form_search": [
+                    "Performance name"
+                  ],
+                  "view_sort_modes": [
+                    "Performance name",
+                    "custom_order",
+                    "category"
+                  ],
+                  "rel_api": "/admin/api/...",
+                  "label": "Program",
+                  "validators": {
+                    "Confirm": {}
+                  }
+                }
+              }
+            ]
+          },
           "select": {
             "program": 1
           },
@@ -709,6 +1101,68 @@
         },
         "galleries": {
           "title": "Galleries",
+          "components": {
+            "galleries": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
+                "storage": "/glacier/galleries_originals/",
+                "maxsize": 20971520,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "list_and_add_and_upload",
+              "rel_obj": "Gallery",
+              "list_fields": [
+                "Gallery name",
+                "users",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "upload",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Gallery name"
+              ],
+              "view_sort_modes": [
+                "Gallery name",
+                "category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Galleries",
+              "validators": {
+                "Confirm": {},
+                "Upload": {
+                  "Mime": {},
+                  "Weight": {},
+                  "Size": {}
+                }
+              }
+            }
+          },
           "select": {
             "galleries": 1
           },
@@ -722,6 +1176,68 @@
         },
         "videos": {
           "title": "Videos",
+          "components": {
+            "videos": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
+                "storage": "/glacier/footage_originals/",
+                "maxsize": 10737418240,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "list_and_add_and_upload",
+              "rel_obj": "Video",
+              "list_fields": [
+                "Video name",
+                "users",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "upload",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Video name"
+              ],
+              "view_sort_modes": [
+                "Video name",
+                "category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Videos",
+              "validators": {
+                "Confirm": {},
+                "Upload": {
+                  "Mime": {},
+                  "Weight": {},
+                  "Size": {}
+                }
+              }
+            }
+          },
           "select": {
             "videos": 1
           },
@@ -734,6 +1250,246 @@
         },
         "calls": {
           "title": "Calls",
+          "components": {
+            "calls": [
+              {
+                "title": {
+                  "comp": "simpletext",
+                  "label": "Call name",
+                  "required": false,
+                  "unique": false,
+                  "validators": {
+                    "String": {
+                      "min": 3,
+                      "max": 50
+                    }
+                  }
+                },
+                "email": {
+                  "schema": "shared/Link",
+                  "comp": "multilink",
+                  "label": "Email contacts",
+                  "validators": {
+                    "Email": {}
+                  }
+                },
+                "slug": {
+                  "comp": "simpletext",
+                  "label": "Event url",
+                  "required": true,
+                  "unique": true,
+                  "validators": {
+                    "String": {
+                      "min": 3,
+                      "max": 50
+                    },
+                    "Unique": "admin/api..."
+                  }
+                },
+                "start_date": {
+                  "comp": "date_picker",
+                  "label": "Date",
+                  "required": true,
+                  "unique": false,
+                  "validators": {
+                    "is_date": {}
+                  }
+                },
+                "end_date": {
+                  "comp": "date_picker",
+                  "label": "Date",
+                  "required": true,
+                  "unique": false,
+                  "validators": {
+                    "is_date": {}
+                  }
+                },
+                "admitted": [
+                  {
+                    "ref": "Category"
+                  }
+                ],
+                "excerpt": {
+                  "schema": "shared/About",
+                  "comp": "textarea_multilang",
+                  "label": "Event description",
+                  "validators": {
+                    "String": {
+                      "min": 0,
+                      "max": 50000
+                    }
+                  }
+                },
+                "terms": {
+                  "schema": "shared/About",
+                  "comp": "textarea_multilang",
+                  "label": "Event description",
+                  "validators": {
+                    "String": {
+                      "min": 0,
+                      "max": 50000
+                    }
+                  }
+                },
+                "closedcalltext": {
+                  "schema": "shared/About",
+                  "comp": "textarea_multilang",
+                  "label": "Event description",
+                  "validators": {
+                    "String": {
+                      "min": 0,
+                      "max": 50000
+                    }
+                  }
+                },
+                "packages": [
+                  {
+                    "name": {
+                      "comp": "simpletext",
+                      "label": "Package name",
+                      "required": false,
+                      "unique": false,
+                      "validators": {
+                        "String": {
+                          "min": 3,
+                          "max": 50
+                        }
+                      }
+                    },
+                    "price": {
+                      "comp": "simpletext",
+                      "label": "Topic name",
+                      "required": false,
+                      "unique": false,
+                      "validators": {
+                        "Number": {
+                          "min": 3,
+                          "max": 50
+                        }
+                      }
+                    },
+                    "description": {
+                      "schema": "shared/About",
+                      "comp": "textarea_multilang",
+                      "label": "Event description",
+                      "validators": {
+                        "String": {
+                          "min": 0,
+                          "max": 50000
+                        }
+                      }
+                    },
+                    "personal": {
+                      "comp": "checkbox",
+                      "label": "Personal",
+                      "required": false,
+                      "unique": false,
+                      "validators": {}
+                    },
+                    "requested": {
+                      "comp": "checkbox",
+                      "label": "Requested",
+                      "required": false,
+                      "unique": false,
+                      "validators": {}
+                    },
+                    "allow_multiple": {
+                      "comp": "checkbox",
+                      "label": "Allow multiple",
+                      "required": false,
+                      "unique": false,
+                      "validators": {}
+                    },
+                    "allow_options": {
+                      "comp": "checkbox",
+                      "label": "Allow options",
+                      "required": false,
+                      "unique": false,
+                      "validators": {}
+                    },
+                    "options_name": {
+                      "comp": "simpletext",
+                      "label": "Topic name",
+                      "required": false,
+                      "unique": false,
+                      "validators": {
+                        "String": {
+                          "min": 3,
+                          "max": 50
+                        }
+                      }
+                    },
+                    "options": [
+                      {
+                        "comp": "simpletext",
+                        "label": "Topic name",
+                        "required": false,
+                        "unique": false,
+                        "validators": {
+                          "String": {
+                            "min": 3,
+                            "max": 50
+                          }
+                        }
+                      }
+                    ],
+                    "daily": {
+                      "comp": "checkbox",
+                      "label": "Daily",
+                      "required": false,
+                      "unique": false,
+                      "validators": {}
+                    },
+                    "start_date": {
+                      "comp": "date_picker",
+                      "label": "Date",
+                      "required": true,
+                      "unique": false,
+                      "validators": {
+                        "is_date": {}
+                      }
+                    },
+                    "end_date": {
+                      "comp": "date_picker",
+                      "label": "Date",
+                      "required": true,
+                      "unique": false,
+                      "validators": {
+                        "is_date": {}
+                      }
+                    }
+                  }
+                ],
+                "topics": [
+                  {
+                    "name": {
+                      "comp": "simpletext",
+                      "label": "Topic name",
+                      "required": false,
+                      "unique": false,
+                      "validators": {
+                        "String": {
+                          "min": 3,
+                          "max": 50
+                        }
+                      }
+                    },
+                    "description": {
+                      "schema": "shared/About",
+                      "comp": "textarea_multilang",
+                      "label": "Event description",
+                      "validators": {
+                        "String": {
+                          "min": 0,
+                          "max": 50000
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
           "select": {
             "calls": 1
           },
@@ -746,6 +1502,77 @@
         },
         "settings": {
           "title": "Settings",
+          "components": {
+            "settings": {
+              "is_public": {
+                "comp": "checkbox",
+                "label": "Event is public",
+                "required": false,
+                "unique": false,
+                "validators": {}
+              },
+              "gallery_is_public": {
+                "comp": "checkbox",
+                "label": "Galleries upload is open to all AVnode users",
+                "required": false,
+                "unique": false,
+                "validators": {}
+              },
+              "is_freezed": {
+                "comp": "checkbox",
+                "label": "Event is freezed, nobody can edit any information on the event",
+                "required": false,
+                "unique": false,
+                "validators": {}
+              },
+              "users": {
+                "comp": "list_and_add_to_category",
+                "rel_obj": "User",
+                "list_fields": [
+                  "Stage name",
+                  "user_category",
+                  "slug"
+                ],
+                "list_actions": [
+                  "add",
+                  "remove",
+                  "edit_user_category"
+                ],
+                "add_form_search": [
+                  "Stage name",
+                  "set_user_category"
+                ],
+                "rel_api": "/admin/api/...",
+                "label": "Event managers",
+                "validators": {
+                  "Confirm": {}
+                }
+              }
+            },
+            "organizationsettings": {
+              "program_builder": {
+                "comp": "checkbox",
+                "label": "Use Program Builder",
+                "required": false,
+                "unique": false,
+                "validators": {}
+              },
+              "advanced_proposals_manager": {
+                "comp": "checkbox",
+                "label": "Use Program Manager",
+                "required": false,
+                "unique": false,
+                "validators": {}
+              },
+              "call_manager": {
+                "comp": "checkbox",
+                "label": "Use Call to participate",
+                "required": false,
+                "unique": false,
+                "validators": {}
+              }
+            }
+          },
           "select": {
             "is_freezed": 1,
             "settings": 1,
@@ -1127,10 +1954,305 @@
         { "_id" : "5be8708afc39610000000221", "name" : "refused from user" }
       ]
     },
+    "footage": {
+      "model": "Footage",
+      "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Footage url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Footage title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        },
+        "public": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Footage url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Footage name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "abouts": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "Footage description",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            },
+            "is_public": {
+              "comp": "checkbox",
+              "label": "Footage is public",
+              "required": false,
+              "unique": false,
+              "validators": {}
+            },
+            "media": {
+              "config":{
+                "fields": {
+                  "name": "media",
+                  "maxCount": 1
+                },
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
+                "storage": "/glacier/footage_originals/",
+                "maxsize": 10737418240,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg",
+                    "tobeencoded": "/images/default-footage-tobeencoded.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg",
+                    "tobeencoded": "/images/default-footage-tobeencoded.svg"
+
+                  }
+                }
+              },
+              "comp": "uploader",
+              "label": "Footage file",
+              "validators": {
+                "Mime": {},
+                "Weight": {},
+                "Size": {}
+              }
+            },
+            "categories": [
+              {
+                "comp": "simpleselect",
+                "label": "Footage categories",
+                "required": true,
+                "unique": true,
+                "validators": {
+                  "Array_max_length": 2
+                }
+              }
+            ],
+            "users": [
+              {
+                "comp": "simpleselect",
+                "label": "Authors",
+                "required": true,
+                "unique": true,
+                "validators": {}
+              }
+            ],
+            "tags": [
+              {
+                "comp": "simpletext",
+                "label": "Tags",
+                "required": false,
+                "unique": false,
+                "validators": {
+                  "String": {
+                    "min": 3,
+                    "max": 50
+                  }
+                }
+              }
+            ]
+          },
+          "select": {
+            "slug": 1,
+            "title": 1,
+            "abouts": 1,
+            "is_public": 1,
+            "privacy": 1,
+            "terms": 1,
+            "media": 1,
+            "categories": 1,
+            "users": 1,
+            "playlists": 1,
+            "tags": 1,
+            "imageFormats": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}, { "path": "categories" , "select": "name" }, { "path": "playlists" , "select": "title" }]
+        },
+        "media": {
+          "components": {
+            "media": {
+              "config":{
+                "fields": {
+                  "name": "media",
+                  "maxCount": 1
+                },
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
+                "storage": "/glacier/footage_originals/",
+                "maxsize": 10737418240,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg",
+                    "tobeencoded": "/images/default-footage-tobeencoded.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg",
+                    "tobeencoded": "/images/default-footage-tobeencoded.svg"
+
+                  }
+                }
+              },
+              "comp": "uploader",
+              "label": "Footage file",
+              "validators": {
+                "Mime": {},
+                "Weight": {},
+                "Size": {}
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1,
+            "abouts": 1,
+            "media": 1,
+            "categories": 1,
+            "users": 1,
+            "playlists": 1,
+            "tags": 1,
+            "imageFormats": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}, { "path": "categories" , "select": "name" }, { "path": "playlists" , "select": "title" }]
+        }
+      },
+      "list": {
+        "model": "Footage",
+        "select": {
+          "title": 1,
+          "media": 1
+        },
+        "selectaddon": {
+          "createdAt": 1,
+          "updatedAt": 1,
+          "slug": 1,
+          "stats": 1,
+          "tags": 1,
+          "is_public": 1
+        },
+        "populate": [{ "path": "playlists" , "select": "title", "model": "Playlist"},{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image organizationData.logo"}],
+        "orders": [
+          "mostrecent",
+          "mostviewed"
+        ],
+        "ordersQueries": {
+          "mostrecent": {
+            "createdAt": -1
+          },
+          "mostviewed": {
+            "stats.views": -1
+          }
+        },
+        "labels": {
+          "mostrecent":"Most recent",
+          "mostactive":"Most mostviewed"
+        }
+      }
+    },
     "galleries": {
       "model": "Gallery",
       "forms": {
         "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Gallery url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Gallery title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
           "select": {
             "slug": 1,
             "title": 1
@@ -1141,6 +2263,120 @@
         },
         "public": {
           "title": "Main data",
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Footage url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Footage name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "abouts": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "Footage description",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            },
+            "is_public": {
+              "comp": "checkbox",
+              "label": "Footage is public",
+              "required": false,
+              "unique": false,
+              "validators": {}
+            },
+            "users": [
+              {
+                "comp": "simpleselect",
+                "label": "Authors",
+                "required": true,
+                "unique": true,
+                "validators": {}
+              }
+            ],
+            "image": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
+                "storage": "/glacier/galleries_originals/",
+                "maxsize": 20971520,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "list_and_add_and_upload",
+              "list_fields": [
+                "Picture name",
+                "users",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "upload",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Picture name"
+              ],
+              "view_sort_modes": [
+                "Picture name",
+                "category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Medias",
+              "validators": {
+                "Confirm": {},
+                "Upload": {
+                  "Mime": {},
+                  "Weight": {},
+                  "Size": {}
+                }
+              }
+            }
+          },
           "select": {
             "slug": 1,
             "title": 1,
@@ -1155,69 +2391,111 @@
           "selectaddon": {
             "imageFormats": 1
           },
-          "image": {
-            "config":{
-              "fields": {
-                "name": "image",
-                "maxCount": 100
-              },
-              "fileext": ["jpg","jpeg","png","gif","svg"],
-              "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
-              "storage": "/glacier/galleries_originals/",
-              "maxsize": 20971520,
-              "minwidth": 1280,
-              "minheight": 720,
-              "sizes": {
-                "small": {
-                  "w": 400,
-                  "h": 225,
-                  "folder": "400x225",
-                  "default": "/images/default-item.svg"
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}]
+        },
+        "medias": {
+          "components": {
+            "image": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 100
                 },
-                "large": {
-                  "w": 1140,
-                  "h": 641,
-                  "folder": "1140x641",
-                  "default": "/images/default-item.svg"
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
+                "storage": "/glacier/galleries_originals/",
+                "maxsize": 20971520,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "list_and_add_and_upload",
+              "list_fields": [
+                "Picture name",
+                "users",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "upload",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Picture name"
+              ],
+              "view_sort_modes": [
+                "Picture name",
+                "category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Medias",
+              "validators": {
+                "Confirm": {},
+                "Upload": {
+                  "Mime": {},
+                  "Weight": {},
+                  "Size": {}
                 }
               }
-            },
-            "comp": "list_and_add_and_upload",
-            "list_fields": [
-              "Picture name",
-              "users",
-              "stats",
-              "slug"
-            ],
-            "list_actions": [
-              "add",
-              "upload",
-              "remove",
-              "sort",
-              "view_sort"
-            ],
-            "add_form_search": [
-              "Picture name"
-            ],
-            "view_sort_modes": [
-              "Picture name",
-              "category"
-            ],
-            "rel_api": "/admin/api/...",
-            "label": "Medias",
-            "validators": {
-              "Confirm": {},
-              "Upload": {
-                "Mime": {},
-                "Weight": {},
-                "Size": {}
-              }
             }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1,
+            "users": 1,
+            "medias": 1
+          },
+          "selectaddon": {
+            "is_public": 1
           },
           "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}]
         },
         "events": {
           "title": "Events",
+          "components": {
+            "events": {
+              "comp": "list_and_add",
+              "rel_obj": "Events",
+              "list_fields": [
+                "Event name",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Event name"
+              ],
+              "view_sort_modes": [
+                "Event name"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Events",
+              "validators": {
+                "Confirm": {}
+              }
+            }
+          },
           "select": {
             "events": 1
           },
@@ -1231,6 +2509,34 @@
         },
         "performances": {
           "title": "Performances",
+          "components": {
+            "performances": {
+              "comp": "list_and_add",
+              "rel_obj": "Performance",
+              "list_fields": [
+                "Performance name",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Performance name"
+              ],
+              "view_sort_modes": [
+                "Performance name"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Performance",
+              "validators": {
+                "Confirm": {}
+              }
+            }
+          },
           "select": {
             "performances": 1
           },
@@ -1283,6 +2589,34 @@
       "model": "News",
       "forms": {
         "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "News url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "News title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
           "select": {
             "slug": 1,
             "title": 1
@@ -1292,6 +2626,122 @@
           "populate": []
         },
         "public": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Footage url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Footage name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "abouts": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "Footage description",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            },
+            "is_public": {
+              "comp": "checkbox",
+              "label": "Footage is public",
+              "required": false,
+              "unique": false,
+              "validators": {}
+            },
+            "image": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
+                "storage": "/glacier/news_originals/",
+                "maxsize": 20971520,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "uploader",
+              "label": "Footage file",
+              "validators": {
+                "Mime": {},
+                "Weight": {},
+                "Size": {}
+              }
+            },
+            "categories": [
+              {
+                "comp": "simpleselect",
+                "label": "Footage categories",
+                "required": true,
+                "unique": true,
+                "validators": {
+                  "Array_max_length": 2
+                }
+              }
+            ],
+            "users": [
+              {
+                "comp": "simpleselect",
+                "label": "Authors",
+                "required": true,
+                "unique": true,
+                "validators": {}
+              }
+            ],
+            "web": {
+              "schema": "shared/Link",
+              "comp": "multilink",
+              "label": "Websites",
+              "validators": {
+                "Url": {}
+              }
+            },
+            "social": {
+              "comp": "multilink",
+              "label": "Social networks",
+              "validators": {
+                "Url": {}
+              }
+            }
+          },
           "select": {
             "slug": 1,
             "title": 1,
@@ -1308,42 +2758,57 @@
           "selectaddon": {
             "imageFormats": 1
           },
-          "image": {
-            "config":{
-              "fields": {
-                "name": "image",
-                "maxCount": 1
-              },
-              "fileext": ["jpg","jpeg","png","gif","svg"],
-              "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
-              "storage": "/glacier/news_originals/",
-              "maxsize": 20971520,
-              "minwidth": 1280,
-              "minheight": 720,
-              "sizes": {
-                "small": {
-                  "w": 400,
-                  "h": 225,
-                  "folder": "400x225",
-                  "default": "/images/default-item.svg"
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}, { "path": "categories" , "select": "name" }]
+        },
+        "image": {
+          "components": {
+            "image": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
                 },
-                "large": {
-                  "w": 1140,
-                  "h": 641,
-                  "folder": "1140x641",
-                  "default": "/images/default-item.svg"
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
+                "storage": "/glacier/news_originals/",
+                "maxsize": 20971520,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
                 }
+              },
+              "comp": "uploader",
+              "label": "Event Image",
+              "validators": {
+                "Mime": {},
+                "Weight": {},
+                "Size": {}
               }
-            },
-            "comp": "uploader",
-            "label": "Event Image",
-            "validators": {
-              "Mime": {},
-              "Weight": {},
-              "Size": {}
             }
           },
-          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}, { "path": "categories" , "select": "name" }]
+          "select": {
+            "image": 1,
+            "users": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "is_public": 1,
+            "title": 1,
+            "imageFormats": 1
+          },
+          "populate": []
         }
       },
       "list": {
@@ -1383,6 +2848,34 @@
       "model": "Performance",
       "forms": {
         "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Performance url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Performance title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
           "select": {
             "privacy": 1,
             "terms": 1,
@@ -1395,6 +2888,140 @@
         },
         "public": {
           "title": "Main data",
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Footage url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Footage name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "abouts": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "Footage description",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            },
+            "is_public": {
+              "comp": "checkbox",
+              "label": "Footage is public",
+              "required": false,
+              "unique": false,
+              "validators": {}
+            },
+            "type": [
+              {
+                "comp": "simpleselect",
+                "label": "Footage categories",
+                "required": true,
+                "unique": true,
+                "validators": {
+                  "Array_max_length": 2
+                }
+              }
+            ],
+            "tecnique": [
+              {
+                "comp": "simpleselect",
+                "label": "Footage categories",
+                "required": true,
+                "unique": true,
+                "validators": {
+                  "Array_max_length": 2
+                }
+              }
+            ],
+            "genre": [
+              {
+                "comp": "simpleselect",
+                "label": "Footage categories",
+                "required": true,
+                "unique": true,
+                "validators": {
+                  "Array_max_length": 2
+                }
+              }
+            ],
+            "users": [
+              {
+                "comp": "simpleselect",
+                "label": "Authors",
+                "required": true,
+                "unique": true,
+                "validators": {}
+              }
+            ],
+            "price": {
+              "comp": "simpletext",
+              "label": "Price",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "Number": {
+                  "min": 3,
+                  "max": 50
+                }
+              }
+            },
+            "duration": {
+              "comp": "simpletext",
+              "label": "Durationd",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "Number": {
+                  "min": 3,
+                  "max": 50
+                }
+              }
+            },
+            "tech_arts": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "Technologies with the performers",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            },
+            "tech_reqs": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "Technical requests",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            }
+          },
           "select": {
             "slug": 1,
             "title": 1,
@@ -1415,45 +3042,122 @@
           "selectaddon": {
             "imageFormats": 1
           },
-          "image": {
-            "config":{
-              "fields": {
-                "name": "image",
-                "maxCount": 1
-              },
-              "fileext": ["jpg","jpeg","png","gif","svg"],
-              "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
-              "storage": "/glacier/performances_originals/",
-              "maxsize": 20971520,
-              "minwidth": 1280,
-              "minheight": 720,
-              "sizes": {
-                "small": {
-                  "w": 400,
-                  "h": 225,
-                  "folder": "400x225",
-                  "default": "/images/default-item.svg"
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"},{ "path": "type", "select": "name slug", "model": "Category"},{ "path": "tecnique", "select": "name slug", "model": "Category"},{ "path": "genre", "select": "name slug", "model": "Category"}]
+        },
+        "image": {
+          "components": {
+            "image": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
                 },
-                "large": {
-                  "w": 1140,
-                  "h": 641,
-                  "folder": "1140x641",
-                  "default": "/images/default-item.svg"
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
+                "storage": "/glacier/performances_originals/",
+                "maxsize": 20971520,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
                 }
+              },
+              "comp": "uploader",
+              "label": "Event Image",
+              "validators": {
+                "Mime": {},
+                "Weight": {},
+                "Size": {}
               }
-            },
-            "comp": "uploader",
-            "label": "Event Image",
-            "validators": {
-              "Mime": {},
-              "Weight": {},
-              "Size": {}
             }
           },
-          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"},{ "path": "type", "select": "name slug", "model": "Category"},{ "path": "tecnique", "select": "name slug", "model": "Category"},{ "path": "genre", "select": "name slug", "model": "Category"}]
+          "select": {
+            "image": 1,
+            "users": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "is_public": 1,
+            "title": 1,
+            "imageFormats": 1
+          },
+          "populate": []
         },
         "galleries": {
           "title": "Image galleries",
+          "components": {
+            "galleries": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
+                "storage": "/glacier/galleries_originals/",
+                "maxsize": 20971520,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "list_and_add_and_upload",
+              "rel_obj": "Gallery",
+              "list_fields": [
+                "Gallery name",
+                "users",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "upload",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Gallery name"
+              ],
+              "view_sort_modes": [
+                "Gallery name",
+                "category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Galleries",
+              "validators": {
+                "Confirm": {},
+                "Upload": {
+                  "Mime": {},
+                  "Weight": {},
+                  "Size": {}
+                }
+              }
+            }
+          },
           "select": {
             "galleries": 1
           },
@@ -1467,6 +3171,68 @@
         },
         "videos": {
           "title": "Videos",
+          "components": {
+            "videos": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
+                "storage": "/glacier/videos_originals/",
+                "maxsize": 10737418240,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "list_and_add_and_upload",
+              "rel_obj": "Video",
+              "list_fields": [
+                "Video name",
+                "users",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "upload",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Video name"
+              ],
+              "view_sort_modes": [
+                "Video name",
+                "category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Videos",
+              "validators": {
+                "Confirm": {},
+                "Upload": {
+                  "Mime": {},
+                  "Weight": {},
+                  "Size": {}
+                }
+              }
+            }
+          },
           "select": {
             "videos": 1,
             "categories": 1
@@ -1481,6 +3247,68 @@
         },
         "bookings": {
           "title": "Bookings",
+          "components": {
+            "bookings": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
+                "storage": "/glacier/videos_originals/",
+                "maxsize": 10737418240,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "list_and_add_and_upload",
+              "rel_obj": "Video",
+              "list_fields": [
+                "Video name",
+                "users",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "upload",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Video name"
+              ],
+              "view_sort_modes": [
+                "Video name",
+                "category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Videos",
+              "validators": {
+                "Confirm": {},
+                "Upload": {
+                  "Mime": {},
+                  "Weight": {},
+                  "Size": {}
+                }
+              }
+            }
+          },
           "select": {
             "bookings": 1
           },
@@ -1526,10 +3354,253 @@
         }
       }
     },
+    "playlists": {
+      "model": "Playlist",
+      "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Playlist url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Playlist title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        },
+        "public": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Footage url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Footage name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "abouts": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "Footage description",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            },
+            "is_public": {
+              "comp": "checkbox",
+              "label": "Footage is public",
+              "required": false,
+              "unique": false,
+              "validators": {}
+            },
+            "media": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
+                "storage": "/glacier/footage_originals/",
+                "maxsize": 10737418240,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "uploader",
+              "label": "Footage file",
+              "validators": {
+                "Mime": {},
+                "Weight": {},
+                "Size": {}
+              }
+            },
+            "categories": [
+              {
+                "comp": "simpleselect",
+                "label": "Footage categories",
+                "required": true,
+                "unique": true,
+                "validators": {
+                  "Array_max_length": 2
+                }
+              }
+            ],
+            "users": [
+              {
+                "comp": "simpleselect",
+                "label": "Authors",
+                "required": true,
+                "unique": true,
+                "validators": {}
+              }
+            ],
+            "footage": {
+              "comp": "list_and_add",
+              "rel_obj": "Footage",
+              "list_fields": [
+                "Footage name",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Footage name"
+              ],
+              "view_sort_modes": [
+                "Footage name"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Footage",
+              "validators": {
+                "Confirm": {}
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1,
+            "abouts": 1,
+            "is_public": 1,
+            "media": 1,
+            "categories": 1,
+            "users": 1,
+            "footage": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}, { "path": "footage", "match": { "is_public": true}, "select": "title media imageFormats tags stats", "model": "Footage"}, { "path": "categories" , "select": "name" }]
+        }
+      },
+      "list": {
+        "model": "Playlist",
+        "select": {
+          "title": 1,
+          "media": 1
+        },
+        "selectaddon": {
+          "createdAt": 1,
+          "updatedAt": 1,
+          "slug": 1,
+          "stats": 1,
+          "is_public": 1
+        },
+        "populate": [{ "path": "footage" , "select": "title", "model": "Footage"},{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image organizationData.logo"}],
+        "orders": [
+          "mostrecent",
+          "mostviewed"
+        ],
+        "ordersQueries": {
+          "mostrecent": {
+            "createdAt": -1
+          },
+          "mostviewed": {
+            "stats.views": -1
+          }
+        },
+        "labels": {
+          "mostrecent":"Most recent",
+          "mostactive":"Most mostviewed"
+        }
+      }
+    },
     "videos": {
       "model": "Video",
       "forms": {
         "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Video url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Video title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
           "select": {
             "slug": 1,
             "title": 1
@@ -1540,6 +3611,72 @@
         },
         "public": {
           "title": "Main data",
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Footage url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Footage name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "abouts": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "Footage description",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            },
+            "is_public": {
+              "comp": "checkbox",
+              "label": "Footage is public",
+              "required": false,
+              "unique": false,
+              "validators": {}
+            },
+            "categories": [
+              {
+                "comp": "simpleselect",
+                "label": "Footage categories",
+                "required": true,
+                "unique": true,
+                "validators": {
+                  "Array_max_length": 2
+                }
+              }
+            ],
+            "users": [
+              {
+                "comp": "simpleselect",
+                "label": "Authors",
+                "required": true,
+                "unique": true,
+                "validators": {}
+              }
+            ]
+          },
           "select": {
             "slug": 1,
             "title": 1,
@@ -1552,45 +3689,87 @@
           "selectaddon": {
             "imageFormats": 1
           },
-          "media": {
-            "config":{
-              "fields": {
-                "name": "media",
-                "maxCount": 1
-              },
-              "fileext": ["mp4","mov","m4v","avi"],
-              "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
-              "storage": "/glacier/videos_originals/",
-              "maxsize": 10737418240,
-              "minwidth": 1280,
-              "minheight": 720,
-              "sizes": {
-                "small": {
-                  "w": 400,
-                  "h": 225,
-                  "folder": "400x225",
-                  "default": "/images/default-item.svg"
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}, { "path": "categories" , "select": "name" }]
+        },
+        "video": {
+          "components": {
+            "media": {
+              "config":{
+                "fields": {
+                  "name": "media",
+                  "maxCount": 1
                 },
-                "large": {
-                  "w": 1140,
-                  "h": 641,
-                  "folder": "1140x641",
-                  "default": "/images/default-item.svg"
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
+                "storage": "/glacier/videos_originals/",
+                "maxsize": 10737418240,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
                 }
+              },
+              "comp": "uploader",
+              "label": "Footage file",
+              "validators": {
+                "Mime": {},
+                "Weight": {},
+                "Size": {}
               }
-            },
-            "comp": "uploader",
-            "label": "Video file",
-            "validators": {
-              "Mime": {},
-              "Weight": {},
-              "Size": {}
             }
           },
-          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}, { "path": "categories" , "select": "name" }]
+          "select": {
+            "media": 1,
+            "users": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "is_public": 1,
+            "title": 1
+          },
+          "populate": []
         },
         "events": {
           "title": "Events",
+          "components": {
+            "events": {
+              "comp": "list_and_add",
+              "rel_obj": "Events",
+              "list_fields": [
+                "Event name",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Event name"
+              ],
+              "view_sort_modes": [
+                "Event name"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Events",
+              "validators": {
+                "Confirm": {}
+              }
+            }
+          },
           "select": {
             "events": 1
           },
@@ -1604,6 +3783,34 @@
         },
         "performances": {
           "title": "Performances",
+          "components": {
+            "performances": {
+              "comp": "list_and_add",
+              "rel_obj": "Performance",
+              "list_fields": [
+                "Performance name",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Performance name"
+              ],
+              "view_sort_modes": [
+                "Performance name"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Performance",
+              "validators": {
+                "Confirm": {}
+              }
+            }
+          },
           "select": {
             "performances": 1
           },
@@ -1853,6 +4060,37 @@
         }
       ]
     },
+    "footage": {
+      "href": "/admin/footage",
+      "icon": "icon-film",
+      "counter": 0,
+      "label": {"id": "footage", "defaultMessage": "Footage"},
+      "submenu": [
+        {
+          "href": "/admin/footage/:_id/public",
+          "icon": "icon-info",
+          "label": {"id": "publicDataFootage", "defaultMessage": "Public data"}
+        },
+        {
+          "href": "/admin/footage/:_id/video",
+          "icon": "icon-video",
+          "label": {"id": "videoVideos", "defaultMessage": "Video"}
+        }
+      ]
+    },
+    "playlists": {
+      "href": "/admin/playlists",
+      "icon": "icon-clipboard-list",
+      "counter": 0,
+      "label": {"id": "playlists", "defaultMessage": "Playlists"},
+      "submenu": [
+        {
+            "href": "/admin/playlists/:_id/public",
+            "icon": "icon-info",
+            "label": {"id": "publicDataPlaylists", "defaultMessage": "Public data"}
+        }
+      ]
+    },
     "subscriptions": {
       "href": "/admin/subscriptions",
       "icon": "icon-calendar-check",
@@ -1969,6 +4207,31 @@
           "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},
           "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "News"
+        }, {
+          "path": "footage",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "tags": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Footage"
+        }, {
+          "path": "playlists",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Playlist"
         }, {
           "path": "galleries",
           "match": { "is_public": true},
@@ -2098,6 +4361,32 @@
           },
           "options": { "sort": { "createdAt": -1 }},
           "model": "News"
+        }, {
+          "path": "footage",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "abouts":1,
+            "tags": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "options": { "sort": { "createdAt": -1 }},
+          "model": "Footage"
+        }, {
+          "path": "playlists",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "abouts":1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "sort": { "createdAt": -1 }},
+          "model": "Playlist"
         }, {
           "path": "galleries",
           "match": { "is_public": true},
@@ -2285,6 +4574,85 @@
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
           "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 } },
           "model": "EventShow"
+        }]
+      },
+      "footage": {
+        "title": "Footage",
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "footage": 1,
+          "emails": 1,
+          "image": 1,
+          "organizationData.logo": 1
+        },
+        "populate": [{
+          "path": "footage",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
+            "tags": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Footage"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "playlists": {
+        "title": "Playlists",
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "playlists": 1,
+          "emails": 1,
+          "image": 1,
+          "organizationData.logo": 1
+        },
+        "populate": [{
+          "path": "playlists",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Playlist"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
         }]
       },
       "performances": {
@@ -2681,6 +5049,31 @@
           "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "News"
         }, {
+          "path": "footage",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "tags": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": { "path": "users", "select": "stagename image is_public organizationData.logo", "model": "UserShow"},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Footage"
+        }, {
+          "path": "playlists",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Playlist"
+        }, {
           "path": "galleries",
           "match": { "is_public": true},
           "select": {
@@ -2845,6 +5238,81 @@
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
           "options": { "limit": 21},
           "model": "EventShow"
+        }]
+      },
+      "footage": {
+        "title": "Footage",
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "footage": 1,
+          "emails": 1,
+          "image": 1,
+          "organizationData.logo": 1
+        },
+        "populate": [{
+          "path": "footage",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "tags": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Footage"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "playlists": {
+        "title": "Playlists",
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "playlists": 1,
+          "emails": 1,
+          "image": 1,
+          "organizationData.logo": 1
+        },
+        "populate": [{
+          "path": "playlists",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "match": { "is_public": true}, "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Playlist"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
         }]
       },
       "performances": {
@@ -4882,6 +7350,177 @@
           "model": "UserShow"
         }]
       }
+    },
+    "footage": {
+      "title": "Footage",
+      "model": "Footage",
+      "limit": 21,
+      "basepath": "footage",
+      "sitemap_pages": 334,
+      "main_image": "/images/sez_footage.jpg",
+      "coll": "footage",
+      "view_list": "footage/list",
+      "list_fields": {
+        "title":1,
+        "createdAt": 1,
+        "updatedAt": 1,
+        "users":1,
+        "slug":1,
+        "media":1,
+        "stats":1
+      },
+      "list_populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"}],
+      "orders": [
+        "mostrecent",
+        "mostviewed",
+        "mostliked"
+      ],
+      "categories": [
+        "all",
+        "hole",
+        "no-hole",
+        "koncept"
+      ],
+      "categoriesQueries": {
+        "all": {},
+        "hole": {
+          "tags.tag": "hole"
+        },
+        "no-hole": {
+          "tags.tag": "no-hole"
+        },
+        "koncept": {
+          "tags.tag": "koncept"
+        }
+      },
+      "ordersQueries": {
+        "mostrecent": {
+          "createdAt": -1
+        },
+        "mostviewed": {
+          "stats.visits": -1
+        },
+        "mostliked": {
+          "stats.likes": -1
+        }
+      },
+      "labels": {
+        "mostrecent": "Most recent",
+        "mostviewed": "Most viewed",
+        "mostliked": "Most liked",
+        "all": "All",
+        "hole": "Hole",
+        "no-hole": "No Hole",
+        "koncept": "Koncept"
+      },
+      "show": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "tags": 1,
+          "stats": 1,
+          "media": 1
+        },
+        "populate": [{
+          "path": "users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "organizationData.logo": 1,
+            "members": 1,
+            "addresses.country": 1,
+            "addresses.locality": 1,
+            "stats": 1,
+            "stagename": 1
+          },
+          "model": "UserShow"
+        }]
+      }
+    },
+    "playlists": {
+      "title": "Playlists",
+      "model": "Playlist",
+      "limit": 21,
+      "basepath": "playlists",
+      "sitemap_pages": 31,
+      "main_image": "/images/sez_playlists.jpg",
+      "coll": "playlists",
+      "view_list": "playlists/list",
+      "list_fields": {
+        "title":1,
+        "createdAt": 1,
+        "updatedAt": 1,
+        "users":1,
+        "slug":1,
+        "footage":1,
+        "stats":1
+      },
+      "list_populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "footage", "match": { "is_public": true}, "select": "media", "model": "Footage"}],
+      "orders": [
+        "mostrecent",
+        "mostviewed",
+        "mostliked"
+      ],
+      "categories": [
+        "all"
+      ],
+      "categoriesQueries": {
+        "all": {}
+      },
+      "ordersQueries": {
+        "mostrecent": {
+          "createdAt": -1
+        },
+        "mostviewed": {
+          "stats.visits": -1
+        },
+        "mostliked": {
+          "stats.likes": -1
+        }
+      },
+      "labels": {
+        "mostrecent": "Most recent",
+        "mostviewed": "Most viewed",
+        "mostliked": "Most liked",
+        "all": "All"
+      },
+      "show": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "footage": 1
+        },
+        "populate": [{
+          "path": "users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "organizationData.logo": 1,
+            "members": 1,
+            "addresses.country": 1,
+            "addresses.locality": 1,
+            "stats": 1,
+            "stagename": 1
+          },
+          "model": "UserShow"
+        }, {
+          "path": "footage",
+          "match": { "is_public": true}, 
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "tags": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Footage"
+        }]
+     }
     },
     "galleries": {
       "title": "Galleries",

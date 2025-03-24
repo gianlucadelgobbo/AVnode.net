@@ -78,10 +78,7 @@ router.get('/:sez/:id/users/remove/:user', getUsersRoutes.removeUser);
   req.params.sez = 'galleries';
   getRoutes.removeImage(req, res);
 });
-router.get('/playlists/:id/footageremove/:footage', (req, res) => {
-  req.params.sez = 'playlists';
-  getRoutes.removeFootage(req, res);
-}); */
+ */
 
 
 router.get('/getperformances/:q', getPerformances.getPerformances);

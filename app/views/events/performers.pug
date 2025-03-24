@@ -97,12 +97,6 @@ block content
                 div.performer_stats_wrapper
                   if data.performer.stats
                     ul.performer_stats_list.performer_stats_list_2.list-inline
-                      if data.performer.stats.footage
-                        li.list-inline-item
-                          a(href="/"+data.performer.slug+"/footage")!=__('Footage')+" (<span>"+data.performer.stats.footage+"</span>)"
-                      if data.performer.stats.playlists
-                        li.list-inline-item
-                          a(href="/"+data.performer.slug+"/playlists")!=__('Playlists')+" (<span>"+data.performer.stats.playlists+"</span>)"  
                       if data.performer.stats.videos
                         li.list-inline-item
                           a(href="/"+data.performer.slug+"/videos")!=__('Videos')+" (<span>"+data.performer.stats.videos+"</span>)"    

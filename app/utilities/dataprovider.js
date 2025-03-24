@@ -21,8 +21,6 @@ const Models = {
   'EventFreezedVideo': mongoose.model('EventFreezedVideo'),
   'EventFreezedProgram': mongoose.model('EventFreezedProgram'),
   'News': mongoose.model('News'),
-  'Footage': mongoose.model('Footage'),
-  'Playlist': mongoose.model('Playlist'),
   'Emailqueue': mongoose.model('Emailqueue')
 }
 import { logger, requestLogger, errorLogger } from './logger.js';
@@ -576,7 +574,7 @@ async function copyFreezedUser(originalUser, eventId) {
 
       const arrayFields = [
         'pages', 'categories', 'crews', 'members', 'performances', 'events',
-        'galleries', 'videos', 'partnerships', 'footage', 'playlists', 'news',
+        'galleries', 'videos', 'partnerships', 'news',
         'roles', 'connections', 'addresses', 'addresses_private', 'phone',
         'mobile', 'skype', 'emails', 'web', 'social', 'citizenship',
         'partner_owner', 'partners'
@@ -1946,35 +1944,11 @@ dataprovider.show = (req, res, section, subsection, model) => {
       console.log(populate[item])
       if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
       if (populate[item].model) populate[item].model = Models[populate[item].model]
-      /* if (populate[item].model === 'UserShow') populate[item].model = UserShow;
-      if (populate[item].model === 'Performance') populate[item].model = Performance;
-      if (populate[item].model === 'Event') populate[item].model = Event;
-      if (populate[item].model === 'Video') populate[item].model = Video;
-      if (populate[item].model === 'Footage') populate[item].model = Footage;
-      if (populate[item].model === 'Playlist') populate[item].model = Playlist;
-      if (populate[item].model === 'Category') populate[item].model = Category;
-      if (populate[item].model === 'News') populate[item].model = News; */
   
       if (populate[item].populate && populate[item].populate.model) populate[item].populate.model = Models[populate[item].populate.model];
-     /*  if (populate[item].populate && populate[item].populate.model === 'UserShow') populate[item].populate.model = UserShow;
-      if (populate[item].populate && populate[item].populate.model === 'Performance') populate[item].populate.model = Performance;
-      if (populate[item].populate && populate[item].populate.model === 'Event') populate[item].populate.model = Event;
-      if (populate[item].populate && populate[item].populate.model === 'Video') populate[item].populate.model = Video;
-      if (populate[item].populate && populate[item].populate.model === 'Footage') populate[item].populate.model = Footage;
-      if (populate[item].populate && populate[item].populate.model === 'Playlist') populate[item].populate.model = Playlist;
-      if (populate[item].populate && populate[item].populate.model === 'Category') populate[item].populate.model = Category;
-      if (populate[item].populate && populate[item].populate.model === 'News') populate[item].populate.model = News; */
       if (populate[item].populate) {
         for(let a=0;a<populate[item].populate.length;a++) {
           if (populate[item].populate[a] && populate[item].populate[a].model) populate[item].populate[a].model = Models[populate[item].populate[a].model];
-          /* if (populate[item].populate[a] && populate[item].populate[a].model === 'UserShow') populate[item].populate[a].model = UserShow;
-          if (populate[item].populate[a] && populate[item].populate[a].model === 'Performance') populate[item].populate[a].model = Performance;
-          if (populate[item].populate[a] && populate[item].populate[a].model === 'Event') populate[item].populate[a].model = Event;
-          if (populate[item].populate[a] && populate[item].populate[a].model === 'Video') populate[item].populate[a].model = Video;
-          if (populate[item].populate[a] && populate[item].populate[a].model === 'Footage') populate[item].populate[a].model = Footage;
-          if (populate[item].populate[a] && populate[item].populate[a].model === 'Playlist') populate[item].populate[a].model = Playlist;
-          if (populate[item].populate[a] && populate[item].populate[a].model === 'Category') populate[item].populate[a].model = Category;
-          if (populate[item].populate[a] && populate[item].populate[a].model === 'News') populate[item].populate[a].model = News; */
         }
       }
     }

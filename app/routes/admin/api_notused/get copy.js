@@ -10,10 +10,8 @@ const Models = {
   'Performance': mongoose.model('Performance'),
   'Event': mongoose.model('Event'),
   'EventShow': mongoose.model('EventShow'),
-  'Footage': mongoose.model('Footage'),
   'Gallery': mongoose.model('Gallery'),
   'News': mongoose.model('News'),
-  'Playlist': mongoose.model('Playlist'),
   'Video': mongoose.model('Video'),
   'VenueDB': mongoose.model('VenueDB'),
   'AddressDB': mongoose.model('AddressDB'),
@@ -421,109 +419,6 @@ router.removeImage = (req, res) => {
     router.getData(req, res, "json");
   }); */
 
-}
-  
-router.removeFootage = (req, res) => {
-  var query = {_id: req.params.id};
-  //if (req.user.is_admin) query.members = req.user._id;
-  logger.info(query);
-  Models["Playlist"]
-  .findOne(query)
-  .select({_id:1, title:1, stats:1, footage:1})
-  .populate({ "path": "footage", "select": "title", "model": "Footage"})
-  .exec((err, playlist) => {
-    if (err) {
-      logger.info(`${JSON.stringify(err)}`);
-      res.status(404).send({ message: err });
-    } else if (!playlist) {
-      res.status(404).send({
-        "message": "USER_NOT_ALLOWED_TO_EDIT",
-        "name": "MongoError",
-        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"USER_NOT_ALLOWED_TO_EDIT",
-          "name":"MongoError",
-          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-          "kind":"string",
-          "value":null,
-          "path":"id"
-        }
-      });
-    } else if (playlist.footage.map((item)=>{return item._id.toString()}).indexOf(req.params.footage)===-1) {
-      res.status(404).send({
-        "message": "FOOTAGE_IS_NOT_IN_THE_PLAYLIST",
-        "name": "MongoError",
-        "stringValue":"\"FOOTAGE_IS_NOT_IN_THE_PLAYLIST\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"FOOTAGE_IS_NOT_IN_THE_PLAYLIST",
-          "name":"MongoError",
-          "stringValue":"\"FOOTAGE_IS_NOT_IN_THE_PLAYLIST\"",
-          "kind":"string",
-          "value":null,
-          "path":"id"
-        }
-      });
-    } else if (playlist.footage.length===1) {
-      res.status(404).send({
-        "message": "AT_LEAST_ONE_FOOTAGE_IS_REQUIRED",
-        "name": "MongoError",
-        "stringValue":"\"AT_LEAST_ONE_FOOTAGE_IS_REQUIRED\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"AT_LEAST_ONE_FOOTAGE_IS_REQUIRED",
-          "name":"MongoError",
-          "stringValue":"\"AT_LEAST_ONE_FOOTAGE_IS_REQUIRED\"",
-          "kind":"string",
-          "value":null,
-          "path":"id"
-        }
-      });
-    } else {
-      playlist.footage.splice(playlist.footage.map((item)=>{return item._id.toString()}).indexOf(req.params.footage), 1);
-      logger.info("playlist.footage");
-      logger.info(playlist.footage);
-      logger.info(playlist.footage.length);
-      playlist.stats.footage = playlist.footage.length;
-
-      playlist.save(function(err){
-        if (err) {
-          logger.info(`${JSON.stringify(err)}`);
-          res.status(404).send({ message: err });
-        } else {
-          var query = {_id: req.params.footage};
-          Models["Footage"]
-          .findOne(query)
-          .select({_id:1, stats:1, playlists:1})
-          //.populate({ "path": "members", "select": "addresses", "model": "User"})
-          .exec((err, footage) => {
-            footage.playlists.splice(footage.playlists.indexOf(req.params.id), 1);
-            logger.info("footage.playlists");
-            logger.info(footage.playlists);
-            logger.info(footage.playlists.length);
-            footage.stats.playlists = footage.playlists.length;
-            footage.save(function(err){
-              if (err) {
-                logger.info(`${JSON.stringify(err)}`);
-                res.status(404).send({ message: err });
-              } else {
-                req.params.sez = 'playlists';
-                req.params.form = 'public';
-                router.getData(req, res, "json");
-              }
-            });
-          });
-        }
-      });
-    }
-  });
 }
 
 router.getSubscriptions = async (req, res) => {
