@@ -10,10 +10,10 @@ const User = mongoose.model('User');
 
 
 router.get('/', (req, res) => {
-  var returnTo = req.session.returnTo;
+  var returnTo = req.session.returnTo || "/admin";
   logger.info('passport.loginredirect GET req:' + returnTo);
   if (req.user) {
-    return res.redirect (req.session.returnTo);
+    return res.redirect (returnTo);
   }
   res.render('login', {
     title: req.__('Login')

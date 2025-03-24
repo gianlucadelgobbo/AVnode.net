@@ -170,7 +170,7 @@ app.use((req, res, next) => {
   global.currentRequest = req;
   next();
 });
-// 🔥 Block access from certain IPs
+/* // 🔥 Block access from certain IPs
 const blockedIPs = new Set((process.env.BLOCKED_IPS || "").split(","));
 app.use((req, res, next) => {
   const host = req.get("host") || req.get("X-Forwarded-Host");
@@ -179,7 +179,7 @@ app.use((req, res, next) => {
     return res.redirect("https://admin.avnode.net" + req.originalUrl);
   }
   next();
-});
+}); */
 
 // Secure Sessions
 app.use(

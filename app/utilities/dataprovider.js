@@ -747,8 +747,8 @@ dataprovider.getData = async (req, res, view) => {
     const select = req.query.pure ? config.cpanel[req.params.sez].forms[req.params.form].select : Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].forms[req.params.form].populate;
     let data
-    logger.info(select)
-    logger.info(populate)
+    /* logger.info(select)
+    logger.info(populate) */
     try {
       data = await Models[config.cpanel[req.params.sez].model]
       .findById(id)
@@ -765,7 +765,7 @@ dataprovider.getData = async (req, res, view) => {
         if (helpers.editable(req, data, id)) {
           let send = {_id: data._id};
           for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
-          logger.info(send)
+          //logger.info(send)
 
           if (view == "json") {
             res.json(send);
