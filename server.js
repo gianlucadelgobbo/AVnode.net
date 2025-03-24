@@ -130,7 +130,7 @@ function isAllowed(origin) {
   return false;
 }
 
-/* app.use(cors({
+app.use(cors({
   origin: function (origin, callback) {
     if (isAllowed(origin)) {
       callback(null, true);
@@ -139,7 +139,7 @@ function isAllowed(origin) {
     }
   },
   credentials: true
-})); */
+}));
 // View Engine Configuration
 app.set("port", config.port || 8102);
 app.set("views", path.join(config.appRoot, "app/views"));
