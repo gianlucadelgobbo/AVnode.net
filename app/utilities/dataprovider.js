@@ -1940,8 +1940,6 @@ dataprovider.show = (req, res, section, subsection, model) => {
   //logger.info(populate);
   dataprovider.addCat(req, populate, (populate, type) => {
     for(let item in populate) {
-      console.log("populate")
-      console.log(populate[item])
       if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
       if (populate[item].model) populate[item].model = Models[populate[item].model]
   

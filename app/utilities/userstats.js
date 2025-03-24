@@ -7,6 +7,7 @@ const Models = {
   'Event': mongoose.model('Event'),
   'News': mongoose.model('News'),
   'Program': mongoose.model('Program'),
+  'Gallery': mongoose.model('Gallery'),
   'Video': mongoose.model('Video'),
   'Order': mongoose.model('Order')
 }

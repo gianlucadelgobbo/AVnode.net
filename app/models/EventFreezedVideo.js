@@ -11,8 +11,6 @@ import Media from './shared/Media.js';
 const adminsez = 'videos';
 
 const isValidDate = (date) => {
-  console.log("isValidDate")
-  console.log(date instanceof Date && !isNaN(date.getTime()))
   return date instanceof Date && !isNaN(date.getTime());
 };
 
@@ -30,16 +28,8 @@ const videoSchema = new Schema({
     }, 'VIDEO_URL_IS_NOT_VALID']
   },
   is_public: { type: Boolean, default: false },
-  privacy: {
-    type: Date,
-    required: [true, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
-  terms: {
-    type: Date,
-    required: [true, 'TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
+  privacy: {type: Date},
+  terms: {type: Date},
   vjtv_exclude: { type: Boolean, default: false },
   media: Media,
   // teaserImage: MediaImage,
@@ -67,6 +57,18 @@ const videoSchema = new Schema({
   }
 });
 videoSchema.index({ event: 1, video_original: 1 }, { unique: true });
+
+videoSchema.pre('validate', function(next) {
+  if (this.is_public) {
+    if (!isValidDate(this.privacy)) {
+      this.invalidate('privacy', 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+    if (!isValidDate(this.terms)) {
+      this.invalidate('terms', 'TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+  }
+  next();
+});
 
 // Return thumbnail
 videoSchema.virtual('imageFormats').get(function () {

@@ -121,18 +121,13 @@ const callSchema = new Schema({
   }
 });
 callSchema.virtual('start_date_formatted').get(function () {
-  console.log("irtual('start_date_formatted')")
   return this.$locals.moment(this.start_date).utc().format('MMMM Do YYYY');
 });
 callSchema.virtual('end_date_formatted').get(function () {
-  console.log("irtual('end_date_formatted')")
   var bella = this.$locals.moment(this.end_date).utc().format('MMMM Do YYYY, HH:mm');
-  console.log("irtual('end_date_formatted') fine")
   return bella
 });
 const isValidDate = (date) => {
-  console.log("isValidDate")
-  console.log(date instanceof Date && !isNaN(date.getTime()))
   return date instanceof Date && !isNaN(date.getTime());
 };
 
@@ -161,16 +156,8 @@ const eventSchema = new Schema({
   emails: [Link],
   phones: [Link],
   is_public: { type: Boolean, default: false },
-  privacy: {
-    type: Date,
-    required: [true, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
-  terms: {
-    type: Date,
-    required: [true, 'TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
+  privacy: {type: Date},
+  terms: {type: Date},
   gallery_is_public: { type: Boolean, default: false },
   is_freezed: { type: Boolean, default: false },
   stats: {
@@ -218,6 +205,18 @@ const eventSchema = new Schema({
   toJSON: {
     virtuals: true
   }
+});
+
+eventSchema.pre('validate', function(next) {
+  if (this.is_public) {
+    if (!isValidDate(this.privacy)) {
+      this.invalidate('privacy', 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+    if (!isValidDate(this.terms)) {
+      this.invalidate('terms', 'TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+  }
+  next();
 });
 
 /*eventSchema.virtual('about').get(function (req) {

@@ -130,8 +130,6 @@ callSchema.virtual('end_date_formatted').get(function () {
 });
 
 const isValidDate = (date) => {
-  console.log("isValidDate")
-  console.log(date instanceof Date && !isNaN(date.getTime()))
   return date instanceof Date && !isNaN(date.getTime());
 };
 
@@ -157,16 +155,8 @@ const eventSchema = new Schema({
   emails: [Link],
   phones: [Link],
   is_public: { type: Boolean, default: false },
-  privacy: {
-    type: Date,
-    required: [true, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
-  terms: {
-    type: Date,
-    required: [true, 'TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
+  privacy: {type: Date},
+  terms: {type: Date},
   gallery_is_public: { type: Boolean, default: false },
   is_freezed: { type: Boolean, default: false },
   participate: { type: Boolean, default: false },
@@ -225,12 +215,23 @@ const eventSchema = new Schema({
   }
 });
 
+eventSchema.pre('validate', function(next) {
+  if (this.is_public) {
+    if (!isValidDate(this.privacy)) {
+      this.invalidate('privacy', 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+    if (!isValidDate(this.terms)) {
+      this.invalidate('terms', 'TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+  }
+  next();
+});
+
 /* eventSchema.virtual('programmenotscheduled').get(function (req) {
   if (this.program && this.program.length) return this.program.map((item)=>{return item.performance});
 }); */
 
 eventSchema.virtual('advanced').get(function (req) {
-  console.log("virtual('advanced')")
   //logger.info("EventShow virtual advanced");
   //let programmebydayvenue = [];
   let performers = {
@@ -253,7 +254,6 @@ eventSchema.virtual('advanced').get(function (req) {
   let program;
   if (this.program_freezed && this.program_freezed.length) {
     program = this.program_freezed;
-    console.log("program_freezed")
   } else  if (this.program && this.program.length) {
     program = this.program;
   }

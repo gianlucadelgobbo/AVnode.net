@@ -35,20 +35,22 @@ const getCountries = (req, res) => {
 }
 
 const getLanguages = (req, res) => {
-  let convert = [];
-  for (var item in allLanguages) {
-    convert.push( {"value": item, "label": allLanguages.languages[item].name})
-  }
-  convert.sort((a,b)=>{
-    if ( a.label < b.label ){
-      return -1;
-    }
-    if ( a.label > b.label ){
-      return 1;
-    }
-    return 0;
-  });
-  return convert;
+  // 1. Mappa codice lingua → nome lingua leggibile
+  const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
+
+  // 2. Estrai tutti i codici lingua unici
+  const uniqueLangs = Array.from(
+    new Set(
+      Object.values(allLanguages).flatMap(c => c.languages)
+    )
+  ).sort();
+
+  // 3. Crea array con { value, label }
+  const result = uniqueLangs.map(code => ({
+    value: code,
+    label: languageNames.of(code) || code
+  }));
+  return result;
 }
 
 const getServerpath = storage => {

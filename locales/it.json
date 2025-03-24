@@ -761,5 +761,8 @@
 	"Verification was already done or someone subscribed with some of your data, please sign up again.": "Verification was already done or someone subscribed with some of your data, please sign up again.",
 	"SIGN UP": "SIGN UP",
 	"TERMS_ACCEPTANCE_IS_REQUIRED": "TERMS_ACCEPTANCE_IS_REQUIRED",
-	"PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED": "PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED"
+	"PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED": "PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED",
+	"To have your news at https": "//avnode.net/news/mybeautyfulnews, please insert mybeautyfulnews (lower case, no spaces, no special characters)",
+	"To have your video at https": "//avnode.net/videos/mybeautyfulvideo, please insert mybeautifulvideo (lower case, no spaces, no special characters)",
+	"To have your gallery at https": "//avnode.net/galleries/mybeautyfulgallery, please insert mybeautifulgallery (lower case, no spaces, no special characters)"
 }

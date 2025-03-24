@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import config from 'getconfig';
 
 // Import route handlers
-/* import home from './home.js'; */
+import home from './home.js';
 import performersList from './performers/list.js';
 import performersShow from './performers/show.js';
 import performances from './performances.js';
@@ -166,7 +166,14 @@ router.get('/:section-sitemap.xml', (req, res) => {
 
 router.use('/:slug', performersShow);
 /* router.use('/', home); */
-router.use('/', login);
+
+router.use((req, res, next) => {
+  if (req.isApi) {
+    return home(req, res, next);
+  } else {
+    return login(req, res, next);
+  }
+});
 
 // Log all registered routes
 /* router.stack.forEach(middleware => {

@@ -27,8 +27,6 @@ const hasLowerCase = (str) => /[a-z]/.test(str);
 const hasUpperCase = (str) => /[A-Z]/.test(str);
 
 const isValidDate = (date) => {
-  console.log("isValidDate")
-  console.log(date instanceof Date && !isNaN(date.getTime()))
   return date instanceof Date && !isNaN(date.getTime());
 };
 
@@ -62,6 +60,8 @@ const userSchema = new Schema({
   activity_as_organization: Number,
   hide_members: { type: Boolean, default: false },
   is_public: { type: Boolean, default: true },
+  privacy: {type: Date},
+  terms: {type: Date},
   createdAt: Date,
   stats: {
     date: Date,
@@ -142,16 +142,6 @@ const userSchema = new Schema({
         }, 'EMAIL_IS_NOT_VALID']
       },
       is_public: { type: Boolean, default: false },
-  privacy: {
-    type: Date,
-    required: [true, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
-  terms: {
-    type: Date,
-    required: [true, 'TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
       is_primary: { type: Boolean, default: false },
       is_confirmed: { type: Boolean, default: false },
       mailinglists: {
@@ -239,6 +229,19 @@ const userSchema = new Schema({
     virtuals: true
   }
 });
+
+userSchema.pre('validate', function(next) {
+  if (this.is_public) {
+    if (!isValidDate(this.privacy)) {
+      this.invalidate('privacy', 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+    if (!isValidDate(this.terms)) {
+      this.invalidate('terms', 'TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+  }
+  next();
+});
+
 userSchema.post('save', function(error, doc, next) {
   next(error);
 });
@@ -540,9 +543,6 @@ userSchema.pre('save', function (next) {
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
   try {
-    console.log("candidatePassword:", candidatePassword);
-    console.log("Stored password hash:", this.password);
-
     const isMatch = await bcrypt.compare(candidatePassword, this.password);
     return isMatch;
   } catch (error) {

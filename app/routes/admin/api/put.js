@@ -85,10 +85,13 @@ router.putData = async (req, res, view) => {
   let put = {};
   logger.info('Data putData');
   //logger.info(data);
-  //logger.info('Select putData');
-  //logger.info(select);
+  logger.info('Select putData');
+  logger.info(select);
   //logger.info(Object.keys(select));
 
+  if (select.privacy && !req.body.privacy) req.body.privacy = "";
+  if (select.terms && !req.body.terms) req.body.terms = "";
+  
   for (let key of Object.keys(select)) {
     if (req.body[key] !== undefined) {
       put[key] = req.body[key];
@@ -140,9 +143,6 @@ router.putData = async (req, res, view) => {
       return res.status(401).render('401', {path: req.originalUrl, title:req.__("401: Access to the content is denied"), titleicon:"icon-warning"});
     }
   }
-  console.log('title:', data.title);
-  console.log('privacy:', data.privacy);
-  console.log('terms:', data.terms);
   Object.keys(data._doc).forEach((key) => {
     if (data[key] === undefined) delete data[key];
   });

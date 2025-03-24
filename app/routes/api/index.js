@@ -33,9 +33,7 @@ router.get('/likes', async (req, res) => {
     if (req.query.section ==='videos') model = Video;
     if (req.query.section ==='news') model = News;
     if (req.query.section ==='galleries') model = Gallery;
-    console.log("req.userreq.userreq.userreq.userreq.user")
-    console.log(req.user.likes[req.query.section].map(function(e) { return e.id.toString(); }))
-    console.log(likeid)
+
     if (!req.user.likes || !req.user.likes[req.query.section] || req.user.likes[req.query.section].map(function(e) { return e.id.toString(); }).indexOf(likeid.toString())===-1) {
       if (!req.user.likes) req.user.likes = {};
       if (!req.user.likes[req.query.section]) req.user.likes[req.query.section] = [];

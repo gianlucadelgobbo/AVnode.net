@@ -14,8 +14,6 @@ import Media from './shared/Media.js';
 const adminsez = 'news';
 
 const isValidDate = (date) => {
-  console.log("isValidDate")
-  console.log(date instanceof Date && !isNaN(date.getTime()))
   return date instanceof Date && !isNaN(date.getTime());
 };
 
@@ -31,16 +29,8 @@ const newsSchema = new Schema({
     }, 'NEWS_URL_IS_NOT_VALID']
   },
   is_public: { type: Boolean, default: false },
-  privacy: {
-    type: Date,
-    required: [true, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
-  terms: {
-    type: Date,
-    required: [true, 'TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
+  privacy: {type: Date},
+  terms: {type: Date},
   image: MediaImage,
   media: Media,
   abouts: [About],
@@ -63,28 +53,19 @@ const newsSchema = new Schema({
   }
 });
 
-/* newsSchema.virtual('about').get(function (req) {
-  let about = this.$locals.__('Text is missing');
-  let aboutA = [];
-  if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === this.$locals.locale);
-    if (aboutA.length && aboutA[0].abouttext) {
-      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
-    } else {
-      aboutA = this.abouts.filter(item => item.lang === "en");
-      if (aboutA.length && aboutA[0].abouttext) {
-        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
-      }
+newsSchema.pre('validate', function(next) {
+  if (this.is_public) {
+    if (!isValidDate(this.privacy)) {
+      this.invalidate('privacy', 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED');
     }
-    return about;
+    if (!isValidDate(this.terms)) {
+      this.invalidate('terms', 'TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
   }
-}); */
+  next();
+});
+
 newsSchema.virtual('about').get(function (req) {
-  /* console.log("⚠️ DEBUG: Inside virtual 'about'", {
-    locals: this.$locals, // Check if `this.$locals` is undefined
-    translateFunctionType: typeof this.$locals?.__,
-    locale: this.$locals?.locale,
-  }); */
 
   if (!this.$locals || typeof this.$locals.__ !== "function") {
     console.error("🚨 ERROR: Missing or invalid `this.$locals.__` in virtual 'about'", this);
@@ -107,26 +88,12 @@ newsSchema.virtual('about').get(function (req) {
     str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
     str = helpers.linkify(str);
-
-    /* var options = {
-      TruncateLength: 100,
-      TruncateBy : "words",
-      Strict : true,
-      StripHTML : false,
-    };
-    str = truncatise(str, options); */
   
     return str;
   }
 });
 
 newsSchema.virtual('description').get(function (req) {
-  /* console.log("⚠️ DEBUG: Inside virtual 'description'", {
-    locals: this.$locals, // Check if `this.$locals` is undefined
-    translateFunctionType: typeof this.$locals?.__,
-    locale: this.$locals?.locale,
-  }); */
-
   if (!this.$locals || typeof this.$locals.__ !== "function") {
     console.error("🚨 ERROR: Missing or invalid `this.$locals.__` in virtual 'about'", this);
     return "⚠️ Translation function is missing"; // Prevent crash
@@ -138,12 +105,6 @@ newsSchema.virtual('description').get(function (req) {
 });
 
 newsSchema.virtual('excerpt').get(function (req) {
-  /* console.log("⚠️ DEBUG: Inside virtual 'excerpt'", {
-    locals: this.$locals, // Check if `this.$locals` is undefined
-    translateFunctionType: typeof this.$locals?.__,
-    locale: this.$locals?.locale,
-  }); */
-
   if (!this.$locals || typeof this.$locals.__ !== "function") {
     console.error("🚨 ERROR: Missing or invalid `this.$locals.__` in virtual 'about'", this);
     return "⚠️ Translation function is missing"; // Prevent crash

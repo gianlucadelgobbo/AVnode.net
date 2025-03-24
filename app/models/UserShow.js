@@ -16,8 +16,6 @@ import OrganizationData from './shared/OrganizationData.js';
 const adminsez = 'profile';
 
 const isValidDate = (date) => {
-  console.log("isValidDate")
-  console.log(date instanceof Date && !isNaN(date.getTime()))
   return date instanceof Date && !isNaN(date.getTime());
 };
 
@@ -68,6 +66,8 @@ const userSchema = new Schema({
   gender: String,
   lang: String, // BL TODO navigator or user.settings or subdomain language
   is_public: { type: Boolean, default: true },
+  privacy: {type: Date},
+  terms: {type: Date},
   createdAt: Date,
   stats: {
     crews: Number,
@@ -108,16 +108,6 @@ const userSchema = new Schema({
   emails: [{
     email: String,
     is_public: { type: Boolean, default: false },
-  privacy: {
-    type: Date,
-    required: [true, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
-  terms: {
-    type: Date,
-    required: [true, 'TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
     is_primary: { type: Boolean, default: false },
     is_confirmed: { type: Boolean, default: false },
     mailinglists: {},
@@ -178,6 +168,18 @@ const userSchema = new Schema({
       //delete ret._id;
     }
   }
+});
+
+userSchema.pre('validate', function(next) {
+  if (this.is_public) {
+    if (!isValidDate(this.privacy)) {
+      this.invalidate('privacy', 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+    if (!isValidDate(this.terms)) {
+      this.invalidate('terms', 'TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+  }
+  next();
 });
 
 /*

@@ -181,8 +181,6 @@ app.use((req, res, next) => {
   next();
 });
 
-console.log("process.env.NODE_ENV")
-console.log(process.env.NODE_ENV)
 // Secure Sessions
 app.use(
   session({

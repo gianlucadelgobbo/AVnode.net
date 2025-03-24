@@ -21,7 +21,7 @@ block content
           include partials/slug
           
           if !data.activity_as_organization && !data.activity_as_performer && !data.activity
-            include partials/is_public
+          include partials/is_public
           
           include partials/addresses
 
@@ -32,6 +32,8 @@ block content
       include partials/social
       include partials/web
 
+      hr
+      include partials/termsandprivacy
       hr
       button.btn.btn-primary.btn-lg.btn-block(type='submit')=__("Save")
       if user.is_admin

@@ -10,8 +10,6 @@ import About from './shared/About.js';
 const adminsez = 'galleries';
 
 const isValidDate = (date) => {
-  console.log("isValidDate")
-  console.log(date instanceof Date && !isNaN(date.getTime()))
   return date instanceof Date && !isNaN(date.getTime());
 };
 
@@ -28,16 +26,8 @@ const gallerySchema = new Schema({
     }, 'GALLERY_URL_IS_NOT_VALID']
   },
   is_public: { type: Boolean, default: false },
-  privacy: {
-    type: Date,
-    required: [true, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
-  terms: {
-    type: Date,
-    required: [true, 'TERMS_ACCEPTANCE_IS_REQUIRED'],
-    validate: [isValidDate, 'TERMS_ACCEPTANCE_IS_REQUIRED']
-  },
+  privacy: {type: Date},
+  terms: {type: Date},
   image: MediaImage,
   //teaserImage: MediaImage,
   //  file: {file: String},
@@ -59,11 +49,20 @@ const gallerySchema = new Schema({
 });
 gallerySchema.index({ event: 1, gallery_original: 1 }, { unique: true });
 
+gallerySchema.pre('validate', function(next) {
+  if (this.is_public) {
+    if (!isValidDate(this.privacy)) {
+      this.invalidate('privacy', 'PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+    if (!isValidDate(this.terms)) {
+      this.invalidate('terms', 'TERMS_ACCEPTANCE_IS_REQUIRED');
+    }
+  }
+  next();
+});
+
 // Return thumbnail
 gallerySchema.virtual('imageFormats').get(function () {
-  console.log("virtual('imageFormats')")
-  console.log(config.cpanel[adminsez].forms)
-  console.log(adminsez)
   let imageFormats = {};
   for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
     imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.public.image.config.sizes[format].default;
@@ -79,7 +78,6 @@ gallerySchema.virtual('imageFormats').get(function () {
       imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.public.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
     }
   }
-  console.log("virtual('imageFormats') end")
   return imageFormats;
 });
 
