@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res, next) => {
-  const returnTo = req.session.returnTo || req.query.returnTo || "/admin";
+  const returnTo = req.session.returnTo || req.body.returnTo || "/admin";
 
   passport.authenticate('local', (err, user, info) => {
     if (err) return req.isApi ? res.send(err) : next(err);
