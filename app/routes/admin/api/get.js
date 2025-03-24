@@ -251,7 +251,7 @@ router.getPerfCategories = async (req, res) => {
       }))
     };
 
-    console.log("✅ Successfully built category tree:", send);
+    //console.log("✅ Successfully built category tree:", send);
     return send;
   } catch (err) {
     logger.info(`🔥 Error in getPerfCategories: ${JSON.stringify(err)}`);

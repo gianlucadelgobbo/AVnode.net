@@ -3373,6 +3373,8 @@
             }
           },
           "select": {
+            "privacy": 1,
+            "terms": 1,
             "slug": 1,
             "title": 1
           },
@@ -3523,6 +3525,8 @@
             "is_public": 1,
             "type":1,
             "tecnique":1,
+            "privacy": 1,
+            "terms": 1,
             "genre":1,
             "users": 1,
             "price": 1,

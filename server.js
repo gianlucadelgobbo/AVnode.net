@@ -71,7 +71,7 @@ const allowedOrigins = [
   "https://pl.avnode.net",
   "https://pt.avnode.net",
   "https://ru.avnode.net",
-  "https://dev.avnode.net",
+
   "http://avnode.local:3000",
   "http://by.avnode.local:3000",
   "http://de.avnode.local:3000",
@@ -83,6 +83,7 @@ const allowedOrigins = [
   "http://pl.avnode.local:3000",
   "http://pt.avnode.local:3000",
   "http://ru.avnode.local:3000",
+
   "http://admin.avnode.local:8102",
   "http://by.admin.avnode.local:8102",
   "http://de.admin.avnode.local:8102",
@@ -105,6 +106,8 @@ const allowedOrigins = [
   "http://pl.api.admin.avnode.local:8102",
   "http://pt.api.admin.avnode.local:8102",
   "http://ru.api.admin.avnode.local:8102",
+
+  "https://dev.avnode.net",
   "https://by.dev.avnode.net",
   "https://de.dev.avnode.net",
   "https://es.dev.avnode.net",
@@ -178,6 +181,8 @@ app.use((req, res, next) => {
   next();
 });
 
+console.log("process.env.NODE_ENV")
+console.log(process.env.NODE_ENV)
 // Secure Sessions
 app.use(
   session({
@@ -232,11 +237,13 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   if (!req.user && req.method === "GET" && !req.session.returnTo) {
-    const excludePaths = ["/login", "/signup", "/logout"]; // ✅ Excluded routes
+    const excludePaths = ["/login", "/signup", "/logout", "/"]; // ✅ Excluded routes
     if (!excludePaths.includes(req.path)) {
       req.session.returnTo = req.originalUrl; // ✅ Save the page user was trying to visit
       //logger.info("Stored returnTo:", req.session.returnTo);
     }
+  } else {
+    delete req.session.returnTo
   }
   next();
 });

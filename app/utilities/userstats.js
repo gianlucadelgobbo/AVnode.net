@@ -21,8 +21,8 @@ const Models = {
     promises
   ).then( (resultsPromise) => {
     setTimeout(function() {
-      //logger.info('resultsPromise');
-      //logger.info(resultsPromise);
+      ////logger.info('resultsPromise');
+      ////logger.info(resultsPromise);
       //resolve(resultsPromise);
       res.json(resultsPromise);
     }, 1000);
@@ -30,12 +30,12 @@ const Models = {
 } */
 
 const setStatsAndActivity = async function(query) {
-  logger.info('setStatsAndActivity');
-  logger.info(query);
+  //logger.info('setStatsAndActivity');
+  //logger.info(query);
   
   try {
     const users = await Models['User'].find(query).exec(); // Async/await version
-    logger.info('setStatsAndActivity - Users Found:', users.length);
+    //logger.info('setStatsAndActivity - Users Found:', users.length);
 
     // Process each user with setStatsAndActivitySingle
     const promises = users.map(user => setStatsAndActivitySingle({_id: user._id}));
@@ -45,20 +45,20 @@ const setStatsAndActivity = async function(query) {
 
     return results;
   } catch (error) {
-    logger.info('Error in setStatsAndActivity:', error);
+    //logger.info('Error in setStatsAndActivity:', error);
     throw error; // Ensure error propagates
   }
 };
 const setStatsAndActivitySingle = async function(query) {
-  logger.info('setStatsAndActivitySingle');
-  logger.info(query);
+  //logger.info('setStatsAndActivitySingle');
+  //logger.info(query);
 
   try {
     const e = await Models['User'].findOne(query).exec();
     if (!e) throw new Error("User not found");
 
     let myids = [e._id];
-    logger.info('setStatsAndActivity start', myids);
+    //logger.info('setStatsAndActivity start', myids);
 
     const results = await Promise.all([
       Models['User'].find({ "members": { $in: myids } }).select("_id"),
@@ -106,7 +106,7 @@ const setStatsAndActivitySingle = async function(query) {
     ] = results;
 
     // ✅ You can now safely use these counts
-    logger.info({ lightsinstallation, mapping, vjset, workshop });
+    //logger.info({ lightsinstallation, mapping, vjset, workshop });
 
     return {
       events,

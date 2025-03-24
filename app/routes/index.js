@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import config from 'getconfig';
 
 // Import route handlers
-import home from './home.js';
+/* import home from './home.js'; */
 import performersList from './performers/list.js';
 import performersShow from './performers/show.js';
 import performances from './performances.js';
@@ -171,7 +171,8 @@ router.get('/:section-sitemap.xml', (req, res) => {
 });
 
 router.use('/:slug', performersShow);
-router.use('/', home);
+/* router.use('/', home); */
+router.use('/', login);
 
 // Log all registered routes
 /* router.stack.forEach(middleware => {

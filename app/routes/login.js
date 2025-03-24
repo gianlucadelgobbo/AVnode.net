@@ -21,7 +21,40 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res, next) => {
-  const returnTo = req.session.returnTo ? req.session.returnTo : req.query.returnTo ? req.query.returnTo : "/";
+  const returnTo = req.session.returnTo || req.query.returnTo || "/admin";
+
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return req.isApi ? res.send(err) : next(err);
+    if (!user) {
+      if (req.isApi) return res.status(500).send(info);
+      req.flash('errors', info);
+      return res.redirect(info.redirect || "/login");
+    }
+
+    req.logIn(user, (err) => {
+      if (err) return req.isApi ? res.status(500).send(err) : next(err);
+
+      req.session.user = user;
+      delete req.session.returnTo;
+
+      logger.info('User logged in:', req.session.user);
+
+      if (req.isApi) {
+        return res.send({
+          loggedIn: true,
+          user: req.session.user,
+          returnTo,
+        });
+      } else {
+        req.flash('success', { msg: req.__('You are logged in.') });
+        return res.redirect(returnTo);
+      }
+    });
+  })(req, res, next);
+});
+
+/* router.post('/', (req, res, next) => {
+  const returnTo = req.session.returnTo ? req.session.returnTo : req.query.returnTo ? req.query.returnTo : req.query.returnTo ? req.query.returnTo : "/admin";
   logger.info("req.body login");
   logger.info(req.session.returnTo);
   logger.info(req.query.returnTo);
@@ -103,7 +136,7 @@ router.post('/', (req, res, next) => {
       }
     });
   })(req, res, next);
-});
+}); */
 
 // FIXME: userController.postLoginSchema
 //validationConfig.validate()

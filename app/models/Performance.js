@@ -19,6 +19,13 @@ function ignoreEmpty (val) {
     return val
   }
 }
+const isValidDate = (date) => {
+  console.log("isValidDate")
+  console.log(date instanceof Date && !isNaN(date.getTime()))
+  return date instanceof Date && !isNaN(date.getTime());
+};
+
+
 const performanceSchema = new Schema({
   old_id : String,
 
@@ -31,6 +38,17 @@ const performanceSchema = new Schema({
     }, 'PERFORMANCE_URL_IS_NOT_VALID']
   },
   is_public: { type: Boolean, default: false },
+  privacy: {
+    type: Date,
+    required: [true, 'PERFORMANCE_URL_IS_REQUIRED'],
+    validate: [isValidDate, 'PERFORMANCE_URL_IS_REQUIRED']
+  },
+  
+  terms: {
+    type: Date,
+    required: [true, 'PERFORMANCE_URL_IS_REQUIRED'],
+    validate: [isValidDate, 'PERFORMANCE_URL_IS_REQUIRED']
+  },
   image: MediaImage,
   abouts: [About],
   stats: {

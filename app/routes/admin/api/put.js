@@ -87,9 +87,9 @@ router.putData = async (req, res, view) => {
   let put = {};
   logger.info('Data putData');
   //logger.info(data);
-  logger.info('Select putData');
-  logger.info(select);
-  logger.info(Object.keys(select));
+  //logger.info('Select putData');
+  //logger.info(select);
+  //logger.info(Object.keys(select));
 
   for (let key of Object.keys(select)) {
     if (req.body[key] !== undefined) {
@@ -112,7 +112,7 @@ router.putData = async (req, res, view) => {
     }));
   } */
   logger.info('putputputputputput');
-  logger.info(put);
+  //logger.info(put);
   logger.info('DataDataDataDataDataData');
   //logger.info(data);
 
@@ -142,7 +142,12 @@ router.putData = async (req, res, view) => {
       return res.status(401).render('401', {path: req.originalUrl, title:req.__("401: Access to the content is denied"), titleicon:"icon-warning"});
     }
   }
-
+  console.log('title:', data.title);
+  console.log('privacy:', data.privacy);
+  console.log('terms:', data.terms);
+  Object.keys(data._doc).forEach((key) => {
+    if (data[key] === undefined) delete data[key];
+  });
   try {
     await data.save();
     logger.info("✅ Document saved successfully");

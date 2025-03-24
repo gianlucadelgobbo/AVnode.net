@@ -6,8 +6,8 @@ block content
       .col-md-6.offset-md-3
         .pb-5
           form(method='post')
-            input(type='hidden', name='_csrf', value=_csrf)
-            //input(type='hidden', name='returnTo', value=returnTo)
+            //-input(type='hidden', name='_csrf', value=_csrf)
+            //-input(type='hidden', name='returnTo', value=returnTo)
             .form-group
               label(for='email')=__('Email')
               input.form-control(type='email', name='email', id='email', placeholder=__('Your Email'), autofocus, required)
