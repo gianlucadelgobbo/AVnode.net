@@ -7,7 +7,7 @@ import GalleryItem from './shared/GalleryItem.js';
 import About from './shared/About.js';
 
 
-const adminsez = 'event_galleries';
+const adminsez = 'galleries';
 
 const gallerySchema = new Schema({
   old_id : String,
@@ -45,6 +45,9 @@ gallerySchema.index({ event: 1, gallery_original: 1 }, { unique: true });
 
 // Return thumbnail
 gallerySchema.virtual('imageFormats').get(function () {
+  console.log("virtual('imageFormats')")
+  console.log(config.cpanel[adminsez].forms)
+  console.log(adminsez)
   let imageFormats = {};
   for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
     imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.public.components.image.config.sizes[format].default;
@@ -60,6 +63,7 @@ gallerySchema.virtual('imageFormats').get(function () {
       imageFormats[format] = process.env.WAREHOUSE+localPath+"/"+config.cpanel[adminsez].forms.public.components.image.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
     }
   }
+  console.log("virtual('imageFormats') end")
   return imageFormats;
 });
 

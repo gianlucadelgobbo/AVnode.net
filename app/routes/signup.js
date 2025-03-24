@@ -28,6 +28,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  logger.info("req.body");
   logger.info(req.body);
 
   try {
@@ -48,18 +49,26 @@ router.post('/', async (req, res) => {
     put.crewslug = await helpers.mySlugify(User, put.crewname);
 
     // Validate signup data
-    const errors = await router.signupValidator(put);
+    const errors = await router.signupValidator(req, put);
     logger.info("Validation Errors:", errors);
 
     if (Object.keys(errors.errors).length) {
-      req.flash('errors', { msg: JSON.stringify(errors) });
-      return res.render('admin/signup', {
-        title: req.__('Create Account'),
-        get: req.body,
-        currentUrl: req.originalUrl,
-        scripts: ['signup'],
-        err: errors
-      });
+      if (req.isApi) {
+        return res.send({
+          get: req.body,
+          currentUrl: req.originalUrl,
+          err: errors
+        })
+      } else {
+        req.flash('errors', { msg: JSON.stringify(errors) });
+        return res.render('admin/signup', {
+          title: req.__('Create Account'),
+          get: req.body,
+          currentUrl: req.originalUrl,
+          scripts: ['signup'],
+          err: errors
+        });  
+      }
     }
 
     logger.info("deleteMany UserTemp");
@@ -99,30 +108,48 @@ router.post('/', async (req, res) => {
       }
     });
 
-    req.flash('success', { msg: req.__("We have sent a confirmation email, please confirm activate your account") });
-    res.render('admin/signup', {
-      title: req.__('Create Account'),
-      get: req.body,
-      currentUrl: req.originalUrl,
-      scripts: ['signup'],
-      err: errors
-    });
+
+    if (req.isApi) {
+      res.send({
+        get: req.body,
+        msg: req.__("We have sent a confirmation email, please confirm activate your account"),
+        currentUrl: req.originalUrl,
+        err: errors
+      })
+    } else {
+      req.flash('success', { msg: req.__("We have sent a confirmation email, please confirm activate your account") });
+      res.render('admin/signup', {
+        title: req.__('Create Account'),
+        get: req.body,
+        currentUrl: req.originalUrl,
+        scripts: ['signup'],
+        err: errors
+      });
+    }
 
   } catch (err) {
     console.error("🔥 Signup Error:", err);
-    req.flash('errors', { msg: JSON.stringify(err) });
-    res.render('admin/signup', {
-      title: req.__('Create Account'),
-      get: req.body,
-      currentUrl: req.originalUrl,
-      scripts: ['signup'],
-      err
-    });
+    if (req.isApi) {
+      return res.send({
+        get: req.body,
+        currentUrl: req.originalUrl,
+        err
+      })
+    } else {
+      req.flash('errors', { msg: JSON.stringify(err) });
+      return res.render('admin/signup', {
+        title: req.__('Create Account'),
+        get: req.body,
+        currentUrl: req.originalUrl,
+        scripts: ['signup'],
+        err
+      });
+    }
   }
 });
 
 
-router.signupValidator = async (put) => {
+router.signupValidator = async (req, put) => {
   logger.info("signupValidator", put);
   let errors = { errors: {}, _message: "", message: "", name: "" };
 

@@ -47,9 +47,9 @@ const Schedule = new Schema({
   }
 });
 Schedule.virtual('boxDateFull').get(function () {
-  console.log("virtual('boxDateFull')");
-  console.log(this.starttime);
-  console.log(this.endtime);
+  //console.log("virtual('boxDateFull')");
+  //console.log(this.starttime);
+  //console.log(this.endtime);
 
   if (!this?.$locals?.moment || !this?.$locals?.locale) {
     console.warn(`⚠️ moment or locale is missing in $locals for _id ${this._id}`);
@@ -81,7 +81,7 @@ Schedule.virtual('boxDateFull').get(function () {
       boxDate += " > " + moment.utc(this.endtime).format("HH:mm");
     }
 
-    console.log("virtual('boxDateFull') end");
+    //console.log("virtual('boxDateFull') end");
     return boxDate;
   } catch (err) {
     console.error(`❌ Error in virtual boxDateFull for _id=${this._id}:`, err);
@@ -90,9 +90,9 @@ Schedule.virtual('boxDateFull').get(function () {
 });
 
 /* Schedule.virtual('boxDateFull').get(function () {
-  console.log("virtual('boxDateFull')")
-  console.log(this.starttime)
-  console.log(this.endtime)
+  //console.log("virtual('boxDateFull')")
+  //console.log(this.starttime)
+  //console.log(this.endtime)
   if (!this?.$locals?.moment || !this?.$locals?.locale) {
     console.warn("⚠️ moment or locale is missing in $locals");
     return '';
@@ -129,7 +129,7 @@ Schedule.virtual('boxDateFull').get(function () {
       boxDate+= " > "+this.$locals.moment.utc(this.endtime).format('HH:mm');
     }
   }
-  console.log("virtual('boxDateFull') end")
+  //console.log("virtual('boxDateFull') end")
   return boxDate;
 }); */
 
@@ -159,9 +159,9 @@ Schedule.virtual('boxDateFull').get(function () {
   return boxDate;
 }); */
 Schedule.virtual('boxDate').get(function () {
-  //console.log("virtual('boxDate')")
+  ////console.log("virtual('boxDate')")
   let boxDate;
-  if (this.starttime) {
+  if (this.starttime && this.endtime && this.$locals && this.$locals.moment && this.$locals.moment.utc) {
     const lang = this.$locals.locale;
     const start = new Date(this.starttime-(10*60*60*1000)).getTime()
     const end = new Date(this.endtime-(10*60*60*1000)).getTime()
@@ -180,13 +180,13 @@ Schedule.virtual('boxDate').get(function () {
     boxDate+= " | "+this.$locals.moment.utc(this.starttime).format('HH:mm');
     boxDate+= " > "+this.$locals.moment.utc(this.endtime).format('HH:mm');
   }
-  //console.log("virtual('boxDate') end")
+  ////console.log("virtual('boxDate') end")
   return boxDate;
 });
 Schedule.virtual('starttimeDay').get(function () {
-  //console.log("virtual('starttimeDay')")
+  ////console.log("virtual('starttimeDay')")
   let boxDate;
-  if (this.starttime) {
+  if (this.starttime && this.endtime && this.$locals && this.$locals.moment && this.$locals.moment.utc) {
     const lang = this.$locals.locale;
     const start = new Date(this.starttime-(10*60*60*1000)).getTime()
     const end = new Date(this.endtime-(10*60*60*1000)).getTime()
@@ -202,24 +202,24 @@ Schedule.virtual('starttimeDay').get(function () {
       boxDate = this.$locals.moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdayday);
     }
   }
-  //console.log("virtual('starttimeDay') end")
+  ////console.log("virtual('starttimeDay') end")
   return boxDate;
 });
 
 Schedule.virtual('starttimeTime').get(function () {
-  //console.log("virtual('starttimeTime')")
+  ////console.log("virtual('starttimeTime')")
   let starttimeTime;
-  if (this.starttime) {
+  if (this.starttime && this.$locals && this.$locals.moment && this.$locals.moment.utc) {
     const lang = this.$locals.locale;
     starttimeTime = this.$locals.moment.utc(new Date(this.starttime)).format('HH:mm');
   }
-  //console.log("virtual('starttimeTime') end")
+  ////console.log("virtual('starttimeTime') end")
   return starttimeTime;
 });
 
 Schedule.virtual('endtimeTime').get(function () {
   let endtimeTime;
-  if (this.endtime) {
+  if (this.endtime && this.$locals && this.$locals.moment && this.$locals.moment.utc) {
     endtimeTime = this.$locals.moment.utc(this.endtime).format('HH:mm');
     endtimeTime = this.$locals.moment.utc(new Date(this.endtime)).format('HH:mm');
   }

@@ -83,6 +83,28 @@ const allowedOrigins = [
   "http://pl.avnode.local:3000",
   "http://pt.avnode.local:3000",
   "http://ru.avnode.local:3000",
+  "http://admin.avnode.local:8102",
+  "http://by.admin.avnode.local:8102",
+  "http://de.admin.avnode.local:8102",
+  "http://es.admin.avnode.local:8102",
+  "http://fr.admin.avnode.local:8102",
+  "http://gr.admin.avnode.local:8102",
+  "http://hu.admin.avnode.local:8102",
+  "http://it.admin.avnode.local:8102",
+  "http://pl.admin.avnode.local:8102",
+  "http://pt.admin.avnode.local:8102",
+  "http://ru.admin.avnode.local:8102",
+  "http://api.admin.avnode.local:8102",
+  "http://by.api.admin.avnode.local:8102",
+  "http://de.api.admin.avnode.local:8102",
+  "http://es.api.admin.avnode.local:8102",
+  "http://fr.api.admin.avnode.local:8102",
+  "http://gr.api.admin.avnode.local:8102",
+  "http://hu.api.admin.avnode.local:8102",
+  "http://it.api.admin.avnode.local:8102",
+  "http://pl.api.admin.avnode.local:8102",
+  "http://pt.api.admin.avnode.local:8102",
+  "http://ru.api.admin.avnode.local:8102",
   "https://by.dev.avnode.net",
   "https://de.dev.avnode.net",
   "https://es.dev.avnode.net",
@@ -108,7 +130,7 @@ function isAllowed(origin) {
   return false;
 }
 
-app.use(cors({
+/* app.use(cors({
   origin: function (origin, callback) {
     if (isAllowed(origin)) {
       callback(null, true);
@@ -117,7 +139,7 @@ app.use(cors({
     }
   },
   credentials: true
-}));
+})); */
 // View Engine Configuration
 app.set("port", config.port || 8102);
 app.set("views", path.join(config.appRoot, "app/views"));

@@ -1,7 +1,6 @@
 import config from 'getconfig';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
 import truncatise from 'truncatise';
 //const indexPlugin from '../utilities/elasticsearch/Event');
 
@@ -204,6 +203,7 @@ const eventSchema = new Schema({
       delete ret.subtitles;
       delete ret.__v;
       //delete ret._id;
+      /* */ delete ret.program_freezed;
       delete ret.program;
     }
   }
@@ -214,6 +214,7 @@ const eventSchema = new Schema({
 }); */
 
 eventSchema.virtual('advanced').get(function (req) {
+  console.log("virtual('advanced')")
   //logger.info("EventShow virtual advanced");
   //let programmebydayvenue = [];
   let performers = {
@@ -228,48 +229,76 @@ eventSchema.virtual('advanced').get(function (req) {
   let performersN = [];
   let actsN = [];
   let advanced = {}
-  if (!this.is_freezed) {
-    advanced.menu = [];
-    //
-    let programmebydayvenueObj = {};
-    let ret = false;
-    const lang = this.$locals.locale;
-    if (this.program && this.program.length) {
-      for(let a=0;a<this.program.length;a++){
-        // Artists
-        if (this.program[a].performance && this.program[a].performance.users && this.program[a].performance.users.length) {
-          if(actsN.indexOf(this.program[a].performance._id)===-1) actsN.push(this.program[a].performance._id);
-          for(let b=0;b<this.program[a].performance.users.length;b++){
-            if (this.program[a].performance.users[b].members && this.program[a].performance.users[b].members.length) {
-              for(let d=0;d<this.program[a].performance.users[b].members.length;d++){
-                if (performersN.indexOf(this.program[a].performance.users[b].members[d]._id)===-1) performersN.push(this.program[a].performance.users[b].members[d]._id);
-              }
-            } else {
-              if (performersN.indexOf(this.program[a].performance.users[b]._id)===-1) performersN.push(this.program[a].performance.users[b]._id);
+  advanced.menu = [];
+  //
+  let programmebydayvenueObj = {};
+  let ret = false;
+  const lang = this.$locals.locale;
+  let program;
+  if (this.program_freezed && this.program_freezed.length) {
+    program = this.program_freezed;
+    console.log("program_freezed")
+  } else  if (this.program && this.program.length) {
+    program = this.program;
+  }
+  if (program && program.length) {
+    for(let a=0;a<program.length;a++){
+      // Artists
+      if (program[a].performance && program[a].performance.users && program[a].performance.users.length) {
+        if(actsN.indexOf(program[a].performance._id)===-1) actsN.push(program[a].performance._id);
+        for(let b=0;b<program[a].performance.users.length;b++){
+          if (program[a].performance.users[b].members && program[a].performance.users[b].members.length) {
+            for(let d=0;d<program[a].performance.users[b].members.length;d++){
+              if (performersN.indexOf(program[a].performance.users[b].members[d]._id)===-1) performersN.push(program[a].performance.users[b].members[d]._id);
             }
-            if (performersA.indexOf(this.program[a].performance.users[b]._id)===-1) {
-              performersA.push(this.program[a].performance.users[b]._id);
-              performers.performers.push(this.program[a].performance.users[b]);
-            }
-
-
-            if (this.program[a].performance.users[b].addresses) {
-              for(let c=0;c<this.program[a].performance.users[b].addresses.length;c++){
-                if (this.program[a].performance.users[b].addresses[c] && this.program[a].performance.users[b].addresses[c].country && performers.countries.indexOf(this.program[a].performance.users[b].addresses[c].country)===-1) performers.countries.push(this.program[a].performance.users[b].addresses[c].country);
-              }  
-            }
-            /* for(let c=0;c<this.program[a].performance.categories.length;c++){
-              if (this.program[a].performance.categories[c].ancestor.toString()==='5be8708afc3961000000008f' && performers.acts.indexOf(this.program[a].performance.categories[c].name)===-1) performers.acts.push(this.program[a].performance.categories[c].name);
-            } */
-            if (this.program[a].performance && this.program[a].performance.type && this.program[a].performance.type.name && performers.acts.indexOf(this.program[a].performance.type.name)===-1) performers.acts.push(this.program[a].performance.type.name);
+          } else {
+            if (performersN.indexOf(program[a].performance.users[b]._id)===-1) performersN.push(program[a].performance.users[b]._id);
           }
-          if (this.program[a].schedule && this.program[a].schedule.length) {
-            for(let b=0;b<this.program[a].schedule.length;b++){
-              if (this.program[a].schedule[b].starttime) {
-                ret = true;
-                if ((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
-                  let date = new Date(this.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-                  if (date.getUTCHours()<10) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
+          if (performersA.indexOf(program[a].performance.users[b]._id)===-1) {
+            performersA.push(program[a].performance.users[b]._id);
+            performers.performers.push(program[a].performance.users[b]);
+          }
+
+
+          if (program[a].performance.users[b].addresses) {
+            for(let c=0;c<program[a].performance.users[b].addresses.length;c++){
+              if (program[a].performance.users[b].addresses[c] && program[a].performance.users[b].addresses[c].country && performers.countries.indexOf(program[a].performance.users[b].addresses[c].country)===-1) performers.countries.push(program[a].performance.users[b].addresses[c].country);
+            }  
+          }
+          /* for(let c=0;c<program[a].performance.categories.length;c++){
+            if (program[a].performance.categories[c].ancestor.toString()==='5be8708afc3961000000008f' && performers.acts.indexOf(program[a].performance.categories[c].name)===-1) performers.acts.push(program[a].performance.categories[c].name);
+          } */
+          if (program[a].performance && program[a].performance.type && program[a].performance.type.name && performers.acts.indexOf(program[a].performance.type.name)===-1) performers.acts.push(program[a].performance.type.name);
+        }
+        if (program[a].schedule && program[a].schedule.length) {
+          for(let b=0;b<program[a].schedule.length;b++){
+            if (program[a].schedule[b].starttime) {
+              ret = true;
+              if ((program[a].schedule[b].endtime-program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
+                let date = new Date(program[a].schedule[b].starttime);  // dateStr you get from mongodb
+                if (date.getUTCHours()<10) date = new Date(program[a].schedule[b].starttime-(24*60*60*1000));
+                let d = ('0'+date.getUTCDate()).substr(-2);
+                let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
+                let y = date.getUTCFullYear();
+                let newdate = this.$locals.moment(date).utc().format(config.dateFormat[lang].weekdaydaymonthyear);
+                if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
+                  day: y+"-"+m+"-"+d,
+                  date: newdate,
+                  rooms: {}
+                };
+                if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[program[a].schedule[b].venue.name+program[a].schedule[b].venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[program[a].schedule[b].venue.name+program[a].schedule[b].venue.room] = {
+                  venue: program[a].schedule[b].venue.name,
+                  room: program[a].schedule[b].venue.room,
+                  performances: []
+                };
+                let clone = JSON.parse(JSON.stringify(program[a]));
+                clone.schedule = program[a].schedule[b];
+                //if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[program[a].schedule[b].venue.name+program[a].schedule[b].venue.room].performances.length<5) 
+                programmebydayvenueObj[y+"-"+m+"-"+d].rooms[program[a].schedule[b].venue.name+program[a].schedule[b].venue.room].performances.push(clone);  
+              } else {
+                var days = Math.floor((program[a].schedule[b].endtime-program[a].schedule[b].starttime)/(24*60*60*1000))+1;
+                for(let c=0;c<days;c++){
+                  let date = new Date((program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
                   let d = ('0'+date.getUTCDate()).substr(-2);
                   let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                   let y = date.getUTCFullYear();
@@ -279,92 +308,69 @@ eventSchema.virtual('advanced').get(function (req) {
                     date: newdate,
                     rooms: {}
                   };
-                  if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room] = {
-                    venue: this.program[a].schedule[b].venue.name,
-                    room: this.program[a].schedule[b].venue.room,
+
+                  if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[program[a].schedule[b].venue.name+program[a].schedule[b].venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[program[a].schedule[b].venue.name+program[a].schedule[b].venue.room] = {
+                    venue: program[a].schedule[b].venue.name,
+                    room: program[a].schedule[b].venue.room,
                     performances: []
                   };
-                  let clone = JSON.parse(JSON.stringify(this.program[a]));
-                  clone.schedule = this.program[a].schedule[b];
-                  //if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) 
-                  programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
-                } else {
-                  var days = Math.floor((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
-                  for(let c=0;c<days;c++){
-                    let date = new Date((this.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
-                    let d = ('0'+date.getUTCDate()).substr(-2);
-                    let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
-                    let y = date.getUTCFullYear();
-                    let newdate = this.$locals.moment(date).utc().format(config.dateFormat[lang].weekdaydaymonthyear);
-                    if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
-                      day: y+"-"+m+"-"+d,
-                      date: newdate,
-                      rooms: {}
-                    };
-
-                    if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room] = {
-                      venue: this.program[a].schedule[b].venue.name,
-                      room: this.program[a].schedule[b].venue.room,
-                      performances: []
-                    };
-                    let clone = JSON.parse(JSON.stringify(this.program[a]));
-                    clone.schedule = this.program[a].schedule[b];
-                    //if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) 
-                    programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
-                  }
+                  let clone = JSON.parse(JSON.stringify(program[a]));
+                  clone.schedule = program[a].schedule[b];
+                  //if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[program[a].schedule[b].venue.name+program[a].schedule[b].venue.room].performances.length<5) 
+                  programmebydayvenueObj[y+"-"+m+"-"+d].rooms[program[a].schedule[b].venue.name+program[a].schedule[b].venue.room].performances.push(clone);  
                 }
               }
             }
-          } else {
-            if (!advanced.programmenotscheduled) advanced.programmenotscheduled = [];
-            advanced.programmenotscheduled.push(this.program[a].performance);
           }
+        } else {
+          if (!advanced.programmenotscheduled) advanced.programmenotscheduled = [];
+          advanced.programmenotscheduled.push(program[a].performance);
         }
       }
-      performers.performersA = performersA.length;
-      performers.performersN = performersN.length;
-      performers.actsN = actsN.length;
-      performers.performers.sort((a,b) => (a.stagename.toLowerCase() > b.stagename.toLowerCase()) ? 1 : ((b.stagename.toLowerCase() > a.stagename.toLowerCase()) ? -1 : 0));
-      advanced.performers = performers;
+    }
+    performers.performersA = performersA.length;
+    performers.performersN = performersN.length;
+    performers.actsN = actsN.length;
+    performers.performers.sort((a,b) => (a.stagename.toLowerCase() > b.stagename.toLowerCase()) ? 1 : ((b.stagename.toLowerCase() > a.stagename.toLowerCase()) ? -1 : 0));
+    advanced.performers = performers;
 
-      if (advanced.performers) advanced.menu.push({slug: "performers", name: this.$locals.__("Performers")});
-      let programmebydayvenue = ret ? Object.values(programmebydayvenueObj) : undefined;
-      if (programmebydayvenue) {
-        programmebydayvenue.sort((a,b) => (a.day > b.day) ? 1 : ((b.day > a.day) ? -1 : 0));
-        for(let a=0;a<programmebydayvenue.length;a++){
-          let rooms = [];
-          for(let b in programmebydayvenue[a].rooms) {
-            programmebydayvenue[a].rooms[b].performances.sort((a,b) => (a.schedule.starttime > b.schedule.starttime) ? 1 : ((b.schedule.starttime > a.schedule.starttime) ? -1 : 0));
-            rooms.push(programmebydayvenue[a].rooms[b]);
-          }
-          programmebydayvenue[a].rooms = rooms;
-          programmebydayvenue[a].rooms.sort((a,b) => (a.room > b.room) ? 1 : ((b.room > a.room) ? -1 : 0));
+    if (advanced.performers) advanced.menu.push({slug: "performers", name: this.$locals.__("Performers")});
+    let programmebydayvenue = ret ? Object.values(programmebydayvenueObj) : undefined;
+    if (programmebydayvenue) {
+      programmebydayvenue.sort((a,b) => (a.day > b.day) ? 1 : ((b.day > a.day) ? -1 : 0));
+      for(let a=0;a<programmebydayvenue.length;a++){
+        let rooms = [];
+        for(let b in programmebydayvenue[a].rooms) {
+          programmebydayvenue[a].rooms[b].performances.sort((a,b) => (a.schedule.starttime > b.schedule.starttime) ? 1 : ((b.schedule.starttime > a.schedule.starttime) ? -1 : 0));
+          rooms.push(programmebydayvenue[a].rooms[b]);
         }
-        let dd = programmebydayvenue.map((item) => {return {name: item.date, slug:item.day}});
-        let types = [];
-        for (var item in  programmebydayvenue) {
-          for (var item2 in  programmebydayvenue[item].rooms) {
-            for (var item3 in  programmebydayvenue[item].rooms[item2].performances) {
-              if (!types.length || (programmebydayvenue[item].rooms[item2].performances[item3].performance && programmebydayvenue[item].rooms[item2].performances[item3].performance.type && programmebydayvenue[item].rooms[item2].performances[item3].performance.type.slug && types.map(i => {return i.slug}).indexOf(programmebydayvenue[item].rooms[item2].performances[item3].performance.type.slug)===-1)) {
-                types.push(programmebydayvenue[item].rooms[item2].performances[item3].performance.type);
-              }
+        programmebydayvenue[a].rooms = rooms;
+        programmebydayvenue[a].rooms.sort((a,b) => (a.room > b.room) ? 1 : ((b.room > a.room) ? -1 : 0));
+      }
+      let dd = programmebydayvenue.map((item) => {return {name: item.date, slug:item.day}});
+      let types = [];
+      for (var item in  programmebydayvenue) {
+        for (var item2 in  programmebydayvenue[item].rooms) {
+          for (var item3 in  programmebydayvenue[item].rooms[item2].performances) {
+            if (!types.length || (programmebydayvenue[item].rooms[item2].performances[item3].performance && programmebydayvenue[item].rooms[item2].performances[item3].performance.type && programmebydayvenue[item].rooms[item2].performances[item3].performance.type.slug && types.map(i => {return i.slug}).indexOf(programmebydayvenue[item].rooms[item2].performances[item3].performance.type.slug)===-1)) {
+              types.push(programmebydayvenue[item].rooms[item2].performances[item3].performance.type);
             }
           }
         }
-
-        if (this.program) {
-          advanced.menu.push({slug: "program", name: this.$locals.__("Program"), days: dd, types:types});
-        }
       }
-      if (this.galleries && this.galleries.length) advanced.menu.push({slug: "galleries", name: this.$locals.__("Galleries")});
-      if (this.videos && this.videos.length) advanced.menu.push({slug: "videos", name: this.$locals.__("Videos")});
-      if (this.partners && this.partners.length) advanced.menu.push({slug: "partners", name: this.$locals.__("Partners")});
 
-      advanced.performers.countries = advanced.performers.countries.sort();
-      advanced.programmebydayvenue = programmebydayvenue;
+      if (program) {
+        advanced.menu.push({slug: "program", name: this.$locals.__("Program"), days: dd, types:types});
+      }
     }
-  } else {
-    advanced = this.program_freezed
+    if (this.galleries && this.galleries.length) advanced.menu.push({slug: "galleries", name: this.$locals.__("Galleries")});
+    if (this.videos && this.videos.length) advanced.menu.push({slug: "videos", name: this.$locals.__("Videos")});
+    if (this.partners && this.partners.length) advanced.menu.push({slug: "partners", name: this.$locals.__("Partners")});
+
+    advanced.performers.countries = advanced.performers.countries.sort();
+    advanced.programmebydayvenue = programmebydayvenue;
+  }
+  if (!this.is_freezed) {
   }
   return advanced;
 });
@@ -526,7 +532,8 @@ eventSchema.virtual('subtitle').get(function (req) {
 
 
 eventSchema.virtual('imageFormats').get(function () {
-  //logger.info("EventShow virtual imageFormats")
+  logger.info("EventShow virtual imageFormats")
+  logger.info(config.cpanel[adminsez].forms)
   let imageFormats = {};
   for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
     imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;

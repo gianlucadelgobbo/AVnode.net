@@ -313,6 +313,103 @@ async function copyFreezedPerformance(originalPerformance, eventId) {
       });
 
       await freezedPerformance.save();
+
+      for (const performanceUser of originalPerformance.users || []) {
+        const usedMemory = process.memoryUsage().heapUsed / 1024 / 1024;
+        logger.info(`🧠 Memory Usage Before Query: ${Math.round(usedMemory * 100) / 100} MB`);
+
+        let performanceUserItem
+        try {
+          performanceUserItem = await Models.UserShow.findOne({ _id: performanceUser }).lean().exec();
+        } catch (error) {
+          logger.error(`❌ Error getting user ${performanceUser._id} from UserShow: ${error.message}`);
+          return handleError(res, "Error getting user", error);
+        }
+
+        const usedMemoryAfter = process.memoryUsage().heapUsed / 1024 / 1024;
+        logger.info(`🧠 Memory Usage After Query: ${Math.round(usedMemoryAfter * 100) / 100} MB`);
+        
+        try {
+          const freezedPerformanceUser = await copyFreezedUser(performanceUserItem, eventId);
+          freezedPerformance.users.push(freezedPerformanceUser._id);
+        } catch (error) {
+          logger.error(`❌ Error copying user ${performanceUserItem._id} for performance ${freezedPerformance._id}: ${error.message}`, {
+            originalUser: performanceUserItem,
+            eventId
+          });
+        }
+      }
+      // Copy galleries
+      if (originalPerformance.galleries && Array.isArray(originalPerformance.galleries)) {
+        for (const galleryUserID of originalPerformance.galleries) {
+          const gallery = await Models.Gallery.findOne({ _id: galleryUserID }).lean().exec();
+
+          const freezedGallery = await copyFreezedGallery(gallery, eventId, freezedPerformance);
+
+          // Copy users associated with the gallery
+          if (gallery.users && Array.isArray(gallery.users)) {
+            for (const galleryUserID of gallery.users) {
+              let galleryUser;
+              try {
+                galleryUser = await Models.UserShow.findOne({ _id: galleryUserID }).lean().exec();
+              } catch (error) {
+                logger.error(`❌ Error getting user ${galleryUserID} for Gallery ${freezedProgramItem.performance._id } from UserShow: ${error.message}`);
+                return handleError(res, `❌ Error getting user ${galleryUserID} for Gallery ${freezedProgramItem.performance._id } from UserShow: ${error.message}`, error);
+              }
+              
+              try {
+                const freezedGalleryUser = await copyFreezedUser(galleryUser, eventId);
+                freezedGallery.users.push(freezedGalleryUser._id);
+              } catch (error) {
+                logger.error(`❌ Error copying user ${galleryUserID} for gallery ${gallery._id}: ${error.message}`, {
+                  originalUser: galleryUser,
+                  eventId
+                });
+              }
+            }
+          }
+
+          await freezedGallery.save();
+          freezedPerformance.galleries.push(freezedGallery._id);
+        }
+      }
+
+      // Copy videos
+      if (originalPerformance.videos && Array.isArray(originalPerformance.videos)) {
+        for (const videoOriginalID of originalPerformance.videos) {
+          const video = await Models.Video.findOne({ _id: videoOriginalID }).lean().exec();
+          const freezedVideo = await copyFreezedVideo(video, eventId, freezedPerformance);
+
+          // Copy users associated with the video
+          if (video.users && Array.isArray(video.users)) {
+            for (const videoUserID of video.users) {
+              let videoUser;
+              try {
+                videoUser = await Models.UserShow.findOne({ _id: videoUserID }).lean().exec();
+              } catch (error) {
+                logger.error(`❌ Error getting user ${videoUserID} for Video ${video._id } from UserShow: ${error.message}`);
+                return handleError(res, `❌ Error getting user ${videoUserID} for Video ${video._id } from UserShow: ${error.message}`, error);
+              }
+              
+              try {
+                const freezedVideoUser = await copyFreezedUser(videoUser, eventId);
+                freezedVideo.users.push(freezedVideoUser._id);
+              } catch (error) {
+                logger.error(`❌ Error copying freezedVideoUser ${videoUserID} for freezedVideoUser ${freezedVideoUserID._id}: ${error.message}`, {
+                  originalUser: videoUser,
+                  eventId
+                });
+                return handleError(res, `❌ Error copying freezedVideoUser ${videoUserID} for Video ${video.performance._id } from UserShow: ${error.message}`, error);
+              }
+
+            }
+          }
+
+          await freezedVideo.save();
+          freezedPerformance.videos.push(freezedVideo._id);
+        }
+      }
+
       logger.info(`Created new freezedPerformance: ${freezedPerformance._id}`);
     } else {
       logger.info(`Found existing freezedPerformance: ${freezedPerformance._id}`);
@@ -566,34 +663,36 @@ dataprovider.freezeEventProgram = async (req, res) => {
         logger.info(`🔄 Copying performance ${entry.performance._id}`);
 
         const freezedPerformance = await copyFreezedPerformance(entry.performance, eventId);
+/* 
+        if (!freezedPerformance.users && !freezedPerformance.users.length) {
+          // Copy users associated with the performance
+          for (const performanceUser of entry.performance.users || []) {
+            const usedMemory = process.memoryUsage().heapUsed / 1024 / 1024;
+            logger.info(`🧠 Memory Usage Before Query: ${Math.round(usedMemory * 100) / 100} MB`);
 
-        // Copy users associated with the performance
-        for (const performanceUser of entry.performance.users || []) {
-          const usedMemory = process.memoryUsage().heapUsed / 1024 / 1024;
-          logger.info(`🧠 Memory Usage Before Query: ${Math.round(usedMemory * 100) / 100} MB`);
+            let performanceUserItem
+            try {
+              performanceUserItem = await Models.UserShow.findOne({ _id: performanceUser }).lean().exec();
+            } catch (error) {
+              logger.error(`❌ Error getting user ${performanceUser._id} from UserShow: ${error.message}`);
+              return handleError(res, "Error getting user", error);
+            }
 
-          let performanceUserItem
-          try {
-            performanceUserItem = await Models.UserShow.findOne({ _id: performanceUser }).lean().exec();
-          } catch (error) {
-            logger.error(`❌ Error getting user ${performanceUser._id} from UserShow: ${error.message}`);
-            return handleError(res, "Error getting user", error);
-          }
-
-          const usedMemoryAfter = process.memoryUsage().heapUsed / 1024 / 1024;
-          logger.info(`🧠 Memory Usage After Query: ${Math.round(usedMemoryAfter * 100) / 100} MB`);
-          
-          try {
-            const freezedPerformanceUser = await copyFreezedUser(performanceUserItem, eventId);
-            freezedPerformance.users.push(freezedPerformanceUser._id);
-          } catch (error) {
-            logger.error(`❌ Error copying user ${performanceUserItem._id} for performance ${freezedPerformance._id}: ${error.message}`, {
-              originalUser: performanceUserItem,
-              eventId
-            });
+            const usedMemoryAfter = process.memoryUsage().heapUsed / 1024 / 1024;
+            logger.info(`🧠 Memory Usage After Query: ${Math.round(usedMemoryAfter * 100) / 100} MB`);
+            
+            try {
+              const freezedPerformanceUser = await copyFreezedUser(performanceUserItem, eventId);
+              freezedPerformance.users.push(freezedPerformanceUser._id);
+            } catch (error) {
+              logger.error(`❌ Error copying user ${performanceUserItem._id} for performance ${freezedPerformance._id}: ${error.message}`, {
+                originalUser: performanceUserItem,
+                eventId
+              });
+            }
           }
         }
-
+ */
         // Copy program item
         const originalProgramItem = await Models.Program.findOne({ _id: entry.subscription_id });
         if (!originalProgramItem) {
@@ -610,77 +709,6 @@ dataprovider.freezeEventProgram = async (req, res) => {
           performance: freezedProgramItem.performance,
           schedule: freezedProgramItem.schedule,
         });
-
-        // Copy galleries
-        if (entry.performance.galleries && Array.isArray(entry.performance.galleries)) {
-          for (const galleryUserID of entry.performance.galleries) {
-            const gallery = await Models.Gallery.findOne({ _id: galleryUserID }).lean().exec();
-
-            const freezedGallery = await copyFreezedGallery(gallery, eventId, freezedPerformance);
-
-            // Copy users associated with the gallery
-            if (gallery.users && Array.isArray(gallery.users)) {
-              for (const galleryUserID of gallery.users) {
-                let galleryUser;
-                try {
-                  galleryUser = await Models.UserShow.findOne({ _id: galleryUserID }).lean().exec();
-                } catch (error) {
-                  logger.error(`❌ Error getting user ${galleryUserID} for Gallery ${freezedProgramItem.performance._id } from UserShow: ${error.message}`);
-                  return handleError(res, `❌ Error getting user ${galleryUserID} for Gallery ${freezedProgramItem.performance._id } from UserShow: ${error.message}`, error);
-                }
-                
-                try {
-                  const freezedGalleryUser = await copyFreezedUser(galleryUser, eventId);
-                  freezedGallery.users.push(freezedGalleryUser._id);
-                } catch (error) {
-                  logger.error(`❌ Error copying user ${galleryUserID} for gallery ${gallery._id}: ${error.message}`, {
-                    originalUser: galleryUser,
-                    eventId
-                  });
-                }
-              }
-            }
-
-            await freezedGallery.save();
-            freezedPerformance.galleries.push(freezedGallery._id);
-          }
-        }
-
-        // Copy videos
-        if (entry.performance.videos && Array.isArray(entry.performance.videos)) {
-          for (const videoOriginalID of entry.performance.videos) {
-            const video = await Models.Video.findOne({ _id: videoOriginalID }).lean().exec();
-            const freezedVideo = await copyFreezedVideo(video, eventId, freezedPerformance);
-
-            // Copy users associated with the video
-            if (video.users && Array.isArray(video.users)) {
-              for (const videoUserID of video.users) {
-                let videoUser;
-                try {
-                  videoUser = await Models.UserShow.findOne({ _id: videoUserID }).lean().exec();
-                } catch (error) {
-                  logger.error(`❌ Error getting user ${videoUserID} for Video ${video._id } from UserShow: ${error.message}`);
-                  return handleError(res, `❌ Error getting user ${videoUserID} for Video ${video._id } from UserShow: ${error.message}`, error);
-                }
-                
-                try {
-                  const freezedVideoUser = await copyFreezedUser(videoUser, eventId);
-                  freezedVideo.users.push(freezedVideoUser._id);
-                } catch (error) {
-                  logger.error(`❌ Error copying freezedVideoUser ${videoUserID} for freezedVideoUser ${freezedVideoUserID._id}: ${error.message}`, {
-                    originalUser: videoUser,
-                    eventId
-                  });
-                  return handleError(res, `❌ Error copying freezedVideoUser ${videoUserID} for Video ${video.performance._id } from UserShow: ${error.message}`, error);
-                }
-
-              }
-            }
-
-            await freezedVideo.save();
-            freezedPerformance.videos.push(freezedVideo._id);
-          }
-        }
 
         await freezedPerformance.save();
       } catch (entryError) {
@@ -1106,6 +1134,56 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
               "model": "Video"
             });
           }
+          if (populate[a].path==="program_freezed.performance") {
+            //populate[a].match = { "slug": req.params.performance};
+            populate[a].select.abouts = 1;
+            populate[a].select.bookings = 1;
+            populate[a].populate.push({
+              "path": "bookings.event",
+              "select": {
+                "title": 1,
+                "image": 1,
+                "schedule": 1,
+                "slug": 1
+              },
+              "model": "EventShow"
+            });
+            populate[a].populate.push({
+              "path": "users",
+              "select": {
+                "stagename": 1,
+                "image": 1,
+                "slug": 1,
+                "abouts": 1,
+                "addresses": 1,
+                "web": 1,
+                "social": 1
+              },
+              "model": "EventFreezedUserShow"
+            });
+            populate[a].populate.push({
+              "path": "galleries",
+              "match": { "is_public": true},
+              "select": {
+                "title": 1,
+                "stats": 1,
+                "image": 1,
+                "slug": 1
+              },
+              "model": "EventFreezedGallery"
+            });
+            populate[a].populate.push({
+              "path": "videos",
+              "match": { "is_public": true},
+              "select": {
+                "title": 1,
+                "stats": 1,
+                "media": 1,
+                "slug": 1
+              },
+              "model": "EventFreezedVideo"
+            });
+          }
         }
       }
       if (req.params.day) {
@@ -1244,14 +1322,14 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
     }
     logger.info("CE PROVO")
     try {
-      /* logger.info("populate");
+     logger.info("populate");
       logger.info(populate);
       logger.info("BINGOOOOO");
-      logger.info("model");
+      /*  logger.info("model");
       logger.info(model.modelName);
       logger.info("config.sections[section]");
       logger.info(config.sections[section]);
-      logger.info({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}); */
+      logger.info({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1});  */
       let ddd = await model.
       findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
       // lean({ virtuals: true }).
@@ -1261,7 +1339,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
       exec()
       let data;
       logger.info("ddd");
-      /* logger.info(ddd); */
+      //logger.info(ddd);
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};
       if (data && data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
@@ -1854,16 +1932,18 @@ dataprovider.addCat = async (req, populate, cb) => {
 };
 
 dataprovider.show = (req, res, section, subsection, model) => {
-   logger.info(section);
+  logger.info(section);
   logger.info(subsection);
   /*logger.info("config.sections[section]");
   logger.info(config.sections[section]); */
   let populate = JSON.parse(JSON.stringify(config.sections[section][subsection].populate));
-  /* logger.info("populate PRE");
-  logger.info(model.modelName); */
+  logger.info("populate PRE");
+  /* logger.info(model.modelName); */
   //logger.info(populate);
   dataprovider.addCat(req, populate, (populate, type) => {
     for(let item in populate) {
+      console.log("populate")
+      console.log(populate[item])
       if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
       if (populate[item].model) populate[item].model = Models[populate[item].model]
       /* if (populate[item].model === 'UserShow') populate[item].model = UserShow;

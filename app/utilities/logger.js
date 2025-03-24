@@ -18,13 +18,13 @@ const logLevel = isDebug ? 'debug' : isDev ? 'info' : 'warn';
 
 // 🔥 Stack Trace Filtering (Keeps Console Logs Readable)
 const filterStackTrace = (stack) => {
-  if (!stack) return null;
+/*   if (!stack) return null;
   const relevantLines = stack.split('\n').filter(line => !line.includes('node_modules'));
   if (relevantLines.length > 0) {
     const match = relevantLines[0].match(/at .* \((.*):(\d+):\d+\)/);
     if (match) return `File: ${path.relative(config.appRoot, match[1])}, Line: ${match[2]}`;
-  }
-  return null;
+  } */
+  return stack;
 };
 
 // 🔥 Log Format for Files (Structured JSON)

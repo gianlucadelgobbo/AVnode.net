@@ -69,11 +69,18 @@ router.get('/:sez/:code', async (req, res) => {
                   logger.info('Crew saved successfully');
                 } catch (crewError) {
                   logger.info(crewError);
-                  return res.render('verify/signup', {
-                    title: req.__('Signup verify'),
-                    err: crewError,
-                    data: data
-                  });
+                  if (req.isApi) {
+                    res.send({
+                      err: crewError,
+                      data: data
+                    })
+                  } else {
+                    return res.render('verify/signup', {
+                      title: req.__('Signup verify'),
+                      err: crewError,
+                      data: data
+                    });
+                  }
                 }
               }
           
@@ -82,44 +89,84 @@ router.get('/:sez/:code', async (req, res) => {
                 await UserTemp.deleteMany({ confirm: req.params.code }); // Delete temp user records
                 logger.info('UserTemp records deleted');
                 
-                return res.render('verify/signup', {
-                  title: req.__('Signup verify'),
-                  data: data
-                });
+                if (req.isApi) {
+                  res.send({
+                    data: data
+                  })
+                } else {
+                  return res.render('verify/signup', {
+                    title: req.__('Signup verify'),
+                    data: data
+                  });
+                }
               } catch (sendyError) {
                 logger.info(sendyError);
-                return res.render('verify/signup', {
-                  title: req.__('Signup verify'),
-                  err: sendyError,
-                  data: data
-                });
+                if (req.isApi) {
+                  res.send({
+                    err: sendyError,
+                    data: data
+                  })
+                } else {
+                  return res.render('verify/signup', {
+                    title: req.__('Signup verify'),
+                    err: sendyError,
+                    data: data
+                  });
+                }
               }
             } catch (userError) {
               logger.info(userError);
-              return res.render('verify/signup', {
+              if (req.isApi) {
+                res.send({
+                  err: userError,
+                  data: data
+                })
+              } else {
+                return res.render('verify/signup', {
+                  title: req.__('Signup verify'),
+                  err: userError,
+                  data: data
+                });
+              }
+            }
+          } else {
+            if (req.isApi) {
+              res.send({
+                err: errors,
+                data: data
+              })
+            } else {
+              res.render('verify/signup', {
                 title: req.__('Signup verify'),
-                err: userError,
+                err: errors,
                 data: data
               });
-            }          } else {
-            res.render('verify/signup', {
-              title: req.__('Signup verify'),
-              err: errors,
-              data: data
-            });
+            }
           }
         });      
+      } else {
+        if (req.isApi) {
+          res.send({
+            err: true
+          })
+        } else {
+          res.render('verify/signup', {
+            title: req.__('Signup verify'),
+            err: true,
+          });
+        }
+      }
+    } catch (err) {
+      if (req.isApi) {
+        res.send({
+          err: true
+        })
       } else {
         res.render('verify/signup', {
           title: req.__('Signup verify'),
           err: true,
         });
       }
-    } catch (err) {
-      res.render('verify/signup', {
-        title: req.__('Signup verify'),
-        err: true,
-      });
     }
   }
   if (req.params.sez == 'email' && req.params.code) {
@@ -131,16 +178,28 @@ router.get('/:sez/:code', async (req, res) => {
       .exec();
       if (!user) {
         logger.info("NON TROVATOOOO");
-        return res.render('verify/email', {
-          title: req.__('Email verify'),
-          err: true
-        });
+        if (req.isApi) {
+          res.send({
+            err: true
+          })
+        } else {
+          return res.render('verify/email', {
+            title: req.__('Email verify'),
+            err: true
+          });
+        }
       }
     } catch (err) {
-      return res.render('verify/email', {
-        title: req.__('Email verify'),
-        err: true,
-      });
+      if (req.isApi) {
+        res.send({
+          err: true
+        })
+      } else {
+        return res.render('verify/email', {
+          title: req.__('Email verify'),
+          err: true,
+        });
+      }
     };
     for(let item=0;item<user.emails.length;item++) {
       if (user.emails[item].confirm === req.params.code) {
@@ -157,16 +216,28 @@ router.get('/:sez/:code', async (req, res) => {
         req.flash('success', { msg: req.__('Email verificated with success.') });
         res.redirect('/admin/profile/'+req.user._id+'/emails');
       } else {
-        res.render('verify/email', {
-          title: req.__('Email verify'),
-          err: false,
-        });  
+        if (req.isApi) {
+          res.send({
+            err: false
+          })
+        } else {
+          res.render('verify/email', {
+            title: req.__('Email verify'),
+            err: false,
+          });  
+        }
       }
     } catch (err) {
-      res.render('verify/email', {
-        title: req.__('Email verify'),
-        err: true,
-      });
+      if (req.isApi) {
+        res.send({
+          err: true
+        })
+      } else {
+        res.render('verify/email', {
+          title: req.__('Email verify'),
+          err: true,
+        });
+      }
     }
 }
 });

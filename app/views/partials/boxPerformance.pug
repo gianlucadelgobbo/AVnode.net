@@ -23,16 +23,19 @@
               img.img-fluid(src="/images/icon_authors.svg", width="50", height="50", alt="Multiple performers")
             div
               p.users_performance_item_name=item.users.length+" "+__("performers")
-              p.users_performance_item_views=item.stats.visits+" "+__("views")
+              if item.stats
+                p.users_performance_item_views=item.stats.visits+" "+__("views")
           else              
             each user in item.users
               div
                 img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
-              div
-                p.users_performance_item_name=user.stagename
-                p.users_performance_item_views=item.stats.visits+" "+__("views")
+              if item.stats
+                div
+                  p.users_performance_item_name=user.stagename
+                  p.users_performance_item_views=item.stats.visits+" "+__("views")
         .flex_right      
           .users_performance_item_likes
             span.color2.icon-heart
-            br
-            span.text-nowrap=item.stats.likes+" "+__("likes")
+            if item.stats
+              br
+              span.text-nowrap=item.stats.likes+" "+__("likes")

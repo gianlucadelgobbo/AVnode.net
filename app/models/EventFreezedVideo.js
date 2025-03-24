@@ -8,7 +8,7 @@ import About from './shared/About.js';
 import Media from './shared/Media.js';
 
 
-const adminsez = 'event_videos';
+const adminsez = 'videos';
 
 const videoSchema = new Schema({
   old_id : String,

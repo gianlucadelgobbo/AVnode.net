@@ -1,18 +1,5 @@
 {
   "port": 8102,
-  "ports": {
-   "en": "8102",
-    "be": "8007",
-    "de": "8008",
-    "es": "8009",
-    "fr": "8010",
-    "el": "8011",
-    "hu": "8012",
-    "it": "8013",
-    "pl": "8014",
-    "pt": "8015",
-    "ru": "8016"
-  },
   "event-type": [
     {
       "_id": "5be8708afc39610000000054",
@@ -6228,6 +6215,50 @@
           },
           "model": "Category"
         }, {
+          "path": "program_freezed.performance",
+          "select": {
+            "title": 1,
+            "stats": 1,
+            "users": 1,
+            "type": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "EventFreezedPerformance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "is_public": 1,
+              "organizationData.logo": 1,
+              "members": 1,
+              "addresses": 1,
+              "stats": 1,
+              "stagename": 1
+            },
+            "model": "EventFreezedUserShow"
+          }, {
+            "path": "type",
+            "select": {
+              "name": 1,
+              "slug": 1
+            },
+            "model": "Category"
+          }]
+        }, {
+          "path": "program_freezed.schedule.categories",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "program_freezed.schedule.status",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        },  {
           "path": "partners.category",
           "select": {
             "name": 1
@@ -6350,10 +6381,9 @@
               "slug": 1,
               "is_public": 1,
               "image": 1,
-              "organizationData.logo": 1,
+              "organizationData": 1,
               "members": 1,
-              "addresses.country": 1,
-              "addresses.locality": 1,
+              "addresses": 1,
               "stats": 1,
               "stagename": 1,
               "web": 1,
@@ -6369,6 +6399,39 @@
             "model": "Category"
           }]
         }, {
+          "path": "program_freezed.performance",
+          "select": {
+            "title": 1,
+            "users": 1,
+            "type": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "EventFreezedPerformance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "is_public": 1,
+              "image": 1,
+              "organizationData.logo": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "addresses.locality": 1,
+              "stagename": 1,
+              "web": 1,
+              "social": 1
+            },
+            "model": "EventFreezedUserShow"
+          }, {
+            "path": "type",
+            "select": {
+              "name": 1,
+              "slug": 1
+            },
+            "model": "Category"
+          }]
+        },{
           "path": "type",
           "select": {
             "name": 1,
@@ -6474,6 +6537,50 @@
           },
           "model": "Category"
         }, {
+          "path": "program_freezed.performance",
+          "select": {
+            "title": 1,
+            "users": 1,
+            "type": 1,
+            "image": 1,
+            "duration": 1,
+            "paypal": 1,
+            "price": 1,
+            "slug": 1
+          },
+          "model": "EventFreezedPerformance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "addresses.locality": 1,
+              "stagename": 1
+            },
+            "model": "EventFreezedUserShow"
+          }, {
+            "path": "type",
+            "select": {
+              "name": 1,
+              "slug": 1
+            },
+            "model": "Category"
+          }]
+        }, {
+          "path": "program_freezed.schedule.categories",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "program_freezed.schedule.status",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
           "path": "type",
           "select": {
             "name": 1
@@ -6547,6 +6654,38 @@
               "stagename": 1
             },
             "model": "UserShow"
+          }, {
+            "path": "type",
+            "select": {
+              "name": 1,
+              "slug": 1
+            },
+            "model": "Category"
+          }]
+        }, {
+          "path": "program_freezed.performance",
+          "select": {
+            "title": 1,
+            "stats": 1,
+            "users": 1,
+            "type": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "EventFreezedPerformance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "organizationData.logo": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "addresses.locality": 1,
+              "stats": 1,
+              "stagename": 1
+            },
+            "model": "EventFreezedUserShow"
           }, {
             "path": "type",
             "select": {
@@ -6648,6 +6787,38 @@
             "model": "Category"
           }]
         }, {
+          "path": "program_freezed.performance",
+          "select": {
+            "title": 1,
+            "stats": 1,
+            "users": 1,
+            "type": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "EventFreezedPerformance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "organizationData.logo": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "addresses.locality": 1,
+              "stats": 1,
+              "stagename": 1
+            },
+            "model": "EventFreezedUserShow"
+          }, {
+            "path": "type",
+            "select": {
+              "name": 1,
+              "slug": 1
+            },
+            "model": "Category"
+          }]
+        }, {
           "path": "videos",
           "match": { "is_public": true},
           "select": {
@@ -6737,6 +6908,38 @@
               "stagename": 1
             },
             "model": "UserShow"
+          }, {
+            "path": "type",
+            "select": {
+              "name": 1,
+              "slug": 1
+            },
+            "model": "Category"
+          }]
+        }, {
+          "path": "program_freezed.performance",
+          "select": {
+            "title": 1,
+            "stats": 1,
+            "users": 1,
+            "type": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "EventFreezedPerformance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "organizationData.logo": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "addresses.locality": 1,
+              "stats": 1,
+              "stagename": 1
+            },
+            "model": "EventFreezedUserShow"
           }, {
             "path": "type",
             "select": {
