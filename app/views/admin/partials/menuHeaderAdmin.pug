@@ -10,12 +10,12 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
         b=__("Control Panel")
       - var exclude = []
       each menuitem in config.adminMenu
-        if user.is_admin || exclude.indexOf(menuitem.href) === -1
+        if user && (user.is_admin || exclude.indexOf(menuitem.href) === -1)
           li.nav-item.mt-2.mb-2.d-block.d-lg-none(class=currentUrl==menuitem.href ? "active" : undefined)
             a.nav-link.text-white(href=menuitem.href.replace("/admin/profile", "/admin/profile/"+user._id))
               span.mr-3(class=menuitem.icon)
               span=menuitem.label.defaultMessage
-      if user.is_pro
+      if user && user.is_pro
         li.nav-item.mt-2.mb-2.d-block.d-lg-none
           a.nav-link.text-white(href="/adminpro")
             span.mr-3(class="icon-cog")

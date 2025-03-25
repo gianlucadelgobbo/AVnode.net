@@ -16,7 +16,8 @@ router.get('/', (req, res) => {
     return res.redirect (returnTo);
   }
   res.render('login', {
-    title: req.__('Login')
+    title: req.__('Login'),
+    currentUrl: req.originalUrl
   });
 });
 

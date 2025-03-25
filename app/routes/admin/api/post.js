@@ -93,7 +93,12 @@ router.postData = async (req, res) => {
 
     let data;
     try {
-      data = await Models[config.cpanel[req.params.sez].model].create(post);
+      //data = await Models[config.cpanel[req.params.sez].model].create(post);
+      const Model = Models[config.cpanel[req.params.sez].model];
+      data = new Model(post);
+      data.$locals = { __: req.__ }; // o qualsiasi funzione di traduzione tu usi
+      //await doc.validate(); // triggera i validator
+      await data.save();
     } catch (err) {
       logger.error("🔥 Error creating entry in DB:", err);
       res.status(400).send(err);

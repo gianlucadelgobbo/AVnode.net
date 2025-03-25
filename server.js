@@ -48,6 +48,25 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV !== 'production') {
+    res.locals.frontendDomain = "";
+    return next(); // Salta in ambienti non production
+  }
+
+  const host = req.get('host'); // es. it.admin.avnode.net
+  const protocol = req.protocol;
+
+  // Sostituzione flessibile
+  const replaceWith = process.env.FRONTEND_PREFIX || ''; // es. "" o "dev."
+
+  // Rimpiazza solo il primo "admin." nel dominio
+  let frontendHost = host.replace(/^(([^.]+\.)?)admin\./, `$1${replaceWith}`);
+
+  res.locals.frontendDomain = `${protocol}://${frontendHost}`;
+  next();
+});
+
 // Set up headers for CORS
 /* const allowedOrigins = ["https://avnode.net", "https://dev.avnode.net", "*.avnode.net"];
 app.use((req, res, next) => {
