@@ -102,15 +102,15 @@ html(lang=session.current_lang)
       script(src='/lightgallery/plugins/video/lg-video.min.js')
       script(src='/lightgallery/plugins/autoplay/lg-autoplay.min.js')
       script(src='/lightgallery/plugins/fullscreen/lg-fullscreen.min.js')
-    script(src='/datetimeentry/jquery.plugin.js')
-    script(src='/datetimeentry/jquery.datetimeentry.js')
+      script(src='/datetimeentry/jquery.plugin.js')
+      script(src='/datetimeentry/jquery.datetimeentry.js')
     if get
       script.
         var get = !{JSON.stringify(get)};
     if data && data.slug
       script.
         var slug = "#{data.slug}";
-    script(src='/js/admin_tmp.js')
+    //script(src='/js/admin_tmp.js')
 
     script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places&language=en&callback=mapsCallback")
 
@@ -118,7 +118,7 @@ html(lang=session.current_lang)
       script(src='/fullcalendar/main.min.js')
       script(src='/fullcalendar/script.js')
 
-    script(src="/js/bootstrap-autocomplete.min.js")
+    //script(src="/js/bootstrap-autocomplete.min.js")
 
     script(async src="https://www.googletagmanager.com/gtag/js?id=G-DBS5WRFJ9G")
     script.
