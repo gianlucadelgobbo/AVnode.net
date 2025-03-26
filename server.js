@@ -172,7 +172,7 @@ app.set("trust proxy", "loopback");
 // Middleware
 app.use(compression());
 app.use(express.static(path.join(config.appRoot, "public")));
-app.use("/storage", express.static(path.join(config.appRoot, "storage")));
+//app.use("/storage", express.static(path.join(config.appRoot, "storage")));
 app.use("/warehouse", express.static(path.join(config.appRoot, "warehouse")));
 app.use("/glacier", express.static(path.join(config.appRoot, "glacier")));
 

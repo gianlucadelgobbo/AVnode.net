@@ -741,5 +741,16 @@
 	"TERMS_ACCEPTANCE_IS_REQUIRED": "TERMS_ACCEPTANCE_IS_REQUIRED",
 	"PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED": "PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED",
 	"Your Email": "Your Email",
-	"Your Password": "Your Password"
+	"Your Password": "Your Password",
+	"Email Confirm": "Email Confirm",
+	"We’ve received a request to add this new email": "We’ve received a request to add this new email",
+	"Click here to confirm": "Click here to confirm",
+	"If you didn’t make the request, just ignore this message": {
+		" Otherwise, you add the email using this link": "If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link"
+	},
+	"Confirmation Email sending success, please check your inbox and confirm": "Confirmation Email sending success, please check your inbox and confirm",
+	"Email verificated with success.": "Email verificated with success.",
+	"Email verify": "Email verify",
+	"Verification Failed": "Verification Failed",
+	"Verification was already done or someone subscribed with some of your data.": "Verification was already done or someone subscribed with some of your data."
 }

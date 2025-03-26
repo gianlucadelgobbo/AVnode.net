@@ -764,5 +764,12 @@
 	"PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED": "PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED",
 	"To have your news at https": "//avnode.net/news/mybeautyfulnews, please insert mybeautyfulnews (lower case, no spaces, no special characters)",
 	"To have your video at https": "//avnode.net/videos/mybeautyfulvideo, please insert mybeautifulvideo (lower case, no spaces, no special characters)",
-	"To have your gallery at https": "//avnode.net/galleries/mybeautyfulgallery, please insert mybeautifulgallery (lower case, no spaces, no special characters)"
+	"To have your gallery at https": "//avnode.net/galleries/mybeautyfulgallery, please insert mybeautifulgallery (lower case, no spaces, no special characters)",
+	"Email Confirm": "Email Confirm",
+	"We’ve received a request to add this new email": "We’ve received a request to add this new email",
+	"Click here to confirm": "Click here to confirm",
+	"If you didn’t make the request, just ignore this message": {
+		" Otherwise, you add the email using this link": "If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link"
+	},
+	"Confirmation Email sending success, please check your inbox and confirm": "Confirmation Email sending success, please check your inbox and confirm"
 }

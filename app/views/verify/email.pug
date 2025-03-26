@@ -1,7 +1,7 @@
-extends ../layout
+extends ../layout_admin
 
 block content
-  .container
+  .container.mt-5
     if err
       h3=__("Verification Failed")
       p=__("Verification was already done or someone subscribed with some of your data.")

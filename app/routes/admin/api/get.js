@@ -190,14 +190,14 @@ router.getList = async (req, res, view) => {
       if (view == "json") {
         res.status(500).send({ message: `${JSON.stringify(err)}` });
       } else {
-        res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
+        res.status(404).render('404', {currentUrl: req.originalUrl, user: req.user, title:req.__("404: Page not found"), titleicon:"icon-warning"});
       }
     }
   } else {
     if (view == "json") {
       res.status(404).send({ message: `API_NOT_FOUND` });
     } else {
-      res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
+      res.status(404).render('404', {currentUrl: req.originalUrl, user: req.user, title:req.__("404: Page not found"), titleicon:"icon-warning"});
     }  
   }
 }

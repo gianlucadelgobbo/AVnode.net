@@ -759,7 +759,7 @@ dataprovider.getData = async (req, res, view) => {
         if (view == "json") {
           res.status(404).send({ message: `DOC_NOT_FOUND` });
         } else {
-          res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
+          res.status(404).render('404', {path: req.originalUrl, currentUrl: req.originalUrl, user: req.user, title:req.__("404: Page not found"), titleicon:"icon-warning"});
         }  
       } else {
         if (helpers.editable(req, data, id)) {
@@ -834,14 +834,14 @@ dataprovider.getData = async (req, res, view) => {
       if (view == "json") {
         res.status(500).send({ message: `${JSON.stringify(err)}` });
       } else {
-        res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
+        res.status(404).render('404', {path: req.originalUrl, currentUrl: req.originalUrl, user: req.user, title:req.__("404: Page not found"), titleicon:"icon-warning"});
       }
     }
   } else {
     if (view == "json") {
       res.status(404).send({ message: `API_NOT_FOUND` });
     } else {
-      res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
+      res.status(404).render('404', {path: req.originalUrl, currentUrl: req.originalUrl, user: req.user, title:req.__("404: Page not found"), titleicon:"icon-warning"});
     }  
   }
 }
@@ -1875,7 +1875,7 @@ dataprovider.fetchLists = async (model, query, select, populate, limit, skip, so
 
     // Use Promises instead of callback
     const total = await model.countDocuments(query);
-    //logger.info(total)
+    logger.info(select)
 
     let data = await model.find(query)
       .populate(populate)
@@ -1960,7 +1960,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
 
           //logger.info(data);
       if (err || !data || data === null) {
-        res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
+        res.status(404).render('404', {path: req.originalUrl, currentUrl: req.originalUrl, user: req.user, title:req.__("404: Page not found"), titleicon:"icon-warning"});
       } else {
         // MAP
         if (data && data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
@@ -2174,7 +2174,7 @@ dataprovider.list = (req, res, section, model) => {
     const populate = config.sections[section].list_populate;
   
     if (notfound) {
-      res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
+      res.status(404).render('404', {path: req.originalUrl, currentUrl: req.originalUrl, user: req.user, title:req.__("404: Page not found"), titleicon:"icon-warning"});
     } else {
       //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
       let query = Object.assign({}, config.sections[section].categoriesQueries[filter]);
@@ -2203,7 +2203,7 @@ dataprovider.list = (req, res, section, model) => {
               nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
             });
           } else {
-            res.status(404).render('404', {path: req.originalUrl, title:req.__("404: Page not found"), titleicon:"icon-warning"});
+            res.status(404).render('404', {path: req.originalUrl, currentUrl: req.originalUrl, user: req.user, title:req.__("404: Page not found"), titleicon:"icon-warning"});
           }
         } else {
           let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;

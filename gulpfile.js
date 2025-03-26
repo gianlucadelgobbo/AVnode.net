@@ -15,12 +15,14 @@ var tasklist = [
 ];
 
 const fonts_bs = () => {
-  return gulp.src(config.npmDir + '/bootstrap-sass/assets/fonts/bootstrap/**/*')
+  return gulp.src('./gulp/bootstrap-sass/assets/fonts/bootstrap/**/*')
     .pipe(gulp.dest(config.publicDir + '/fonts'));
 }
 
 const compress_css = () => {
-  return gulp.src(["./gulp/sass/main.scss"])
+  return gulp.src([
+    "./gulp/sass/main.scss"
+  ])
   .pipe(sass({outputStyle: 'compressed'}))
   .pipe(concat('main.min.css'))
   //.pipe(uglify({mangle: { reserved: ['glink'] } }))
@@ -28,7 +30,9 @@ const compress_css = () => {
 }
 
 const compress_css_admin = () => {
-  return gulp.src(["./gulp/sass/admin.scss"])
+  return gulp.src([
+    "./gulp/sass/admin.scss"
+  ])
   .pipe(sass({outputStyle: 'compressed'}))
   .pipe(concat('admin.min.css'))
   //.pipe(uglify({mangle: { reserved: ['glink'] } }))
@@ -36,7 +40,9 @@ const compress_css_admin = () => {
 }
 
 const compress_css_oembed = () => {
-  return gulp.src(["./gulp/sass/oembed.scss"])
+  return gulp.src([
+    "./gulp/sass/oembed.scss"
+  ])
   .pipe(sass({outputStyle: 'compressed'}))
   .pipe(concat('oembed.min.css'))
   //.pipe(uglify({mangle: { reserved: ['glink'] } }))
@@ -45,15 +51,13 @@ const compress_css_oembed = () => {
 
 const compress_js = () => {
   return gulp.src([
-    config.npmDir + '/jquery/dist/jquery.min.js',
-    config.npmDir + '/popper.js/dist/umd/popper.min.js',
-    //config.npmDir + '/@popperjs/core/dist/umd/popper.min.js',
-    config.npmDir + '/bootstrap/dist/js/bootstrap.min.js',
+    './gulp/jquery/dist/jquery.min.js',
+    './gulp/popper.js/dist/umd/popper.min.js',
+    './gulp/bootstrap/dist/js/bootstrap.min.js',
     './gulp/js/includes_main/owl.carousel.min.js',
     './gulp/js/main.js',
     './gulp/js/includes_main/ajax.js',
     './gulp/js/includes_main/cookielawinfo.min.js'
-    
   ])
   .pipe(concat('combo.min.js'))
   .pipe(uglify({mangle: { reserved: ['glink'] } }))
@@ -62,7 +66,7 @@ const compress_js = () => {
 
 const compress_js_oembed = () => {
   return gulp.src([
-    config.npmDir + '/jquery/dist/jquery.min.js',
+    './gulp/jquery/dist/jquery.min.js',
     './gulp/js/includes_video/swfobject.js',
     './gulp/js/includes_video/videojs.js',
     './gulp/js/includes_video/videojs-logo.min.js',
@@ -129,7 +133,3 @@ const compress_js_vjtv = () => {
 
 
 gulp.task('default', gulp.series(compress_css, compress_css_admin, compress_js, compress_js_video, compress_js_maps, compress_js_vjtv, compress_js_admin,compress_css_oembed,compress_js_oembed));
-//gulp.task('default', gulp.series(compress_js, compress_js_fotonica,css_fotonica_bs));
-//gulp.task('default', gulp.series(compress_js, compress_js_pac,css_pac_bs));
-//gulp.task('default', gulp.series(compress_js, compress_js_lcf,css_lcf_bs));
-//gulp.task('default', gulp.series(compress_js, compress_css_admin, compress_js_admin));

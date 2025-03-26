@@ -220,13 +220,13 @@
                   "w": 100,
                   "h": 100,
                   "folder": "100x100",
-                  "default": "/images/default-user.svg"
+                  "default": "/placeholder/circle.svg"
                 },
                 "large": {
                   "w": 400,
                   "h": 400,
                   "folder": "400x400",
-                  "default": "/images/default-user.svg"
+                  "default": "/placeholder/circle.svg"
                 }
               }
             },
@@ -376,13 +376,13 @@
                   "w": 100,
                   "h": 100,
                   "folder": "100x100",
-                  "default": "/images/default-user.svg"
+                  "default": "/placeholder/circle.svg"
                 },
                 "large": {
                   "w": 400,
                   "h": 400,
                   "folder": "400x400",
-                  "default": "/images/default-user.svg"
+                  "default": "/placeholder/circle.svg"
                 }
               }
             },
@@ -650,13 +650,13 @@
                   "w": 400,
                   "h": 225,
                   "folder": "400x225",
-                  "default": "/images/default-item.svg"
+                  "default": "/placeholder/square.svg"
                 },
                 "large": {
                   "w": 1140,
                   "h": 641,
                   "folder": "1140x641",
-                  "default": "/images/default-item.svg"
+                  "default": "/placeholder/square.svg"
                 }
               }
             },
@@ -1172,13 +1172,13 @@
                   "w": 400,
                   "h": 225,
                   "folder": "400x225",
-                  "default": "/images/default-item.svg"
+                  "default": "/placeholder/square.svg"
                 },
                 "large": {
                   "w": 1140,
                   "h": 641,
                   "folder": "1140x641",
-                  "default": "/images/default-item.svg"
+                  "default": "/placeholder/square.svg"
                 }
               }
             },
@@ -1325,13 +1325,13 @@
                   "w": 400,
                   "h": 225,
                   "folder": "400x225",
-                  "default": "/images/default-item.svg"
+                  "default": "/placeholder/square.svg"
                 },
                 "large": {
                   "w": 1140,
                   "h": 641,
                   "folder": "1140x641",
-                  "default": "/images/default-item.svg"
+                  "default": "/placeholder/square.svg"
                 }
               }
             },
@@ -1432,13 +1432,13 @@
                   "w": 400,
                   "h": 225,
                   "folder": "400x225",
-                  "default": "/images/default-item.svg"
+                  "default": "/placeholder/square.svg"
                 },
                 "large": {
                   "w": 1140,
                   "h": 641,
                   "folder": "1140x641",
-                  "default": "/images/default-item.svg"
+                  "default": "/placeholder/square.svg"
                 }
               }
             },
@@ -1569,13 +1569,13 @@
                   "w": 400,
                   "h": 225,
                   "folder": "400x225",
-                  "default": "/images/default-item.svg"
+                  "default": "/placeholder/square.svg"
                 },
                 "large": {
                   "w": 1140,
                   "h": 641,
                   "folder": "1140x641",
-                  "default": "/images/default-item.svg"
+                  "default": "/placeholder/square.svg"
                 }
               }
             },

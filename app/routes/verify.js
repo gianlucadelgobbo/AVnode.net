@@ -77,6 +77,7 @@ router.get('/:sez/:code', async (req, res) => {
                   } else {
                     return res.render('verify/signup', {
                       title: req.__('Signup verify'),
+                      currentUrl: req.originalUrl,
                       err: crewError,
                       data: data
                     });
@@ -96,6 +97,7 @@ router.get('/:sez/:code', async (req, res) => {
                 } else {
                   return res.render('verify/signup', {
                     title: req.__('Signup verify'),
+                    currentUrl: req.originalUrl,
                     data: data
                   });
                 }
@@ -109,6 +111,7 @@ router.get('/:sez/:code', async (req, res) => {
                 } else {
                   return res.render('verify/signup', {
                     title: req.__('Signup verify'),
+                    currentUrl: req.originalUrl,
                     err: sendyError,
                     data: data
                   });
@@ -124,6 +127,7 @@ router.get('/:sez/:code', async (req, res) => {
               } else {
                 return res.render('verify/signup', {
                   title: req.__('Signup verify'),
+                  currentUrl: req.originalUrl,
                   err: userError,
                   data: data
                 });
@@ -138,6 +142,7 @@ router.get('/:sez/:code', async (req, res) => {
             } else {
               res.render('verify/signup', {
                 title: req.__('Signup verify'),
+                currentUrl: req.originalUrl,
                 err: errors,
                 data: data
               });
@@ -152,6 +157,7 @@ router.get('/:sez/:code', async (req, res) => {
         } else {
           res.render('verify/signup', {
             title: req.__('Signup verify'),
+            currentUrl: req.originalUrl,
             err: true,
           });
         }
@@ -164,6 +170,7 @@ router.get('/:sez/:code', async (req, res) => {
       } else {
         res.render('verify/signup', {
           title: req.__('Signup verify'),
+          currentUrl: req.originalUrl,
           err: true,
         });
       }
@@ -185,6 +192,7 @@ router.get('/:sez/:code', async (req, res) => {
         } else {
           return res.render('verify/email', {
             title: req.__('Email verify'),
+            currentUrl: req.originalUrl,
             err: true
           });
         }
@@ -197,6 +205,7 @@ router.get('/:sez/:code', async (req, res) => {
       } else {
         return res.render('verify/email', {
           title: req.__('Email verify'),
+          currentUrl: req.originalUrl,
           err: true,
         });
       }
@@ -223,6 +232,7 @@ router.get('/:sez/:code', async (req, res) => {
         } else {
           res.render('verify/email', {
             title: req.__('Email verify'),
+            currentUrl: req.originalUrl,
             err: false,
           });  
         }
@@ -235,6 +245,7 @@ router.get('/:sez/:code', async (req, res) => {
       } else {
         res.render('verify/email', {
           title: req.__('Email verify'),
+          currentUrl: req.originalUrl,
           err: true,
         });
       }
