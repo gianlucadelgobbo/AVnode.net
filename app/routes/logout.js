@@ -3,6 +3,12 @@ const router = createRouter();
 import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
 
 router.get('/', (req, res, next) => {
+  router.logout(req, res, next)
+});
+router.post('/', (req, res, next) => {
+  router.logout(req, res, next)
+});
+router.logout = (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
 
@@ -25,6 +31,6 @@ router.get('/', (req, res, next) => {
       }
     });
   });
-});
+}
 
 export default router;
