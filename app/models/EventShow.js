@@ -548,8 +548,6 @@ eventSchema.virtual('subtitle').get(function (req) {
 
 
 eventSchema.virtual('imageFormats').get(function () {
-  logger.info("EventShow virtual imageFormats")
-  logger.info(config.cpanel[adminsez].forms)
   let imageFormats = {};
   for(let format in config.cpanel[adminsez].forms.public.image.config.sizes) {
     imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.public.image.config.sizes[format].default;

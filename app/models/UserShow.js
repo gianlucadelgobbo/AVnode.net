@@ -166,6 +166,14 @@ const userSchema = new Schema({
       delete ret.abouts;
       delete ret.__v;
       //delete ret._id;
+      if (ret.stats) {
+        delete ret.stats.footage;
+        delete ret.stats.playlists;
+        if (ret.stats.recent) {
+          delete ret.stats.recent.footage;
+          delete ret.stats.recent.playlists;
+        }
+      }
     }
   }
 });

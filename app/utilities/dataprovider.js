@@ -983,14 +983,16 @@ dataprovider.addPartnersEventToQueque = async (req, res, data, cb) => {
 }
 
 dataprovider.fetchShow = async (req, section, subsection, model, populate, select, output, cb) => {
-  /* logger.info("req.query");
+  /*
+  logger.info("req.query");
   logger.info(req.query);
   logger.info("subsection");
   logger.info(subsection);
   logger.info("slug");
   logger.info(req.params.slug);
   logger.info("model");
-  logger.info(model); */
+  logger.info(model);
+  */
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
     if (req.query.crews) {
       try {
@@ -1320,10 +1322,12 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
     }
     logger.info("CE PROVO")
     try {
+      /*  logger.info("select");
+      logger.info(select);
      logger.info("populate");
       logger.info(populate);
-      logger.info("BINGOOOOO");
-      /*  logger.info("model");
+      logger.info("BINGOOOOOBINGOOOOOBINGOOOOO");
+      logger.info("model");
       logger.info(model.modelName);
       logger.info("config.sections[section]");
       logger.info(config.sections[section]);
@@ -1332,7 +1336,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
       findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
       // lean({ virtuals: true }).
       // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
-      populate(populate).
+      //populate(populate).
       select(select).
       exec()
       let data;
@@ -1435,7 +1439,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         res.advanced.programmenotscheduled = undefined;
       }
       if (res && res.advanced && res.advanced.performers && res.advanced.performers.performers && req.params.performer) {
-        logger.info("BINGOOOOO");
+        logger.info("BINGOOOOOBINGOOOOO");
         for(let a=0; a<res.advanced.performers.performers.length;a++) {
           if (res.advanced.performers.performers[a].slug===req.params.performer) {
             res.performer = res.advanced.performers.performers[a];
