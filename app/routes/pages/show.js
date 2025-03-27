@@ -18,14 +18,22 @@ import { logger } from '../../utilities/logger.js';
 //logger.info(router.stack.map(m => m.route ? m.route.path : "Middleware"));
 
 router.get('/', async (req, res) => {
-  //logger.info(`🌍 Fetching CMS Page: ${req.originalUrl}`);
+  logger.info(`🌍 Fetching CMS Page: ${req.originalUrl}`);
   try {
     const response = await axios.get(`https://cms.avnode.net/${req.getLocale()}/wp-json/wp/v2/mypages${req.originalUrl}`);
     //logger.info(response.data);
-    res.render('pages/show', { title: response.data.post_title, data: response.data });
+    if (req.isApi) {
+      res.send({ title: response.data.post_title, data: response.data });
+    } else {
+      res.render('pages/show', { title: response.data.post_title, data: response.data });
+    }
   } catch (error) {
+    if (req.isApi) {
+      res.status(404).send({ path: req.originalUrl, title: "404: API Not Found" });
+    } else {
+      res.status(404).render('404', { path: req.originalUrl, title: "404: Page Not Found" });
+    }
     //logger.error(`❌ Error fetching page: ${error.message}`);
-    res.status(404).render('404', { path: req.originalUrl, title: "404: Page Not Found" });
   }
 });
 

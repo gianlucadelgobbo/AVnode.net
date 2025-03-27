@@ -35,10 +35,10 @@ import helpers from '../utilities/helpers.js';
 // Route mappings
 router.use('/contacts', pages);
 
-router.use('/terms', pages);
 router.use('/manifesto', pages);
-router.use('/privacy', pages);
-router.use('/cookies-in-use-on-this-site', pages);
+router.use('/terms', pages);
+router.use('/privacy-policy', pages);
+router.use('/cookies-policy', pages);
 
 router.use('/performers', performersList);
 router.use('/organizations', organizations);
