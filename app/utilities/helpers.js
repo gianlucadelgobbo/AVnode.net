@@ -317,7 +317,7 @@ const makeDescription = (abouts, locals) => {
   for(let item in descriptionA) if ((descriptionShort+" "+descriptionA[item]).trim().length<300) descriptionShort+=descriptionA[item]+" ";
   descriptionShort = descriptionShort.trim();
   if (descriptionShort.length < about.length) descriptionShort+"...";
-  return "descriptionShort";
+  return descriptionShort;
 };
 
 const dateFix = (date) => { 

@@ -997,6 +997,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
     if (req.query.crews) {
       try {
         select.crews = 1;    
+        logger.info("fetchShow query 1 "+model.modelName);
         const data = await model.
         findOne({slug: req.params.slug}).
         populate(populate).
@@ -1021,6 +1022,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         //logger.info(sort);
         //const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
         try {
+          logger.info("fetchShow query 2 "+submodel.modelName);
           const total = await submodel.countDocuments(query);
           const sub = await submodel.
           find(query).
@@ -1047,6 +1049,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         }
       }
       try {
+        logger.info("fetchShow query 3 "+model.modelName);
         const d = await model.
         findOne({slug: req.params.slug}).
         lean({ virtuals: false }).
@@ -1056,6 +1059,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         exec()
         try {
           const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
+          logger.info("fetchShow query 4 "+model.modelName);
           const data = await model.
           findOne({slug: req.params.slug}).
           // lean({ virtuals: true }).
@@ -1332,11 +1336,12 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
       logger.info("config.sections[section]");
       logger.info(config.sections[section]);
       logger.info({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1});  */
+      logger.info("fetchShow query 5 "+model.modelName);
       let ddd = await model.
       findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
       // lean({ virtuals: true }).
       // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
-      //populate(populate).
+      populate(populate).
       select(select).
       exec()
       let data;
@@ -1439,7 +1444,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         res.advanced.programmenotscheduled = undefined;
       }
       if (res && res.advanced && res.advanced.performers && res.advanced.performers.performers && req.params.performer) {
-        logger.info("BINGOOOOOBINGOOOOO");
+        //logger.info("BINGOOOOOBINGOOOOO");
         for(let a=0; a<res.advanced.performers.performers.length;a++) {
           if (res.advanced.performers.performers[a].slug===req.params.performer) {
             res.performer = res.advanced.performers.performers[a];
@@ -1476,7 +1481,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         delete res.partnerships;
         //logger.info(res.partnerships);
       }
-      //logger.info("fetchShow END");
+      logger.info("fetchShow END");
       cb(null, res);
       //cb(err, data);
     } catch (err) {
@@ -1934,6 +1939,7 @@ dataprovider.addCat = async (req, populate, cb) => {
 };
 
 dataprovider.show = (req, res, section, subsection, model) => {
+  logger.info("show");
   logger.info(section);
   logger.info(subsection);
   /*logger.info("config.sections[section]");

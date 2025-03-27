@@ -185,7 +185,7 @@ app.use(flash());
 app.use(i18n.init);
 
 app.use((req, res, next) => {
-  console.log("✅ Setting global.currentRequest:", req.originalUrl);
+  //console.log("✅ Setting global.currentRequest:", req.originalUrl);
   global.currentRequest = req;
   next();
 });
