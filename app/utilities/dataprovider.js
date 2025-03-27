@@ -1486,7 +1486,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         //logger.info(myres.partnerships);
       }
       logger.info("fetchShow END");
-      logger.info(myres.users[0].stagename)
+      //logger.info(myres.users[0].stagename)
       cb(null, myres);
       //cb(err, data);
     } catch (err) {
