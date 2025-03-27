@@ -65,7 +65,15 @@ const performanceSchema = new Schema({
     virtuals: true
   },
   toJSON: {
-    virtuals: true
+    virtuals: true,
+    transform: (doc, ret, options) => {
+      delete ret.id;
+      delete ret.image;
+      delete ret.abouts;
+      delete ret.tech_reqs;
+      delete ret.tech_arts;
+      delete ret.__v;
+    }
   }
 });
 

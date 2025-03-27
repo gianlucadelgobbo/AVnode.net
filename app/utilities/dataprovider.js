@@ -993,8 +993,8 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
   logger.info(req.params.slug);
   logger.info("model");
   logger.info(model.modelName);
-  console.log("populate");
-  console.log(populate);
+  logger.info("populate");
+  logger.info(populate);
 /**/
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
     if (req.query.crews) {
@@ -1329,8 +1329,8 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
     }
     logger.info("CE PROVO")
     try {
-     console.log("populate");
-     console.log(populate);
+     logger.info("populate");
+     logger.info(populate);
       /*  logger.info("select");
       logger.info(select);
       logger.info("BINGOOOOOBINGOOOOOBINGOOOOO");
@@ -1486,7 +1486,7 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         //logger.info(myres.partnerships);
       }
       logger.info("fetchShow END");
-      console.log(myres.users[0].stagename)
+      logger.info(myres.users[0].stagename)
       cb(null, myres);
       //cb(err, data);
     } catch (err) {
