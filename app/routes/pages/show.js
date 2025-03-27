@@ -21,6 +21,7 @@ router.get('/', async (req, res) => {
   logger.info(`🌍 Fetching CMS Page: ${req.originalUrl}`);
   try {
     const response = await axios.get(`https://cms.avnode.net/${req.getLocale()}/wp-json/wp/v2/mypages${req.originalUrl}`);
+    console.log(`https://cms.avnode.net/${req.getLocale()}/wp-json/wp/v2/mypages${req.originalUrl}`)
     //logger.info(response.data);
     if (req.isApi) {
       res.send({ title: response.data.post_title, data: response.data });
@@ -29,7 +30,7 @@ router.get('/', async (req, res) => {
     }
   } catch (error) {
     if (req.isApi) {
-      res.status(404).send({ path: req.originalUrl, title: "404: API Not Found" });
+      res.status(404).send({ path: req.originalUrl, title: "404: API Not Found", error: error });
     } else {
       res.status(404).render('404', { path: req.originalUrl, title: "404: Page Not Found" });
     }
