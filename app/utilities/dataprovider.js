@@ -983,7 +983,8 @@ dataprovider.addPartnersEventToQueque = async (req, res, data, cb) => {
 }
 
 dataprovider.fetchShow = async (req, section, subsection, model, populate, select, output, cb) => {
-  /*
+  logger.info("fetchShow");
+
   logger.info("req.query");
   logger.info(req.query);
   logger.info("subsection");
@@ -991,8 +992,10 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
   logger.info("slug");
   logger.info(req.params.slug);
   logger.info("model");
-  logger.info(model);
-  */
+  logger.info(model.modelName);
+  console.log("populate");
+  console.log(populate);
+/**/
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
     if (req.query.crews) {
       try {
@@ -1326,10 +1329,10 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
     }
     logger.info("CE PROVO")
     try {
+     console.log("populate");
+     console.log(populate);
       /*  logger.info("select");
       logger.info(select);
-     logger.info("populate");
-      logger.info(populate);
       logger.info("BINGOOOOOBINGOOOOOBINGOOOOO");
       logger.info("model");
       logger.info(model.modelName);
@@ -1345,10 +1348,11 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
       select(select).
       exec()
       let data;
+      
       logger.info("ddd");
       //logger.info(ddd);
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
-      let res = {};
+      let myres = {};
       if (data && data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
         data.participate = true;
       }
@@ -1356,133 +1360,134 @@ dataprovider.fetchShow = async (req, section, subsection, model, populate, selec
         for(var item in output) {
           if (data[item]) {
             if (output[item] === 1) {
-              res[item] = data[item];
+              myres[item] = data[item];
             } else {
               for(var item2 in output[item]) {
-                if (!res[item]) res[item] = {};
+                if (!myres[item]) myres[item] = {};
                 if (data[item][item2]) {
-                  res[item][item2] = data[item][item2];
+                  myres[item][item2] = data[item][item2];
                 }
               }
             }
           }
         }
       } else {
-        res = data;
+        myres = data;
       }
-      if (res && res.advanced && res.advanced.programmebydayvenue && req.params.day) {
+      if (myres && myres.advanced && myres.advanced.programmebydayvenue && req.params.day) {
         let programmebydayvenue = [];
-        for(let a=0; a<res.advanced.programmebydayvenue.length;a++) {
-          if (res.advanced.programmebydayvenue[a].day===req.params.day) {
-            programmebydayvenue.push(res.advanced.programmebydayvenue[a]);
+        for(let a=0; a<myres.advanced.programmebydayvenue.length;a++) {
+          if (myres.advanced.programmebydayvenue[a].day===req.params.day) {
+            programmebydayvenue.push(myres.advanced.programmebydayvenue[a]);
           }
         }
-        res.advanced.programmebydayvenue = programmebydayvenue;
-        res.advanced.programmenotscheduled = undefined;
+        myres.advanced.programmebydayvenue = programmebydayvenue;
+        myres.advanced.programmenotscheduled = undefined;
       }
 
-      if (res && res.advanced && res.advanced.programmebydayvenue && req.params.type) {
-        for(let a=0; a<res.advanced.programmebydayvenue.length;a++) {
-          for(let b=0; b<res.advanced.programmebydayvenue[a].rooms.length;b++) {
+      if (myres && myres.advanced && myres.advanced.programmebydayvenue && req.params.type) {
+        for(let a=0; a<myres.advanced.programmebydayvenue.length;a++) {
+          for(let b=0; b<myres.advanced.programmebydayvenue[a].rooms.length;b++) {
             let performances = [];
-            for(let c=0; c<res.advanced.programmebydayvenue[a].rooms[b].performances.length;c++) {
-              if (res.advanced.programmebydayvenue[a].rooms[b].performances[c].performance.type && res.advanced.programmebydayvenue[a].rooms[b].performances[c].performance.type.slug===req.params.type) {
-                performances.push(res.advanced.programmebydayvenue[a].rooms[b].performances[c]);
+            for(let c=0; c<myres.advanced.programmebydayvenue[a].rooms[b].performances.length;c++) {
+              if (myres.advanced.programmebydayvenue[a].rooms[b].performances[c].performance.type && myres.advanced.programmebydayvenue[a].rooms[b].performances[c].performance.type.slug===req.params.type) {
+                performances.push(myres.advanced.programmebydayvenue[a].rooms[b].performances[c]);
               }
             }
-            res.advanced.programmebydayvenue[a].rooms[b].performances = performances;
+            myres.advanced.programmebydayvenue[a].rooms[b].performances = performances;
           }
         }
         let a=0;
-        while(a<res.advanced.programmebydayvenue.length) {
+        while(a<myres.advanced.programmebydayvenue.length) {
           let b=0;
-          while(b<res.advanced.programmebydayvenue[a].rooms.length) {
-            if (!res.advanced.programmebydayvenue[a].rooms[b].performances.length) {
-              res.advanced.programmebydayvenue[a].rooms.splice(b, 1);
+          while(b<myres.advanced.programmebydayvenue[a].rooms.length) {
+            if (!myres.advanced.programmebydayvenue[a].rooms[b].performances.length) {
+              myres.advanced.programmebydayvenue[a].rooms.splice(b, 1);
             } else {
               b++;
             }
           }
-          if (!res.advanced.programmebydayvenue[a].rooms.length) {
-            res.advanced.programmebydayvenue.splice(a, 1);
+          if (!myres.advanced.programmebydayvenue[a].rooms.length) {
+            myres.advanced.programmebydayvenue.splice(a, 1);
           } else {
             a++;
           }
         }
-        res.advanced.programmenotscheduled = undefined;
+        myres.advanced.programmenotscheduled = undefined;
       }
 
-      if (res && res.advanced && res.advanced.programmebydayvenue && req.params.performance) {
-        for(let a=0; a<res.advanced.programmebydayvenue.length;a++) {
-          for(let b=0; b<res.advanced.programmebydayvenue[a].rooms.length;b++) {
-            for(let c=0; c<res.advanced.programmebydayvenue[a].rooms[b].performances.length;c++) {
-              if (res.advanced.programmebydayvenue[a].rooms[b].performances[c].performance.slug===req.params.performance) {
-                res.performance = res.advanced.programmebydayvenue[a].rooms[b].performances[c].performance;
+      if (myres && myres.advanced && myres.advanced.programmebydayvenue && req.params.performance) {
+        for(let a=0; a<myres.advanced.programmebydayvenue.length;a++) {
+          for(let b=0; b<myres.advanced.programmebydayvenue[a].rooms.length;b++) {
+            for(let c=0; c<myres.advanced.programmebydayvenue[a].rooms[b].performances.length;c++) {
+              if (myres.advanced.programmebydayvenue[a].rooms[b].performances[c].performance.slug===req.params.performance) {
+                myres.performance = myres.advanced.programmebydayvenue[a].rooms[b].performances[c].performance;
               }
             }
           }
         }
-        if (res.performance && res.performance.bookings && res.performance.bookings.length) {
+        if (myres.performance && myres.performance.bookings && myres.performance.bookings.length) {
           let a=0;
-          while(a<res.performance.bookings.length) {
+          while(a<myres.performance.bookings.length) {
             /* let b=0;
-            while(b<res.performer.performances[a].bookings.length) {
-              if (!res.performer.performances[a].bookings[b].event) {
-                res.performer.performances[a].bookings.splice(b, 1);
+            while(b<myres.performer.performances[a].bookings.length) {
+              if (!myres.performer.performances[a].bookings[b].event) {
+                myres.performer.performances[a].bookings.splice(b, 1);
               } else {
                 b++;
               }
             } */
-            if (!res.performance.bookings[a].event || res.performance.bookings[a].event.slug!=req.params.slug) {
-              res.performance.bookings.splice(a, 1);
+            if (!myres.performance.bookings[a].event || myres.performance.bookings[a].event.slug!=req.params.slug) {
+              myres.performance.bookings.splice(a, 1);
             } else {
               a++;
             }
           }
         }
-        delete res.advanced.programmebydayvenue;
-        res.advanced.programmenotscheduled = undefined;
+        delete myres.advanced.programmebydayvenue;
+        myres.advanced.programmenotscheduled = undefined;
       }
-      if (res && res.advanced && res.advanced.performers && res.advanced.performers.performers && req.params.performer) {
+      if (myres && myres.advanced && myres.advanced.performers && myres.advanced.performers.performers && req.params.performer) {
         //logger.info("BINGOOOOOBINGOOOOO");
-        for(let a=0; a<res.advanced.performers.performers.length;a++) {
-          if (res.advanced.performers.performers[a].slug===req.params.performer) {
-            res.performer = res.advanced.performers.performers[a];
+        for(let a=0; a<myres.advanced.performers.performers.length;a++) {
+          if (myres.advanced.performers.performers[a].slug===req.params.performer) {
+            myres.performer = myres.advanced.performers.performers[a];
           }
         }
-        //logger.info(res.performer);
-        if (res.performer) {
-          //logger.info("res.performer.performances")
-          //logger.info(res.performer.performances)
-          res.performer.performances = []
-          //logger.info(res.advanced.programmebydayvenue)
+        //logger.info(myres.performer);
+        if (myres.performer) {
+          //logger.info("myres.performer.performances")
+          //logger.info(myres.performer.performances)
+          myres.performer.performances = []
+          //logger.info(myres.advanced.programmebydayvenue)
           /*
           let a=0;
-          while(a<res.performer.performances.length) {
+          while(a<myres.performer.performances.length) {
             let b=0;
-            while(b<res.performer.performances[a].bookings.length) {
-              if (!res.performer.performances[a].bookings[b].event) { ///.slug != req.params.slug
-                res.performer.performances[a].bookings.splice(b, 1);
+            while(b<myres.performer.performances[a].bookings.length) {
+              if (!myres.performer.performances[a].bookings[b].event) { ///.slug != req.params.slug
+                myres.performer.performances[a].bookings.splice(b, 1);
               } else {
                 b++;
               }
             }
-            if (!res.performer.performances[a].bookings.length) {
-              res.performer.performances.splice(a, 1);
+            if (!myres.performer.performances[a].bookings.length) {
+              myres.performer.performances.splice(a, 1);
             } else {
               a++;
             }
           } */
         }
-        delete res.advanced.performers;
+        delete myres.advanced.performers;
       }
-      //logger.info("res.partnershipaaaaaaa");
-      if(res && res.partnerships && res.partnerships_ordered) {
-        delete res.partnerships;
-        //logger.info(res.partnerships);
+      //logger.info("myres.partnershipaaaaaaa");
+      if(myres && myres.partnerships && myres.partnerships_ordered) {
+        delete myres.partnerships;
+        //logger.info(myres.partnerships);
       }
       logger.info("fetchShow END");
-      cb(null, res);
+      console.log(myres.users[0].stagename)
+      cb(null, myres);
       //cb(err, data);
     } catch (err) {
       logger.info("ERRORERRORERRORERRORERRORERROR");
