@@ -127,6 +127,8 @@ html.no-js(lang=session.current_lang)
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      //-gtag('config', 'G-DBS5WRFJ9G', { 'anonymize_ip': true });
-      gtag('config', 'G-DBS5WRFJ9G');
+      gtag('config', 'G-DBS5WRFJ9G', {
+        'client_storage': 'none', // ⛔ Non usa cookie
+        'anonymize_ip': true      // ✅ Anonimizza gli IP
+      });
      
