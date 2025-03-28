@@ -49,7 +49,7 @@ router.use('/terms-and-conditions', pages);
 router.use('/manifesto', pages);
 router.use('/privacy-policy', pages);
 router.use('/model-231', pages);
-router.use('/cookies-policy', pages);
+router.use('/cookie-policy', pages);
 
 // User.find({name: { $regex: '.*' + 'lex' + '.*' }})
 router.use('/performers', performers);
