@@ -45,10 +45,11 @@ router.get('/__webpack_hmr', function(){});
 router.use('/likes', likes);
 
 router.use('/contacts', pages);
-router.use('/terms', pages);
+router.use('/terms-and-conditions', pages);
 router.use('/manifesto', pages);
-router.use('/privacy', pages);
-router.use('/cookies-in-use-on-this-site', pages);
+router.use('/privacy-policy', pages);
+router.use('/model-231', pages);
+router.use('/cookies-policy', pages);
 
 // User.find({name: { $regex: '.*' + 'lex' + '.*' }})
 router.use('/performers', performers);
