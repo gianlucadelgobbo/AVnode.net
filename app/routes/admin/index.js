@@ -19,11 +19,11 @@ router.get('/:sez/:id/:form/', async (req, res) => {
       req.params.q = "type";
       
       config.types = await get.getPerfCategories(req, res);
-      console.log("✅ types loaded:", config.types);
+      logger.info("✅ types loaded:", config.types);
 
       req.params.q = "genre";
       config.genres = await get.getPerfCategories(req, res);
-      console.log("✅ genres loaded:", config.genres);
+      logger.info("✅ genres loaded:", config.genres);
 
       // 🔥 Ensure dataprovider.getData is only called *after* types and genres are set
       await dataprovider.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
