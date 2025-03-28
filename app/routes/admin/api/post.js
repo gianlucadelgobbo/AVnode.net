@@ -901,27 +901,26 @@ order: order,
 details: details,
 data: data
 */
-router.contact = (req, res) => {
+router.contact = async (req, res) => {
   logger.info("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body");
   logger.info(req.body);
   if (req.body.user) {
     let message = {};
-
-    Models.User
-    .findOne({_id: req.body.user})
-    .select({stagename: 1, slug:1, name:1, surname:1, email: 1, is_crew:1, is_banned:1})
-    .populate([{ "path": "members", "select": "stagename name surname email", "model": "User"}])
-    .exec((err, user) => {
+    let user;
+    try {
+      user = await Models.User
+      .findOne({_id: req.body.user})
+      .select({stagename: 1, slug:1, name:1, surname:1, email: 1, is_crew:1, is_banned:1})
+      .populate([{ "path": "members", "select": "stagename name surname email", "model": "User"}])
+      .exec();
       if (!user.is_banned) {
-        logger.info(user);
-        logger.info(err);
         message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
         let messagetext = "FROM\n";
         messagetext+= "Stagename: "+req.user.stagename+"\n";
         messagetext+= "Name: "+req.user.name+"\n";
         messagetext+= "Surname: "+req.user.surname+"\n";
         messagetext+= "Email: "+req.user.email+"\n";
-        messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n---------\n";
+        messagetext+= "Link: https://"+req.headers.host+"/"+req.user.slug+"\n---------\n";
         messagetext+= "TO\n";
         messagetext+= "Stagename: "+req.user.stagename+"\n";
         if (!user.is_crew) {
@@ -931,78 +930,76 @@ router.contact = (req, res) => {
         }
         messagetext+= "Link: http://"+req.headers.host+"/"+user.slug+"\n\n---------\n";
         messagetext+= req.body.message+"\n--------------";
-        logger.info(messagetext);
-       mySendMailer({
-          template: 'bookingRequest',
-          message: message,
-          locals: {
-          },
-          email_content: {
-            site: 'https://'+req.headers.host,
-            subject:  req.body.subject+' | AVnode.net',
-            text_text:  messagetext,
-            html_text: messagetext.replace(new RegExp("\n","g"),"<br />"),
-            html_sign: "The AVnode.net Team",
-            text_sign:  "The AVnode.net Team"
-          }
-        }, function(error_1){
-          if (error_1 && error_1.message != "") {
-            res.json(error_1);
-          } else {
-            message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
-            if (user.is_crew) {
-              logger.info("crew")
-              for (var b=0;b<user.members.length;b++) {
-                if (!message.to) {
-                  message.to = user.members[b].stagename+" <"+user.members[b].email+">";
-                } else {
-                  if (!message.cc) message.cc = [];
-                  message.cc.push(user.members[b].stagename+" <"+user.members[b].email+">");
-                }
-                }
-            } else {
-              logger.info("single")
-              if (!message.to) {
-                message.to = user.stagename+" <"+user.email+">";
-              } else {
-                if (!message.cc) message.cc = [];
-                message.cc.push(user.stagename+" <"+user.email+">");
-              }
+        try {
+          await mySendMailer({
+            template: 'bookingRequest',
+            message: message,
+            locals: {
+            },
+            email_content: {
+              site: 'https://'+req.headers.host,
+              subject:  req.body.subject+' | AVnode.net',
+              text_text:  messagetext,
+              html_text: messagetext.replace(new RegExp("\n","g"),"<br />"),
+              html_sign: "The AVnode.net Team",
+              text_sign:  "The AVnode.net Team"
             }
-            messagetext = "Dear "+user.stagename+",\nwe got this message, are you interested?\n\n---------\n"+req.body.message+"\n--------------";
-           mySendMailer({
-              template: 'bookingRequest',
-              message: message,
-              locals: {
-              },
-              email_content: {
-                site: 'http://'+req.headers.host,
-                subject:  req.body.subject+' | AVnode.net',
-                text_text:  messagetext,
-                html_text: messagetext.replace(new RegExp("\n","g"), "<br />"),
-                html_sign: "The AVnode.net Team",
-                text_sign:  "The AVnode.net Team"
-              }
-            }, function(error_2){
-              error_2.step = 2;
-              res.json(error_2);
-            });
+          })
+        } catch (error) {
+          return res.json({error:error});
+        }
+        message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
+        if (user.is_crew) {
+          logger.info("crew")
+          for (var b=0;b<user.members.length;b++) {
+            if (!message.to) {
+              message.to = user.members[b].stagename+" <"+user.members[b].email+">";
+            } else {
+              if (!message.cc) message.cc = [];
+              message.cc.push(user.members[b].stagename+" <"+user.members[b].email+">");
+            }
+            }
+        } else {
+          logger.info("single")
+          if (!message.to) {
+            message.to = user.stagename+" <"+user.email+">";
+          } else {
+            if (!message.cc) message.cc = [];
+            message.cc.push(user.stagename+" <"+user.email+">");
           }
-        });
-        /* program.save(err => {
-          res.json({res: err ? err : true});
-        }); */
-
+        }
+        messagetext = "Dear "+user.stagename+",\nwe got this message, are you interested?\n\n---------\n"+req.body.message+"\n--------------";
+        try {
+          await mySendMailer({
+            template: 'bookingRequest',
+            message: message,
+            locals: {
+            },
+            email_content: {
+              site: 'http://'+req.headers.host,
+              subject:  req.body.subject+' | AVnode.net',
+              text_text:  messagetext,
+              html_text: messagetext.replace(new RegExp("\n","g"), "<br />"),
+              html_sign: "The AVnode.net Team",
+              text_sign:  "The AVnode.net Team"
+            }
+          });
+          return res.json({error:false, message: req.__("Messagge sent")});
+        } catch (error) {
+          return res.json({error:error});
+        }
       } else {
-        res.json({message:"User is banned"});
+        return res.json({error:true, message: req.__("User is banned")});
       }
-    });
+    } catch (error) {
+      return res.json({error:error, message: req.__("User do not exists")});
+    }
   } else {
-    res.json({message:"User do not exists"});
+    return res.json({error:true, message: req.__("User is missing")});
   }
 }
 
-router.forceEmailChange = (req, res) => {
+/* router.forceEmailChange = (req, res) => {
   logger.info("forceEmailChange");
   logger.info(req.body);
   if (req.body._id) {
@@ -1155,38 +1152,46 @@ router.forceEmailChange = (req, res) => {
       } else {
         res.json({message:"User is banned"});
       } */
-    });
+   /* });
   } else {
     res.json({message:"User do not exists"});
   }
-}
+} */
 
 
 
-router.bookingRequest = (req, res) => {
+router.bookingRequest = async (req, res) => {
+  logger.info("req.body");
   logger.info(req.body);
   if (req.body.perf) {
     let message = {};
-
-    Models.Performance
-    .findOne({_id: req.body.perf/* , members:req.user.id */})
-    .select({title: 1, slug: 1})
-    .populate([{ "path": "users", "select": "is_crew stagename name surname email", "model": "User", "populate": { "path": "members", "select": "stagename name surname email", "model": "User"}}])
-    .exec((err, perf) => {
-      logger.info(perf.users);
-      logger.info(err);
-      message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
-      let messagetext = "";
-      messagetext+= "Stagename: "+req.user.stagename+"\n";
-      messagetext+= "Name: "+req.user.name+"\n";
-      messagetext+= "Surname: "+req.user.surname+"\n";
-      messagetext+= "Email: "+req.user.email+"\n";
-      if (req.body.crew) messagetext+= "Organization: "+req.body.crew+"\n";;
-      messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n\n---------\n";
-      messagetext+= "Performance: http://"+req.headers.host+"/"+perf.slug+"\n\n---------\n";
-      messagetext+= req.body.request+"\n--------------";
-      logger.info(messagetext);
-     mySendMailer({
+    let perf;
+    try {
+      perf = await Models.Performance
+      .findOne({_id: req.body.perf/* , members:req.user.id */})
+      .select({title: 1, slug: 1})
+      .populate([{ "path": "users", "select": "is_crew stagename name surname email", "model": "User", "populate": { "path": "members", "select": "stagename name surname email", "model": "User"}}])
+      .exec()        
+    } catch (error) {
+      return res.json({error:error, message:"Performance do not exists"});
+    }
+    logger.info("perf");
+    logger.info(perf);
+    if (!perf) return res.json({error:error, message:"Performance do not exists"});
+    message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
+    let messagetext = "";
+    messagetext+= "Stagename: "+req.user.stagename+"\n";
+    messagetext+= "Name: "+req.user.name+"\n";
+    messagetext+= "Surname: "+req.user.surname+"\n";
+    messagetext+= "Email: "+req.user.email+"\n";
+    if (req.body.crew) messagetext+= "Organization: "+req.body.crew+"\n";;
+    messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n\n---------\n";
+    messagetext+= "Performance: http://"+req.headers.host+"/"+perf.slug+"\n\n---------\n";
+    messagetext+= req.body.request+"\n--------------";
+    logger.info(messagetext);
+    try {
+      logger.info("mySendMailer 1");
+      await mySendMailer({
         template: 'bookingRequest',
         message: message,
         locals: {
@@ -1199,59 +1204,58 @@ router.bookingRequest = (req, res) => {
           html_sign: "The AVnode.net Team",
           text_sign:  "The AVnode.net Team"
         }
-      }, function(error_1){
-        if (error_1 && error_1.message) {
-          error_1.step = 1;
-          res.json(error_1);
-        } else {
-          message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
-          for (var a=0;a<perf.users.length;a++) {
-            if (perf.users[a].is_crew) {
-              logger.info("crew")
-              for (var b=0;b<perf.users[a].members.length;b++) {
-                if (!message.to) {
-                  message.to = perf.users[a].members[b].stagename+" <"+perf.users[a].members[b].email+">";
-                } else {
-                  if (!message.cc) message.cc = [];
-                  message.cc.push(perf.users[a].members[b].stagename+" <"+perf.users[a].members[b].email+">");
-                }
-                }
-            } else {
-              logger.info("single")
-              if (!message.to) {
-                message.to = perf.users[a].stagename+" <"+perf.users[a].email+">";
-              } else {
-                if (!message.cc) message.cc = [];
-                message.cc.push(perf.users[a].stagename+" <"+perf.users[a].email+">");
-              }
-            }
+      })          
+      return res.json({error:false, message: req.__("Messagge sent")});
+    } catch (error) {
+      res.json({error:error, message:"SendMailer error"});
+    }
+    message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
+    for (var a=0;a<perf.users.length;a++) {
+      if (perf.users[a].is_crew) {
+        logger.info("crew")
+        for (var b=0;b<perf.users[a].members.length;b++) {
+          if (!message.to) {
+            message.to = perf.users[a].members[b].stagename+" <"+perf.users[a].members[b].email+">";
+          } else {
+            if (!message.cc) message.cc = [];
+            message.cc.push(perf.users[a].members[b].stagename+" <"+perf.users[a].members[b].email+">");
           }
-          messagetext = "Dear "+perf.users[0].stagename+",\nwe got this booking request, are you interested?\n\n---------\n"+req.body.request+"\n--------------";
-         mySendMailer({
-            template: 'bookingRequest',
-            message: message,
-            locals: {
-            },
-            email_content: {
-              site: 'http://'+req.headers.host,
-              subject:  req.body.subject+' | AVnode.net',
-              text_text:  messagetext,
-              html_text: messagetext.replace(new RegExp("\n","g"), "<br />"),
-              html_sign: "The AVnode.net Team",
-              text_sign:  "The AVnode.net Team"
-            }
-          }, function(error_2){
-            error_2.step = 2;
-            res.json(error_2);
-          });
+          }
+      } else {
+        logger.info("single")
+        if (!message.to) {
+          message.to = perf.users[a].stagename+" <"+perf.users[a].email+">";
+        } else {
+          if (!message.cc) message.cc = [];
+          message.cc.push(perf.users[a].stagename+" <"+perf.users[a].email+">");
         }
-      });
-      /* program.save(err => {
-        res.json({res: err ? err : true});
-      }); */
-    });
+      }
+    }
+    messagetext = "Dear "+perf.users[0].stagename+",\nwe got this booking request, are you interested?\n\n---------\n"+req.body.request+"\n--------------";
+    try {
+      logger.info("mySendMailer 2");
+      mySendMailer({
+        template: 'bookingRequest',
+        message: message,
+        locals: {
+        },
+        email_content: {
+          site: 'http://'+req.headers.host,
+          subject:  req.body.subject+' | AVnode.net',
+          text_text:  messagetext,
+          html_text: messagetext.replace(new RegExp("\n","g"), "<br />"),
+          html_sign: "The AVnode.net Team",
+          text_sign:  "The AVnode.net Team"
+        }
+      })  
+    } catch (error) {
+      res.json({error:error, message:"SendMailer error"});
+    }
+    /* program.save(err => {
+      res.json({res: err ? err : true});
+    }); */
   } else {
-    res.json({message:"Performance do not exists"});
+    res.json({error:true, message:"Performance do not exists"});
   }
 }
 
