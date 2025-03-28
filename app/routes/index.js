@@ -38,7 +38,7 @@ router.use('/contacts', pages);
 router.use('/manifesto', pages);
 router.use('/terms-and-conditions', pages);
 router.use('/privacy-policy', pages);
-router.use('/cookies-policy', pages);
+router.use('/cookie-policy', pages);
 router.use('/model-231', pages);
 
 router.use('/performers', performersList);
