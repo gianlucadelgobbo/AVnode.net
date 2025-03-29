@@ -22,15 +22,6 @@ html(lang=session.current_lang)
 
     link(rel='stylesheet', type='text/css', href='/css/main.min.css')
     link(rel='stylesheet', type='text/css', href='/css/admin.min.css')
-    //if scripts && scripts.indexOf("video")!==-1
-      link(rel='stylesheet', type='text/css', href='/css/video-js.min.css')
-    //link(rel='stylesheet', type='text/css', href='/lightgallery/css/lightgallery-bundle.min.css')
-    //-link(rel='stylesheet', href='/datetimeentry/jquery.datetimeentry.css')
-    //link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous")
-    //- link(rel="stylesheet", href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
-    //- link(rel='stylesheet', href='/css/BsMultiSelect.min.css')
-    //- link(rel='stylesheet', href='https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css')    
-    //- link(rel='stylesheet', href='/css/admin.css')
     //- link(rel='stylesheet', href='/css/adminpro.css')
     if scripts && scripts.indexOf("paypal")!==-1
       script(src="https://www.paypal.com/sdk/js?client-id="+process.env.PAYPAL_CLIENT_ID+"&currency=EUR")
@@ -80,30 +71,11 @@ html(lang=session.current_lang)
 
     script(src='/js/combo.min.js')
 
-    //- script(src="/js/owl.carousel.min.js")
-    //- script(src="/js/main.js")
-    //- script(src="/js/ajax.js")
-    //- script(src="/js/cookielawinfo.min.js")
-
-    //-if data && data.media && data.media.file
-    //if scripts && scripts.indexOf("video")!==-1
+    //-if scripts && scripts.indexOf("video")!==-1
       script.
         var logo_url = "!{canonical}"
       script(defer src='/js/combo_video.min.js')
     script(src='/js/combo_admin.min.js')
-    //-script(defer src='/gulp/js/includes_video/swfobject.js')
-    //-script(defer src='/gulp/js/includes_video/videojs.js')
-    //-script(defer src='/gulp/js/includes_video/videojs-logo.min.js')
-    //-script(defer src='/gulp/js/video.js')
-    //script(src='/lightgallery/lightgallery.min.js')
-      script(src='/lightgallery/plugins/video/lg-video.min.js')
-      script(src='/lightgallery/plugins/thumbnail/lg-thumbnail.min.js')
-      script(src='/lightgallery/plugins/zoom/lg-zoom.min.js')
-      script(src='/lightgallery/plugins/video/lg-video.min.js')
-      script(src='/lightgallery/plugins/autoplay/lg-autoplay.min.js')
-      script(src='/lightgallery/plugins/fullscreen/lg-fullscreen.min.js')
-      script(src='/datetimeentry/jquery.plugin.js')
-      script(src='/datetimeentry/jquery.datetimeentry.js')
     if get
       script.
         var get = !{JSON.stringify(get)};
@@ -114,11 +86,9 @@ html(lang=session.current_lang)
 
     script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places&language=en&callback=mapsCallback")
 
-    //if calendar
+    if calendar //VJTV Calendar Only
       script(src='/fullcalendar/main.min.js')
       script(src='/fullcalendar/script.js')
-
-    //script(src="/js/bootstrap-autocomplete.min.js")
 
     script(async src="https://www.googletagmanager.com/gtag/js?id=G-DBS5WRFJ9G")
     script.
