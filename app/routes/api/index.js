@@ -4,6 +4,8 @@ const router = createRouter();
 
 import fs from 'fs';
 import imageUtil from '../../utilities/image.js';
+import { mySendMailer } from '../../utilities/mailer.js';
+import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 
 import mongoose from 'mongoose';
 
@@ -18,9 +20,11 @@ const Order = mongoose.model('Order');
 const Vjtv = mongoose.model('Vjtv');
 const Emailqueue = mongoose.model('Emailqueue');
 
-import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 
 router.get('/likes', async (req, res) => {
+  res.send(req.user?.likes || []);
+})
+router.post('/likes', async (req, res) => {
   let res_send = "P";
   if (!req.user) {
     res.send({err:true,msg:req.__("Please login to like"), status:""});
@@ -34,7 +38,7 @@ router.get('/likes', async (req, res) => {
     if (req.query.section ==='news') model = News;
     if (req.query.section ==='galleries') model = Gallery;
 
-    if (!req.user.likes || !req.user.likes[req.query.section] || req.user.likes[req.query.section].map(function(e) { return e.id.toString(); }).indexOf(likeid.toString())===-1) {
+    if (!req.user.likes || !req.user.likes[req.query.section] || (req.user.likes[req.query.section] && likeid && req.user.likes[req.query.section].map(function(e) { return e.id.toString(); }).indexOf(likeid.toString())===-1)) {
       if (!req.user.likes) req.user.likes = {};
       if (!req.user.likes[req.query.section]) req.user.likes[req.query.section] = [];
       req.user.likes[req.query.section].push({date:new Date(),id:likeid});
@@ -76,6 +80,59 @@ router.get('/likes', async (req, res) => {
     }
   }
 });
+
+router.post('/report', async (req, res) => {
+  logger.info("reportreportreportreportreportreportreportreportreport");
+  logger.info(req.body);
+  let message = {};
+  let user;
+  try {
+    user = await User
+    .findOne({_id: req.user._id})
+    .select({stagename: 1, slug:1, name:1, surname:1, email: 1, is_crew:1, is_banned:1})
+    .populate([{ "path": "members", "select": "stagename name surname email", "model": "User"}])
+    .exec();
+    if (user.is_banned) {
+      return res.json({error:true, message: req.__("User is banned")});
+    }
+  } catch (error) {
+    logger.info({error:error, message: req.__("User do not exists")});
+  }
+  message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
+  let messagetext = "FROM";
+  if (user) {
+    messagetext+= "\nStagename: "+req.user.stagename+"\n";
+    messagetext+= "Name: "+req.user.name+"\n";
+    messagetext+= "Surname: "+req.user.surname+"\n";
+    messagetext+= "Email: "+req.user.email+"\n";
+  } else {
+    messagetext+= ": ANONYMUS\n";
+  }
+  messagetext+= "Link: "+req.body.url+"\n---------\n";
+  messagetext+= "Slug: "+req.body.slug+"\n---------\n";
+  messagetext+= "ID: "+req.body.id+"\n---------\n";
+  messagetext+= "Report:\n"+req.body.message+"\n";
+  try {
+    await mySendMailer({
+      template: 'bookingRequest',
+      message: message,
+      locals: {
+      },
+      email_content: {
+        site: 'https://'+req.headers.host,
+        subject:  'REPORT | AVnode.net',
+        text_text:  messagetext,
+        html_text: messagetext.replace(new RegExp("\n","g"),"<br />"),
+        html_sign: "The AVnode.net Team",
+        text_sign:  "The AVnode.net Team"
+      }
+    })
+    return res.json({error:false, message: req.__("Messagge sent")});
+  } catch (error) {
+    return res.json({error:error});
+  }
+})
+
 
 router.post('/emailqueue', async (req, res) => {
   try {

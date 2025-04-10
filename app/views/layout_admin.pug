@@ -85,8 +85,9 @@ html(lang=session.current_lang)
     //script(src='/js/admin_tmp.js')
 
     script(src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places&language=en&callback=mapsCallback")
-
-    if calendar //VJTV Calendar Only
+    
+    //VJTV Calendar Only
+    if calendar 
       script(src='/fullcalendar/main.min.js')
       script(src='/fullcalendar/script.js')
 

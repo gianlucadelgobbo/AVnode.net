@@ -22,6 +22,7 @@
     "@aws-sdk/client-ses": "^3.744.0",
     "@extractus/oembed-extractor": "^4.0.6",
     "@fortawesome/fontawesome-free": "^5.15.2",
+    "algoliasearch": "^4.24.0",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",

@@ -6,7 +6,8 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 import expressWinston from 'express-winston';
 
 // 🔥 Ensure log directory exists
-const logDir = path.join(config.appRoot, '../logs');
+const logDir = path.join(config?.appRoot ?? process.cwd(), '../logs');
+//const logDir = path.join(config.appRoot, '../logs');
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir, { recursive: true });
 }

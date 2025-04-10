@@ -330,7 +330,17 @@ app.use((req, res, next) => {
   if (!req.user && adminPathRegex.test(req.path)) {
     req.session.returnTo = req.originalUrl.includes("/admin/api/loggeduser") ? "/" : req.originalUrl;
     if (req.isApi) {
-      return res.status(404).send({ path: req.originalUrl, title: req.__("Please login to use this tool")});
+      return res.status(404).send({
+        error: true,
+        path: req.originalUrl,    
+        "msg": {
+          "errors": {
+            "login": {
+                "message": req.__("Please login to use this tool")
+            }
+          }
+        }
+      });
     } else {
       return res.redirect("/login");
     }

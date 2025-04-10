@@ -1173,11 +1173,29 @@ router.bookingRequest = async (req, res) => {
       .populate([{ "path": "users", "select": "is_crew stagename name surname email", "model": "User", "populate": { "path": "members", "select": "stagename name surname email", "model": "User"}}])
       .exec()        
     } catch (error) {
-      return res.json({error:error, message:"Performance do not exists"});
+      return res.json({
+        error: error,
+        "msg": {
+          "errors": {
+              "perf": {
+                  "message": req.__("Performance do not exists")
+              }
+          }
+        }
+      });
     }
     logger.info("perf");
     logger.info(perf);
-    if (!perf) return res.json({error:error, message:"Performance do not exists"});
+    if (!perf) return res.json({
+      error: error,
+      "msg": {
+        "errors": {
+            "perf": {
+                "message": req.__("Performance do not exists")
+            }
+        }
+      }
+    });
     message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
     let messagetext = "";
     messagetext+= "Stagename: "+req.user.stagename+"\n";
@@ -1249,13 +1267,31 @@ router.bookingRequest = async (req, res) => {
         }
       })  
     } catch (error) {
-      res.json({error:error, message:"SendMailer error"});
+      res.json({
+        error: error,
+        "msg": {
+          "errors": {
+              "perf": {
+                  "message": req.__("SendMailer error")
+              }
+          }
+        }
+      })
     }
     /* program.save(err => {
       res.json({res: err ? err : true});
     }); */
   } else {
-    res.json({error:true, message:"Performance do not exists"});
+    res.json({
+      error: error,
+      "msg": {
+        "errors": {
+            "perf": {
+                "message": req.__("Performance do not exists")
+            }
+        }
+      }
+    });
   }
 }
 
