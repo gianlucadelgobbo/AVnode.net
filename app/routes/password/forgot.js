@@ -11,6 +11,8 @@ const setIdentifier = () => {
 };
 
 import { mySendMailer } from '../../utilities/mailer.js';
+import { logger, requestLogger, errorLogger } from '../../utilities/logger.js'; // Logger
+
 import _ from 'lodash';
 
 router.get('/', (req, res) => {
@@ -20,58 +22,96 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/', (req, res) => {
-  User.findOne({email: req.body.email}, "_id stagename email", (err, user) => {
-    if (err) {
-      throw err;
-    }
-    if (user === null) {
-      req.flash('errors', {msg: {errors: {email: { message: req.__('User not found.')}}}});
-      res.redirect('/password/forgot');
-    } else {
-      const token = setIdentifier();
-      const expiresInHours = _.parseInt(process.env.PASSWORD_RESET_EXPIRES);
-      user.passwordResetToken = token;
-      user.passwordResetExpires = req.moment().add(expiresInHours, 'hours').toDate();
+router.post('/', async (req, res) => {
+  logger.info("req.body.email");
+  logger.info(req.body.email);
 
-      user.save((err) => {
-        if (err) {
-          req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: req.__('Password not generated, please retry.')}}})}`});
-          res.redirect('/password/forgot');
-        } else {
-          mySendMailer({
-            template: 'reset-password',
-            message: {
-              to: user.email
-            },
-            email_content: {
-              stagename: user.stagename,
-              email: user.email,
-              confirm: token,
-              site:    'http://'+req.headers.host,
-              title:    req.__("Password reset"),
-              subject:  req.__("Password reset")+' | AVnode.net',
-              block_1:  req.__("We’ve received a request to reset your password."),
-              button:   req.__("Click here to reset your password"),
-              block_2:  req.__("If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link:"),
-              block_3:  req.__("Thanks."),
-              link:     'http://'+req.headers.host+'/password/reset/'+token,
-              html_sign: "The AVnode.net Team",
-              text_sign:  "The AVnode.net Team"
-        }
-          }, function (err){
-            if (err) {
-              req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: req.__('Unable to send Confirm Email.')}}})}`});
-              res.redirect('/password/forgot');
-            } else {
-              req.flash('success', {msg: req.__('Password reset link sent to:')+" "+req.body.email });
-              res.redirect('/password/forgot');
-            }
-          });
+  let user;
+  
+  const email = req.body?.email;
+
+  if (!email || typeof email !== 'string' || email.trim() === '') {
+    if (req.isApi) {
+      return res.send({error: true, msg: {errors: {email: { message: req.__('User not found.')}}}})
+    } else {
+      req.flash('errors', {msg: {errors: {email: { message: req.__('User not found.')}}}});
+      return res.redirect('/password/forgot');  
+    }
+  }
+  try {
+    user = await User.findOne({email: email}, "_id stagename email");
+    logger.info("{email: email}")
+    logger.info({email: email})
+  } catch (error) {
+    if (req.isApi) {
+      return res.send({error: error, msg: {errors: {email: { message: req.__('User not found.')}}}})
+    } else {
+      req.flash('errors', {msg: {errors: {email: { message: req.__('User not found.')}}}});
+      return res.redirect('/password/forgot');  
+    }
+  }
+  logger.info("user")
+  logger.info(user)
+  if (user === null) {
+    if (req.isApi) {
+      return res.send({error: true, msg: {errors: {email: { message: req.__('User not found.')}}}})
+    } else {
+      req.flash('errors', {msg: {errors: {email: { message: req.__('User not found.')}}}});
+      return res.redirect('/password/forgot');  
+    }
+  } else {
+    const token = setIdentifier();
+    const expiresInHours = _.parseInt(process.env.PASSWORD_RESET_EXPIRES);
+    user.passwordResetToken = token;
+    user.passwordResetExpires = req.moment().add(expiresInHours, 'hours').toDate();
+
+    try {
+      user.save()
+    } catch (error) {
+      if (req.isApi) {
+        return res.send({error: error, msg: `${JSON.stringify({errors: {email: { message: req.__('Password not generated, please retry.')}}})}`})
+      } else {
+        req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: req.__('Password not generated, please retry.')}}})}`});
+        res.redirect('/password/forgot');
+      }            
+    }
+    try {
+      mySendMailer({
+        template: 'reset-password',
+        message: {
+          to: user.email
+        },
+        email_content: {
+          stagename: user.stagename,
+          email: user.email,
+          confirm: token,
+          site:    'http://'+req.headers.host,
+          title:    req.__("Password reset"),
+          subject:  req.__("Password reset")+' | AVnode.net',
+          block_1:  req.__("We’ve received a request to reset your password."),
+          button:   req.__("Click here to reset your password"),
+          block_2:  req.__("If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link:"),
+          block_3:  req.__("Thanks."),
+          link:     'http://'+req.headers.host+'/password/reset/'+token,
+          html_sign: "The AVnode.net Team",
+          text_sign:  "The AVnode.net Team"
         }
       });
+      if (req.isApi) {
+        return res.send({error: false, msg: req.__('Password reset link sent to:')+" "+email})
+      } else {
+        req.flash('success', {msg: req.__('Password reset link sent to:')+" "+email });
+        res.redirect('/password/forgot');
+      }
+    } catch (error) {
+      if (req.isApi) {
+        return res.send({error: error, msg: `${JSON.stringify({errors: {email: { message: req.__('Unable to send Confirm Email.')}}})}`})
+      } else {
+        req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: req.__('Unable to send Confirm Email.')}}})}`});
+        return res.redirect('/password/forgot');
+      }
     }
-  });
+  }
 });
 
 export default router;

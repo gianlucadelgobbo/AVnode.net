@@ -24,7 +24,6 @@ passport.deserializeUser(async (id, done) => {
     delete result.password;
     delete result.image;
     delete result.id;
-    logger.debug(result);
     done(null, result);
   } catch (err) {
     done(err, null);
@@ -61,7 +60,6 @@ passport.use(
 
       if (isMatch) {
         logger.debug('User password match');
-        logger.debug(user);
         const result = {
           ...user.toObject({ virtuals: true }),
           crews: user.crews.map(({ _id, stagename }) => ({ _id, stagename }))
@@ -69,7 +67,6 @@ passport.use(
         delete result.password;
         delete result.image;
         delete result.id;
-        logger.debug(result);
         return done(null, result);
       } else {
         logger.debug('User password does not match');

@@ -220,5 +220,23 @@
 	"Surname": "Surname",
 	"Mobile": "Mobile",
 	"I confirm my personal data": "I confirm my personal data",
-	"Full schedule": "Full schedule"
+	"Full schedule": "Full schedule",
+	"Reset password": "Reset password",
+	"Password not generated, please retry.": "Password not generated, please retry.",
+	"User not found.": "User not found.",
+	"Password reset": "Password reset",
+	"We’ve received a request to reset your password.": "We’ve received a request to reset your password.",
+	"Click here to reset your password": "Click here to reset your password",
+	"If you didn’t make the request, just ignore this message": {
+		" Otherwise, you can reset your password using this link": "If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link"
+	},
+	"Thanks.": "Thanks.",
+	"Password reset link sent to": "Password reset link sent to",
+	"New Password": "New Password",
+	"Password minimum length is 8 characters and have to contain at least 1 number, 1 lower case and 1 uppercase characters": "Password minimum length is 8 characters and have to contain at least 1 number, 1 lower case and 1 uppercase characters",
+	"Confirm Password": "Confirm Password",
+	"Save & Continue": "Save & Continue",
+	"Link to change the password has expired or is not valid.": "Link to change the password has expired or is not valid.",
+	"Your password has been reset.": "Your password has been reset.",
+	"Password and Password confirm does not match. Try again...": "Password and Password confirm does not match. Try again..."
 }
