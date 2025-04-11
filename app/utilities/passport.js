@@ -11,12 +11,21 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
+  logger.debug(`deserializeUser: ${id}`);
   try {
     const user = await User.findOne({ _id: id })
-      .select('name surname stagename slug is_pro is_admin stats image crews email mobile addresses likes')
-      .populate([{ path: 'crews', select: 'stagename' }])
-      .exec();
-    done(null, user);
+    .select('name surname stagename slug is_pro is_admin stats image crews email mobile addresses likes')
+    .populate([{ path: 'crews', select: 'stagename' }])
+    .exec();
+    const result = {
+      ...user.toObject({ virtuals: true }),
+      crews: user.crews.map(({ _id, stagename }) => ({ _id, stagename }))
+    };
+    delete result.password;
+    delete result.image;
+    delete result.id;
+    logger.debug(result);
+    done(null, result);
   } catch (err) {
     done(err, null);
   }
@@ -25,7 +34,7 @@ passport.deserializeUser(async (id, done) => {
 // Local Strategy for authentication
 passport.use(
   new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, async (req, email, password, done) => {
-    logger.debug(`passport.use: ${email}`);
+    logger.debug(`LocalStrategy passport.use: ${email}`);
 
     try {
       const user = await User.findOne({
@@ -34,7 +43,10 @@ passport.use(
           { slug: { $regex: new RegExp(email, 'i') } },
           { 'emails.email': { $regex: new RegExp(email, 'i') } }
         ]
-      }).select('stagename slug password email');
+      })
+      .select('name surname stagename slug password is_pro is_admin stats image crews email mobile addresses likes')
+      .populate([{ path: 'crews', select: 'stagename' }])
+      .exec();
 
       if (!user) {
         logger.debug(`User not found: ${email}`);
@@ -49,7 +61,16 @@ passport.use(
 
       if (isMatch) {
         logger.debug('User password match');
-        return done(null, user);
+        logger.debug(user);
+        const result = {
+          ...user.toObject({ virtuals: true }),
+          crews: user.crews.map(({ _id, stagename }) => ({ _id, stagename }))
+        };
+        delete result.password;
+        delete result.image;
+        delete result.id;
+        logger.debug(result);
+        return done(null, result);
       } else {
         logger.debug('User password does not match');
         return done(null, false, {

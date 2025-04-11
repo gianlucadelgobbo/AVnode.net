@@ -244,9 +244,11 @@ app.use((req, res, next) => {
   const url = req.originalUrl ? req.originalUrl.split("?")[0] : "/";
   res.locals.host = host;
 
-  const isLocal = host.endsWith(".admin.avnode.local:8102") || host.endsWith(".api.admin.avnode.local:8102");
+  const isLocal = host.endsWith("admin.avnode.local:8102") || host.endsWith("api.admin.avnode.local:8102");
   res.locals.isLocal = isLocal;
-
+  console.log("isLocal")
+  console.log(isLocal)
+  console.log(host)
   res.locals.canonical = (isLocal ? "http" : "https") + "://" + host + url;
 
   next();

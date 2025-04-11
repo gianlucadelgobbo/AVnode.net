@@ -34,7 +34,7 @@ router.post('/', (req, res, next) => {
 
     req.logIn(user, (err) => {
       if (err) return req.isApi ? res.status(500).send(err) : next(err);
-
+      delete user.password;
       req.session.user = user;
       delete req.session.returnTo;
 
