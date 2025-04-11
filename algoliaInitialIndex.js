@@ -239,7 +239,7 @@ const indexEventShows = async () => {
         if (algoliaRecords.length > 0) {
             console.log('⏳ Invio record ad Algolia...');
             // Invia in batch ad Algolia
-            //const res = await algoliaService.saveObjects("AVnode_Events", algoliaRecords);
+            const res = await algoliaService.saveObjects("AVnode_Events", algoliaRecords);
             if (res?.taskID || res?.taskIDs) {
                 console.log(`✅ Record inviati ad Algolia (Task ID(s): ${res.taskID ?? res.taskIDs.join(', ')})`);
             } else {
