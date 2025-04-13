@@ -39,7 +39,7 @@ const videoSchema = new Schema({
   },
   programming:[Date],
 
-  performances: [{ type : Schema.ObjectId, ref : 'Performances' }],
+  performances: [{ type : Schema.ObjectId, ref : 'Performance' }],
   events: [{ type : Schema.ObjectId, ref : 'Event' }],
   users: [{ type : Schema.ObjectId, ref : 'User' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }]

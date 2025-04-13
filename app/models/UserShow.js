@@ -259,7 +259,11 @@ userSchema.virtual('partnerships_ordered').get(function () {
         partnerships_ordered.push(this.partnerships[partnership].events[event]);
       }
     } */
-    return this.partnerships.sort(function(a,b){return b.schedule[0].starttime.getTime() - a.schedule[0].starttime.getTime()});
+    return this.partnerships.sort((a, b) => {
+      const aTime = a.schedule?.[0]?.starttime instanceof Date ? a.schedule[0].starttime.getTime() : 0;
+      const bTime = b.schedule?.[0]?.starttime instanceof Date ? b.schedule[0].starttime.getTime() : 0;
+      return bTime - aTime;
+    });
   }
 });
 

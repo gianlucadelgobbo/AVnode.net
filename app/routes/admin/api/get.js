@@ -158,7 +158,7 @@ router.getSubscriptions = async (req, res) => {
 
 router.getList = async (req, res, view) => {
   logger.info("getList");
-  if (config.cpanel[req.params.sez] && req.params.id) {
+  if (config.cpanel[req.params.sez]) {
     const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
     const ids = [req.params.id].concat(req.user.crews.map(u => {return u._id.toString()}));
