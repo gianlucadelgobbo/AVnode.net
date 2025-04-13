@@ -37,7 +37,7 @@ const indexVideos = async () => {
 
     const Video = mongoose.model('Video');
 
-    const videos = await Video.find({ is_public: trues })
+    const videos = await Video.find({ is_public: true })
       .populate('users', 'stagename slug')
       .populate('performances', 'title')
       .populate('events', 'title')
