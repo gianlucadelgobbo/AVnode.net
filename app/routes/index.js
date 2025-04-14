@@ -82,7 +82,7 @@ router.post('/testlocale', (req, res) => {
   res.send('global.getLocale: ' + $locals.locale);
 }); */
 router.post("/session", (req, res) => {
-  console.log(req.session.user)
+  //console.log(req.session.user)
   if (req.session && req.session.user) {
     return res.status(200).json({ loggedIn: true, user: req.session.user });
   }
