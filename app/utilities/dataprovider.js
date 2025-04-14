@@ -2036,8 +2036,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
                 req.session[data._id+"#IMG:"+data.medias[item].slug] = true;
                 if (!data.medias[item].stats) data.medias[item].stats = {}
                 data.medias[item].stats.visits = data.medias[item].stats.visits ? data.medias[item].stats.visits+1 : 1;
-                model.updateOne({_id:data._id},{"medias":data.medias}, (err, raw) => {
-                });
+                model.updateOne({_id:data._id},{"medias":data.medias});
               }
               data.img = data.medias[item];
               data.img.index = item;
