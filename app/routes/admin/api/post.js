@@ -30,7 +30,6 @@ router.postData = async (req, res) => {
   try {
     logger.info("postData");
     logger.info("req.body");
-    logger.info('');
     logger.info(req.body);
     logger.info("req.params");
     logger.info(req.params);
@@ -83,7 +82,7 @@ router.postData = async (req, res) => {
       post.members = [req.user.id];
     } else if (req.params.sez == "partners") {
     } else {
-      post.users = [req.user.id];
+      post.users = [req.user._id];
     }
     if (req.params.ancestor && req.params.id) {
       post[req.params.ancestor] = [req.params.id];
@@ -101,10 +100,11 @@ router.postData = async (req, res) => {
       await data.save();
     } catch (err) {
       logger.error("🔥 Error creating entry in DB:", err);
-      res.status(400).send(err);
+      return res.status(400).send(err);
       //return res.status(500).json({ message: "Error saving to database", error: err.message });
     }
-    logger.info("Create success:", data);
+    logger.info("Create success:");
+    logger.info(data);
 
 /*         var id;
     if (req.params.sez==="partners") {
@@ -116,13 +116,16 @@ router.postData = async (req, res) => {
     Models['User']
     .findById(id, req.params.sez, (err, user) => { */
 
-    let userId = req.params.sez === "partners" ? post.partner_owner[0].owner : req.user.id;
+    let userId = req.params.sez === "partners" ? post.partner_owner[0].owner : req.user._id;
+    logger.info("User:");
+    logger.info(userId);
+    logger.info(req.user);
 
     let user;
     try {
       user = await Models["User"].findById(userId).select(req.params.sez).exec();
       if (!user) {
-        res.status(404).send({ message: `DOC_NOT_FOUND` });
+        return res.status(404).send({ message: `DOC_NOT_FOUND` });
       }
       if (req.params.sez==="partners") {
         user[req.params.sez].push({
@@ -140,11 +143,11 @@ router.postData = async (req, res) => {
         logger.info("Save success:");
       } catch (err) {
         logger.error("🔥 Error updating user:", err);
-        res.status(500).send({ message: `${JSON.stringify(err)}` });
+        return res.status(500).send({ message: `${JSON.stringify(err)}` });
       }
     } catch (err) {
       logger.error("🔥 Error finding user:", err);
-      res.status(404).send({ message: `DOC_NOT_FOUND` });
+      return res.status(404).send({ message: `DOC_NOT_FOUND` });
     }
 
     if (req.params.ancestor && req.params.id) {
@@ -172,10 +175,10 @@ router.postData = async (req, res) => {
     var cloneData = JSON.parse(JSON.stringify(data));
 
     if (req.body.admitted) cloneData.admitted = req.body.admitted
-    res.json(cloneData);      
+    return res.json(cloneData);      
   } catch (error) {
     logger.error("🔥 Unexpected Error in postData:", error);
-    res.status(500).json({ message: "Internal Server Error", error: error.message });
+    return res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 }
 
