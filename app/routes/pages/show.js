@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
     }
   } catch (error) {
     if (req.isApi) {
-      res.status(404).send({ path: req.originalUrl, currentUrl: req.originalUrl, user: req.user, title: req.__("404: API not found"), error: error });
+      res.status(404).send({ path: req.originalUrl, currentUrl: req.originalUrl, title: req.__("404: API not found"), error: error });
     } else {
       res.status(404).render('404', { path: req.originalUrl, title: "404: Page Not Found" });
     }
