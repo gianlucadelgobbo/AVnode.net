@@ -80,14 +80,27 @@ image.resize = (file, sizeA) => {
       logger.debug('resize out ' + scaledFilename);
       logger.debug(sizeA[a]);
     }
-    const resize = size => sharp(size.in)
-    .resize(size.w, size.h)
-    .toFile(size.out);
-
-    const resizeWebP = size => sharp(size.in)
-    .resize(size.w, size.h)
-    .webp()
-    .toFile(size.outWebP);
+    const resize = size => {
+      return sharp(size.in)
+        .resize(size.w, size.h)
+        .toFile(size.out)
+        .catch(err => {
+          console.error(`❌ Error resizing ${size.in} → ${size.out}:`, err);
+          throw err;
+        });
+    };
+    
+    const resizeWebP = size => {
+      return sharp(size.in)
+        .resize(size.w, size.h)
+        .webp()
+        .toFile(size.outWebP)
+        .catch(err => {
+          console.error(`❌ Error resizing (WebP) ${size.in} → ${size.outWebP}:`, err);
+          throw err;
+        });
+    };
+    
 
     Promise
     .all(sizeA.map(resize))
