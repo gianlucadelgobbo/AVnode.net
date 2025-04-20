@@ -27,8 +27,14 @@ const mySendMailer = async (data) => {
       path.join(__dirname, "../views/emails/", data.template, "text_ses.pug")
     );
 
-    const HTML_FORMAT_BODY = fn_html(data.email_content);
-    const TEXT_FORMAT_BODY = fn_text(data.email_content).split("<br/>").join("\n");
+    // Aggiungi __ se esiste
+    const locals = {
+      ...data.email_content,
+      ...(data.__ ? { __: data.__ } : {})
+    };
+
+    const HTML_FORMAT_BODY = fn_html(locals);
+    const TEXT_FORMAT_BODY = fn_text(locals).split("<br/>").join("\n");
 
     const emailParams = {
       Destination: {
