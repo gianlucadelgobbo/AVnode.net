@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
   //logger.info(req.session.call);
   const data = await Event.
   findOne({slug: req.params.slug}).
-  select({title: 1, organizationsettings: 1}).
+  select({title: 1, organizationsettings: 1, schedule: 1}).
   populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
   lean().
   exec();
@@ -132,7 +132,6 @@ router.get('/', async (req, res) => {
   if (err || data === null) {
     //return next(err);
   }
-  */
   if (!req.session.call || (req.query.step && req.query.step.toString() === '0') || req.session.call.saved) {
     req.session.call = {
       step: 0,
@@ -148,12 +147,12 @@ router.get('/', async (req, res) => {
   const msg = null;
   if (req.session.call.index!==undefined) {
     slugsMenu = participateMenu.map(item =>{return item.slug})
-    /* logger.info(data.organizationsettings.call.calls[req.session.call.index]);
+    logger.info(data.organizationsettings.call.calls[req.session.call.index]);
     logger.info("slugsMenu");
     logger.info(slugsMenu.indexOf('topics'));
     data.organizationsettings.call.calls[req.session.call.index].topics = []
     data.organizationsettings.call.calls[req.session.call.index].availability = false
-    data.organizationsettings.call.calls[req.session.call.index].packages = [] */
+    data.organizationsettings.call.calls[req.session.call.index].packages = []
     if (!data.organizationsettings.call.calls[req.session.call.index].topics.length && slugsMenu.indexOf('topics')!==-1) participateMenu.splice(slugsMenu.indexOf('topics'), 1)
     slugsMenu = participateMenu.map(item =>{return item.slug})
     
@@ -166,16 +165,25 @@ router.get('/', async (req, res) => {
     logger.info(data.organizationsettings.call.calls[req.session.call.index].availability);
     logger.info(slugsMenu);
   }
+  */
+  logger.info("data.organizationsettings.call.calls[0].availability");
+  logger.info(data.organizationsettings.call.calls[0]);
+
+  for (var a=0; a<data.organizationsettings.call.calls.length; a++) {
+    if (!data.organizationsettings.call.calls[a].availability) {
+      data.organizationsettings.call.calls[a].availability = availability(data.schedule);
+    }
+  }
+
+  
+  
   if (req.isApi) {
     res.json({
-      call: req.session.call,
+      event: data,
       code: req.query.code,
       performances: performances,
       subscriptions: subscriptions,
-      participateMenu: participateMenu,
-      dett: data,
-      user: req.user,
-      msg: msg      
+      participateMenu: participateMenu
     });
   } else {
     res.render('events/participate', {
@@ -195,6 +203,27 @@ router.get('/', async (req, res) => {
     });
   }
 });
+
+const availability = (schedule) => {
+  console.log("schedule");
+  console.log(schedule);
+
+  if (!Array.isArray(schedule)) {
+    throw new Error("schedule is not defined or not an array");
+  }
+
+  const startDates = schedule.map(item => new Date(item.starttime));
+  const endDates = schedule.map(item => new Date(item.endtime));
+
+  const minStart = new Date(Math.min(...startDates));
+  const maxEnd = new Date(Math.max(...endDates));
+
+  return {
+    start: minStart.toISOString(), // oppure `new Date(...)` se ti serve oggetto
+    end: maxEnd.toISOString()
+  };
+};
+
 
 router.post('/', async (req, res) => {
   logger.info("req.params");
