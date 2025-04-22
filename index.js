@@ -27,7 +27,7 @@ const startServer = async () => {
     // 3. Import and Start Server (after DB connection)
     const { default: app } = await import('./server.js'); // Assuming server.js exports the Express app
     const PORT = app.get('port') || 3000;
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       console.log(`🚀 Server running at http://localhost:${PORT}`);
     });
 

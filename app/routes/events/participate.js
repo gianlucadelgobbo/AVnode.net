@@ -52,9 +52,36 @@ router.get('/', async (req, res) => {
   const performances = await Performance.
   find({users: {$in:ids}}).
   select({slug: 1, title: 1}).
-  populate([{path: 'type', select: {name: 1}},{path: 'users', select: {stagename: 1, members: 1}}]).
+  populate([
+    {path: 'type', select: {name: 1}},
+    {
+      path: 'users', 
+      select: {stagename: 1, name: 1, surname: 1},
+      model: 'User',
+      populate: {
+        path: 'members',
+        select: {stagename: 1, name: 1, surname: 1},
+        model: 'User'
+      }
+    }
+  ]).
   lean().
   exec();
+
+  // Clean up members arrays while keeping all users
+  performances.forEach(performance => {
+    if (performance.users) {
+      performance.users = performance.users.map(user => {
+        // Only include members if they exist and are not empty
+        const members = user.members?.filter(member => member) || [];
+        return {
+          ...user,
+          members: members.length > 0 ? members : undefined
+        };
+      });
+    }
+  });
+
   logger.info("performances");
   //logger.info(performances);
   const userIds = new Set();
@@ -62,25 +89,25 @@ router.get('/', async (req, res) => {
 
   performances.forEach(performance => {
       performance.users.forEach(user => {
-          const userId = user._id.toString(); // Normalize to string
-          if (!seen.has(userId)) {
-              seen.add(userId);
+          const userId = user._id; // Keep as ObjectId
+          if (!seen.has(userId.toString())) {
+              seen.add(userId.toString());
               userIds.add(userId);
           }
 
           if (user.members && user.members.length > 0) {
-              user.members.forEach(memberId => {
-                  const memberIdStr = memberId.toString(); // Normalize to string
-                  if (!seen.has(memberIdStr)) {
-                      seen.add(memberIdStr);
-                      userIds.add(memberIdStr);
+              user.members.forEach(member => {
+                  const memberId = member._id; // Keep as ObjectId
+                  if (!seen.has(memberId.toString())) {
+                      seen.add(memberId.toString());
+                      userIds.add(memberId);
                   }
               });
           }
       });
   });
 
-  let authors = [...userIds]; // Convert Set to Array
+  let authors = [...userIds]; // Convert Set to Array of ObjectIds
 
   logger.info("authors");
   //logger.info(authors);
@@ -289,8 +316,8 @@ router.post('/', async (req, res) => {
         text_sign:  event.organizationsettings.call.calls[req.body.call].text_sign,
         title:   event.organizationsettings.call.calls[req.body.call].title + " | " + req.__("Call Submission"),
         subject: performance.title + " | " + event.organizationsettings.call.calls[req.body.call].title + " | " + req.__("Call Submission"),
-        block_1:  req.__("We’ve received a request to participate to") + " <b>" + event.organizationsettings.call.calls[req.body.call].title + "</b> "+req.__("from")+" <b>"+req.user.stagename+"</b>",
-        block_1_plain:  req.__("We’ve received a request to participate to") + " " + event.organizationsettings.call.calls[req.body.call].title + " "+req.__("from")+" "+req.user.stagename+"",
+        block_1:  req.__("We've received a request to participate to") + " <b>" + event.organizationsettings.call.calls[req.body.call].title + "</b> "+req.__("from")+" <b>"+req.user.stagename+"</b>",
+        block_1_plain:  req.__("We've received a request to participate to") + " " + event.organizationsettings.call.calls[req.body.call].title + " "+req.__("from")+" "+req.user.stagename+"",
         user: req.user,
         event: event,
         performance: performance,
@@ -301,8 +328,7 @@ router.post('/', async (req, res) => {
         block_3:  req.__("Thanks."),
         link:  "",
         link_plain: ""/* 
-        link:  "<a href=\""+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
-        link_plain: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0] */
+        link:  "<a href=\""+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0] */
       }
     })
   } catch (error) {
@@ -730,8 +756,8 @@ router.post('/', async (req, res) => {
                   text_sign:  data.organizationsettings.call.calls[req.session.call.index].text_sign,
                   title:   data.organizationsettings.call.calls[req.session.call.index].title + " | " + req.__("Call Submission"),
                   subject: req.session.call.admitted[req.session.call.performance].title + " | " + data.organizationsettings.call.calls[req.session.call.index].title + " | " + req.__("Call Submission"),
-                  block_1:  req.__("We’ve received a request to participate to") + " <b>" + data.organizationsettings.call.calls[req.session.call.index].title + "</b> "+req.__("from")+" <b>"+req.user.stagename+"</b>",
-                  block_1_plain:  req.__("We’ve received a request to participate to") + " " + data.organizationsettings.call.calls[req.session.call.index].title + " "+req.__("from")+" "+req.user.stagename+"",
+                  block_1:  req.__("We've received a request to participate to") + " <b>" + data.organizationsettings.call.calls[req.session.call.index].title + "</b> "+req.__("from")+" <b>"+req.user.stagename+"</b>",
+                  block_1_plain:  req.__("We've received a request to participate to") + " " + data.organizationsettings.call.calls[req.session.call.index].title + " "+req.__("from")+" "+req.user.stagename+"",
                   user: req.user,
                   dett: data,
                   call: req.session.call,
@@ -739,8 +765,7 @@ router.post('/', async (req, res) => {
                   block_3:  req.__("Thanks."),
                   link:  "",
                   link_plain: ""
-                  //link:  "<a href=\""+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
-                  //link_plain: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]
+                  //link:  "<a href=\""+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]
                 }
               })
               req.session.call.step = parseInt(req.body.step)+1;

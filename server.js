@@ -216,7 +216,8 @@ app.use(
     },
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
-      dbName: process.env.MONGODB_NAME,
+      collectionName: 'sessions',
+      ttl: 24 * 60 * 60, // 24 hours in seconds
       touchAfter: 24 * 3600,
     }),
   })
