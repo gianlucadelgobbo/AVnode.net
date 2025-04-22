@@ -106,18 +106,18 @@ router.get('/*', (req, res) => {
 
 
 /* router.get('/api/profile/public/slugs/:slug', (req, res)=>{
- req.params.id = req.user.id;
+ req.params.id = req.user._id;
  req.params.sez = 'profile';
  get.getSlug(req, res);
 });
 
 router.get('/api/profile/:form/', (req, res) => {
- req.params.id = req.user.id;
+ req.params.id = req.user._id;
  req.params.sez = 'profile';
  dataprovider.getData(req, res);
 });
 router.put('/api/profile/:form/', (req, res) => {
- req.params.id = req.user.id;
+ req.params.id = req.user._id;
  req.params.sez = 'profile';
  if (['profile/image'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
  upload.uploader(req, res, (err, data) => {
@@ -133,7 +133,7 @@ router.put('/api/profile/:form/', (req, res) => {
  }
 });
 router.get('/api/profile/emails/verify/:email', (req, res)=>{
- req.params.id = req.user.id;
+ req.params.id = req.user._id;
  req.params.sez = 'profile';
  get.sendEmailVerification(req, res);
 });
@@ -231,7 +231,7 @@ router.get('/api/:sez/:id/users/remove/:user', (req, res)=>{
 });
 
 router.get('/api/:sez', (req, res) => {
- req.params.id = req.user.id;
+ req.params.id = req.user._id;
  get.getList(req, res);
 });
  */

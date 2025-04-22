@@ -44,13 +44,13 @@ router.get('/setstatsandactivity/:id', setStatsAndActivity);
 
 // Profile Routes
 router.get('/profile/:form', (req, res) => {
-  req.params.id = req.user.id;
+  req.params.id = req.user._id;
   req.params.sez = 'profile';
   dataprovider.getData(req, res, "json");
 });
 
 router.get('/profile/emails/verify/:email', (req, res) => {
-  req.params.id = req.user.id;
+  req.params.id = req.user._id;
   req.params.sez = 'profile';
   getRoutes.sendEmailVerification(req, res);
 });
@@ -127,11 +127,11 @@ router.get('/:sez/:id/:form/', async (req, res) => {
 // Redirects for Profile & Subscriptions
 router.get('/:sez', (req, res) => {
   if (req.params.sez === "profile") {
-    res.redirect(`/admin/api/profile/${req.user.id}/public`);
+    res.redirect(`/admin/api/profile/${req.user._id}/public`);
   } else if (req.params.sez === "subscriptions") {
-    res.redirect(`/admin/api/subscriptions/${req.user.id}/public`);
+    res.redirect(`/admin/api/subscriptions/${req.user._id}/public`);
   } else {
-    req.params.id = req.user.id;
+    req.params.id = req.user._id;
     getRoutes.getList(req, res, "json");
   }
 });

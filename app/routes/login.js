@@ -23,6 +23,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res, next) => {
   const returnTo = req.session.returnTo || req.body.returnTo || "/admin";
+  logger.info('passport.loginredirect POST req:' + returnTo);
 
   passport.authenticate('local', (err, user, info) => {
     if (err) return req.isApi ? res.send(err) : next(err);
@@ -47,6 +48,7 @@ router.post('/', (req, res, next) => {
           returnTo,
         });
       } else {
+        logger.info('redirect:' + returnTo);
         req.flash('success', { msg: req.__('You are logged in.') });
         return res.redirect(returnTo);
       }

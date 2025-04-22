@@ -79,11 +79,11 @@ router.get('/mailer', (req, res) => {
 // Section-based Redirections & Data Fetching
 router.get('/:sez', (req, res) => {
   if (req.params.sez === "profile") {
-    res.redirect(`/admin/profile/${req.user.id}/public`);
+    res.redirect(`/admin/profile/${req.user._id}/public`);
   } else if (req.params.sez === "subscriptions") {
-    res.redirect(`/admin/subscriptions/${req.user.id}/private`);
+    res.redirect(`/admin/subscriptions/${req.user._id}/private`);
   } else {
-    req.params.id = req.user.id;
+    req.params.id = req.user._id;
     get.getList(req, res, `admin/${req.params.sez}`);
   }
 });
@@ -91,27 +91,27 @@ router.get('/:sez', (req, res) => {
 // Section-based Redirections & Data Posting
 router.post('/:sez', (req, res) => {
   if (req.params.sez === "profile") {
-    res.redirect(`/admin/profile/${req.user.id}/public`);
+    res.redirect(`/admin/profile/${req.user._id}/public`);
   } else if (req.params.sez === "subscriptions") {
-    res.redirect(`/admin/subscriptions/${req.user.id}/private`);
+    res.redirect(`/admin/subscriptions/${req.user._id}/private`);
   } else {
-    req.params.id = req.user.id;
+    req.params.id = req.user._id;
     get.getList(req, res, `admin/${req.params.sez}`);
   }
 });
 
 // Catch-All Routes
 router.get('/*', (req, res) => {
-  if (req.user && req.user.id) {
-    res.redirect(`/admin/profile/${req.user.id}/public`);
+  if (req.user && req.user._id) {
+    res.redirect(`/admin/profile/${req.user._id}/public`);
   } else {
     res.redirect("/404");
   }
 });
 
 router.post('/*', (req, res) => {
-  if (req.user && req.user.id) {
-    res.redirect(`/admin/profile/${req.user.id}/public`);
+  if (req.user && req.user._id) {
+    res.redirect(`/admin/profile/${req.user._id}/public`);
   } else {
     res.redirect("/404");
   }

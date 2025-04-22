@@ -79,7 +79,7 @@ router.postData = async (req, res) => {
       post[item] = selectaddon[item];
     }
     if (req.params.sez == "crews") {
-      post.members = [req.user.id];
+      post.members = [req.user._id];
     } else if (req.params.sez == "partners") {
     } else {
       post.users = [req.user._id];
@@ -110,7 +110,7 @@ router.postData = async (req, res) => {
     if (req.params.sez==="partners") {
       id = post.partner_owner[0].owner;
     } else {
-      id = req.user.id;
+      id = req.user._id;
     }
     
     Models['User']
@@ -186,7 +186,7 @@ router.cancelSubscription = (req, res) => {
   logger.info(req.body);
   var err = [];
   Models.Program
-  .findOne({_id: req.body.id/* , members:req.user.id */},'_id, event performance', (err, sub) => {
+  .findOne({_id: req.body.id/* , members:req.user._id */},'_id, event performance', (err, sub) => {
     if (err) {
       err.push(err);
       res.json(err);
@@ -431,7 +431,7 @@ router.editSubscription = (req, res) => {
     { "path": "reference", "select": "stagename name surname email mobile", "model": "User"}
   ];
   Models.Program
-  .findOne({_id: req.body.id/* , members:req.user.id */})
+  .findOne({_id: req.body.id/* , members:req.user._id */})
   .populate(populate)
   .exec((err, sub) => {
     logger.info(sub);
@@ -464,7 +464,7 @@ router.editSubscription = (req, res) => {
 router.editSubscriptionPrice = (req, res) => {
   logger.info(req.body);
   Models.Program
-  .findOne({_id: req.body.id/* , members:req.user.id */})
+  .findOne({_id: req.body.id/* , members:req.user._id */})
   .select({schedule: 1})
   .exec((err, sub) => {
     res.render('adminpro/events/acts-edit-sub-price', {sub: sub}, function(err, body) {
@@ -476,7 +476,7 @@ router.editSubscriptionPrice = (req, res) => {
 router.editSubscriptionCost = (req, res) => {
   logger.info(req.body);
   Models.Program
-  .findOne({_id: req.body.id/* , members:req.user.id */})
+  .findOne({_id: req.body.id/* , members:req.user._id */})
   .select({fee: 1, technical_cost: 1, accommodation_cost: 1, transfer_cost: 1})
   .exec((err, sub) => {
     res.render('adminpro/events/acts-edit-sub-cost', {sub: sub}, function(err, body) {
@@ -1171,7 +1171,7 @@ router.bookingRequest = async (req, res) => {
     let perf;
     try {
       perf = await Models.Performance
-      .findOne({_id: req.body.perf/* , members:req.user.id */})
+      .findOne({_id: req.body.perf/* , members:req.user._id */})
       .select({title: 1, slug: 1})
       .populate([{ "path": "users", "select": "is_crew stagename name surname email", "model": "User", "populate": { "path": "members", "select": "stagename name surname email", "model": "User"}}])
       .exec()        
@@ -1340,7 +1340,7 @@ router.updateSubscription = (req, res) => {
     
   if (req.body.id && req.body.subscriber_id && req.body.wepay) {
     Models.Program
-    .findOne({_id: req.body.id/* , members:req.user.id */})
+    .findOne({_id: req.body.id/* , members:req.user._id */})
     //.select({schedule: 1, call: 1, event: 1})
     //.populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
     .exec((err, program) => {
@@ -1355,7 +1355,7 @@ router.updateSubscription = (req, res) => {
     });
   } else if (req.body.id && req.body.subscriber_id && req.body.cash) {
     Models.Program
-    .findOne({_id: req.body.id/* , members:req.user.id */})
+    .findOne({_id: req.body.id/* , members:req.user._id */})
     //.select({schedule: 1, call: 1, event: 1})
     //.populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
     .exec((err, program) => {
@@ -1370,7 +1370,7 @@ router.updateSubscription = (req, res) => {
     });
   } else if (req.body.id && req.body.subscriber_id && (req.body.hotel || req.body.hotel_room)) {
     Models.Program
-    .findOne({_id: req.body.id/* , members:req.user.id */})
+    .findOne({_id: req.body.id/* , members:req.user._id */})
     //.select({schedule: 1, call: 1, event: 1})
     //.populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
     .exec((err, program) => {
@@ -1390,7 +1390,7 @@ router.updateSubscription = (req, res) => {
     });
   } else if (req.body.id && req.body.status) {
     Models.Program
-    .findOne({_id: req.body.id/* , members:req.user.id */})
+    .findOne({_id: req.body.id/* , members:req.user._id */})
     .select({schedule: 1, call: 1, event: 1})
     .populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
     .exec((err, sub) => {
