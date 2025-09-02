@@ -196,13 +196,15 @@ router.cancelSubscription = (req, res) => {
           res.json(err);
         } else {
           logger.debug("event.program");
-          logger.debug(event.program.length);
-          event.program.forEach((program, index) => {
-            if (program.subscription_id == req.body.id) {
-              event.program.splice(index, 1);
-            }
-          });
-          logger.debug(event.program.length);
+          if (event.program && event.program.length) {
+            logger.debug(event.program.length);
+            event.program.forEach((program, index) => {
+              if (program.subscription_id == req.body.id) {
+                event.program.splice(index, 1);
+              }
+            });
+            logger.debug(event.program.length);
+          }
           Models.Performance
           .findOne({_id: sub.performance},'_id, bookings', (err, performance) => {
             if (err) {
