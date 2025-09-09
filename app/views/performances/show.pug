@@ -114,7 +114,7 @@ block content
                       a.performance_user_title(href="/"+user.slug).users_performance_item_name=user.stagename
                       if user.addressesFormatted && user.addressesFormatted.length
                         p.users_performance_item_country!=user.addressesFormatted.join(", ")
-            //if data.bookings.length
+            if data.bookings.length
               .performance_events_wrapper
                 h3.mt-3=global.__('Events')  
                 each booking in data.bookings
