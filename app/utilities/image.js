@@ -8,6 +8,9 @@ import sizeOf from 'image-size';
 
 const image = {};
 
+// Constants
+const BLACK_BACKGROUND = { r: 0, g: 0, b: 0, alpha: 1 };
+
 image.resizer = (files, options, done) => {
   logger.info('resizerresizerresizerresizerresizerresizerresizerresizerresizer');
   let sizesA = [];
@@ -80,14 +83,59 @@ image.resize = (file, sizeA) => {
       logger.info('resize out ' + scaledFilename);
       logger.info(sizeA[a]);
     }
-    const resize = size => sharp(size.in)
-    .resize(size.w, size.h)
-    .toFile(size.out);
+    const resize = size => {
+      const resizeOptions = {
+        width: size.w,
+        height: size.h
+      };
+      
+      if (file.sez === "galleries" && file.height > file.width) {
+        logger.info(`Processing vertical image in galleries - Original: ${file.width}x${file.height}`);
+        // Se è verticale e siamo in galleries
+        if (size.folder === 'small') {
+          logger.info(`Small format - Keeping horizontal dimensions: ${size.w}x${size.h}`);
+          // Per il formato small, manteniamo le dimensioni orizzontali ma inscriviamo l'immagine
+          resizeOptions.fit = 'contain';
+          resizeOptions.background = BLACK_BACKGROUND;
+        } else {
+          logger.info(`Vertical format - Inverting dimensions from ${size.w}x${size.h} to ${size.h}x${size.w}`);
+          // Per gli altri formati, invertiamo le dimensioni
+          resizeOptions.width = size.h;
+          resizeOptions.height = size.w;
+          resizeOptions.fit = 'cover';
+        }
+      }
+      
+      return sharp(size.in)
+        .resize(resizeOptions)
+        .toFile(size.out);
+    };
 
-    const resizeWebP = size => sharp(size.in)
-    .resize(size.w, size.h)
-    .webp()
-    .toFile(size.outWebP);
+    const resizeWebP = size => {
+      const resizeOptions = {
+        width: size.w,
+        height: size.h
+      };
+      
+      if (file.sez === "galleries" && file.height > file.width) {
+        // Se è verticale e siamo in galleries
+        if (size.folder === 'small') {
+          // Per il formato small, manteniamo le dimensioni orizzontali ma inscriviamo l'immagine
+          resizeOptions.fit = 'contain';
+          resizeOptions.background = BLACK_BACKGROUND;
+        } else {
+          // Per gli altri formati, invertiamo le dimensioni
+          resizeOptions.width = size.h;
+          resizeOptions.height = size.w;
+          resizeOptions.fit = 'cover';
+        }
+      }
+      
+      return sharp(size.in)
+        .resize(resizeOptions)
+        .webp()
+        .toFile(size.outWebP);
+    };
 
     Promise
     .all(sizeA.map(resize))
@@ -121,15 +169,25 @@ image.checksize = (file, sizeA, options, req) => {
 
         file.width = dimensions.width;
         file.height = dimensions.height;
-        logger.info(file);
-        logger.info("dimensions.width " + dimensions.width);
-        logger.info("dimensions.height " + dimensions.height);
-        logger.info("options.minwidth " + options.minwidth);
-        logger.info("options.minheight " + options.minheight);
+        logger.info(`Image dimensions: ${dimensions.width}x${dimensions.height}`);
+        logger.info(`Minimum required: ${options.minwidth}x${options.minheight}`);
+        
         var dimensionError = true;
-        if (dimensions.width >= options.minwidth && dimensions.height >= options.minheight) dimensionError = false;
-        if (dimensionError && req.params.sez == "galleries")
-          if (dimensions.width >= options.minheight && dimensions.height >= options.minwidth) dimensionError = false;
+        
+        if (req.params.sez == "galleries" && dimensions.height > dimensions.width) {
+          logger.info("Vertical image in galleries - Checking inverted dimensions");
+          // Se è verticale e siamo in galleries, invertiamo le dimensioni minime
+          if (dimensions.width >= options.minheight && dimensions.height >= options.minwidth) {
+            dimensionError = false;
+            logger.info("Vertical image meets minimum size requirements");
+          }
+        } else {
+          if (dimensions.width >= options.minwidth && dimensions.height >= options.minheight) {
+            dimensionError = false;
+            logger.info("Image meets minimum size requirements");
+          }
+        }
+        
         if (dimensionError) {
           file.err = req.__("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight;
           logger.info( req.__("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight);
@@ -142,7 +200,6 @@ image.checksize = (file, sizeA, options, req) => {
         file.err = req.__("File is not an image");
         setTimeout(resolve, 100, file);
       }
-      //=> {ext: 'png', mime: 'image/png'}
     })(); 
   });
   return promise

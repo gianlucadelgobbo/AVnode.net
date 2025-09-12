@@ -241,34 +241,9 @@ upload.setVideo = (req, res) => {
   });
 }
 
-upload.galleryAddImages = (req, res) => {
+upload.galleryAddImages = async (req, res) => {
 //if (helpers.editable(req, data, req.params.id)) {
-  const options = {
-    "fields": {
-      "name": "image",
-      "maxCount": 100
-    },
-    "fileext": ["jpg","jpeg","png","gif","svg"],
-    "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
-    "storage": "/glacier/galleries_originals/",
-    "maxsize": 20971520,
-    "minwidth": 1280,
-    "minheight": 720,
-    "sizes": {
-      "small": {
-        "w": 400,
-        "h": 225,
-        "folder": "400x225",
-        "default": "/images/default-item.svg"
-      },
-      "large": {
-        "w": 1140,
-        "h": 641,
-        "folder": "1140x641",
-        "default": "/images/default-item.svg"
-      }
-    }
-  }
+  const options = config.cpanel.galleries.forms.public.image.config;
   upload.uploader(req, res, options, (err, p) => {
     logger.info(err);
     logger.info("p.files");
@@ -302,7 +277,7 @@ upload.galleryAddImages = (req, res) => {
             imageUtil.resizer(
               files_checked,
               options,
-              (files_resized) => {
+              async (files_resized) => {
                 logger.info(`imageUtil.resizer`);
                 logger.info(files_resized);
                 logger.info(`imageUtil.resizer end`);
@@ -322,71 +297,60 @@ upload.galleryAddImages = (req, res) => {
                   //var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
                   logger.info(put);
                   const id = req.params.id;
-                  Models.Gallery
-                  .findById(id, "medias image", (err, data) => {
-                    //, put, {new: true, runValidators: true, select: select}).
-                    if (!err) {
-                      if (data) {
-                        if (!data.medias) data.medias = [];
-                        for (let a = 0; a < files_resized.length; a++) {
-                          if (!files_resized[a].err) {
-                            var ins = {
-                              file: files_resized[a].path.replace(config.appRoot, ""),
-                              title: files_resized[a].originalname.substring(0, files_resized[a].originalname.lastIndexOf(".")),
-                              slug: files_resized[a].filename.replace(".jpeg", ""),
-                              originalname: files_resized[a].originalname,
-                              encoding: files_resized[a].encoding,
-                              mimetype: files_resized[a].mimetype,
-                              folder: files_resized[a].destination,
-                              filename: files_resized[a].filename,
-                              size: files_resized[a].size,
-                              width: files_resized[a].width,
-                              height: files_resized[a].height
-                            };
-                            data.medias.push(ins);
+                  try {
+                    const data = await Models.Gallery.findById(id, "medias image");
+                    if (data) {
+                      if (!data.medias) data.medias = [];
+                      for (let a = 0; a < files_resized.length; a++) {
+                        if (!files_resized[a].err) {
+                          var ins = {
+                            file: files_resized[a].path.replace(config.appRoot, ""),
+                            title: files_resized[a].originalname.substring(0, files_resized[a].originalname.lastIndexOf(".")),
+                            slug: files_resized[a].filename.replace(".jpeg", ""),
+                            originalname: files_resized[a].originalname,
+                            encoding: files_resized[a].encoding,
+                            mimetype: files_resized[a].mimetype,
+                            folder: files_resized[a].destination,
+                            filename: files_resized[a].filename,
+                            size: files_resized[a].size,
+                            width: files_resized[a].width,
+                            height: files_resized[a].height
+                          };
+                          data.medias.push(ins);
+                        }
+                      }
+                      logger.info('savesavesavesavesavesavesavesave');
+                      data.medias.forEach((item)=>{
+                        if (item && item.imageFormats) delete item.imageFormats
+                      });
+                      logger.info(data.medias);
+                      try {
+                        await data.save();
+                        logger.info('USERS ?');
+                        logger.info(data.users);
+                        var query = {_id: {$in:data.users || data.members}};
+                        await setStatsAndActivity(query);
+                        const updatedData = await Models.Gallery.findById(id, "medias image");
+                        var result = []
+                        for (var e=0; e<files_resized.length; e++) {
+                          for (var d=0; d<updatedData.medias.length; d++) {
+                            if (files_resized[e].path && updatedData.medias[d].file == files_resized[e].path.replace(config.appRoot, "")) {
+                              files_resized[e] = updatedData.medias[d];
+                            }
                           }
                         }
-                        logger.info('savesavesavesavesavesavesavesave');
-                        data.medias.forEach((item)=>{
-                          if (item && item.imageFormats) delete item.imageFormats
-                        });
-                        logger.info(data.medias);
-                        data.save((err) => {
-                          if (err) {
-                            logger.info(err);
-                            logger.info("view");
-                            res.status(400).send({ message: `${JSON.stringify(err)}` });
-                        } else {
-                            logger.info('USERS ?');
-                            logger.info(data.users);
-                            var query = {_id: {$in:data.users || data.members}};
-                            Promise.all(
-                              [setStatsAndActivity(query)]
-                            ).then( (results) => {
-                              Models.Gallery
-                              .findById(id, "medias image", (err, data) => {
-                                var result = []
-                                for (var e=0; e<files_resized.length; e++) {
-                                  for (var d=0; d<data.medias.length; d++) {
-                                    if (files_resized[e].path && data.medias[d].file == files_resized[e].path.replace(config.appRoot, "")) {
-                                      files_resized[e] = data.medias[d];
-                                    }
-                                  }
-
-                                }
-                                res.json(files_resized);
-                              });
-                            });
-                          }
-                        });
-              
-                      } else {
-                        res.status(404).send({ message: `DOC_NOT_FOUND` });
+                        res.json(files_resized);
+                      } catch (err) {
+                        logger.info(err);
+                        logger.info("view");
+                        res.status(400).send({ message: `${JSON.stringify(err)}` });
                       }
                     } else {
-                      res.status(500).send({ message: `${JSON.stringify(err)}` });
+                      res.status(404).send({ message: `DOC_NOT_FOUND` });
                     }
-                  });
+                  } catch (err) {
+                    res.status(500).send({ message: `${JSON.stringify(err)}` });
+                  }
               
 
 
