@@ -168,14 +168,33 @@ var corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 app.use(cors()); */
+
+// Reject absurdly long or malformed URLs before hitting routes
+app.use((req, res, next) => {
+  if ((req.originalUrl || '').length > 2048) {
+    return res.sendStatus(414); // URI Too Long
+  }
+  // Reject any stray '%' not followed by two hex digits
+  if (/%(?![0-9A-Fa-f]{2})/.test(req.originalUrl)) {
+    return res.sendStatus(400); // Bad Request
+  }
+  next();
+});
+
 app.use(routes);
 
-app.use(function(err, req, res, next) {
-  console.error("URL: " + req.headers.host + req.url); // URL of req made
-  console.error(err.message); // Log error message in our server's console
-  if (!err.statusCode) err.statusCode = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
-  next(err);
-  //res.status(err.statusCode).send("Internal server error"); // All HTTP requests must have a response, so let's send back an error with its status code and message
+app.use((err, req, res, next) => {
+  if (err instanceof URIError) {
+    console.error("Bad URL encoding:", req.originalUrl);
+    req.url = ""; // prevent Express from re-decoding
+    return res.status(400).send("Bad Request");
+  }
+
+  console.error("URL:", req.headers.host + req.url);
+  console.error(err.message);
+
+  const status = err.statusCode || 500;
+  res.status(status).send(status === 500 ? "Internal server error" : err.message);
 });
 
 module.exports = app;
