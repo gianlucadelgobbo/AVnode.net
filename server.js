@@ -151,7 +151,7 @@ app.use((req, res, next) => {
 
   if (
     !req.user &&
-    req.path.indexOf("/admin") === 0 &&
+    req.path.toLowerCase().indexOf("/admin") === 0 &&
     req.path !== "/admin/api/signup"
   ) {
     req.session.returnTo = req.path.replace("/admin/api/loggeduser", "/");
