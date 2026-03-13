@@ -24,6 +24,12 @@ const Models = {
   'Order': mongoose.model('Order')
 }
 import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
+import { syncEventToAlgolia } from '../../../utilities/algolia/syncEvent.js';
+import { syncUserToAlgolia } from '../../../utilities/algolia/syncUser.js';
+import { syncPerformanceToAlgolia } from '../../../utilities/algolia/syncPerformance.js';
+import { syncGalleryToAlgolia } from '../../../utilities/algolia/syncGallery.js';
+import { syncVideoToAlgolia } from '../../../utilities/algolia/syncVideo.js';
+import { syncNewsToAlgolia } from '../../../utilities/algolia/syncNews.js';
 
 
 router.postData = async (req, res) => {
@@ -173,6 +179,30 @@ router.postData = async (req, res) => {
     logger.info("stocazzooooooooooo");
     logger.info(data);
     var cloneData = JSON.parse(JSON.stringify(data));
+
+    // Fire-and-forget Algolia sync for Events only
+    try {
+      if (req.params.sez === 'events' && data && data._id) {
+        syncEventToAlgolia(data._id).catch((e) => logger.error('Algolia sync (create) failed', e));
+      }
+      if (req.params.sez === 'profile' && data && data._id) {
+        syncUserToAlgolia(data._id).catch((e) => logger.error('Algolia user sync (create) failed', e));
+      }
+      if (req.params.sez === 'performances' && data && data._id) {
+        syncPerformanceToAlgolia(data._id).catch((e) => logger.error('Algolia performance sync (create) failed', e));
+      }
+      if (req.params.sez === 'galleries' && data && data._id) {
+        syncGalleryToAlgolia(data._id).catch((e) => logger.error('Algolia gallery sync (create) failed', e));
+      }
+      if (req.params.sez === 'videos' && data && data._id) {
+        syncVideoToAlgolia(data._id).catch((e) => logger.error('Algolia video sync (create) failed', e));
+      }
+      if (req.params.sez === 'news' && data && data._id) {
+        syncNewsToAlgolia(data._id).catch((e) => logger.error('Algolia news sync (create) failed', e));
+      }
+    } catch (e) {
+      logger.error('Algolia sync (create) exception', e);
+    }
 
     if (req.body.admitted) cloneData.admitted = req.body.admitted
     return res.json(cloneData);      

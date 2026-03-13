@@ -8,6 +8,13 @@ import mongoose from "mongoose";
 import { logger } from "../../../utilities/logger.js";
 import { setStatsAndActivity, setStatsAndActivitySingle } from "../../../utilities/userstats.js";
 
+import { syncEventToAlgolia } from '../../../utilities/algolia/syncEvent.js';
+import { syncUserToAlgolia } from '../../../utilities/algolia/syncUser.js';
+import { syncPerformanceToAlgolia } from '../../../utilities/algolia/syncPerformance.js';
+import { syncGalleryToAlgolia } from '../../../utilities/algolia/syncGallery.js';
+import { syncVideoToAlgolia } from '../../../utilities/algolia/syncVideo.js';
+import { syncNewsToAlgolia } from '../../../utilities/algolia/syncNews.js';
+
 const Models = {
   User: mongoose.model("User"),
   Performance: mongoose.model("Performance"),
@@ -86,7 +93,7 @@ router.putData = async (req, res, view) => {
   logger.info('Data putData');
   //logger.info(data);
   logger.info('Select putData');
-  logger.info(select);
+  //logger.info(select);
   //logger.info(Object.keys(select));
 
   if (select.privacy && !req.body.privacy) req.body.privacy = "";
@@ -177,6 +184,29 @@ router.putData = async (req, res, view) => {
     logger.error("Error updating stats", err);
   }
 
+  try {
+    logger.info(req.params.sez)
+    if (req.params.sez === 'events' && data && data._id) {
+      syncEventToAlgolia(data._id).catch((e) => logger.error('Algolia sync (update) failed', e));
+    }
+    if (req.params.sez === 'profile' && data && data._id) {
+      syncUserToAlgolia(data._id).catch((e) => logger.error('Algolia user sync (update) failed', e));
+    }
+    if (req.params.sez === 'performances' && data && data._id) {
+      syncPerformanceToAlgolia(data._id).catch((e) => logger.error('Algolia performance sync (update) failed', e));
+    }
+    if (req.params.sez === 'galleries' && data && data._id) {
+      syncGalleryToAlgolia(data._id).catch((e) => logger.error('Algolia gallery sync (update) failed', e));
+    }
+    if (req.params.sez === 'videos' && data && data._id) {
+      syncVideoToAlgolia(data._id).catch((e) => logger.error('Algolia video sync (update) failed', e));
+    }
+    if (req.params.sez === 'news' && data && data._id) {
+      syncNewsToAlgolia(data._id).catch((e) => logger.error('Algolia news sync (update) failed', e));
+    }
+  } catch (e) {
+    logger.error('Algolia sync (update) exception', e);
+  }
   select = Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
   let populate = config.cpanel[req.params.sez].forms[req.params.form].populate;
   let updatedData
