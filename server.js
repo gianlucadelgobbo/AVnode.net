@@ -91,40 +91,40 @@ const allowedOrigins = [
   "https://pt.avnode.net",
   "https://ru.avnode.net",
 
-  "http://avnode.local:3000",
-  "http://by.avnode.local:3000",
-  "http://de.avnode.local:3000",
-  "http://es.avnode.local:3000",
-  "http://fr.avnode.local:3000",
-  "http://gr.avnode.local:3000",
-  "http://hu.avnode.local:3000",
-  "http://it.avnode.local:3000",
-  "http://pl.avnode.local:3000",
-  "http://pt.avnode.local:3000",
-  "http://ru.avnode.local:3000",
+  "http://avnode.net:3000",
+  "http://by.avnode.net:3000",
+  "http://de.avnode.net:3000",
+  "http://es.avnode.net:3000",
+  "http://fr.avnode.net:3000",
+  "http://gr.avnode.net:3000",
+  "http://hu.avnode.net:3000",
+  "http://it.avnode.net:3000",
+  "http://pl.avnode.net:3000",
+  "http://pt.avnode.net:3000",
+  "http://ru.avnode.net:3000",
 
-  "http://admin.avnode.local:8102",
-  "http://by.admin.avnode.local:8102",
-  "http://de.admin.avnode.local:8102",
-  "http://es.admin.avnode.local:8102",
-  "http://fr.admin.avnode.local:8102",
-  "http://gr.admin.avnode.local:8102",
-  "http://hu.admin.avnode.local:8102",
-  "http://it.admin.avnode.local:8102",
-  "http://pl.admin.avnode.local:8102",
-  "http://pt.admin.avnode.local:8102",
-  "http://ru.admin.avnode.local:8102",
-  "http://api.admin.avnode.local:8102",
-  "http://by.api.admin.avnode.local:8102",
-  "http://de.api.admin.avnode.local:8102",
-  "http://es.api.admin.avnode.local:8102",
-  "http://fr.api.admin.avnode.local:8102",
-  "http://gr.api.admin.avnode.local:8102",
-  "http://hu.api.admin.avnode.local:8102",
-  "http://it.api.admin.avnode.local:8102",
-  "http://pl.api.admin.avnode.local:8102",
-  "http://pt.api.admin.avnode.local:8102",
-  "http://ru.api.admin.avnode.local:8102",
+  "http://admin.avnode.net:8102",
+  "http://by.admin.avnode.net:8102",
+  "http://de.admin.avnode.net:8102",
+  "http://es.admin.avnode.net:8102",
+  "http://fr.admin.avnode.net:8102",
+  "http://gr.admin.avnode.net:8102",
+  "http://hu.admin.avnode.net:8102",
+  "http://it.admin.avnode.net:8102",
+  "http://pl.admin.avnode.net:8102",
+  "http://pt.admin.avnode.net:8102",
+  "http://ru.admin.avnode.net:8102",
+  "http://api.admin.avnode.net:8102",
+  "http://by.api.admin.avnode.net:8102",
+  "http://de.api.admin.avnode.net:8102",
+  "http://es.api.admin.avnode.net:8102",
+  "http://fr.api.admin.avnode.net:8102",
+  "http://gr.api.admin.avnode.net:8102",
+  "http://hu.api.admin.avnode.net:8102",
+  "http://it.api.admin.avnode.net:8102",
+  "http://pl.api.admin.avnode.net:8102",
+  "http://pt.api.admin.avnode.net:8102",
+  "http://ru.api.admin.avnode.net:8102",
 
   "https://dev.avnode.net",
   "https://by.dev.avnode.net",
@@ -207,7 +207,7 @@ app.use(
     saveUninitialized: false,
     secret: process.env.SESSION_SECRET,
     cookie: {
-      domain: process.env.NODE_ENV === "production" ? ".avnode.net" : ".avnode.local",  // ✅ Share cookie across all subdomains
+      domain: process.env.NODE_ENV === "production" ? ".avnode.net" : ".avnode.net",  // ✅ Share cookie across all subdomains
       path: "/",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
       //secure: process.env.NODE_ENV === "production",
@@ -240,13 +240,13 @@ app.use((req, res, next) => {
   let host = req.get("host");
   if (!host) {
     console.error(`[ERROR] Host is undefined for request from ${req.ip}`);
-    host = process.env.NODE_ENV === "production" ? "admin.avnode.net" : "admin.avnode.local:8102"
+    host = process.env.NODE_ENV === "production" ? "admin.avnode.net" : "admin.avnode.net:8102"
   }
 
   const url = req.originalUrl ? req.originalUrl.split("?")[0] : "/";
   res.locals.host = host;
 
-  const isLocal = host.endsWith("admin.avnode.local:8102") || host.endsWith("api.admin.avnode.local:8102");
+  const isLocal = host.endsWith("admin.avnode.net:8102") || host.endsWith("api.admin.avnode.net:8102");
   res.locals.isLocal = isLocal;
   /* console.log("isLocal")
   console.log(isLocal)
