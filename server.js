@@ -210,7 +210,8 @@ app.use(
       domain: process.env.NODE_ENV === "production" ? ".avnode.net" : ".avnode.local",  // ✅ Share cookie across all subdomains
       path: "/",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      secure: process.env.NODE_ENV === "production",
+      //secure: process.env.NODE_ENV === "production",
+      secure: false, // ✅ Allow non-HTTPS in development
       httpOnly: true,
       sameSite: "lax",  // Allow cross-subdomain access
     },
