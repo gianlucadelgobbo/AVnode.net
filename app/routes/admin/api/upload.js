@@ -188,7 +188,7 @@ upload.setImage = (req, res) => {
                   }
                 }
               }
-            );
+            , req);
           }
         }
       );
@@ -200,43 +200,29 @@ upload.setImage = (req, res) => {
 
 upload.setVideo = (req, res) => {
   const options = config.cpanel[req.params.sez].forms.public.media.config;
-  upload.uploader(req, res, options, (err, p) => {
-    logger.info(err);
-    logger.info("p.files");
-    logger.info(p.files);
-    logger.info(options.fields.name);
-
-    // if (err instanceof multer.MulterError) {
+  upload.uploader(req, res, options, async (err, p) => {
     if (err) {
-      logger.info("Upload ERROR");
-      logger.info(err);
-      res.status(500).send({ message: `${JSON.stringify(err)}` });
-    } else if (p.files && p.files[options.fields.name] && p.files[options.fields.name].length) {
-      let put = {};
-      put[options.fields.name] = {
-        original: p.files[options.fields.name][0].path.replace(config.appRoot,""),
-        originalname: p.files[options.fields.name][0].originalname,
-        encoding: 0,
-        mimetype: p.files[options.fields.name][0].mimetype,
-        //folder: p.files[options.fields.name][0].destination,
-        filename: p.files[options.fields.name][0].filename,
-        //size: p.files[options.fields.name][0].size,
-        //width: p.files[options.fields.name][0].width,
-        //height: p.files[options.fields.name][0].height
-      };
-      logger.info("SALVAAAAAAAAA");
-      logger.info(put);
-      const id = req.params.id;
-      Models[config.cpanel[req.params.sez].model]
-      .findOneAndUpdate({_id:id}, put, {upsert: false, useFindAndModify: false}, function(err, doc) {
-        if (err) {
-          res.status(500).send({ message: `${JSON.stringify(err)}` });
-        } else {
-          res.send(doc);
-        }
-      });              
-    } else {
-      done(true, [{err: "Missing p.files." + options.fields.name}]);
+      logger.info("Upload ERROR", err);
+      return res.status(500).send({ message: `${JSON.stringify(err)}` });
+    }
+    if (!(p.files && p.files[options.fields.name] && p.files[options.fields.name].length)) {
+      return res.status(400).send({ message: "Missing file" });
+    }
+    const put = {};
+    put[options.fields.name] = {
+      original: p.files[options.fields.name][0].path.replace(config.appRoot, ""),
+      originalname: p.files[options.fields.name][0].originalname,
+      encoding: 0,
+      mimetype: p.files[options.fields.name][0].mimetype,
+      filename: p.files[options.fields.name][0].filename,
+    };
+    logger.info("SALVAAAAAAAAA", put);
+    try {
+      const doc = await Models[config.cpanel[req.params.sez].model]
+        .findOneAndUpdate({ _id: req.params.id }, put, { new: true });
+      res.send(doc);
+    } catch (e) {
+      res.status(500).send({ message: `${JSON.stringify(e)}` });
     }
   });
 }
@@ -362,7 +348,7 @@ upload.galleryAddImages = async (req, res) => {
 
                 //}
               }
-            );
+            , req);
           }
         }
       );

@@ -329,5 +329,20 @@
 	"Gallery Url": "Gallery Url",
 	"To have your gallery at https": "//avnode.net/galleries/mybeautyfulgallery, please insert mybeautifulgallery (lower case, no spaces, no special characters)",
 	"Add images": "Add images",
-	"Images minimum size is": "Images minimum size is"
+	"Images minimum size is": "Images minimum size is",
+	"The list of Videos": " All Most recent",
+	"VJ-DJ Sets": "VJ-DJ Sets",
+	"Docs": "Docs",
+	"Video": "Video",
+	"To be categorized": "To be categorized",
+	"To view this video please enable JavaScript, and consider upgrading to a web browser that supports": "To view this video please enable JavaScript, and consider upgrading to a web browser that supports",
+	"Data": "Data",
+	"File name": "File name",
+	"File size": "File size",
+	"File duration": "File duration",
+	"File type": "File type",
+	"Video dimensions": "Video dimensions",
+	"Categories": "Categories",
+	"Text is missing": "Text is missing",
+	"FILE_IS_DAMAGED": "FILE_IS_DAMAGED"
 }

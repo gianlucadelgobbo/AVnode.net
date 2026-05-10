@@ -288,6 +288,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', async (req, res) => {
         imageUtil.resizer([{path:config.appRoot+data.media.preview}], options, (files_resized) => {
           logger.info("files_resized");
           logger.info(files_resized);
+
           if (files_resized.map(item => {return item.err ? true : false}).indexOf(true)!==-1) {
             logger.info("Image resize ERROR: info undefined");
             res.json(files_resized);
@@ -315,7 +316,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', async (req, res) => {
               }
             });
               }
-        });
+        }, req);
       } else {
         res.json({error: "FILE NOT FOUND"});
       }

@@ -9,7 +9,7 @@ import { syncUserToAlgolia } from './syncUser.js';
 import { syncGalleryToAlgolia } from './syncGallery.js';
 import { syncVideoToAlgolia } from './syncVideo.js';
 
-export const syncPerformanceToAlgolia = async (performanceId) => {
+export const syncPerformanceToAlgolia = async (performanceId, { cascade = true } = {}) => {
   const Performance = mongoose.model('Performance');
 
   const perf = await Performance.findById(performanceId)
@@ -37,34 +37,35 @@ export const syncPerformanceToAlgolia = async (performanceId) => {
     logger.info('Delete Performance From Algolia success');
   }
 
-  // Cascade: update all related events and authors in Algolia
+  if (!cascade) return;
+
   try {
     const eventIds = Array.from(new Set((perf.bookings || [])
       .map(b => b && b.event && b.event._id && b.event._id.toString())
       .filter(Boolean)));
-    eventIds.forEach((eventId) => {
-      syncEventToAlgolia(eventId).catch((e) => logger.error('Algolia cascade sync (event) failed', e));
+    eventIds.forEach((id) => {
+      syncEventToAlgolia(id, { cascade: false }).catch((e) => logger.error('Algolia cascade sync (event) failed', e));
     });
 
     const userIds = Array.from(new Set((perf.users || [])
       .map(u => u && u._id && u._id.toString())
       .filter(Boolean)));
-    userIds.forEach((userId) => {
-      syncUserToAlgolia(userId).catch((e) => logger.error('Algolia cascade sync (user) failed', e));
+    userIds.forEach((id) => {
+      syncUserToAlgolia(id, { cascade: false }).catch((e) => logger.error('Algolia cascade sync (user) failed', e));
     });
 
     const galleryIds = Array.from(new Set((perf.galleries || [])
       .map(g => g && g._id && g._id.toString())
       .filter(Boolean)));
-    galleryIds.forEach((galleryId) => {
-      syncGalleryToAlgolia(galleryId).catch((e) => logger.error('Algolia cascade sync (gallery) failed', e));
+    galleryIds.forEach((id) => {
+      syncGalleryToAlgolia(id, { cascade: false }).catch((e) => logger.error('Algolia cascade sync (gallery) failed', e));
     });
 
     const videoIds = Array.from(new Set((perf.videos || [])
       .map(v => v && v._id && v._id.toString())
       .filter(Boolean)));
-    videoIds.forEach((videoId) => {
-      syncVideoToAlgolia(videoId).catch((e) => logger.error('Algolia cascade sync (video) failed', e));
+    videoIds.forEach((id) => {
+      syncVideoToAlgolia(id, { cascade: false }).catch((e) => logger.error('Algolia cascade sync (video) failed', e));
     });
   } catch (e) {
     logger.error('Algolia cascade sync exception', e);
@@ -72,5 +73,3 @@ export const syncPerformanceToAlgolia = async (performanceId) => {
 };
 
 export default { syncPerformanceToAlgolia };
-
-

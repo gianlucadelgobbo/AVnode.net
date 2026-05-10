@@ -8,7 +8,7 @@ import { syncPerformanceToAlgolia } from './syncPerformance.js';
 import { syncEventToAlgolia } from './syncEvent.js';
 import { syncUserToAlgolia } from './syncUser.js';
 
-export const syncVideoToAlgolia = async (videoId) => {
+export const syncVideoToAlgolia = async (videoId, { cascade = true } = {}) => {
   const Video = mongoose.model('Video');
 
   const video = await Video.findById(videoId)
@@ -31,7 +31,8 @@ export const syncVideoToAlgolia = async (videoId) => {
     logger.info('Delete Video From Algolia success');
   }
 
-  // Cascade: update related performances, events, and users in Algolia
+  if (!cascade) return;
+
   try {
     const performanceIds = Array.from(new Set((video.performances || [])
       .map(p => p && p._id && p._id.toString())
@@ -44,13 +45,13 @@ export const syncVideoToAlgolia = async (videoId) => {
       .filter(Boolean)));
 
     performanceIds.forEach((id) => {
-      syncPerformanceToAlgolia(id).catch((e) => logger.error('Algolia cascade sync (performance from video) failed', e));
+      syncPerformanceToAlgolia(id, { cascade: false }).catch((e) => logger.error('Algolia cascade sync (performance from video) failed', e));
     });
     eventIds.forEach((id) => {
-      syncEventToAlgolia(id).catch((e) => logger.error('Algolia cascade sync (event from video) failed', e));
+      syncEventToAlgolia(id, { cascade: false }).catch((e) => logger.error('Algolia cascade sync (event from video) failed', e));
     });
     userIds.forEach((id) => {
-      syncUserToAlgolia(id).catch((e) => logger.error('Algolia cascade sync (user from video) failed', e));
+      syncUserToAlgolia(id, { cascade: false }).catch((e) => logger.error('Algolia cascade sync (user from video) failed', e));
     });
   } catch (e) {
     logger.error('Algolia video cascade sync exception', e);
@@ -58,5 +59,3 @@ export const syncVideoToAlgolia = async (videoId) => {
 };
 
 export default { syncVideoToAlgolia };
-
-

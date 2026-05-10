@@ -4,7 +4,7 @@
 			.embed-responsive.embed-responsive-16by9.mb-0
 				.embed-responsive-item
 					!=data.media.iframe
-		else if data.imageFormats && data.imageFormats.large.indexOf("default-item.svg") === -1
+		else if data.media && data.media.preview && data.imageFormats && data.imageFormats.large
 			img.img-fluid(src=data.imageFormats.large alt=data.title)
 		else if data.media && data.media.encoded==0
 			img.img-fluid(src="/images/default-item-tobeencoded.svg" alt=data.title)

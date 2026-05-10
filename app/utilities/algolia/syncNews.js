@@ -6,7 +6,7 @@ import { ALGOLIA_INDEX_NAME, LOCALES } from './constants.js';
 import { logger } from '../logger.js';
 import { syncUserToAlgolia } from './syncUser.js';
 
-export const syncNewsToAlgolia = async (newsId) => {
+export const syncNewsToAlgolia = async (newsId, { cascade = true } = {}) => {
   const News = mongoose.model('News');
 
   const news = await News.findById(newsId)
@@ -28,13 +28,14 @@ export const syncNewsToAlgolia = async (newsId) => {
     logger.info('Delete News From Algolia success');
   }
 
-  // Cascade: update related users (authors)
+  if (!cascade) return;
+
   try {
     const userIds = Array.from(new Set((news.users || [])
       .map(u => u && u._id && u._id.toString())
       .filter(Boolean)));
     userIds.forEach((id) => {
-      syncUserToAlgolia(id).catch((e) => logger.error('Algolia cascade sync (user from news) failed', e));
+      syncUserToAlgolia(id, { cascade: false }).catch((e) => logger.error('Algolia cascade sync (user from news) failed', e));
     });
   } catch (e) {
     logger.error('Algolia news cascade sync exception', e);

@@ -11,13 +11,13 @@ const image = {};
 // Constants
 const BLACK_BACKGROUND = { r: 0, g: 0, b: 0, alpha: 1 };
 
-image.resizer = (files, options, done) => {
+image.resizer = (files, options, done, req) => {
   logger.info('resizerresizerresizerresizerresizerresizerresizerresizerresizer');
   let sizesA = [];
   for (let item in options.sizes) sizesA.push(options.sizes[item]);
   var promises = [];
   for (let a=0; a<files.length; a++) {
-    promises.push(image.resize(files[a], sizesA));
+    promises.push(image.resize(files[a], sizesA, req));
   }
   Promise.all(
     promises
@@ -51,7 +51,7 @@ image.checksizer = (files, options, req, done) => {
   });
 };
 
-image.resize = (file, sizeA) => {
+image.resize = (file, sizeA, req) => {
   var promise = new Promise((resolve, reject) => {
     logger.info('resize');
     logger.info(file);

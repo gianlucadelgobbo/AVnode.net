@@ -8,7 +8,7 @@ import { syncPerformanceToAlgolia } from './syncPerformance.js';
 import { syncEventToAlgolia } from './syncEvent.js';
 import { syncUserToAlgolia } from './syncUser.js';
 
-export const syncGalleryToAlgolia = async (galleryId) => {
+export const syncGalleryToAlgolia = async (galleryId, { cascade = true } = {}) => {
   const Gallery = mongoose.model('Gallery');
 
   const gallery = await Gallery.findById(galleryId)
@@ -30,7 +30,8 @@ export const syncGalleryToAlgolia = async (galleryId) => {
     logger.info('Delete Gallery From Algolia success');
   }
 
-  // Cascade: update related performances, events, and users in Algolia
+  if (!cascade) return;
+
   try {
     const performanceIds = Array.from(new Set((gallery.performances || [])
       .map(p => p && p._id && p._id.toString())
@@ -43,13 +44,13 @@ export const syncGalleryToAlgolia = async (galleryId) => {
       .filter(Boolean)));
 
     performanceIds.forEach((id) => {
-      syncPerformanceToAlgolia(id).catch((e) => logger.error('Algolia cascade sync (performance from gallery) failed', e));
+      syncPerformanceToAlgolia(id, { cascade: false }).catch((e) => logger.error('Algolia cascade sync (performance from gallery) failed', e));
     });
     eventIds.forEach((id) => {
-      syncEventToAlgolia(id).catch((e) => logger.error('Algolia cascade sync (event from gallery) failed', e));
+      syncEventToAlgolia(id, { cascade: false }).catch((e) => logger.error('Algolia cascade sync (event from gallery) failed', e));
     });
     userIds.forEach((id) => {
-      syncUserToAlgolia(id).catch((e) => logger.error('Algolia cascade sync (user from gallery) failed', e));
+      syncUserToAlgolia(id, { cascade: false }).catch((e) => logger.error('Algolia cascade sync (user from gallery) failed', e));
     });
   } catch (e) {
     logger.error('Algolia gallery cascade sync exception', e);
@@ -57,5 +58,3 @@ export const syncGalleryToAlgolia = async (galleryId) => {
 };
 
 export default { syncGalleryToAlgolia };
-
-

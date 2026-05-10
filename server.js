@@ -136,9 +136,12 @@ const allowedOrigins = [
   "https://it.dev.avnode.net",
   "https://pl.dev.avnode.net",
   "https://pt.dev.avnode.net",
-  "https://ru.dev.avnode.net"
+  "https://ru.dev.avnode.net",
+
+  "http://localhost:8102"
 ];
 
+/* x carlo
 function isAllowed(origin) {
   if (!origin) return true; // allow non-browser requests
   const { hostname } = new URL(origin);
@@ -150,9 +153,13 @@ function isAllowed(origin) {
   if (hostname.endsWith('.avnode.net')) return true;
 
   return false;
+} */
+function isAllowed(origin) {
+   if (!origin) return true;
+   return allowedOrigins.includes(origin);
 }
 
-app.use(cors({
+/* app.use(cors({
   origin: function (origin, callback) {
     if (isAllowed(origin)) {
       callback(null, true);
@@ -161,13 +168,23 @@ app.use(cors({
     }
   },
   credentials: true
+})); */
+app.use(cors({
+  origin(origin, callback) {
+    if (isAllowed(origin)) return callback(null, true);
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
 }));
 // View Engine Configuration
 app.set("port", config.port || 8102);
 app.set("views", path.join(config.appRoot, "app/views"));
 app.set("view engine", "pug");
 app.set("view options", { debug: process.env.DEBUG });
-app.set("trust proxy", "loopback");
+// x carlo app.set("trust proxy", "loopback");
+app.set("trust proxy", 1); // x carlo
 
 // Middleware
 app.use(compression());
@@ -203,17 +220,18 @@ app.use((req, res, next) => {
 // Secure Sessions
 app.use(
   session({
+    name: "admin.sid",
     resave: false,
     saveUninitialized: false,
     secret: process.env.SESSION_SECRET,
+    proxy: true,
     cookie: {
-      domain: process.env.NODE_ENV === "production" ? ".avnode.net" : ".avnode.net",  // ✅ Share cookie across all subdomains
+      domain: process.env.NODE_ENV === "production" ? ".avnode.net" : undefined,
       path: "/",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      //secure: process.env.NODE_ENV === "production",
-      secure: false, // ✅ Allow non-HTTPS in development
       httpOnly: true,
-      sameSite: "lax",  // Allow cross-subdomain access
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     },
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
