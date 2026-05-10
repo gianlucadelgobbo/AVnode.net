@@ -126,6 +126,18 @@ const allowedOrigins = [
   "http://pt.api.admin.avnode.net:8102",
   "http://ru.api.admin.avnode.net:8102",
 
+  "https://admin.avnode.net",
+  "https://by.admin.avnode.net",
+  "https://de.admin.avnode.net",
+  "https://es.admin.avnode.net",
+  "https://fr.admin.avnode.net",
+  "https://gr.admin.avnode.net",
+  "https://hu.admin.avnode.net",
+  "https://it.admin.avnode.net",
+  "https://pl.admin.avnode.net",
+  "https://pt.admin.avnode.net",
+  "https://ru.admin.avnode.net",
+
   "https://dev.avnode.net",
   "https://by.dev.avnode.net",
   "https://de.dev.avnode.net",
