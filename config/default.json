@@ -1707,7 +1707,9 @@
             "slug": 1,
             "title": 1
           },
-          "selectaddon": {},
+          "selectaddon": {
+            "is_public": 1
+          },
           "populate": []
         },
         "public": {
@@ -1935,7 +1937,9 @@
             "slug": 1,
             "title": 1
           },
-          "selectaddon": {},
+          "selectaddon": {
+            "is_public": 1
+          },
           "populate": []
         },
         "public": {
@@ -2068,7 +2072,9 @@
             "slug": 1,
             "title": 1
           },
-          "selectaddon": {},
+          "selectaddon": {
+            "is_public": 1
+          },
           "populate": []
         },
         "public": {

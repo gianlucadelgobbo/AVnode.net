@@ -51,5 +51,13 @@
                     div
                       i.icon-facebook-square.mr-3
                       | https://www.facebook.com/avnode.net/videos/1074075152643709/
+              .terms-privacy-section.d-none
+                hr
+                .form-check.mb-2
+                  input#checkPrivacy.form-check-input(type='checkbox', name='privacy', value='1', required)
+                  label.form-check-label(for='checkPrivacy') I have read and accept the Privacy Policy
+                .form-check.mb-2
+                  input#checkTerms.form-check-input(type='checkbox', name='terms', value='1', required)
+                  label.form-check-label(for='checkTerms') I accept the Terms of Service
               hr
               button.btn.btn-primary.btn-large.btn-block(type='submit') Save

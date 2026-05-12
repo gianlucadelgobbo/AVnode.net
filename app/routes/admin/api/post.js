@@ -84,6 +84,8 @@ router.postData = async (req, res) => {
     for (const item in selectaddon) {
       post[item] = selectaddon[item];
     }
+    if (req.body.privacy) post.privacy = new Date();
+    if (req.body.terms) post.terms = new Date();
     if (req.params.sez == "crews") {
       post.members = [req.user._id];
     } else if (req.params.sez == "partners") {

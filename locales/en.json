@@ -344,5 +344,21 @@
 	"Video dimensions": "Video dimensions",
 	"Categories": "Categories",
 	"Text is missing": "Text is missing",
-	"FILE_IS_DAMAGED": "FILE_IS_DAMAGED"
+	"FILE_IS_DAMAGED": "FILE_IS_DAMAGED",
+	"Pass": "Pass",
+	"Pass sheet": "Pass sheet",
+	"Countries": "Countries",
+	"Numbers": "Numbers",
+	"Guestlist": "Guestlist",
+	"Cache Creator": "Cache Creator",
+	"STATUS": "STATUS",
+	"SCHEDULE": "SCHEDULE",
+	"TO BE SCHEDULED": "TO BE SCHEDULED",
+	"NO COSTS": "NO COSTS",
+	"Cancel subscription": "Cancel subscription",
+	"View": "View",
+	"FREE ENTRY": "FREE ENTRY",
+	"PRICE INCLUDES ALL APPOINTMENTS": "PRICE INCLUDES ALL APPOINTMENTS",
+	"Edit subscription": "Edit subscription",
+	"Close": "Close"
 }

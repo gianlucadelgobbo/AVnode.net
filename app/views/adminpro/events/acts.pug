@@ -25,7 +25,7 @@ block content
     else
       - counters.Schedule["Not scheduled"]++
     each status in data.status
-      - if (item.status._id.toString()==status._id.toString()) {
+      - if (item.status && item.status._id && item.status._id.toString()==status._id.toString()) {
         - if(!counters.Status[status.name]) counters.Status[status.name] = 0
         - counters.Status[status.name]++
       - }
@@ -59,7 +59,7 @@ block content
                 h4=__('STATUS')
                 each status in data.status
                   .form-check.text-nowrap
-                    input.form-check-input.change-status(id='status'+status._id+item._id, data-id=item._id, data-status=status._id, name='status'+item._id, type='radio', value=status._id, checked=item.status._id.toString()==status._id.toString() ? "checked" : undefined)
+                    input.form-check-input.change-status(id='status'+status._id+item._id, data-id=item._id, data-status=status._id, name='status'+item._id, type='radio', value=status._id, checked=item.status && item.status._id && item.status._id.toString()==status._id.toString() ? "checked" : undefined)
                     label.form-check-label(for='status'+status._id+item._id)=status.name
               .border-bottom.pb-1.mb-1
                 h4=__('SCHEDULE')
@@ -237,7 +237,7 @@ block content
                           .badge.badge-danger MISSING MEDIAS
                           //- del.push("db.galleries.remove(_id:ObjectId('"+gallery._id+"')\n")
           td(style="max-width: 23vw;overflow: hidden;")
-            each useruser in item.performance.users
+            each useruser in (item.performance && item.performance.users ? item.performance.users : [])
               //
                 if useruser.imageFormats.small=="https://avnode.net/images/default-user.svg" || item.performance.imageFormats.small=="https://avnode.net/images/default-item.svg"
                   - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'

@@ -109,6 +109,14 @@ $(document).ready(function(){
       } else {
         modal.find('.video-only').addClass("d-none");
       }
+      var termsPrivacySez = ["events", "crews", "performances", "news", "videos", "galleries"];
+      if (termsPrivacySez.indexOf(sez) !== -1) {
+        modal.find('.terms-privacy-section').removeClass("d-none");
+        modal.find('.terms-privacy-section input').prop('required', true);
+      } else {
+        modal.find('.terms-privacy-section').addClass("d-none");
+        modal.find('.terms-privacy-section input').prop('required', false);
+      }
         
       $('#modalNewContent').modal();
     }

@@ -358,15 +358,10 @@ router.getActsData = async (req, res, cb) => {
     if (req.query['packages.option_selected_hotel'] && req.query['packages.option_selected_hotel']!='0') {
       query['subscriptions.packages.option'] = req.query['packages.option_selected_hotel'];
     }
+    const performancePopConf = populate.find(p => p && p.path === 'performance');
     for(var item in populate) {
       if (populate[item].path == "performance") {
         delete populate[item];
-        /* if (req.query['performance_category'] && req.query['performance_category']!='0') {
-          populate[item].match = {type: req.query['not2'] ? {$ne :req.query['performance_category']} : req.query['performance_category']};
-        }
-        if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
-          populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
-        } */
       }
     }
     logger.info("populate program")
@@ -377,24 +372,51 @@ router.getActsData = async (req, res, cb) => {
       select(select).
       populate(populate).
       exec()
+
+      // Build map: Program._id → performance id (from event.program embedded array)
+      const perfBySubId = {};
+      const perfIds = [];
+      for (const ep of event.program) {
+        if (ep.subscription_id && ep.performance) {
+          perfBySubId[ep.subscription_id.toString()] = ep.performance.toString();
+          perfIds.push(ep.performance);
+        }
+      }
+
+      // Fetch and populate performances separately
+      let perfById = {};
+      if (perfIds.length && performancePopConf) {
+        const performances = await Performance
+          .find({_id: {$in: perfIds}})
+          .select(performancePopConf.select)
+          .populate(performancePopConf.populate || [])
+          .exec();
+        for (const p of performances) perfById[p._id.toString()] = p;
+      }
+
       data.event = event;
       data.status = config.cpanel["events_advanced"].status;
-      logger.info("data.program")
-      logger.info(event.program)
-      data.program = JSON.parse(JSON.stringify(event.program));
+
+      // Merge: use Program docs (reference, status, subscriptions) + performance from event.program
+      data.program = program.map(item => {
+        const obj = item.toObject ? item.toObject({virtuals: true}) : JSON.parse(JSON.stringify(item));
+        const perfId = perfBySubId[item._id.toString()];
+        obj.performance = perfId ? (perfById[perfId] || null) : null;
+        return obj;
+      });
+
       for(let a=0;a<data.program.length;a++) {
         if(data.program[a].performance) {
           if (data.program[a].performance.abouts) delete data.program[a].performance.abouts;
           if (data.program[a].performance.tech_arts) delete data.program[a].performance.tech_arts;
           if (data.program[a].performance.tech_reqs) delete data.program[a].performance.tech_reqs;
-          if (data.program[a].performance.bookings) delete data.program[a].performance.bookings;              
+          if (data.program[a].performance.bookings) delete data.program[a].performance.bookings;
         } else if (!data.program[a].performance && !req.query['performance_category']){
-          if (!data.performnce_missing) data.performnce_missing = []; 
+          if (!data.performnce_missing) data.performnce_missing = [];
           data.performnce_missing.push(data.program[a]);
         }
       }
       if (data.performnce_missing) data.performnce_missing = JSON.stringify(data.performnce_missing);
-      //if (req.query['performance_category'] && req.query['performance_category']!='0') {
       let prg = [];
       for(let a=0;a<data.program.length;a++) {
         if (data.program[a].performance) prg.push(data.program[a]);
