@@ -36,6 +36,7 @@ export const compress_js_fe = () => {
 
 export const compress_js_admin = () => {
   return gulp.src([
+    './gulp/js/includes_main/owl.carousel.min.js',
     './gulp/js/main.js',
     './gulp/js/admin.js',
     './gulp/js/includes_admin/bsMultiSelect.min.js',

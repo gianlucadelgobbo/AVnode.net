@@ -1,0 +1,469 @@
+extends ../layout_admin
+block content
+  - var os = data.organizationsettings ? JSON.parse(JSON.stringify(data.organizationsettings)) : {}
+  - var call = os.call || {}
+  - var calls = call.calls || []
+  - var allCategories = config.callsCategories || []
+  .formcontainer(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h1.h2=data.title
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        a.btn.btn-primary(href=data.is_public ? frontendDomain+'/events/'+data.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")=__("SHOW")
+    include partials/menuobj
+    h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+
+    form#calls-form(method="post")
+
+      //- Global email settings
+      h4.mt-4.mb-3 Global Email Settings
+      .row
+        .col-md-6
+          .form-group.mb-3
+            label.labelField From email
+            input.form-control(type='text' name='organizationsettings[email]' value=os.email || '')
+        .col-md-6
+          .form-group.mb-3
+            label.labelField From name
+            input.form-control(type='text' name='organizationsettings[emailname]' value=os.emailname || '')
+        .col-md-6
+          .form-group.mb-3
+            label.labelField SMTP user
+            input.form-control(type='text' name='organizationsettings[emailuser]' value=os.emailuser || '')
+        .col-md-6
+          .form-group.mb-3
+            label.labelField SMTP password
+            input.form-control(type='password' name='organizationsettings[emailpassword]' value=os.emailpassword || '')
+        .col-md-12
+          .form-group.mb-3
+            label.labelField Email text signature
+            textarea.form-control(name='organizationsettings[text_sign]' rows='3')=os.text_sign || ''
+
+      //- Feature flags
+      h4.mt-4.mb-3 Features
+      .row
+        .col-md-4
+          .form-check.mb-3
+            input.form-check-input(type='checkbox' id='program_builder' name='organizationsettings[program_builder]' value='true' checked=os.program_builder ? 'checked' : undefined)
+            label.form-check-label(for='program_builder') Program builder
+        .col-md-4
+          .form-check.mb-3
+            input.form-check-input(type='checkbox' id='advanced_proposals_manager' name='organizationsettings[advanced_proposals_manager]' value='true' checked=os.advanced_proposals_manager ? 'checked' : undefined)
+            label.form-check-label(for='advanced_proposals_manager') Advanced proposals manager
+        .col-md-4
+          .form-check.mb-3
+            input.form-check-input(type='checkbox' id='call_is_active' name='organizationsettings[call_is_active]' value='true' checked=os.call_is_active ? 'checked' : undefined)
+            label.form-check-label(for='call_is_active') Call is active
+
+      //- Call global settings
+      h4.mt-4.mb-3 Call Settings
+      .row
+        .col-md-6
+          .form-group.mb-3
+            label.labelField Next edition
+            input.form-control(type='text' name='organizationsettings[call][nextEdition]' value=call.nextEdition || '')
+        .col-md-6
+          .form-group.mb-3
+            label.labelField Subscribe image URL
+            input.form-control(type='text' name='organizationsettings[call][subImg]' value=call.subImg || '')
+        .col-md-6
+          .form-group.mb-3
+            label.labelField Subscribe background color
+            input.form-control(type='text' name='organizationsettings[call][subBkg]' value=call.subBkg || '')
+        .col-md-6
+          .form-group.mb-3
+            label.labelField Background color
+            input.form-control(type='text' name='organizationsettings[call][colBkg]' value=call.colBkg || '')
+
+      //- Calls array
+      h4.mt-4.mb-3 Calls
+      #calls-container
+        each c, ci in calls
+          .call-item.card.mb-4(data-index=ci)
+            .card-header.d-flex.justify-content-between.align-items-center
+              h5.mb-0 Call #{ ci + 1 }
+              button.btn.btn-danger.btn-sm.remove-call(type='button' data-index=ci) Remove
+            .card-body
+              .row
+                .col-md-6
+                  .form-group.mb-3
+                    label.labelField Title
+                    input.form-control(type='text' name='organizationsettings[call][calls]['+ci+'][title]' value=c.title || '')
+                .col-md-6
+                  .form-group.mb-3
+                    label.labelField Permalink
+                    input.form-control(type='text' name='organizationsettings[call][calls]['+ci+'][permalink]' value=c.permalink || '')
+                .col-md-6
+                  .form-group.mb-3
+                    label.labelField From email
+                    input.form-control(type='text' name='organizationsettings[call][calls]['+ci+'][email]' value=c.email || '')
+                .col-md-6
+                  .form-group.mb-3
+                    label.labelField From name
+                    input.form-control(type='text' name='organizationsettings[call][calls]['+ci+'][emailname]' value=c.emailname || '')
+                .col-md-6
+                  .form-group.mb-3
+                    label.labelField SMTP user
+                    input.form-control(type='text' name='organizationsettings[call][calls]['+ci+'][emailuser]' value=c.emailuser || '')
+                .col-md-6
+                  .form-group.mb-3
+                    label.labelField SMTP password
+                    input.form-control(type='password' name='organizationsettings[call][calls]['+ci+'][emailpassword]' value=c.emailpassword || '')
+                .col-md-4
+                  .form-group.mb-3
+                    label.labelField Header image URL
+                    input.form-control(type='text' name='organizationsettings[call][calls]['+ci+'][imghead]' value=c.imghead || '')
+                .col-md-4
+                  .form-group.mb-3
+                    label.labelField Alt image URL
+                    input.form-control(type='text' name='organizationsettings[call][calls]['+ci+'][imgalt]' value=c.imgalt || '')
+                .col-md-4
+                  .form-group.mb-3
+                    label.labelField Background color
+                    input.form-control(type='text' name='organizationsettings[call][calls]['+ci+'][colBkg]' value=c.colBkg || '')
+                .col-md-6
+                  .form-group.mb-3
+                    label.labelField Start date
+                    input.form-control(type='date' name='organizationsettings[call][calls]['+ci+'][start_date]' value=c.start_date ? (new Date(c.start_date)).toISOString().slice(0,10) : '')
+                .col-md-6
+                  .form-group.mb-3
+                    label.labelField End date
+                    input.form-control(type='date' name='organizationsettings[call][calls]['+ci+'][end_date]' value=c.end_date ? (new Date(c.end_date)).toISOString().slice(0,10) : '')
+                .col-md-12
+                  .form-check.mb-3
+                    input.form-check-input(type='checkbox' id='availability_'+ci name='organizationsettings[call][calls]['+ci+'][availability]' value='true' checked=c.availability ? 'checked' : undefined)
+                    label.form-check-label(for='availability_'+ci) Availability active
+                .col-md-12
+                  .form-group.mb-3
+                    label.labelField Excerpt (HTML)
+                    textarea.form-control(name='organizationsettings[call][calls]['+ci+'][excerpt]' rows='5')=c.excerpt || ''
+                .col-md-6
+                  .form-group.mb-3
+                    label.labelField HTML email signature
+                    textarea.form-control(name='organizationsettings[call][calls]['+ci+'][html_sign]' rows='4')=c.html_sign || ''
+                .col-md-6
+                  .form-group.mb-3
+                    label.labelField Text email signature
+                    textarea.form-control(name='organizationsettings[call][calls]['+ci+'][text_sign]' rows='4')=c.text_sign || ''
+                .col-md-12
+                  .form-group.mb-3
+                    label.labelField Terms & Conditions (HTML)
+                    textarea.form-control(name='organizationsettings[call][calls]['+ci+'][terms]' rows='5')=c.terms || ''
+
+              //- Admitted categories
+              h6.mt-3.mb-2 Admitted Categories
+              - var admittedIds = (c.admitted || []).map(function(id){ return id.toString(); })
+              .row.admitted-container(data-call=ci)
+                each cat in allCategories
+                  - var isChecked = admittedIds.indexOf(cat._id.toString()) !== -1
+                  .col-md-4.col-lg-3.mb-1
+                    .form-check
+                      input.form-check-input(type='checkbox' id='admitted_'+ci+'_'+cat._id name='organizationsettings[call][calls]['+ci+'][admitted][]' value=cat._id.toString() checked=isChecked ? 'checked' : undefined)
+                      label.form-check-label.small(for='admitted_'+ci+'_'+cat._id)=cat.name
+
+              //- Topics
+              h6.mt-3.mb-2 Topics
+              .topics-container(data-call=ci)
+                each topic, ti in (c.topics || [])
+                  .card.mb-2.topic-item
+                    .card-body.py-2
+                      .row
+                        .col-md-5
+                          .form-group.mb-0
+                            label.labelField.small Name
+                            input.form-control.form-control-sm(type='text' name='organizationsettings[call][calls]['+ci+'][topics]['+ti+'][name]' value=topic.name || '')
+                        .col-md-6
+                          .form-group.mb-0
+                            label.labelField.small Description
+                            input.form-control.form-control-sm(type='text' name='organizationsettings[call][calls]['+ci+'][topics]['+ti+'][description]' value=topic.description || '')
+                        .col-md-1.d-flex.align-items-end
+                          button.btn.btn-outline-danger.btn-sm.remove-topic(type='button') ×
+              button.btn.btn-outline-secondary.btn-sm.mb-3.add-topic(type='button' data-call=ci) + Add topic
+
+              //- Packages
+              h6.mt-3.mb-2 Packages
+              .packages-container(data-call=ci)
+                each pkg, pi in (c.packages || [])
+                  .card.mb-2.package-item
+                    .card-header.py-1.d-flex.justify-content-between.align-items-center
+                      small.font-weight-bold Package #{ pi + 1 }
+                      button.btn.btn-outline-danger.btn-sm.remove-package(type='button') ×
+                    .card-body.py-2
+                      .row
+                        .col-md-6
+                          .form-group.mb-2
+                            label.labelField.small Name
+                            input.form-control.form-control-sm(type='text' name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][name]' value=pkg.name || '')
+                        .col-md-3
+                          .form-group.mb-2
+                            label.labelField.small Price (€)
+                            input.form-control.form-control-sm(type='number' step='0.01' name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][price]' value=pkg.price || '')
+                        .col-md-3
+                          .form-group.mb-2
+                            label.labelField.small Alt. name
+                            input.form-control.form-control-sm(type='text' name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][alternative_name]' value=pkg.alternative_name || '')
+                        .col-md-12
+                          .form-group.mb-2
+                            label.labelField.small Description
+                            textarea.form-control.form-control-sm(name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][description]' rows='2')=pkg.description || ''
+                        .col-md-6
+                          .form-group.mb-2
+                            label.labelField.small Options name
+                            input.form-control.form-control-sm(type='text' name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][options_name]' value=pkg.options_name || '')
+                        .col-md-6
+                          .form-group.mb-2
+                            label.labelField.small Options (comma-separated)
+                            input.form-control.form-control-sm(type='text' name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][options]' value=pkg.options || '')
+                        .col-md-3
+                          .form-check.mb-2
+                            input.form-check-input(type='checkbox' id='pkg_personal_'+ci+'_'+pi name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][personal]' value='true' checked=pkg.personal ? 'checked' : undefined)
+                            label.form-check-label.small(for='pkg_personal_'+ci+'_'+pi) Per person
+                        .col-md-3
+                          .form-check.mb-2
+                            input.form-check-input(type='checkbox' id='pkg_requested_'+ci+'_'+pi name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][requested]' value='true' checked=pkg.requested ? 'checked' : undefined)
+                            label.form-check-label.small(for='pkg_requested_'+ci+'_'+pi) Required
+                        .col-md-3
+                          .form-check.mb-2
+                            input.form-check-input(type='checkbox' id='pkg_daily_'+ci+'_'+pi name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][daily]' value='true' checked=pkg.daily ? 'checked' : undefined)
+                            label.form-check-label.small(for='pkg_daily_'+ci+'_'+pi) Per day
+                        .col-md-3
+                          .form-check.mb-2
+                            input.form-check-input(type='checkbox' id='pkg_allow_options_'+ci+'_'+pi name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][allow_options]' value='true' checked=pkg.allow_options ? 'checked' : undefined)
+                            label.form-check-label.small(for='pkg_allow_options_'+ci+'_'+pi) Allow options
+                        .col-md-3
+                          .form-check.mb-2
+                            input.form-check-input(type='checkbox' id='pkg_alternative_'+ci+'_'+pi name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][alternative]' value='true' checked=pkg.alternative ? 'checked' : undefined)
+                            label.form-check-label.small(for='pkg_alternative_'+ci+'_'+pi) Alternative
+                        .col-md-3
+                          .form-check.mb-2
+                            input.form-check-input(type='checkbox' id='pkg_allow_multiple_'+ci+'_'+pi name='organizationsettings[call][calls]['+ci+'][packages]['+pi+'][allow_multiple]' value='true' checked=pkg.allow_multiple ? 'checked' : undefined)
+                            label.form-check-label.small(for='pkg_allow_multiple_'+ci+'_'+pi) Allow multiple
+              button.btn.btn-outline-secondary.btn-sm.mb-3.add-package(type='button' data-call=ci) + Add package
+
+      .mt-3.mb-4
+        button#add-call.btn.btn-secondary(type='button') + Add call
+
+      hr
+      button.btn.btn-primary.btn-lg.btn-block(type='submit') Save
+
+  script.
+    var ALL_CATEGORIES = !{JSON.stringify(allCategories)};
+    document.addEventListener('DOMContentLoaded', function () {
+    var $ = window.jQuery;
+    (function ($) {
+
+      // ── helpers ───────────────────────────────────────────────────────────
+      function reindex(container, selector, namePrefix) {
+        container.find(selector).each(function (i) {
+          $(this).find('[name]').each(function () {
+            var n = $(this).attr('name');
+            $(this).attr('name', n.replace(namePrefix + '[\\d+]', namePrefix + '[' + i + ']'));
+          });
+          $(this).find('[id]').each(function () {
+            var id = $(this).attr('id');
+            $(this).attr('id', id.replace(/_\d+$/, '_' + i));
+          });
+          $(this).find('[for]').each(function () {
+            var f = $(this).attr('for');
+            $(this).attr('for', f.replace(/_\d+$/, '_' + i));
+          });
+          if ($(this).data('index') !== undefined) $(this).data('index', i);
+        });
+      }
+
+      function reindexCalls() {
+        $('#calls-container .call-item').each(function (i) {
+          $(this).attr('data-index', i);
+          $(this).find('.card-header h5').text('Call ' + (i + 1));
+          $(this).find('[name]').each(function () {
+            var n = $(this).attr('name');
+            n = n.replace(/organizationsettings\[call\]\[calls\]\[\d+\]/, 'organizationsettings[call][calls][' + i + ']');
+            $(this).attr('name', n);
+          });
+          $(this).find('[id]').each(function () {
+            var id = $(this).attr('id');
+            $(this).attr('id', id.replace(/(_\d+)$/, '_' + i).replace(/(_\d+_)/, '_' + i + '_'));
+          });
+          $(this).find('[for]').each(function () {
+            var f = $(this).attr('for');
+            $(this).attr('for', f.replace(/(_\d+)$/, '_' + i).replace(/(_\d+_)/, '_' + i + '_'));
+          });
+          $(this).find('[data-call]').attr('data-call', i);
+          $(this).find('.remove-call').attr('data-index', i);
+        });
+      }
+
+      // ── add call ──────────────────────────────────────────────────────────
+      $('#add-call').on('click', function () {
+        var ci = $('#calls-container .call-item').length;
+        var html = '<div class="call-item card mb-4" data-index="' + ci + '">' +
+          '<div class="card-header d-flex justify-content-between align-items-center">' +
+          '<h5 class="mb-0">Call ' + (ci + 1) + '</h5>' +
+          '<button class="btn btn-danger btn-sm remove-call" type="button" data-index="' + ci + '">Remove</button>' +
+          '</div>' +
+          '<div class="card-body">' +
+          buildCallBody(ci) +
+          '</div></div>';
+        $('#calls-container').append(html);
+      });
+
+      function buildCallBody(ci) {
+        var p = 'organizationsettings[call][calls][' + ci + ']';
+        return '<div class="row">' +
+          field(p + '[title]', 'Title', 'col-md-6') +
+          field(p + '[permalink]', 'Permalink', 'col-md-6') +
+          field(p + '[email]', 'From email', 'col-md-6') +
+          field(p + '[emailname]', 'From name', 'col-md-6') +
+          field(p + '[emailuser]', 'SMTP user', 'col-md-6') +
+          field(p + '[emailpassword]', 'SMTP password', 'col-md-6', 'password') +
+          field(p + '[imghead]', 'Header image URL', 'col-md-4') +
+          field(p + '[imgalt]', 'Alt image URL', 'col-md-4') +
+          field(p + '[colBkg]', 'Background color', 'col-md-4') +
+          field(p + '[start_date]', 'Start date', 'col-md-6', 'date') +
+          field(p + '[end_date]', 'End date', 'col-md-6', 'date') +
+          '<div class="col-md-12"><div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="availability_' + ci + '" name="' + p + '[availability]" value="true"><label class="form-check-label" for="availability_' + ci + '">Availability active</label></div></div>' +
+          textarea(p + '[excerpt]', 'Excerpt (HTML)', 'col-md-12', 5) +
+          textarea(p + '[html_sign]', 'HTML email signature', 'col-md-6', 4) +
+          textarea(p + '[text_sign]', 'Text email signature', 'col-md-6', 4) +
+          textarea(p + '[terms]', 'Terms & Conditions (HTML)', 'col-md-12', 5) +
+          '</div>' +
+          '<h6 class="mt-3 mb-2">Admitted Categories</h6>' +
+          buildAdmittedCheckboxes(ci, []) +
+          '<h6 class="mt-3 mb-2">Topics</h6>' +
+          '<div class="topics-container" data-call="' + ci + '"></div>' +
+          '<button class="btn btn-outline-secondary btn-sm mb-3 add-topic" type="button" data-call="' + ci + '">+ Add topic</button>' +
+          '<h6 class="mt-3 mb-2">Packages</h6>' +
+          '<div class="packages-container" data-call="' + ci + '"></div>' +
+          '<button class="btn btn-outline-secondary btn-sm mb-3 add-package" type="button" data-call="' + ci + '">+ Add package</button>';
+      }
+
+      function field(name, label, col, type) {
+        type = type || 'text';
+        return '<div class="' + col + '"><div class="form-group mb-3"><label class="labelField">' + label + '</label>' +
+          '<input class="form-control" type="' + type + '" name="' + name + '" value=""></div></div>';
+      }
+      function textarea(name, label, col, rows) {
+        return '<div class="' + col + '"><div class="form-group mb-3"><label class="labelField">' + label + '</label>' +
+          '<textarea class="form-control" name="' + name + '" rows="' + rows + '"></textarea></div></div>';
+      }
+
+      function buildAdmittedCheckboxes(ci, checkedIds) {
+        var p = 'organizationsettings[call][calls][' + ci + '][admitted][]';
+        var html = '<div class="row admitted-container" data-call="' + ci + '">';
+        ALL_CATEGORIES.forEach(function (cat) {
+          var isChecked = checkedIds.indexOf(cat._id.toString()) !== -1;
+          html += '<div class="col-md-4 col-lg-3 mb-1"><div class="form-check">' +
+            '<input class="form-check-input" type="checkbox" id="admitted_' + ci + '_' + cat._id +
+            '" name="' + p + '" value="' + cat._id + '"' + (isChecked ? ' checked' : '') + '>' +
+            '<label class="form-check-label small" for="admitted_' + ci + '_' + cat._id + '">' + cat.name + '</label>' +
+            '</div></div>';
+        });
+        return html + '</div>';
+      }
+
+      // ── remove call ───────────────────────────────────────────────────────
+      $('#calls-container').on('click', '.remove-call', function () {
+        $(this).closest('.call-item').remove();
+        reindexCalls();
+      });
+
+      // ── topics ────────────────────────────────────────────────────────────
+      $('#calls-container').on('click', '.add-topic', function () {
+        var ci = $(this).data('call');
+        var container = $(this).siblings('.topics-container');
+        var ti = container.find('.topic-item').length;
+        var p = 'organizationsettings[call][calls][' + ci + '][topics][' + ti + ']';
+        container.append(
+          '<div class="card mb-2 topic-item"><div class="card-body py-2"><div class="row">' +
+          '<div class="col-md-5"><div class="form-group mb-0"><label class="labelField small">Name</label>' +
+          '<input class="form-control form-control-sm" type="text" name="' + p + '[name]" value=""></div></div>' +
+          '<div class="col-md-6"><div class="form-group mb-0"><label class="labelField small">Description</label>' +
+          '<input class="form-control form-control-sm" type="text" name="' + p + '[description]" value=""></div></div>' +
+          '<div class="col-md-1 d-flex align-items-end">' +
+          '<button class="btn btn-outline-danger btn-sm remove-topic" type="button">×</button></div>' +
+          '</div></div></div>'
+        );
+      });
+
+      $('#calls-container').on('click', '.remove-topic', function () {
+        var container = $(this).closest('.topics-container');
+        var ci = container.data('call');
+        $(this).closest('.topic-item').remove();
+        container.find('.topic-item').each(function (ti) {
+          $(this).find('[name]').each(function () {
+            var n = $(this).attr('name');
+            n = n.replace(/\[topics\]\[\d+\]/, '[topics][' + ti + ']');
+            $(this).attr('name', n);
+          });
+        });
+      });
+
+      // ── packages ──────────────────────────────────────────────────────────
+      $('#calls-container').on('click', '.add-package', function () {
+        var ci = $(this).data('call');
+        var container = $(this).siblings('.packages-container');
+        var pi = container.find('.package-item').length;
+        var p = 'organizationsettings[call][calls][' + ci + '][packages][' + pi + ']';
+        container.append(buildPackageHtml(ci, pi, p));
+      });
+
+      function buildPackageHtml(ci, pi, p) {
+        function chk(name, label, id) {
+          return '<div class="col-md-3"><div class="form-check mb-2">' +
+            '<input class="form-check-input" type="checkbox" id="' + id + '" name="' + name + '" value="true">' +
+            '<label class="form-check-label small" for="' + id + '">' + label + '</label>' +
+            '</div></div>';
+        }
+        return '<div class="card mb-2 package-item">' +
+          '<div class="card-header py-1 d-flex justify-content-between align-items-center">' +
+          '<small class="font-weight-bold">Package ' + (pi + 1) + '</small>' +
+          '<button class="btn btn-outline-danger btn-sm remove-package" type="button">×</button></div>' +
+          '<div class="card-body py-2"><div class="row">' +
+          '<div class="col-md-6"><div class="form-group mb-2"><label class="labelField small">Name</label><input class="form-control form-control-sm" type="text" name="' + p + '[name]" value=""></div></div>' +
+          '<div class="col-md-3"><div class="form-group mb-2"><label class="labelField small">Price (€)</label><input class="form-control form-control-sm" type="number" step="0.01" name="' + p + '[price]" value=""></div></div>' +
+          '<div class="col-md-3"><div class="form-group mb-2"><label class="labelField small">Alt. name</label><input class="form-control form-control-sm" type="text" name="' + p + '[alternative_name]" value=""></div></div>' +
+          '<div class="col-md-12"><div class="form-group mb-2"><label class="labelField small">Description</label><textarea class="form-control form-control-sm" name="' + p + '[description]" rows="2"></textarea></div></div>' +
+          '<div class="col-md-6"><div class="form-group mb-2"><label class="labelField small">Options name</label><input class="form-control form-control-sm" type="text" name="' + p + '[options_name]" value=""></div></div>' +
+          '<div class="col-md-6"><div class="form-group mb-2"><label class="labelField small">Options (comma-separated)</label><input class="form-control form-control-sm" type="text" name="' + p + '[options]" value=""></div></div>' +
+          chk(p + '[personal]', 'Per person', 'pkg_personal_' + ci + '_' + pi) +
+          chk(p + '[requested]', 'Required', 'pkg_requested_' + ci + '_' + pi) +
+          chk(p + '[daily]', 'Per day', 'pkg_daily_' + ci + '_' + pi) +
+          chk(p + '[allow_options]', 'Allow options', 'pkg_allow_options_' + ci + '_' + pi) +
+          chk(p + '[alternative]', 'Alternative', 'pkg_alternative_' + ci + '_' + pi) +
+          chk(p + '[allow_multiple]', 'Allow multiple', 'pkg_allow_multiple_' + ci + '_' + pi) +
+          '</div></div></div>';
+      }
+
+      $('#calls-container').on('click', '.remove-package', function () {
+        var container = $(this).closest('.packages-container');
+        var ci = container.data('call');
+        $(this).closest('.package-item').remove();
+        container.find('.package-item').each(function (pi) {
+          $(this).find('.card-header small').text('Package ' + (pi + 1));
+          $(this).find('[name]').each(function () {
+            var n = $(this).attr('name');
+            n = n.replace(/\[packages\]\[\d+\]/, '[packages][' + pi + ']');
+            $(this).attr('name', n);
+          });
+          $(this).find('[id]').each(function () {
+            var id = $(this).attr('id');
+            $(this).attr('id', id.replace(/_\d+_\d+$/, '_' + ci + '_' + pi));
+          });
+          $(this).find('[for]').each(function () {
+            var f = $(this).attr('for');
+            $(this).attr('for', f.replace(/_\d+_\d+$/, '_' + ci + '_' + pi));
+          });
+        });
+      });
+
+      // ── fix checkboxes before submit ──────────────────────────────────────
+      $('#calls-form').on('submit', function () {
+        $(this).find('input[type=checkbox]').each(function () {
+          if (!$(this).is(':checked')) {
+            var hidden = $('<input type="hidden">').attr('name', $(this).attr('name')).val('false');
+            $(this).before(hidden);
+          }
+        });
+      });
+
+    }(jQuery));
+    });

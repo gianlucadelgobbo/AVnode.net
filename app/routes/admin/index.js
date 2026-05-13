@@ -6,6 +6,7 @@ import get from './api/get.js';
 import put from './api/put.js';
 import { logger, requestLogger, errorLogger } from '../../utilities/logger.js'; // Logger
 import dataprovider from '../../utilities/dataprovider.js'; // Logger
+import mongoose from 'mongoose';
 
 // API Routes
 import apiRoutes from './api/index.js';
@@ -31,6 +32,9 @@ router.get('/:sez/:id/:form/', async (req, res) => {
       await get.getSubscriptions(req, res);
     } else if (req.params.sez === "events" && req.params.form === "partners") {
       await get.getPartners(req, res);
+    } else if (req.params.sez === "events" && req.params.form === "calls") {
+      config.callsCategories = await mongoose.model('Category').find({ rel: 'performances', ancestor: '5be8708afc3961000000008f' }).select('name _id').sort({ name: 1 }).lean().exec();
+      await dataprovider.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
     } else {
       await dataprovider.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
     }
@@ -62,6 +66,9 @@ router.post('/:sez/:id/:form/', async (req, res) => {
       dataprovider.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
     } else if (req.params.sez === "events" && req.params.form === "partners-message") {
       dataprovider.getData(req, res, `admin/${req.params.sez}_${req.params.form}`);
+    } else if (req.params.sez === "events" && req.params.form === "calls") {
+      config.callsCategories = await mongoose.model('Category').find({ rel: 'performances', ancestor: '5be8708afc3961000000008f' }).select('name _id').sort({ name: 1 }).lean().exec();
+      put.putData(req, res, `admin/${req.params.sez}_${req.params.form}`);
     } else {
       put.putData(req, res, `admin/${req.params.sez}_${req.params.form}`);
     }

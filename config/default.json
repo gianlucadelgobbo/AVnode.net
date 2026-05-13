@@ -995,7 +995,7 @@
         "calls": {
           "title": "Calls",
           "select": {
-            "calls": 1
+            "organizationsettings": 1
           },
           "selectaddon": {
             "slug": 1,
