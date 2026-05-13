@@ -263,13 +263,14 @@ router.putData = async (req, res, view) => {
     req.flash('success', {msg: req.__("DATA_SAVED_WITH_SUCCESS")});
     return res.render(view, {
       title: view,
+      config: config,
       scripts: [],
       body: req.body,
       currentUrl: req.originalUrl,
       countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
       languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
       get: req.params,
-      msg_tmp: { }, 
+      msg_tmp: { },
       data: send
     });
   }  

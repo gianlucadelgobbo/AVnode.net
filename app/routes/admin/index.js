@@ -8,6 +8,12 @@ import { logger, requestLogger, errorLogger } from '../../utilities/logger.js'; 
 import dataprovider from '../../utilities/dataprovider.js'; // Logger
 import mongoose from 'mongoose';
 
+// Disable browser caching for all admin pages
+router.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  next();
+});
+
 // API Routes
 import apiRoutes from './api/index.js';
 router.use('/api', apiRoutes);

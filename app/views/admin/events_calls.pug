@@ -1,6 +1,6 @@
 extends ../layout_admin
 block content
-  - var os = data.organizationsettings ? JSON.parse(JSON.stringify(data.organizationsettings)) : {}
+  - var os = data.organizationsettings ? data.organizationsettings.toObject({ virtuals: false, getters: false }) : {}
   - var call = os.call || {}
   - var calls = call.calls || []
   - var allCategories = config.callsCategories || []
@@ -456,9 +456,10 @@ block content
       });
 
       // ── fix checkboxes before submit ──────────────────────────────────────
+      // Only add hidden false inputs for boolean checkboxes (not admitted[] arrays)
       $('#calls-form').on('submit', function () {
         $(this).find('input[type=checkbox]').each(function () {
-          if (!$(this).is(':checked')) {
+          if (!$(this).is(':checked') && !$(this).attr('name').endsWith('[]')) {
             var hidden = $('<input type="hidden">').attr('name', $(this).attr('name')).val('false');
             $(this).before(hidden);
           }
