@@ -347,6 +347,15 @@ router.post('/', async (req, res) => {
       });
     }
     const availabilityDays = buildAvailabilityDays(data.schedule, lang_post);
+
+    // Override call start/end date virtuals on subdocuments
+    if (data.organizationsettings?.call?.calls) {
+      data.organizationsettings.call.calls.forEach(c => {
+        if (c.start_date) Object.defineProperty(c, 'start_date_formatted', { value: moment(c.start_date).utc().locale(lang_post).format('MMMM Do YYYY'), writable: true, configurable: true });
+        if (c.end_date) Object.defineProperty(c, 'end_date_formatted', { value: moment(c.end_date).utc().locale(lang_post).format('MMMM Do YYYY, HH:mm'), writable: true, configurable: true });
+      });
+    }
+
     if (req.session.call.index!==undefined) {
       const callEntry = data.organizationsettings.call.calls[req.session.call.index];
       slugsMenu = participateMenu.map(item => item.slug);
