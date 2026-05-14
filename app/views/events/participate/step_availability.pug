@@ -25,16 +25,16 @@
                 .subscription(style=!call.subscriptions || !call.subscriptions[count] || !call.subscriptions[count].subscriber_id ? "display: none" : undefined)
                   - var dates = call.subscriptions && call.subscriptions[count] &&  call.subscriptions[count].days ? call.subscriptions[count].days : []
                   - var days = [];
-                  - for (var d=0;d<dett.schedule.length;d++)
-                    - if (days.indexOf(dett.schedule[d].date_formatted) == -1)
-                      - days.push(dett.schedule[d].date_formatted)
-                      - var stringdate = dett.schedule[d].date.getFullYear()+"-"+(("0" + (dett.schedule[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (dett.schedule[d].date.getDate())).slice(-2))+"T00:00:00.000Z"
+                  - for (var d=0;d<availabilityDays.length;d++)
+                    - if (days.indexOf(availabilityDays[d].date_formatted) == -1)
+                      - days.push(availabilityDays[d].date_formatted)
+                      - var stringdate = availabilityDays[d].date.getFullYear()+"-"+(("0" + (availabilityDays[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (availabilityDays[d].date.getDate())).slice(-2))+"T00:00:00.000Z"
                       .form-check
-                        input.form-check-input(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c+"_"+d, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][days][" + d + "]" : undefined, value=dett.schedule[d].date,    type="checkbox", checked=(dates.length && dates.indexOf(stringdate)!=-1) ? "checked" : undefined)
+                        input.form-check-input(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c+"_"+d, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][days][" + d + "]" : undefined, value=availabilityDays[d].date,    type="checkbox", checked=(dates.length && dates.indexOf(stringdate)!=-1) ? "checked" : undefined)
                         label.form-check-label(for="subscription"+b+"_"+c+"_"+d)
-                          !=" "+dett.schedule[d].date_formatted
+                          !=" "+availabilityDays[d].date_formatted
                         if (call.subscriptions[count].freezed)
-                          input(name="subscriptions[" + count + "][days][" + d + "]", value=dett.schedule[d].date, type="hidden")
+                          input(name="subscriptions[" + count + "][days][" + d + "]", value=availabilityDays[d].date, type="hidden")
           - count++
   - else
     - if (peoples.indexOf(call.admitted[call.performance].users[b].slug)==-1)
@@ -58,14 +58,14 @@
             .subscription(style=!call.subscriptions || !call.subscriptions[count] || !call.subscriptions[count].subscriber_id ? "display: none" : undefined)
               - var dates = call.subscriptions && call.subscriptions[count] &&  call.subscriptions[count].days ? call.subscriptions[count].days : []
               - var days = [];
-              - for (var d=0;d<dett.schedule.length;d++)
-                - if (days.indexOf(dett.schedule[d].date_formatted) == -1)
-                  - days.push(dett.schedule[d].date_formatted)
-                  - var stringdate = dett.schedule[d].date.getFullYear()+"-"+(("0" + (dett.schedule[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (dett.schedule[d].date.getDate())).slice(-2))+"T00:00:00.000Z"
+              - for (var d=0;d<availabilityDays.length;d++)
+                - if (days.indexOf(availabilityDays[d].date_formatted) == -1)
+                  - days.push(availabilityDays[d].date_formatted)
+                  - var stringdate = availabilityDays[d].date.getFullYear()+"-"+(("0" + (availabilityDays[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (availabilityDays[d].date.getDate())).slice(-2))+"T00:00:00.000Z"
                   .form-check
-                    input.form-check-input(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c+"_"+d, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][days][" + d + "]" : undefined, value=dett.schedule[d].date,    type="checkbox", checked=(dates.length && dates.indexOf(stringdate)!=-1) ? "checked" : undefined)
+                    input.form-check-input(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c+"_"+d, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][days][" + d + "]" : undefined, value=availabilityDays[d].date,    type="checkbox", checked=(dates.length && dates.indexOf(stringdate)!=-1) ? "checked" : undefined)
                     label.form-check-label(for="subscription"+b+"_"+c+"_"+d)
-                      !=" "+dett.schedule[d].date_formatted
+                      !=" "+availabilityDays[d].date_formatted
                     if (call.subscriptions[count].freezed)
-                      input(name="subscriptions[" + count + "][days][" + d + "]", value=dett.schedule[d].date, type="hidden")
+                      input(name="subscriptions[" + count + "][days][" + d + "]", value=availabilityDays[d].date, type="hidden")
         - count++

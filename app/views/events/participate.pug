@@ -23,7 +23,7 @@ block content
         a.btn.btn-primary.mr-3(href="/login/?returnTo=/events/"+dett.slug+"/participate/")=__("LOGIN")
         a.btn.btn-light(href="/signup?returnTo=/events/"+dett.slug+"/participate/")=__("REGISTER")
       - else
-        form(method="post" action=canonical)
+        form(method="post" action=currentUrl)
           if call.step == 2
             - var admitted = dett.organizationsettings.call.calls[call.index].admitted.map(item => {return item.name})
             h2#createContents.mb-3

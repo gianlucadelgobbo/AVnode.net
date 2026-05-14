@@ -373,5 +373,27 @@
 	},
 	"Cast to [ObjectId] failed for value \"[\\n' +\n  \"  new ObjectId('5be8708afc3961000000019f'),\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  '5be8708afc39610000000017',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false'\\n\" +\n  ']\" (type string) at path \"admitted": {
 		"1\" because of \"CastError\"": "Cast to [ObjectId] failed for value \"[\\n' +\n  \"  new ObjectId('5be8708afc3961000000019f'),\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  '5be8708afc39610000000017',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false',\\n\" +\n  \"  'false'\\n\" +\n  ']\" (type string) at path \"admitted.1\" because of \"CastError\""
-	}
+	},
+	"New Artwork": "New Artwork",
+	"Please confirm your personal data to go forward": "Please confirm your personal data to go forward",
+	"There are some errors": "There are some errors",
+	"Please accept the terms and conditions to go forward": "Please accept the terms and conditions to go forward",
+	"for": "for",
+	"Required": "Required",
+	"per day": "per day",
+	"requested": "requested",
+	"per person": "per person",
+	"per person/per day": "per person/per day",
+	"days": "days",
+	"Total": "Total",
+	"We've received a request to participate to": "We've received a request to participate to",
+	"day": "day",
+	"Submission of": "Submission of",
+	"to": "to",
+	"sent with success!!!": "sent with success!!!",
+	"We have sent you an email with a copy of your submission to": "We have sent you an email with a copy of your submission to",
+	"Please select a performance to go forward": "Please select a performance to go forward",
+	"Please select at least 1 topic to go forward": "Please select at least 1 topic to go forward",
+	"This person is already in with another act and can not be edited": "This person is already in with another act and can not be edited",
+	"Please select at least 1 option for the packages": "Please select at least 1 option for the packages"
 }

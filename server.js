@@ -201,6 +201,7 @@ app.set("trust proxy", 1); // x carlo
 // Middleware
 app.use(compression());
 app.use(express.static(path.join(config.appRoot, "public")));
+app.use("/lightgallery", express.static(path.join(config.appRoot, "node_modules/lightgallery")));
 //app.use("/storage", express.static(path.join(config.appRoot, "storage")));
 app.use("/warehouse", express.static(path.join(config.appRoot, "warehouse")));
 app.use("/glacier", express.static(path.join(config.appRoot, "glacier")));

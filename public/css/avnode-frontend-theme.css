@@ -1,0 +1,990 @@
+/* ============================================================
+   AVnode Admin — Frontend-aligned theme override
+   ------------------------------------------------------------
+   Aligns admin pages to the AVNode_fe (Flyer) design system.
+   Load AFTER main.min.css and admin.min.css.
+   No HTML / class changes — pure CSS cascade override.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --emerald: #00FF95;
+  --emerald-soft: rgba(0, 255, 149, 0.12);
+  --emerald-line: rgba(0, 255, 149, 0.25);
+  --accent: #FCB431;
+  --darkblue: #060416;
+  --darkblue-2: #0c0a26;
+  --light: #FCFCFC;
+  --light-muted: rgba(252, 252, 252, 0.6);
+  --grey: #1E1E1E;
+  --lightblue: #3F3A69;
+  --danger: #ff4d6d;
+  --font-serif: 'Pixelify Sans', 'Courier New', monospace;
+  --font-sans: 'Roboto', system-ui, sans-serif;
+  --font-mono: 'DM Mono', 'Menlo', monospace;
+  --radius: 8px;
+  --radius-lg: 14px;
+  --shadow-glow: 0 12px 32px -8px rgba(0, 255, 149, 0.25);
+}
+
+/* ---------- Forced base (high-specificity overrides for Bootstrap admin) ---------- */
+html, body, html body, html > body {
+  background-color: var(--darkblue) !important;
+  background-image: none !important;
+  color: var(--light) !important;
+  font-family: var(--font-sans) !important;
+}
+
+html body .container-fluid,
+html body .container,
+html body .row,
+html body [class*="col-"],
+html body .col,
+html body .maincontent,
+html body .main,
+html body .formcontainer,
+html body #app,
+html body #app > div,
+html body main,
+html body section,
+html body aside,
+html body .d-print-none,
+html body footer {
+  background-color: transparent !important;
+  color: inherit;
+}
+
+/* Catch-all: any generic block element gets a transparent bg, so Bootstrap's
+   stray white backgrounds don't bleed through. Specific elements that NEED
+   a background (navbar, modal-content, alert-secondary header, textarea, btn-*)
+   override this via class-level rules with !important. */
+html body div,
+html body section,
+html body article,
+html body fieldset,
+html body form,
+html body dl, html body dt, html body dd,
+html body ul, html body ol, html body li,
+html body p, html body span:not([class]) {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Headings always light/emerald, regardless of Bootstrap defaults */
+html body h1, html body h2, html body h3, html body h4, html body h5, html body h6,
+html body .h1, html body .h2, html body .h3, html body .h4, html body .h5, html body .h6 {
+  color: var(--light) !important;
+}
+html body h1, html body .h1, html body h1.h2,
+html body h2, html body .h2 {
+  color: var(--emerald) !important;
+}
+html body h3.labelField,
+html body h4.labelField,
+html body .labelField,
+html body .labelfield,
+html body .labelFieldUpload {
+  color: var(--emerald) !important;
+}
+
+/* Bootstrap bg utilities — neutralize the ones that would clash */
+html body .bg-white,
+html body .bg-light {
+  background-color: transparent !important;
+  color: var(--light) !important;
+}
+html body .bg-dark {
+  background-color: transparent !important;
+}
+
+/* Text utilities */
+html body .text-dark,
+html body .text-black {
+  color: var(--light) !important;
+}
+html body .text-white { color: var(--light) !important; }
+html body small, html body .small { color: var(--light-muted); }
+
+/* ---------- Base ---------- */
+html, body {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+* { box-sizing: border-box; }
+
+a {
+  color: var(--emerald);
+  text-decoration: none;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+a:hover { color: var(--light); opacity: 0.9; }
+
+/* Force emerald on any inline anchor (privacy policy in labels, mailto, etc.)
+   — high specificity to beat Bootstrap's default blue. Buttons / nav / list /
+   dropdown / brand keep their own colors because those rules already use !important. */
+html body a:not(.btn):not(.nav-link):not(.list-group-item):not(.dropdown-item):not(.navbar-brand):not(.deletedett) {
+  color: var(--emerald) !important;
+  text-decoration: none;
+}
+html body a:not(.btn):not(.nav-link):not(.list-group-item):not(.dropdown-item):not(.navbar-brand):not(.deletedett):hover {
+  color: var(--light) !important;
+  text-decoration: underline;
+}
+
+::selection { background: var(--emerald); color: var(--darkblue); }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--emerald-line);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--emerald); }
+html { scrollbar-width: thin; scrollbar-color: var(--emerald-line) transparent; }
+
+/* ---------- Typography ---------- */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--font-serif);
+  color: var(--light);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+}
+
+h1, .h1 { font-size: 2.25rem; color: var(--emerald); }
+h2, .h2 { font-size: 1.75rem; color: var(--emerald); }
+h3, .h3 { font-size: 1.375rem; }
+h4, .h4 { font-size: 1.25rem; }
+h5, .h5 { font-size: 1.125rem; }
+h6, .h6 { font-size: 1rem; }
+
+small, .small { font-size: 0.75rem; color: var(--light-muted); font-family: var(--font-mono); }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--emerald-line);
+  margin: 1.75rem 0;
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--emerald-line) !important;
+}
+
+.text-muted, .text-muted small { color: var(--light-muted) !important; }
+.text-white { color: var(--light) !important; }
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+
+.text-danger, a.text-danger { color: var(--danger) !important; }
+
+/* ---------- Labels ---------- */
+.labelField, .labelfield, .labelFieldUpload {
+  font-family: var(--font-serif);
+  color: var(--emerald);
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  font-weight: 500;
+}
+
+dl.row dt .labelfield,
+dl.row dt .labelField {
+  color: var(--emerald);
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+h3.labelField, h4.labelField {
+  font-size: 1.25rem;
+  color: var(--emerald);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border-radius: var(--radius);
+  padding: 0.5rem 1.25rem;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  text-transform: uppercase;
+  font-size: 0.8125rem;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  cursor: pointer;
+  background: transparent;
+  color: var(--light);
+}
+
+.btn:focus, .btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 255, 149, 0.25);
+}
+
+html body .btn-primary,
+html body a.btn-primary,
+html body button.btn-primary,
+html body .btn-primary:not(:disabled):not(.disabled) {
+  background-color: var(--emerald) !important;
+  color: var(--darkblue) !important;
+  border-color: var(--emerald) !important;
+}
+html body .btn-primary:hover,
+html body .btn-primary:focus,
+html body a.btn-primary:hover,
+html body button.btn-primary:hover {
+  background-color: transparent !important;
+  color: var(--emerald) !important;
+  border-color: var(--emerald) !important;
+}
+
+html body .btn-success,
+html body a.btn-success,
+html body button.btn-success {
+  background-color: var(--emerald) !important;
+  color: var(--darkblue) !important;
+  border-color: var(--emerald) !important;
+}
+html body .btn-success:hover,
+html body .btn-success:focus {
+  background-color: transparent !important;
+  color: var(--emerald) !important;
+}
+
+html body .btn-danger,
+html body a.btn-danger,
+html body button.btn-danger,
+html body .btn-danger.disabled,
+html body .btn-danger:disabled {
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--danger) !important;
+  border-color: var(--danger) !important;
+}
+html body .btn-danger:hover,
+html body .btn-danger:focus {
+  background-color: var(--danger) !important;
+  color: var(--light) !important;
+}
+
+.btn-default {
+  background: transparent;
+  color: var(--light);
+  border-color: var(--light);
+}
+.btn-default:hover { background: var(--light); color: var(--darkblue); }
+
+.btn-lg, .btn-large {
+  padding: 0.75rem 1.75rem;
+  font-size: 0.9375rem;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.75rem;
+  border-width: 2px;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.btn.disabled,
+.btn:disabled,
+a.btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-primary.disabled,
+a.btn-primary.disabled {
+  background: var(--emerald);
+  color: var(--darkblue);
+}
+
+.btn-toolbar { gap: 0.5rem; }
+
+/* ---------- Forms ---------- */
+.form-group { margin-bottom: 1.5rem; }
+
+.form-control {
+  background: transparent;
+  color: var(--light);
+  border: 2px solid var(--emerald);
+  border-radius: var(--radius);
+  padding: 0.55rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  transition: all 0.15s ease;
+  width: 100%;
+  display: block;
+  line-height: 1.5;
+}
+
+.form-control:focus {
+  background: var(--emerald);
+  color: var(--darkblue);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 255, 149, 0.2);
+  border-color: var(--emerald);
+}
+
+.form-control::placeholder { color: var(--light-muted); }
+.form-control:focus::placeholder { color: rgba(6, 4, 22, 0.55); }
+
+/* Textareas: stable dark bg (no focus-invert), high-contrast light text */
+html body textarea.form-control {
+  background-color: var(--darkblue-2) !important;
+  color: var(--light) !important;
+  min-height: 140px;
+  resize: vertical;
+  border-color: var(--emerald) !important;
+  font-family: var(--font-sans) !important;
+}
+html body textarea.form-control:focus {
+  background-color: var(--darkblue-2) !important;
+  color: var(--light) !important;
+  box-shadow: 0 0 0 3px rgba(0, 255, 149, 0.25) !important;
+  border-color: var(--emerald) !important;
+}
+html body textarea.form-control::placeholder {
+  color: var(--light-muted) !important;
+}
+
+select.form-control {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300FF95' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+select.form-control:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23060416' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+select.form-control option {
+  background: var(--darkblue);
+  color: var(--light);
+}
+
+.form-check, .form-check-inline {
+  padding-left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-check-input {
+  position: static;
+  margin: 0 0.4rem 0 0;
+  accent-color: var(--emerald);
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.form-check-label, .form-check label {
+  color: var(--light);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  margin: 0;
+}
+
+.form-check-label b { color: var(--light); font-weight: 600; }
+
+.form-inline { gap: 1rem; flex-wrap: wrap; }
+
+/* Input group — keep form-control's left/right borders unless that side
+   actually joins another element. Outer corners get the group's radius. */
+html body .input-group {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+html body .input-group > .form-control {
+  flex: 1 1 auto;
+  border-radius: var(--radius) !important;
+}
+
+html body .input-group > .form-control:not(:first-child) {
+  border-left: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+html body .input-group > .form-control:not(:last-child) {
+  border-right: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+html body .input-group-prepend .btn,
+html body .input-group-prepend .input-group-text,
+html body .input-group-append .btn,
+html body .input-group-append .input-group-text {
+  border-radius: 0 !important;
+  border: 2px solid var(--emerald) !important;
+}
+
+html body .input-group-append .btn-danger {
+  border-color: var(--danger) !important;
+}
+
+html body .input-group > .input-group-prepend:first-child > .input-group-text,
+html body .input-group > .input-group-prepend:first-child > .btn {
+  border-top-left-radius: var(--radius) !important;
+  border-bottom-left-radius: var(--radius) !important;
+}
+
+html body .input-group > .input-group-append:last-child > .input-group-text,
+html body .input-group > .input-group-append:last-child > .btn {
+  border-top-right-radius: var(--radius) !important;
+  border-bottom-right-radius: var(--radius) !important;
+}
+
+.input-group-text {
+  background: var(--darkblue-2);
+  color: var(--light);
+  border: 2px solid var(--emerald);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  padding: 0.5rem 0.85rem;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.help {
+  color: var(--light-muted);
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  margin-top: 0.35rem;
+  display: block;
+  line-height: 1.4;
+}
+
+.badge-danger {
+  background: var(--danger);
+  color: var(--light);
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- Navbar ---------- */
+.navbar,
+.navbar-inverse,
+.bg-inverse {
+  background: var(--darkblue) !important;
+  border-bottom: 1px solid var(--emerald-line);
+  padding: 0.85rem 1.5rem !important;
+}
+
+.navbar-brand img.main_logo {
+  filter: brightness(0) invert(1);
+  height: 28px;
+  transition: filter 0.2s ease;
+}
+.navbar-brand:hover img.main_logo {
+  filter: brightness(0) saturate(100%) invert(85%) sepia(36%) saturate(2400%) hue-rotate(85deg) brightness(101%) contrast(105%);
+}
+
+.navbar .nav-link {
+  color: var(--light) !important;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  padding: 0.5rem 0.85rem !important;
+  border-radius: var(--radius);
+  transition: all 0.15s ease;
+}
+.navbar .nav-link:hover { color: var(--emerald) !important; }
+
+.navbar-toggler {
+  border: 2px solid var(--emerald);
+  color: var(--emerald);
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius);
+  background: transparent;
+}
+
+.dropdown-menu {
+  background: var(--darkblue);
+  border: 2px solid var(--emerald);
+  border-radius: var(--radius-lg);
+  padding: 0.5rem;
+  box-shadow: var(--shadow-glow);
+  margin-top: 0.5rem;
+}
+
+.dropdown-item {
+  color: var(--light) !important;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  transition: all 0.15s ease;
+  font-family: var(--font-sans);
+}
+.dropdown-item:hover, .dropdown-item:focus {
+  background: var(--emerald) !important;
+  color: var(--darkblue) !important;
+}
+
+/* ---------- Sidebar ---------- */
+/* Force sidebar always visible on the left, regardless of viewport */
+html body .row > .d-print-none {
+  display: block !important;
+  flex: 0 0 220px !important;
+  max-width: 220px !important;
+  width: 220px !important;
+}
+
+html body #sidebar-container,
+html body .sidebar-expanded {
+  display: block !important;
+  width: 100% !important;
+  background: transparent;
+  border-right: 1px solid var(--emerald-line);
+  min-height: calc(100vh - 80px);
+  padding: 1rem 0.5rem;
+}
+
+/* Hide the mobile-duplicate menu items inside the navbar */
+html body .navbar-nav .nav-item.d-lg-none {
+  display: none !important;
+}
+
+.list-group { border: none; }
+
+.list-group-item {
+  background: transparent !important;
+  color: var(--light) !important;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.7rem 1rem;
+  transition: all 0.15s ease;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  margin-bottom: 0.15rem;
+}
+
+.list-group-item:hover {
+  background: var(--emerald-soft) !important;
+  color: var(--emerald) !important;
+}
+
+.list-group-item.active,
+.list-group-item.bg-secondary,
+.list-group-item-action.active {
+  background: var(--emerald) !important;
+  color: var(--darkblue) !important;
+  font-weight: 700;
+}
+
+.list-group-item-action.bg-dark {
+  background: transparent !important;
+}
+
+.sidebar-separator-title small,
+.sidebar-separator-title .menu-collapsed {
+  color: var(--emerald);
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 0.5rem 0;
+}
+
+/* ---------- Main content ---------- */
+.container-fluid { padding: 1.5rem 2rem; }
+
+.main, .maincontent {
+  background: transparent;
+  color: var(--light);
+  padding: 1rem 0;
+}
+
+/* Give the main content area breathing room from the sidebar */
+html body .col.maincontent,
+html body .col-md.maincontent {
+  padding-left: 2.5rem !important;
+  padding-right: 2rem !important;
+}
+
+.formcontainer {
+  background: transparent;
+  padding: 1.5rem 0;
+}
+
+.formcontainer > .d-flex {
+  border-bottom: 1px solid var(--emerald-line) !important;
+  padding-bottom: 1.25rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.formcontainer > nav.mb-3 {
+  border-bottom: 1px solid var(--emerald-line) !important;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* ---------- Tabs (languages) ---------- */
+.nav-tabs {
+  border-bottom: 2px solid var(--emerald-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.nav-tabs .nav-item { margin-bottom: -2px; }
+
+.nav-tabs .nav-link {
+  background: transparent;
+  color: var(--light) !important;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-radius: 0;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.nav-tabs .nav-link:hover { color: var(--emerald) !important; }
+
+.nav-tabs .nav-link.active {
+  background: transparent;
+  color: var(--emerald) !important;
+  border-bottom-color: var(--emerald);
+  font-weight: 700;
+}
+
+html body .tab-content,
+html body .tab-pane,
+html body .tab-pane.active,
+html body .tab-pane.show,
+html body .tab-pane.active.show {
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--light) !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+html body .form-group {
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+.tab-content > .tab-pane {
+  padding: 1.25rem 0;
+}
+
+/* ---------- Cards / Sections (alert-secondary as section block) ---------- */
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid var(--emerald-line);
+  padding: 0.5rem 0 0.75rem 0;
+  margin-bottom: 1rem;
+}
+
+.alert {
+  background: transparent;
+  border: 1px solid var(--emerald-line);
+  color: var(--light);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+}
+
+.alert-secondary {
+  background: rgba(63, 58, 105, 0.15);
+  border: 2px solid var(--lightblue);
+  border-radius: var(--radius-lg);
+  color: var(--light);
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.alert-secondary > .d-flex.bg-secondary,
+.bg-secondary {
+  background: var(--lightblue) !important;
+  padding: 0.75rem 1rem !important;
+  color: var(--light) !important;
+}
+
+.alert-secondary > .d-flex.bg-secondary b,
+.alert-secondary .text-white {
+  color: var(--light) !important;
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.alert-secondary .p-2 { padding: 1.5rem !important; }
+
+/* ---------- Modals ---------- */
+.modal-content {
+  background: var(--darkblue);
+  border: 2px solid var(--emerald);
+  border-radius: var(--radius-lg);
+  color: var(--light);
+  box-shadow: var(--shadow-glow);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--emerald-line);
+  padding: 1.25rem 1.75rem;
+  align-items: center;
+}
+
+.modal-body { padding: 1.5rem 1.75rem; }
+
+.modal-footer {
+  border-top: 1px solid var(--emerald-line);
+  padding: 1rem 1.75rem;
+  gap: 0.5rem;
+}
+
+.modal-title {
+  font-family: var(--font-serif);
+  color: var(--emerald);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.modal .close {
+  color: var(--emerald);
+  opacity: 0.7;
+  font-size: 1.75rem;
+  text-shadow: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+  font-weight: 300;
+}
+.modal .close:hover { opacity: 1; color: var(--emerald); }
+
+.modal-backdrop, .modal-backdrop.fade.show {
+  background: var(--darkblue);
+  opacity: 0.85 !important;
+}
+
+/* Modal body specifics */
+.modal dl.row dt .labelfield,
+.modal dl.row dt .labelField {
+  font-family: var(--font-serif);
+  color: var(--emerald);
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+/* ---------- Upload area ----------
+   Concentric radii rule: outerRadius = innerRadius + distance.
+   We use outer 14px, padding 8px → inner 6px.
+   ------------------------------------------------------------ */
+html body #formupload,
+html body .dz-clickable {
+  background-color: transparent !important;
+  border: 2px dashed var(--emerald) !important;
+  border-radius: 14px !important;
+  padding: 8px !important;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+html body #formupload:hover,
+html body .dz-clickable:hover {
+  background-color: var(--emerald-soft) !important;
+  border-color: var(--emerald) !important;
+}
+
+/* Kill the white Bootstrap inner backgrounds and align inner radius */
+html body .enableBorder,
+html body #formupload .embed-responsive,
+html body #formupload .embed-responsive-item,
+html body #formupload .attachment-dropzone,
+html body .dz-clickable .embed-responsive,
+html body .dz-clickable .embed-responsive-item,
+html body .dz-clickable .attachment-dropzone {
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  border-radius: 6px !important;
+  color: var(--light) !important;
+}
+
+.labelFieldUpload {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.labelFieldUpload .h1 {
+  color: var(--emerald);
+  font-size: 2.5rem;
+  margin: 0 0 0.25rem 0;
+}
+
+.labelFieldUpload .btn {
+  margin-top: 0.5rem;
+}
+
+.attachment-dropzone {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#image-preview .img-fluid {
+  border-radius: var(--radius);
+  max-width: 100%;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  padding: 2rem 1.5rem;
+  border-top: 1px solid var(--emerald-line);
+  margin-top: 3rem;
+  color: var(--light-muted);
+}
+
+footer .text-muted { color: var(--light-muted) !important; }
+
+/* ---------- Back to top ---------- */
+#to_top {
+  background: var(--emerald);
+  color: var(--darkblue);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  position: fixed;
+  box-shadow: 0 4px 16px rgba(0, 255, 149, 0.4);
+  z-index: 100;
+  transition: transform 0.2s ease;
+}
+#to_top:hover { transform: translateY(-3px); color: var(--darkblue); }
+
+/* ---------- Delete link ---------- */
+.deletedett {
+  color: var(--danger) !important;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-family: var(--font-mono);
+  text-decoration: none;
+}
+.deletedett:hover { color: var(--light) !important; }
+
+/* ---------- Datetime entry spinner (compatibility) ---------- */
+.datetimeEntry-control {
+  filter: invert(1) brightness(1.5) saturate(0);
+  opacity: 0.7;
+}
+.datetimeEntry-control:hover { opacity: 1; }
+
+/* ---------- Pac (google places autocomplete) ---------- */
+.pac-container {
+  background: var(--darkblue) !important;
+  border: 2px solid var(--emerald) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-glow) !important;
+  margin-top: 0.25rem;
+  padding: 0.25rem;
+}
+.pac-item {
+  color: var(--light) !important;
+  border-top: 1px solid var(--emerald-line) !important;
+  padding: 0.4rem 0.6rem;
+  font-family: var(--font-sans);
+}
+.pac-item:first-child { border-top: none !important; }
+.pac-item:hover, .pac-item-selected {
+  background: var(--emerald-soft) !important;
+}
+.pac-item-query { color: var(--emerald) !important; }
+.pac-matched { color: var(--emerald) !important; font-weight: 700; }
+.pac-icon { filter: invert(1); }
+
+/* ---------- Misc utility overrides ---------- */
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.d-flex { display: flex !important; }
+.justify-content-between { justify-content: space-between; }
+.align-items-center { align-items: center; }
+
+/* ---------- Icon fallbacks (LOCAL DUMP PREVIEW ONLY) ----------
+   The admin custom icon font isn't shipped with the HTML dump in BACKEND/,
+   so <i class="icon-*"></i> elements render as empty boxes (□). These
+   fallbacks make the preview readable. In production the icon font will
+   load and override these glyphs via the original CSS @font-face rules. */
+html body i[class^="icon-"],
+html body i[class*=" icon-"],
+html body span[class^="icon-"],
+html body span[class*=" icon-"] {
+  font-style: normal;
+  font-family: var(--font-sans);
+  line-height: 1;
+}
+html body .icon-trash::before { content: "✕"; }
+html body .icon-plus::before { content: "+"; font-weight: 700; }
+html body .icon-arrow-alt-circle-down::before { content: "↓"; }
+html body .icon-arrow-up-circle::before { content: "↑"; }
+html body .icon-arrow-alt-circle-left::before { content: "‹"; }
+html body .icon-menu::before { content: "≡"; }
+html body .icon-user::before { content: "◉"; }
+html body .icon-users::before { content: "◎"; }
+html body .icon-calendar::before, html body .icon-calendar-check::before { content: "▦"; }
+html body .icon-newspaper::before { content: "▤"; }
+html body .icon-video::before { content: "▶"; }
+html body .icon-images::before { content: "▣"; }
+html body .icon-theater-masks::before { content: "◐"; }
+html body .icon-cog::before { content: "✻"; }
+html body .icon-sign-out-alt::before, html body .icon-exit::before { content: "⎋"; }
+html body .icon-eye::before { content: "◉"; }
+
+/* Print: keep readable on paper */
+@media print {
+  html, body { background: white; color: black; }
+  .navbar, #sidebar-container, footer, #to_top, .d-print-none { display: none !important; }
+  .form-control, .btn { border-color: #666 !important; color: black !important; background: white !important; }
+}

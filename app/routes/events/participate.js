@@ -1,6 +1,8 @@
 import createRouter from "../router.js";
 const router = createRouter();
 
+import moment from 'moment';
+import config from 'getconfig';
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
@@ -46,6 +48,32 @@ router.get('/', async (req, res) => {
   populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
   lean().
   exec();
+
+  if (!data) {
+    return res.status(404).render('404', { path: req.originalUrl, currentUrl: req.originalUrl, user: req.user, title: req.__("404: Page not found"), titleicon: "icon-warning" });
+  }
+
+  // Compute schedule date fields (lean() skips virtuals; floor to midnight UTC without timezone shift)
+  const lang_get = req.session.current_lang || 'en';
+  if (data.schedule) {
+    const fmt = config.dateFormat[lang_get]?.weekdaydaymonthyear || 'dddd, DD MMMM YYYY';
+    data.schedule.forEach(s => {
+      if (s.starttime) {
+        const d = new Date(new Date(s.starttime).setUTCHours(0,0,0,0));
+        s.date = d;
+        s.date_formatted = moment(d).locale(lang_get).format(fmt);
+      }
+    });
+  }
+  const availabilityDays = buildAvailabilityDays(data.schedule, lang_get);
+
+  // Compute call start/end date virtuals (lean() skips subdocument virtuals)
+  if (data.organizationsettings?.call?.calls) {
+    data.organizationsettings.call.calls.forEach(c => {
+      if (c.start_date) c.start_date_formatted = moment(c.start_date).utc().locale(lang_get).format('MMMM Do YYYY');
+      if (c.end_date) c.end_date_formatted = moment(c.end_date).utc().locale(lang_get).format('MMMM Do YYYY, HH:mm');
+    });
+  }
 
   let ids = req.user ? [req.user._id, ...req.user.crews.map(item => item._id)] : [];
 
@@ -166,17 +194,41 @@ router.get('/', async (req, res) => {
     logger.info(slugsMenu);
   }
   */
-  logger.info("data.organizationsettings.call.calls[0].availability");
-  logger.info(data.organizationsettings.call.calls[0]);
+  // Reset on fresh navigation (no ?step), completed, or no session
+  if (!req.session.call || req.session.call.saved || req.query.step === undefined) {
+    req.session.call = {
+      step: 0,
+      event: { _id: data._id, slug: data.slug }
+    };
+  }
+  // Navigate to a previous step via nav link (?step=X)
+  if (req.query.step !== undefined && parseInt(req.query.step, 10) < req.session.call.step) {
+    req.session.call.step = parseInt(req.query.step, 10);
+  }
 
-  for (var a=0; a<data.organizationsettings.call.calls.length; a++) {
-    if (!data.organizationsettings.call.calls[a].availability) {
-      data.organizationsettings.call.calls[a].availability = availability(data.schedule);
+  // Prune menu based on actual call configuration (only when a call has been selected)
+  if (req.session.call.index !== undefined) {
+    const callEntry = data?.organizationsettings?.call?.calls?.[req.session.call.index];
+    if (callEntry) {
+      slugsMenu = participateMenu.map(item => item.slug);
+      if (!callEntry.topics?.length && slugsMenu.indexOf('topics') !== -1) participateMenu.splice(slugsMenu.indexOf('topics'), 1);
+      slugsMenu = participateMenu.map(item => item.slug);
+      if (!data.schedule?.length && slugsMenu.indexOf('availability') !== -1) participateMenu.splice(slugsMenu.indexOf('availability'), 1);
+      slugsMenu = participateMenu.map(item => item.slug);
+      if (!callEntry.packages?.length && slugsMenu.indexOf('packages') !== -1) participateMenu.splice(slugsMenu.indexOf('packages'), 1);
+      slugsMenu = participateMenu.map(item => item.slug);
     }
   }
 
-  
-  
+  const calls = data?.organizationsettings?.call?.calls || [];
+  for (var a = 0; a < calls.length; a++) {
+    if (!calls[a].availability) {
+      calls[a].availability = availability(data.schedule);
+    }
+  }
+
+  const msg = null;
+
   if (req.isApi) {
     res.json({
       event: data,
@@ -188,28 +240,23 @@ router.get('/', async (req, res) => {
   } else {
     res.render('events/participate', {
       title: data.title,
-      //canonical: res.locals.canonical,
-//canonical: (res.locals.isLocal ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
-      //canonical: res.locals.canonical,
-//canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
       canonical: res.locals.canonical,
+      currentUrl: req.originalUrl,
       dett: data,
       performances: performances,
       subscriptions: subscriptions,
       call: req.session.call,
       code: req.query.code,
       participateMenu: participateMenu,
+      availabilityDays: availabilityDays,
       msg: msg
     });
   }
 });
 
 const availability = (schedule) => {
-  console.log("schedule");
-  console.log(schedule);
-
-  if (!Array.isArray(schedule)) {
-    throw new Error("schedule is not defined or not an array");
+  if (!Array.isArray(schedule) || !schedule.length) {
+    return null;
   }
 
   const startDates = schedule.map(item => new Date(item.starttime));
@@ -225,148 +272,6 @@ const availability = (schedule) => {
 };
 
 
-router.post('/', async (req, res) => {
-  logger.info("req.params");
-  logger.info(req.params);
-  logger.info("req.body");
-  logger.info(req.body);
-    //let myasync = true;
-  logger.info('POSTPOSTPOSTPOSTPOST');
-  if (!req.user) return res.send({error: error, msg: {errors: {login: { message: req.__('To participate to the call for proposal you have to be logged in.')}}}})
-  //logger.info('fetchEvent'+req.params.slug);
-  let event;
-  try {
-    event = await Event.
-    findOne({slug: req.params.slug}).
-    populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
-    exec();
-  } catch (error) {
-    return res.send({error: error, msg: {errors: {event: { message: req.__('Event not found.')}}}})
-  }
-  if (!event) return res.send({error:true, msg: {errors: {event: { message: req.__('Event not found.')}}}});
-
-  logger.info("req.body.performance");
-  logger.info(req.body.performance);
-  let performance;
-  try {
-    performance = await Performance.
-    findOne({_id: req.body.performance}).
-    populate({ "path": "users", "select": "stagename", "model": "UserShow"}).
-    exec();
-  } catch (error) {
-    return res.send({error: error, msg: {errors: {performance: { message: req.__('Performance not found.')}}}})
-  }
-  if (!performance) return res.send({error: true, msg: {errors: {performance: { message: req.__('Performance not found.')}}}});
-
-  logger.info("event");
-  logger.info(event);
-  let save = {
-    event:              event._id,
-    call:               req.body.call,
-    topics:             req.body.topics,
-    performance:        performance._id,
-    status:             "5c38c57d9d426a9522c15ba5",
-    reference:          req.user._id,
-    subscriptions:      []
-  };
-  logger.info("save");
-  //logger.info(req.body.subscriptions);
-  for (var a=0; a<req.body.subscriptions.length; a++) {
-    if (req.body.subscriptions[a].subscriber_id){
-      var sub
-      if (req.body.subscriptions[a].packages && req.body.subscriptions[a].packages.length && req.body.subscriptions[a].packages[0].personal) {
-        sub = JSON.parse(JSON.stringify(req.body.subscriptions[a]));
-        sub.packages = req.body.subscriptions[a].packages;
-      } else {
-        var packages = []; 
-        for (var b=0; b<req.body.subscriptions[a].packages.length; b++) {
-          var pack = JSON.parse(JSON.stringify(event.organizationsettings.call.calls[req.body.index].packages[req.body.subscriptions[a].packages[b].id]));
-          pack.option = req.body.subscriptions[a].packages[b].option;
-          packages.push(pack);
-        }
-        sub = JSON.parse(JSON.stringify(req.body.subscriptions[a]));
-        sub.packages = packages;
-      }
-      save.subscriptions.push(sub);
-    }
-  }
-  logger.info("save 2");
-  //logger.info(save.subscriptions);
-  let subsub;
-  try {
-    subsub = Program.create(save);
-  } catch (error) {
-    return res.send({error: error, msg: {errors: {program: { message: req.__('Unable to submit the proposal, please try again.')}}}})
-  }
-  if (!event.program) event.program = [];
-  event.program.push({subscription_id: subsub._id, performance : req.body.performance});
-  try {
-    event.save()            
-  } catch (error) {
-    return res.send({error: error, msg: {errors: {event: { message: req.__('Unable to submit the proposal, please try again.')}}}})
-  }
-  // saved!
-  // MAILER
-
-  req.body.subscriptions.forEach(subscription => {
-    const availability = subscription.availabilityDates;
-    if (availability?.start && availability?.end) {
-      subscription.days = getDaysBetween(availability.start, availability.end);
-    } else {
-      subscription.days = []; // fallback
-    }
-  });
-
-  const selectedIds = [].concat(req.body.topics).map(id => String(id).trim());
-
-  const allTopics = JSON.parse(JSON.stringify(event.organizationsettings.call.calls[req.body.call].topics));
-  
-  const selectedNames = allTopics
-    .filter(t => selectedIds.includes(t._id))
-    .map(t => t.name);
-
-  console.log("selectedTopicNames:", selectedNames);
-
-  try {
-    await mySendMailer({
-      __: req.__,
-      template: 'participate',
-      message: {
-        to: req.user.stagename+" <"+req.user.email+">",
-        cc: [event.organizationsettings.call.calls[req.body.call].title+" <"+event.organizationsettings.call.calls[req.body.call].email+">"],
-        from: event.organizationsettings.call.calls[req.body.call].title+" <"+event.organizationsettings.call.calls[req.body.call].email+">"
-      },
-      email_content: {
-        site:    (res.locals.isLocal ? "http" : "https")+"://"+req.headers.host,
-        imghead: (res.locals.isLocal ? "http" : "https")+"://"+req.headers.host + event.organizationsettings.call.calls[req.body.call].imghead,
-        colBkg: event.organizationsettings.call.calls[req.body.call].colBkg,
-        imgalt:  event.organizationsettings.call.calls[req.body.call].imgalt,
-        html_sign:  event.organizationsettings.call.calls[req.body.call].html_sign,
-        text_sign:  event.organizationsettings.call.calls[req.body.call].text_sign,
-        title:   event.organizationsettings.call.calls[req.body.call].title + " | " + req.__("Call Submission"),
-        subject: performance.title + " | " + event.organizationsettings.call.calls[req.body.call].title + " | " + req.__("Call Submission"),
-        block_1:  req.__("We've received a request to participate to") + " <b>" + event.organizationsettings.call.calls[req.body.call].title + "</b> "+req.__("from")+" <b>"+req.user.stagename+"</b>",
-        block_1_plain:  req.__("We've received a request to participate to") + " " + event.organizationsettings.call.calls[req.body.call].title + " "+req.__("from")+" "+req.user.stagename+"",
-        user: req.user,
-        event: event,
-        performance: performance,
-        topics: selectedNames,
-        subscriptions: req.body.subscriptions,
-        call: req.body.call,
-        block_2:  req.__("You will receive a feedback on your proposal as soon."),
-        block_3:  req.__("Thanks."),
-        link:  "",
-        link_plain: ""/* 
-        link:  "<a href=\""+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0] */
-      }
-    })
-  } catch (error) {
-    logger.info("Email sending failure");
-    logger.info(error);
-    return res.send({error: error, msg: {errors: {mySendMailer: { message: req.__('Unable to submit the proposal, please try again.')}}}})
-  }
-  res.send({error: false, msg: req.__('Proposal, sent.')});
-});
 
 function getDaysBetween(startDateStr, endDateStr) {
   const days = [];
@@ -378,7 +283,25 @@ function getDaysBetween(startDateStr, endDateStr) {
   return days;
 }
 
-/*
+function buildAvailabilityDays(schedule, lang) {
+  if (!Array.isArray(schedule) || !schedule.length) return [];
+  const fmt = config.dateFormat[lang]?.weekdaydaymonthyear || 'dddd, DD MMMM YYYY';
+  const dates = schedule.map(s => new Date(new Date(s.starttime).setUTCHours(0,0,0,0)));
+  const minDate = new Date(Math.min(...dates));
+  const maxDate = new Date(Math.max(...dates));
+  // One day before first event day, one day after last
+  const startDate = new Date(minDate);
+  startDate.setUTCDate(startDate.getUTCDate() - 1);
+  const endDate = new Date(maxDate);
+  endDate.setUTCDate(endDate.getUTCDate() + 1);
+  const result = [];
+  for (let d = new Date(startDate); d <= endDate; d.setUTCDate(d.getUTCDate() + 1)) {
+    const day = new Date(d);
+    result.push({ date: day, date_formatted: moment(day).locale(lang).format(fmt) });
+  }
+  return result;
+}
+
 router.post('/', async (req, res) => {
   var participateMenu = [
     {label:req.__('Active Calls'),slug:"calls"},        // 0
@@ -396,8 +319,7 @@ router.post('/', async (req, res) => {
   if ((req.session.call && req.session.call.saved) || !req.body || !req.session.call) {
     if (req.body && req.body.step) delete req.body.step;
     delete req.session.call;
-    //res.redirect((res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]);
-    res.redirect(res.locals.canonical);
+    res.redirect(req.originalUrl);
   } else {
     let myasync = true;
     logger.info('POSTPOSTPOSTPOSTPOST');
@@ -408,24 +330,33 @@ router.post('/', async (req, res) => {
       findOne({slug: req.params.slug}).
       populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
       exec();
-    } catch (error) {
-      return next(error);
+    } catch (err) {
+      return res.status(500).send({ error: true, msg: req.__('Event not found.') });
     }
+    // Override date/date_formatted on schedule subdocuments (virtual uses a 10h shift for UTC+10
+    // which is wrong for European events; floor to midnight UTC instead)
+    const lang_post = req.session.current_lang || 'en';
+    if (data.schedule) {
+      const fmt = config.dateFormat[lang_post]?.weekdaydaymonthyear || 'dddd, DD MMMM YYYY';
+      data.schedule.forEach(s => {
+        if (s.starttime) {
+          const d = new Date(new Date(s.starttime).setUTCHours(0,0,0,0));
+          Object.defineProperty(s, 'date', { value: d, writable: true, configurable: true });
+          Object.defineProperty(s, 'date_formatted', { value: moment(d).locale(lang_post).format(fmt), writable: true, configurable: true });
+        }
+      });
+    }
+    const availabilityDays = buildAvailabilityDays(data.schedule, lang_post);
     if (req.session.call.index!==undefined) {
-      slugsMenu = participateMenu.map(item =>{return item.slug})
-      logger.info(data.organizationsettings.call.calls[req.session.call.index]);
-      logger.info("slugsMenu");
-      logger.info(slugsMenu.indexOf('topics'));
-      data.organizationsettings.call.calls[req.session.call.index].topics = []
-      data.organizationsettings.call.calls[req.session.call.index].availability = false
-      data.organizationsettings.call.calls[req.session.call.index].packages = []
-      if (!data.organizationsettings.call.calls[req.session.call.index].topics.length && slugsMenu.indexOf('topics')!==-1) participateMenu.splice(slugsMenu.indexOf('topics'), 1)
-        slugsMenu = participateMenu.map(item =>{return item.slug})
-        if (!data.organizationsettings.call.calls[req.session.call.index].availability && slugsMenu.indexOf('availability')!==-1) participateMenu.splice(slugsMenu.indexOf('availability'), 1)
-        slugsMenu = participateMenu.map(item =>{return item.slug})
-        if (!data.organizationsettings.call.calls[req.session.call.index].packages.length && slugsMenu.indexOf('packages')!==-1) participateMenu.splice(slugsMenu.indexOf('packages'), 1)
-        slugsMenu = participateMenu.map(item =>{return item.slug})
-      }
+      const callEntry = data.organizationsettings.call.calls[req.session.call.index];
+      slugsMenu = participateMenu.map(item => item.slug);
+      if (!callEntry.topics?.length && slugsMenu.indexOf('topics')!==-1) participateMenu.splice(slugsMenu.indexOf('topics'), 1);
+      slugsMenu = participateMenu.map(item => item.slug);
+      if (!data.schedule?.length && slugsMenu.indexOf('availability')!==-1) participateMenu.splice(slugsMenu.indexOf('availability'), 1);
+      slugsMenu = participateMenu.map(item => item.slug);
+      if (!callEntry.packages?.length && slugsMenu.indexOf('packages')!==-1) participateMenu.splice(slugsMenu.indexOf('packages'), 1);
+      slugsMenu = participateMenu.map(item => item.slug);
+    }
       let msg
       logger.info("msg");
       logger.info(msg);
@@ -509,10 +440,11 @@ router.post('/', async (req, res) => {
                   res.render('events/participate', {
                     title: data.title,
                     canonical: res.locals.canonical,
-  //canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                    currentUrl: req.originalUrl,
                     dett: data,
                     call: req.session.call,
                     participateMenu: participateMenu,
+                    availabilityDays: availabilityDays,
                     user: req.user,
                     msg: msg
                   });
@@ -579,7 +511,11 @@ router.post('/', async (req, res) => {
                   }
                 }
               }
-              for (var b=0;b<allsubscriptions.length;b++) if (!allsubscriptions[b].freezed) delete allsubscriptions[b].subscriber_id;
+              // Only clear subscriber_id if the availability step exists (user will confirm presence there)
+              // If availability step is skipped, all members are assumed to be participating
+              if (slugsMenu.indexOf('availability') !== -1) {
+                for (var b=0;b<allsubscriptions.length;b++) if (!allsubscriptions[b].freezed) delete allsubscriptions[b].subscriber_id;
+              }
               req.session.call.subscriptions = allsubscriptions;
               logger.info("allsubscriptions");
               //logger.info(allsubscriptions);
@@ -591,6 +527,7 @@ router.post('/', async (req, res) => {
                   dett: data,
                   call: req.session.call,
                   participateMenu: participateMenu,
+                  availabilityDays: availabilityDays,
                   user: req.user,
                   msg: msg
                 });
@@ -602,6 +539,7 @@ router.post('/', async (req, res) => {
                   dett: data,
                   call: req.session.call,
                   participateMenu: participateMenu,
+                  availabilityDays: availabilityDays,
                   user: req.user,
                   msg: msg
                 });
@@ -735,16 +673,17 @@ router.post('/', async (req, res) => {
             //logger.info(req.session.call.save);
             let subsub;
             try {
-              subsub = Program.create(req.session.call.save);
+              subsub = await Program.create(req.session.call.save);
             } catch (err) {
               msg = {e:[{name:'index', m:req.__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
               res.render('events/participate', {
                 title: data.title,
                 canonical: res.locals.canonical,
-  //canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                currentUrl: req.originalUrl,
                 dett: data,
                 call: req.session.call,
                 participateMenu: participateMenu,
+                availabilityDays: availabilityDays,
                 user: req.user,
                 msg: msg
               });
@@ -752,16 +691,17 @@ router.post('/', async (req, res) => {
             if (!data.program) data.program = [];
             data.program.push({subscription_id: subsub._id, performance : req.session.call.admitted[req.session.call.performance]._id});
             try {
-              data.save()            
+              await data.save();
             } catch (err) {
               msg = {e:[{name:'index', m:req.__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
               res.render('events/participate', {
                 title: data.title,
                 canonical: res.locals.canonical,
-  //canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                currentUrl: req.originalUrl,
                 dett: data,
                 call: req.session.call,
                 participateMenu: participateMenu,
+                availabilityDays: availabilityDays,
                 user: req.user,
                 msg: msg
               });
@@ -770,6 +710,7 @@ router.post('/', async (req, res) => {
             // MAILER
             try {
               await mySendMailer({
+                __: req.__,
                 template: 'participate',
                 message: {
                   to: req.user.stagename+" <"+req.user.email+">",
@@ -788,13 +729,15 @@ router.post('/', async (req, res) => {
                   block_1:  req.__("We've received a request to participate to") + " <b>" + data.organizationsettings.call.calls[req.session.call.index].title + "</b> "+req.__("from")+" <b>"+req.user.stagename+"</b>",
                   block_1_plain:  req.__("We've received a request to participate to") + " " + data.organizationsettings.call.calls[req.session.call.index].title + " "+req.__("from")+" "+req.user.stagename+"",
                   user: req.user,
-                  dett: data,
-                  call: req.session.call,
+                  event: data.toObject ? data.toObject({ virtuals: false }) : data,
+                  call: req.session.call.index,
+                  topics: req.session.call.topics,
+                  performance: req.session.call.admitted[req.session.call.performance],
+                  subscriptions: req.session.call.subscriptions,
                   block_2:  req.__("You will receive a feedback on your proposal as soon."),
                   block_3:  req.__("Thanks."),
                   link:  "",
                   link_plain: ""
-                  //link:  "<a href=\""+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+(res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]
                 }
               })
               req.session.call.step = parseInt(req.body.step)+1;
@@ -809,6 +752,7 @@ router.post('/', async (req, res) => {
                 dett: data,
                 call: req.session.call,
                 participateMenu: participateMenu,
+                availabilityDays: availabilityDays,
                 user: req.user,
                 msg: msg
               });
@@ -816,10 +760,11 @@ router.post('/', async (req, res) => {
               res.render('events/participate', {
                 title: data.title,
                 canonical: res.locals.canonical,
-  //canonical: (res.locals.isLocal ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                currentUrl: req.originalUrl,
                 dett: data,
                 call: req.session.call,
                 participateMenu: participateMenu,
+                availabilityDays: availabilityDays,
                 user: req.user,
                 msg: msg
               });
@@ -844,6 +789,7 @@ router.post('/', async (req, res) => {
             dett: data,
             call: req.session.call,
             participateMenu: participateMenu,
+            availabilityDays: availabilityDays,
             user: req.user,
             msg: msg
           });
@@ -851,8 +797,10 @@ router.post('/', async (req, res) => {
       }
     }
   });
-  
-  exports.get = function get(req, res) {
+
+export default router;
+
+/*  exports.get = function get(req, res) {
   var pathArray = req.url.split("?")[0].split("/");
   var output = (req.query.output ? req.query.output : false);
   if (pathArray[0]=="") pathArray.shift();
@@ -1063,5 +1011,3 @@ exports.post = function post(req, res) {
   }
 };
 */
-
-export default router;
