@@ -414,7 +414,7 @@ router.post('/', async (req, res) => {
         logger.info('API participate email failure:', emailErr);
       }
 
-      return res.json({success: true, program: subsub});
+      return res.json({success: true, program: subsub.toObject({virtuals: false})});
     } catch (err) {
       logger.error('API participate error:', { message: err.message, stack: err.stack });
       return res.status(500).json({error: true, msg: err.message || err, stack: err.stack});

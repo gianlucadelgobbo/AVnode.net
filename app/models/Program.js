@@ -57,13 +57,10 @@ const programSchema = new Schema({
 
 
 subSchema.virtual('daysFormatted').get(function () {
-  let daysFormatted = [];
-  if (this.days && this.days.length) {
-    this.days.forEach((day) => {
-      daysFormatted.push(this.$locals.moment(day).format('DD-MM-YYYY'));
-    });
-    return daysFormatted;
-  }
+  if (!this.days || !this.days.length) return [];
+  const momentFn = this.$locals?.moment;
+  if (typeof momentFn !== 'function') return this.days.map(d => new Date(d).toISOString().slice(0, 10));
+  return this.days.map(day => momentFn(day).format('DD-MM-YYYY'));
 });
 
 const Program = mongoose.model('Program', programSchema);
