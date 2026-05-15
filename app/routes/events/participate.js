@@ -343,15 +343,12 @@ router.post('/', async (req, res) => {
         if (!days.length && sub.availabilityDates?.start && sub.availabilityDates?.end) {
           days = getDaysBetween(sub.availabilityDates.start, sub.availabilityDates.end);
         }
-        // Expand packages from call definition unless already personal (stored as-is)
-        let packages = sub.packages || [];
-        if (packages.length && !packages[0]?.personal) {
-          packages = packages.map(p => {
-            const pack = JSON.parse(JSON.stringify(callEntry.packages[p.id] || {}));
-            pack.option = p.option;
-            return pack;
-          });
-        }
+        // Always expand packages from the call definition by id, preserve selected option
+        const packages = (sub.packages || []).map(p => {
+          const pack = JSON.parse(JSON.stringify(callEntry.packages[p.id] || {}));
+          pack.option = p.option || '';
+          return pack;
+        });
         subscriptionsData.push({
           subscriber_id: sub.subscriber_id,
           stagename,
