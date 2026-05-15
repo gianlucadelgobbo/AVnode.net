@@ -395,5 +395,7 @@
 	"Please select a performance to go forward": "Please select a performance to go forward",
 	"Please select at least 1 topic to go forward": "Please select at least 1 topic to go forward",
 	"This person is already in with another act and can not be edited": "This person is already in with another act and can not be edited",
-	"Please select at least 1 option for the packages": "Please select at least 1 option for the packages"
+	"Please select at least 1 option for the packages": "Please select at least 1 option for the packages",
+	"Unknow error": "Unknow error",
+	"No call for proposals is active": "No call for proposals is active"
 }

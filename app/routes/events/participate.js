@@ -306,14 +306,18 @@ function buildAvailabilityDays(schedule, lang) {
 router.post('/', async (req, res) => {
 
   // ── API direct submission (single POST, no step-by-step session) ──────────
-  if (req.isApi && typeof req.body.step === 'undefined') {
+  logger.info('PARTICIPATE POST isApi=' + req.isApi + ' step=' + req.body.step + ' user=' + (req.user?._id || 'none'));
+  logger.info('PARTICIPATE POST body:', JSON.stringify(req.body));
+  const isApiRequest = req.isApi || req.query.isApi === '1' || (req.headers['content-type']?.includes('application/json') && typeof req.body.step === 'undefined' && req.body.performance);
+  if (isApiRequest && typeof req.body.step === 'undefined') {
     try {
       const data = await Event
         .findOne({slug: req.params.slug})
         .populate({path: 'organizationsettings.call.calls.admitted', select: 'name'})
+        .lean()
         .exec();
       if (!data) return res.status(404).json({ error: true, msg: req.__('Event not found.') });
-      if (!data.organizationsettings?.call?.is_active) return res.status(400).json({ error: true, msg: req.__('No call for proposals is active') });
+      if (!data.organizationsettings?.call_is_active) return res.status(400).json({ error: true, msg: req.__('No call for proposals is active') });
 
       const callIndex = parseInt(req.body.call ?? req.body.index ?? 0);
       const callEntry = data.organizationsettings.call.calls[callIndex];
@@ -369,9 +373,10 @@ router.post('/', async (req, res) => {
       };
 
       const subsub = await Program.create(saveObj);
-      if (!data.program) data.program = [];
-      data.program.push({subscription_id: subsub._id, performance: perf._id});
-      await data.save();
+      await Event.updateOne(
+        { _id: data._id },
+        { $push: { program: { subscription_id: subsub._id, performance: perf._id } } }
+      );
 
       try {
         await mySendMailer({
@@ -394,7 +399,7 @@ router.post('/', async (req, res) => {
             block_1:    req.__("We've received a request to participate to") + ' <b>' + callEntry.title + '</b> ' + req.__('from') + ' <b>' + req.user.stagename + '</b>',
             block_1_plain: req.__("We've received a request to participate to") + ' ' + callEntry.title + ' ' + req.__('from') + ' ' + req.user.stagename,
             user:        req.user,
-            event:       data.toObject ? data.toObject({virtuals: false}) : data,
+            event:       data,
             call:        callIndex,
             topics:      (req.body.topics || []).filter(t => t != null),
             performance: perf,
@@ -411,8 +416,8 @@ router.post('/', async (req, res) => {
 
       return res.json({success: true, program: subsub});
     } catch (err) {
-      logger.error('API participate error:', err);
-      return res.status(500).json({error: true, msg: err.message || err});
+      logger.error('API participate error:', { message: err.message, stack: err.stack });
+      return res.status(500).json({error: true, msg: err.message || err, stack: err.stack});
     }
   }
   // ── End API direct submission ─────────────────────────────────────────────

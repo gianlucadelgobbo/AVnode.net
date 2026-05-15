@@ -214,61 +214,35 @@ router.postData = async (req, res) => {
   }
 }
 
-router.cancelSubscription = (req, res) => {
+router.cancelSubscription = async (req, res) => {
   logger.info(req.body);
-  var err = [];
-  Models.Program
-  .findOne({_id: req.body.id/* , members:req.user._id */},'_id, event performance', (err, sub) => {
-    if (err) {
-      err.push(err);
-      res.json(err);
-    } else {
-      logger.info("sub.event");
-      logger.info(sub.event);
-      logger.info("sub.performance");
-      logger.info(sub.performance);
-      Models.Event
-      .findOne({_id: sub.event, "program.subscription_id": req.body.id},'_id, program', (err, event) => {
-        if (err) {
-          err.push(err);
-          res.json(err);
-        } else {
-          logger.info("event.program");
-          logger.info(event.program.length);
-          event.program.forEach((program, index) => {
-            if (program.subscription_id == req.body.id) {
-              event.program.splice(index, 1);
-            }
-          });
-          logger.info(event.program.length);
-          Models.Performance
-          .findOne({_id: sub.performance},'_id, bookings', (err, performance) => {
-            if (err) {
-              err.push(err);
-              res.json(err);
-            } else {
-              logger.info("performance.bookings.length");
-              logger.info(performance.bookings);
-              performance.bookings.forEach((booking, index) => {
-                if (booking.subscription_id == req.body.id) {
-                  performance.bookings.splice(index, 1);
-                }
-              });
-              logger.info(performance.bookings.length);
-              event.save(function(err){
-                performance.save(function(err){
-                  sub.remove(function(err){
-                    logger.info("SUCCESSO!!!");
-                    res.json(true);
-                  });
-                });  
-              });
-            }
-          });
-        } 
-      });
+  try {
+    const sub = await Models.Program.findOne({_id: req.body.id}, '_id event performance').exec();
+    if (!sub) return res.status(404).json({error: true, msg: 'Subscription not found'});
+
+    const [event, performance] = await Promise.all([
+      Models.Event.findOne({_id: sub.event, 'program.subscription_id': req.body.id}, '_id program').exec(),
+      Models.Performance.findOne({_id: sub.performance}, '_id bookings').exec()
+    ]);
+
+    if (event) {
+      event.program = event.program.filter(p => String(p.subscription_id) !== String(req.body.id));
+      await event.save();
     }
-  });
+
+    if (performance) {
+      performance.bookings = (performance.bookings || []).filter(b => String(b.subscription_id) !== String(req.body.id));
+      await performance.save();
+    }
+
+    await Models.Program.deleteOne({_id: req.body.id});
+
+    logger.info('SUCCESSO!!!');
+    res.json(true);
+  } catch (err) {
+    logger.error('cancelSubscription error:', err);
+    res.status(500).json({error: true, msg: err.message});
+  }
 }
 
 router.editSubscriptionSave = (req, res) => {
