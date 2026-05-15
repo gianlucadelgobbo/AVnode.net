@@ -9,6 +9,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const Event = mongoose.model('Event');
 const Program = mongoose.model('Program');
 const Performance = mongoose.model('Performance');
+const User = mongoose.model('User');
 import dataprovider from '../../utilities/dataprovider.js';
 
 import { mySendMailer } from '../../utilities/mailer.js';
@@ -303,6 +304,119 @@ function buildAvailabilityDays(schedule, lang) {
 }
 
 router.post('/', async (req, res) => {
+
+  // ── API direct submission (single POST, no step-by-step session) ──────────
+  if (req.isApi && typeof req.body.step === 'undefined') {
+    try {
+      const data = await Event
+        .findOne({slug: req.params.slug})
+        .populate({path: 'organizationsettings.call.calls.admitted', select: 'name'})
+        .exec();
+      if (!data) return res.status(404).json({ error: true, msg: req.__('Event not found.') });
+      if (!data.organizationsettings?.call?.is_active) return res.status(400).json({ error: true, msg: req.__('No call for proposals is active') });
+
+      const callIndex = parseInt(req.body.call ?? req.body.index ?? 0);
+      const callEntry = data.organizationsettings.call.calls[callIndex];
+      if (!callEntry) return res.status(400).json({ error: true, msg: 'Invalid call index' });
+
+      const perf = await Performance
+        .findById(req.body.performance)
+        .populate({path: 'users', select: {stagename: 1}, model: 'User'})
+        .lean()
+        .exec();
+      if (!perf) return res.status(404).json({ error: true, msg: 'Performance not found' });
+
+      // Build subscriptions: resolve stagename and days
+      const subscriptionsData = [];
+      for (const sub of (req.body.subscriptions || [])) {
+        let stagename = sub.stagename;
+        if (!stagename && sub.subscriber_id) {
+          const u = await User.findById(sub.subscriber_id).select({stagename: 1}).lean().exec();
+          stagename = u?.stagename || '';
+        }
+        // Accept explicit days array OR derive from availabilityDates range
+        let days = sub.days || [];
+        if (!days.length && sub.availabilityDates?.start && sub.availabilityDates?.end) {
+          days = getDaysBetween(sub.availabilityDates.start, sub.availabilityDates.end);
+        }
+        // Expand packages from call definition unless already personal (stored as-is)
+        let packages = sub.packages || [];
+        if (packages.length && !packages[0]?.personal) {
+          packages = packages.map(p => {
+            const pack = JSON.parse(JSON.stringify(callEntry.packages[p.id] || {}));
+            pack.option = p.option;
+            return pack;
+          });
+        }
+        subscriptionsData.push({
+          subscriber_id: sub.subscriber_id,
+          stagename,
+          days,
+          freezed: sub.freezed || false,
+          packages
+        });
+      }
+
+      const saveObj = {
+        event: data._id,
+        call: callIndex,
+        topics: (req.body.topics || []).filter(t => t != null),
+        performance: perf._id,
+        performance_categories: perf.type,
+        status: '5c38c57d9d426a9522c15ba5',
+        reference: req.user._id,
+        subscriptions: subscriptionsData
+      };
+
+      const subsub = await Program.create(saveObj);
+      if (!data.program) data.program = [];
+      data.program.push({subscription_id: subsub._id, performance: perf._id});
+      await data.save();
+
+      try {
+        await mySendMailer({
+          __: req.__,
+          template: 'participate',
+          message: {
+            to: req.user.stagename + ' <' + req.user.email + '>',
+            cc: [callEntry.title + ' <' + callEntry.email + '>'],
+            from: callEntry.title + ' <' + callEntry.email + '>'
+          },
+          email_content: {
+            site:       (res.locals.isLocal ? 'http' : 'https') + '://' + req.headers.host,
+            imghead:    (res.locals.isLocal ? 'http' : 'https') + '://' + req.headers.host + callEntry.imghead,
+            colBkg:     callEntry.colBkg,
+            imgalt:     callEntry.imgalt,
+            html_sign:  callEntry.html_sign,
+            text_sign:  callEntry.text_sign,
+            title:      callEntry.title + ' | ' + req.__('Call Submission'),
+            subject:    perf.title + ' | ' + callEntry.title + ' | ' + req.__('Call Submission'),
+            block_1:    req.__("We've received a request to participate to") + ' <b>' + callEntry.title + '</b> ' + req.__('from') + ' <b>' + req.user.stagename + '</b>',
+            block_1_plain: req.__("We've received a request to participate to") + ' ' + callEntry.title + ' ' + req.__('from') + ' ' + req.user.stagename,
+            user:        req.user,
+            event:       data.toObject ? data.toObject({virtuals: false}) : data,
+            call:        callIndex,
+            topics:      (req.body.topics || []).filter(t => t != null),
+            performance: perf,
+            subscriptions: subscriptionsData,
+            block_2:    req.__('You will receive a feedback on your proposal as soon.'),
+            block_3:    req.__('Thanks.'),
+            link:       '',
+            link_plain: ''
+          }
+        });
+      } catch (emailErr) {
+        logger.info('API participate email failure:', emailErr);
+      }
+
+      return res.json({success: true, program: subsub});
+    } catch (err) {
+      logger.error('API participate error:', err);
+      return res.status(500).json({error: true, msg: err.message || err});
+    }
+  }
+  // ── End API direct submission ─────────────────────────────────────────────
+
   var participateMenu = [
     {label:req.__('Active Calls'),slug:"calls"},        // 0
     {label:req.__('Terms'),slug:"terms"},               // 1
