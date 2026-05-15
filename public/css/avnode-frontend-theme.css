@@ -945,6 +945,151 @@ footer .text-muted { color: var(--light-muted) !important; }
 .pac-matched { color: var(--emerald) !important; font-weight: 700; }
 .pac-icon { filter: invert(1); }
 
+/* ---------- Tables (admin list views: events, performances, crews…) ---------- */
+html body table,
+html body .table,
+html body table.table,
+html body .table-striped,
+html body .table-bordered,
+html body .table-hover,
+html body .table-dark,
+html body .table-light {
+  background-color: transparent !important;
+  color: var(--light) !important;
+  border-color: var(--emerald-line) !important;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  vertical-align: middle;
+}
+
+html body table thead,
+html body .table thead,
+html body table.table > thead,
+html body .table > thead {
+  background-color: transparent !important;
+  color: var(--emerald) !important;
+}
+
+html body table thead th,
+html body .table thead th,
+html body table.table > thead > tr > th,
+html body .table > thead > tr > th {
+  background-color: transparent !important;
+  color: var(--emerald) !important;
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border-bottom: 2px solid var(--emerald-line) !important;
+  border-top: 0 !important;
+  padding: 0.85rem 0.85rem;
+  vertical-align: bottom;
+  text-align: left;
+}
+
+html body table tbody,
+html body .table tbody {
+  background-color: transparent !important;
+  color: var(--light) !important;
+}
+
+html body table tbody tr,
+html body .table tbody tr,
+html body table.table > tbody > tr,
+html body .table > tbody > tr {
+  background-color: transparent !important;
+  color: var(--light) !important;
+  transition: background-color 0.15s ease;
+}
+
+html body table tbody td,
+html body .table tbody td,
+html body table.table > tbody > tr > td,
+html body .table > tbody > tr > td,
+html body table th,
+html body .table th {
+  background-color: transparent !important;
+  color: var(--light) !important;
+  border-top: 1px solid var(--emerald-line) !important;
+  border-bottom: 0 !important;
+  padding: 0.85rem 0.85rem;
+  vertical-align: middle;
+  font-family: var(--font-sans);
+}
+
+/* Bootstrap zebra-striping: keep transparent but tint very subtly so rows
+   stay readable on top of the dark canvas. */
+html body .table-striped tbody tr:nth-of-type(odd),
+html body .table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(252, 252, 252, 0.025) !important;
+  color: var(--light) !important;
+}
+
+html body .table-hover tbody tr:hover,
+html body .table-hover > tbody > tr:hover,
+html body table tbody tr:hover,
+html body .table tbody tr:hover {
+  background-color: var(--emerald-soft) !important;
+  color: var(--light) !important;
+}
+
+/* Anchors inside table cells: emerald, like the rest of the theme */
+html body table a,
+html body .table a {
+  color: var(--emerald) !important;
+}
+html body table a:hover,
+html body .table a:hover {
+  color: var(--light) !important;
+}
+
+/* Lists inside cells (e.g. "Productions" column with multiple organizations) */
+html body table td ul,
+html body .table td ul,
+html body table td ol,
+html body .table td ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--light) !important;
+}
+html body table td ul li,
+html body .table td ul li,
+html body table td ol li,
+html body .table td ol li {
+  color: var(--light) !important;
+}
+
+/* Muted/secondary text inside tables — keep readable, just slightly dimmer */
+html body table td .text-muted,
+html body .table td .text-muted,
+html body table td small,
+html body .table td small {
+  color: var(--light-muted) !important;
+}
+
+/* Bootstrap contextual row colors — neutralize so they don't drop to black */
+html body .table-active,
+html body .table-primary,
+html body .table-secondary,
+html body .table-success,
+html body .table-info,
+html body .table-warning,
+html body .table-danger,
+html body .table-light,
+html body .table-dark {
+  background-color: rgba(0, 255, 149, 0.06) !important;
+  color: var(--light) !important;
+}
+
+/* Responsive wrapper (.table-responsive) — keep transparent */
+html body .table-responsive {
+  background-color: transparent !important;
+  color: var(--light) !important;
+}
+
 /* ---------- Misc utility overrides ---------- */
 .d-none { display: none !important; }
 .d-block { display: block !important; }
