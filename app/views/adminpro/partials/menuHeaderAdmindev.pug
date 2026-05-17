@@ -5,11 +5,7 @@ nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-t
     span.sr-only=__("Open menu")
     i.icon-menu.toggle_icon
   .collapse.navbar-collapse(id="navbar-collapse_performer_template")
-    // !=currentUrl +(currentUrl.indexOf("/adminpro/supertools/files")===0)
-    // d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu'
-    // Bootstrap List Group
-    .mr-auto
-      ul.navbar-nav.d-none.d-xs-block.d-block.d-lg-none
+    ul.navbar-nav.d-block.d-lg-none
         // Separator with title
         li.nav-item
           small ADVANCED TOOLS
@@ -214,9 +210,8 @@ nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-t
 
                 
 
-    ul.user_navbar.navbar-nav
+    ul.user_navbar.navbar-nav.ml-auto
       if user
-        //li.nav-item.dropdown.user_menu.user_menu_logged                  
         li.nav-item.dropdown.user_menu.user_menu_logged
           a#userDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
             span.icon-user-outline

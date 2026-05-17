@@ -545,22 +545,24 @@ html body .input-group > .input-group-append:last-child > .btn {
 }
 
 /* ---------- Sidebar ---------- */
-/* Force sidebar always visible on the left, regardless of viewport */
-html body .row > .d-print-none {
-  display: block !important;
-  flex: 0 0 220px !important;
-  max-width: 220px !important;
-  width: 220px !important;
-}
+/* Force sidebar visible only on desktop (lg+) */
+@media (min-width: 992px) {
+  html body .row > .d-print-none {
+    display: block !important;
+    flex: 0 0 220px !important;
+    max-width: 220px !important;
+    width: 220px !important;
+  }
 
-html body #sidebar-container,
-html body .sidebar-expanded {
-  display: block !important;
-  width: 100% !important;
-  background: transparent;
-  border-right: 1px solid var(--emerald-line);
-  min-height: calc(100vh - 80px);
-  padding: 1rem 0.5rem;
+  html body #sidebar-container,
+  html body .sidebar-expanded {
+    display: block !important;
+    width: 100% !important;
+    background: transparent;
+    border-right: 1px solid var(--emerald-line);
+    min-height: calc(100vh - 80px);
+    padding: 1rem 0.5rem;
+  }
 }
 
 /* Hide the mobile-duplicate menu items inside the navbar */

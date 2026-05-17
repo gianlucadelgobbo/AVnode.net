@@ -354,7 +354,8 @@ router.post('/', async (req, res) => {
           stagename,
           days,
           freezed: sub.freezed || false,
-          packages
+          packages,
+          ...(sub.availabilityDates ? { availabilityDates: sub.availabilityDates } : {})
         });
       }
 
