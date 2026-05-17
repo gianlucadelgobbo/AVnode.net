@@ -397,5 +397,15 @@
 	"This person is already in with another act and can not be edited": "This person is already in with another act and can not be edited",
 	"Please select at least 1 option for the packages": "Please select at least 1 option for the packages",
 	"Unknow error": "Unknow error",
-	"No call for proposals is active": "No call for proposals is active"
+	"No call for proposals is active": "No call for proposals is active",
+	"CALL/EVENT": "CALL/EVENT",
+	"PERFORMANCE": "PERFORMANCE",
+	"ACTIONS": "ACTIONS",
+	"MORE": "MORE",
+	"scheduled": "scheduled",
+	"Subscription to": "Subscription to",
+	"with": "with",
+	"Amount paid": "Amount paid",
+	"by": "by",
+	"To be scheduled": "To be scheduled"
 }

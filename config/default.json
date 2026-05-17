@@ -44,16 +44,16 @@
   ],
   "locales_labels": {
     "en": "English",
-    "be": "Беларус",
+    "be": "\u0411\u0435\u043b\u0430\u0440\u0443\u0441",
     "de": "Deutsche",
-    "es": "Español",
-    "fr": "Français",
-    "el": "Ελληνικά",
+    "es": "Espa\u00f1ol",
+    "fr": "Fran\u00e7ais",
+    "el": "\u0395\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03ac",
     "hu": "Magyar",
     "it": "Italiano",
     "pl": "Polski",
-    "pt": "Português",
-    "ru": "русский"
+    "pt": "Portugu\u00eas",
+    "ru": "\u0440\u0443\u0441\u0441\u043a\u0438\u0439"
   },
   "locales_iso": {
     "en": "en_GB",
@@ -147,7 +147,9 @@
           "schedule": 1,
           "event": 1,
           "subscriptions": 1,
-          "createdAt": 1
+          "createdAt": 1,
+          "performance": 1,
+          "status": 1
         },
         "selectaddon": {
           "createdAt": -1
@@ -1596,7 +1598,9 @@
           "schedule": 1,
           "event": 1,
           "subscriptions": 1,
-          "createdAt": 1
+          "createdAt": 1,
+          "performance": 1,
+          "status": 1
         },
         "selectaddon": {
           "createdAt": -1
@@ -7170,20 +7174,20 @@
     "logo": "/img/logo.png",
     "name": "Flyer communication srl",
     "row1": "Via del Verano 39, 00185 Rome, Italy<br />t +39.06.78147301 - f +39.06.78390805 - www.flyer.it - flyer@flyer.it",
-    "row2": "Legal address: Via Cardinal de Luca, 10 - 00196 Rome, Italy<br />VAT N° 06589171005 - NREA 977098"
+    "row2": "Legal address: Via Cardinal de Luca, 10 - 00196 Rome, Italy<br />VAT N\u00b0 06589171005 - NREA 977098"
   },
   "banks": [
     [
       "BPM 1753",
-      "BANCA POPOLARE DI MILANO - via Appia Nuova, 447-449 Roma IBAN: IT73Z0558403220000000001753 N°CC: 175 AG: 331 Cab: 03220 Abi: 05584"
+      "BANCA POPOLARE DI MILANO - via Appia Nuova, 447-449 Roma IBAN: IT73Z0558403220000000001753 N\u00b0CC: 175 AG: 331 Cab: 03220 Abi: 05584"
     ],
     [
       "BPM 1817",
-      "BANCA POPOLARE DI MILANO - via Appia Nuova, 447-449 Roma IBAN: IT73Z0558403220000000001753 N°CC: 175 AG: 331 Cab: 03220 Abi: 05584"
+      "BANCA POPOLARE DI MILANO - via Appia Nuova, 447-449 Roma IBAN: IT73Z0558403220000000001753 N\u00b0CC: 175 AG: 331 Cab: 03220 Abi: 05584"
     ]
   ],
   "currency": [
-    "€"
+    "\u20ac"
   ],
   "vat_perc": 21,
   "accountingSettings": {
