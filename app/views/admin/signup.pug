@@ -12,8 +12,8 @@ block content
               .col-md-9
                 .form-group
                   .btn-group.btn-group-toggle(data-toggle="buttons")
-                    label.col-form-label.btn.btn-primary(class=(!get.crewname || get.crewname === "") ? undefined : "active")
-                      input(type="radio" name="is_crew" value='false' autocomplete="off" onclick="$('#crew').collapse('hide')" checked=(!get.crewname || get.crewname !== "") ? undefined : "checked")
+                    label.col-form-label.btn.btn-primary(class=(!get.crewname || get.crewname === "") ? "active" : undefined)
+                      input(type="radio" name="is_crew" value='false' autocomplete="off" onclick="$('#crew').collapse('hide')" checked=(!get.crewname || get.crewname === "") ? "checked" : undefined)
                       !=__("Single")
                     label.col-form-label.btn.btn-primary(class=(get.crewname && get.crewname !== "") ? "active" : undefined)
                       input(type="radio" name="is_crew" value='true' autocomplete="off" onclick="$('#crew').collapse('show')" checked=(get.crewname && get.crewname !== "") ? "checked" : undefined)
@@ -39,7 +39,7 @@ block content
             .col-md-9.mb-4
               .d-flex
                 - if(get.birthday) get.birthday = new Date(get.birthday)
-                input.form-control.mr-3(type='text' onchange='$(".birthday_real").val($(this).val().split("/")[2]+"/"+$(this).val().split("/")[1]+"/"+$(this).val().split("/")[0])' id='birthday' style='width:125px' value=get.birthday && get.birthday.getDate() ? get.birthday.getDate()+"/"+(get.birthday.getMonth()+1)+"/"+get.birthday.getFullYear() : "")
+                input.form-control.mr-3(type='text' placeholder=__("DD/MM/YYYY") onchange='$(".birthday_real").val($(this).val().split("/")[2]+"/"+$(this).val().split("/")[1]+"/"+$(this).val().split("/")[0])' id='birthday' style='width:150px' value=get.birthday && get.birthday.getDate() ? get.birthday.getDate()+"/"+(get.birthday.getMonth()+1)+"/"+get.birthday.getFullYear() : "")
                 input.birthday_real(type='hidden' name='birthday' value=get.birthday && get.birthday.getDate() ? get.birthday.getFullYear()+"/"+(get.birthday.getMonth()+1)+"/"+get.birthday.getDate() : "")
               if err && Object.keys(err.errors).indexOf('birthday')!==-1
                 .badge.badge-danger!=err.errors.birthday.message
@@ -60,7 +60,7 @@ block content
               input.country(type='hidden' name='addresses[0][country]' value=get.addresses[0].country)
               input.formatted_address(type='hidden' name='addresses[0][formatted_address]' value=get.addresses[0].formatted_address)
               if err && Object.keys(err.errors).indexOf('addresses')!==-1
-                .badge.badge-danger!=err.errors["addresses"][0].message
+                .badge.badge-danger!=err.errors["addresses"].message
           .form-group.row
             label.col-form-label.col-md-3=__("Password")
             .col-md-9.mb-4

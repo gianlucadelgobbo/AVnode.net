@@ -133,7 +133,8 @@ html body a:not(.btn):not(.nav-link):not(.list-group-item):not(.dropdown-item):n
   text-decoration: underline;
 }
 
-::selection { background: var(--emerald); color: var(--darkblue); }
+::selection { background: #00cc78; color: var(--darkblue); }
+::-moz-selection { background: #00cc78; color: var(--darkblue); }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -229,21 +230,30 @@ h3.labelField, h4.labelField {
   box-shadow: 0 0 0 3px rgba(0, 255, 149, 0.25);
 }
 
-html body .btn-primary,
-html body a.btn-primary,
-html body button.btn-primary,
-html body .btn-primary:not(:disabled):not(.disabled) {
+html body .btn-primary:not(.active),
+html body a.btn-primary:not(.active),
+html body button.btn-primary:not(.active),
+html body .btn-primary:not(:disabled):not(.disabled):not(.active) {
   background-color: var(--emerald) !important;
   color: var(--darkblue) !important;
   border-color: var(--emerald) !important;
 }
-html body .btn-primary:hover,
-html body .btn-primary:focus,
-html body a.btn-primary:hover,
-html body button.btn-primary:hover {
+html body .btn-primary:not(.active):hover,
+html body .btn-primary:not(.active):focus,
+html body a.btn-primary:not(.active):hover,
+html body button.btn-primary:not(.active):hover {
   background-color: transparent !important;
   color: var(--emerald) !important;
   border-color: var(--emerald) !important;
+}
+
+html body .btn-primary.active,
+html body .btn-group-toggle .btn-primary.active,
+html body .btn-group-toggle label.btn-primary.active {
+  background-color: var(--darkblue) !important;
+  color: var(--emerald) !important;
+  border-color: var(--emerald) !important;
+  box-shadow: 0 0 0 2px var(--emerald) !important;
 }
 
 html body .btn-success,

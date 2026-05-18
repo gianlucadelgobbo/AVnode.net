@@ -167,8 +167,13 @@ function isAllowed(origin) {
   return false;
 } */
 function isAllowed(origin) {
-   if (!origin) return true;
-   return allowedOrigins.includes(origin);
+  if (!origin) return true;
+  if (allowedOrigins.includes(origin)) return true;
+  try {
+    const { hostname } = new URL(origin);
+    if (hostname.endsWith('.avnode.local') || hostname === 'avnode.local') return true;
+  } catch (_) {}
+  return false;
 }
 
 /* app.use(cors({

@@ -158,15 +158,14 @@ router.signupValidator = async (req, put) => {
   }
   if (!put.stagename) errors.errors.stagename = { message: req.__("STAGE_NAME_IS_REQUIRED") };
   if (!put.birthday) errors.errors.birthday = { message: req.__("BIRTHDAY_IS_REQUIRED") };
-  if (!put.email) errors.errors.email = { message: "EMAIL_IS_REQUIRED" };
+  if (!put.email) errors.errors.email = { message: req.__("EMAIL_IS_REQUIRED") };
 
   if (!put.addresses || !put.addresses.length) {
-    errors.errors.addresses = [{ message: req.__("ADDRESS_IS_IN_A_WRONG_FORMAT") }];
+    errors.errors.addresses = { message: req.__("ADDRESS_IS_IN_A_WRONG_FORMAT") };
   } else {
-    put.addresses.forEach((address, i) => {
+    put.addresses.forEach((address) => {
       if (!address.geometry || !address.formatted_address || !address.geometry.lat) {
-        if (!errors.errors.addresses) errors.errors.addresses = [];
-        errors.errors.addresses[i] = { message: req.__("ADDRESS_IS_IN_A_WRONG_FORMAT") };
+        errors.errors.addresses = { message: req.__("ADDRESS_IS_IN_A_WRONG_FORMAT") };
       }
     });
   }
