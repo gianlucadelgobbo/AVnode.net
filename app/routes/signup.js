@@ -36,6 +36,9 @@ router.post('/', async (req, res) => {
     req.body.crewname = req.body.crewName || req.body.crewname;
     req.body.crewslug = req.body.crewUrl || req.body.crewslug;
     req.body.lang = req.getLocale();
+    if (req.body.address && !req.body.addresses) {
+      req.body.addresses = [req.body.address];
+    }
 
     let select = config.cpanel.signup.forms.signup.select;
     let put = {};
