@@ -19,19 +19,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const _localeCatalogs = {};
 const t = (phrase, lang) => {
   if (!_localeCatalogs[lang]) {
-    const filePath = path.join(__dirname, '../../locales', `${lang}.json`);
     try {
-      const raw = readFileSync(filePath, 'utf8');
-      _localeCatalogs[lang] = JSON.parse(raw);
-      logger.warn(`t() loaded ${lang}: keys=${Object.keys(_localeCatalogs[lang]).length} path=${filePath}`);
+      _localeCatalogs[lang] = JSON.parse(readFileSync(path.join(__dirname, '../../locales', `${lang}.json`), 'utf8'));
     } catch (e) {
-      logger.warn(`t() FAILED to load ${lang}: ${e.message} path=${filePath}`);
       _localeCatalogs[lang] = null;
     }
   }
-  const result = _localeCatalogs[lang][phrase];
-  logger.warn(`t() phrase="${phrase.slice(0,30)}" lang=${lang} result="${String(result).slice(0,40)}"`);
-  return result || phrase;
+  return (_localeCatalogs[lang] && _localeCatalogs[lang][phrase]) || phrase;
 };
 
 const getFrontendBase = (lang) => {
@@ -148,7 +142,6 @@ router.post('/', async (req, res) => {
     });
 
 
-    logger.warn(`signup msg lang=${req.body.lang} t=${t("We have sent a confirmation email, please confirm activate your account", req.body.lang)}`);
     if (req.isApi) {
       res.send({
         get: req.body,
