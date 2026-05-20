@@ -2,6 +2,7 @@ import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import pug from "pug";
 import path from "path";
 import { fileURLToPath } from "url";
+import { logger } from "./logger.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,7 +19,7 @@ const sesClient = new SESClient(sesConf);
 
 const mySendMailer = async (data) => {
   try {
-    console.log(`mySendMailer ${data.template}`);
+    logger.info(`mySendMailer ${data.template} → ${data.message.to}`);
 
     const fn_html = pug.compileFile(
       path.join(__dirname, "../views/emails/", data.template, "html_ses.pug")
@@ -27,7 +28,6 @@ const mySendMailer = async (data) => {
       path.join(__dirname, "../views/emails/", data.template, "text_ses.pug")
     );
 
-    // Aggiungi __ se esiste
     const locals = {
       ...data.email_content,
       ...(data.__ ? { __: data.__ } : {})
@@ -50,13 +50,12 @@ const mySendMailer = async (data) => {
       Source: process.env.MAILFROM,
     };
 
-    console.log("Email Params:", emailParams);
     const command = new SendEmailCommand(emailParams);
-    const result = await sesClient.send(command);
-    console.log("✅ Email sent successfully");
+    await sesClient.send(command);
+    logger.info(`mySendMailer ✅ sent ${data.template} → ${data.message.to}`);
 
   } catch (err) {
-    console.error(`🔥 Mailer Error: ${err}`);
+    logger.error(`mySendMailer ❌ ${data.template} → ${data.message.to}: ${err.message}`, { stack: err.stack });
     throw err;
   }
 };
