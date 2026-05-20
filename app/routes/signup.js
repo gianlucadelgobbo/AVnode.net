@@ -7,12 +7,37 @@ import helpers from '../utilities/helpers.js';
 import mongoose from 'mongoose';
 const UserTemp = mongoose.model('UserTemp');
 const User = mongoose.model('User');
-//const mailer = require('../utilities/mailer');
-//const _slug = require('../utilities/slug');
 
 import config from 'getconfig';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 import { logger, requestLogger, errorLogger } from '../utilities/logger.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const _localeCatalogs = {};
+const t = (phrase, lang) => {
+  if (!_localeCatalogs[lang]) {
+    const filePath = path.join(__dirname, '../../locales', `${lang}.json`);
+    try {
+      const raw = readFileSync(filePath, 'utf8');
+      _localeCatalogs[lang] = JSON.parse(raw);
+      logger.warn(`t() loaded ${lang}: keys=${Object.keys(_localeCatalogs[lang]).length} path=${filePath}`);
+    } catch (e) {
+      logger.warn(`t() FAILED to load ${lang}: ${e.message} path=${filePath}`);
+      _localeCatalogs[lang] = null;
+    }
+  }
+  const result = _localeCatalogs[lang][phrase];
+  logger.warn(`t() phrase="${phrase.slice(0,30)}" lang=${lang} result="${String(result).slice(0,40)}"`);
+  return result || phrase;
+};
+
+const getFrontendBase = (lang) => {
+  const domain = config.lang_to_domain?.[lang];
+  return domain && domain !== 'en' ? `https://${domain}.avnode.net` : 'https://avnode.net';
+};
 
 
 router.get('/', (req, res) => {
@@ -35,10 +60,20 @@ router.post('/', async (req, res) => {
     // Normalize request fields
     req.body.crewname = req.body.crewName || req.body.crewname;
     req.body.crewslug = req.body.crewUrl || req.body.crewslug;
-    req.body.lang = req.getLocale();
-    if (req.body.address && !req.body.addresses) {
-      req.body.addresses = [req.body.address];
+    const originMatch = (req.headers.origin || '').match(/https?:\/\/([^.]+)\.avnode\.net/);
+    const originLang = originMatch ? config.domain_to_lang[originMatch[1]] : null;
+    const hostLang = (req.get('host') || '').split('.').map(p => config.domain_to_lang[p]).find(Boolean);
+    req.body.lang = originLang || hostLang || req.getLocale();
+    req.setLocale(req.body.lang);
+    if (req.body.address || (req.body.addresses && !Array.isArray(req.body.addresses))) {
+      const addr = {
+        ...(req.body.addresses && !Array.isArray(req.body.addresses) ? req.body.addresses : {}),
+        ...(req.body.address || {})
+      };
+      req.body.addresses = [addr];
     }
+    if (req.body.privacy) req.body.privacy = new Date();
+    if (req.body.terms) req.body.terms = new Date();
 
     let select = config.cpanel.signup.forms.signup.select;
     let put = {};
@@ -77,6 +112,7 @@ router.post('/', async (req, res) => {
     logger.info("deleteMany UserTemp");
     await UserTemp.deleteMany({ email: put.email });
 
+    
     // Create new temporary user
     const data = new UserTemp(put);
     await data.save();
@@ -95,32 +131,33 @@ router.post('/', async (req, res) => {
       message: { to: savedUser.email },
       locals: {},
       email_content: {
-        site: 'http://' + req.headers.host,
-        link: 'http://' + req.headers.host + '/verify/signup/' + savedUser.confirm,
+        site: getFrontendBase(savedUser.lang),
+        link: getFrontendBase(savedUser.lang) + '/verify/signup/' + savedUser.confirm,
         stagename: savedUser.stagename,
         email: savedUser.email,
         confirm: savedUser.confirm,
-        title: req.__("Welcome!"),
-        subject: req.__("Welcome!") + ' | AVnode.net',
-        block_1: req.__("We're excited to have you get started. First, you need to confirm your account. Just press the button below."),
-        button: req.__("Confirm Account"),
-        block_2: req.__("If that doesn't work, copy and paste the following link in your browser:"),
-        block_3: req.__("If you have any questions, just reply to this email, we're always happy to help out."),
-        html_sign: "The AVnode.net Team",
+        title: t("Welcome!", savedUser.lang),
+        subject: t("Welcome!", savedUser.lang) + ' | AVnode.net',
+        block_1: t("We're excited to have you get started. First, you need to confirm your account. Just press the button below.", savedUser.lang),
+        button: t("Confirm Account", savedUser.lang),
+        block_2: t("If that doesn't work, copy and paste the following link in your browser:", savedUser.lang),
+        block_3: t("If you have any questions, just reply to this email, we're always happy to help out.", savedUser.lang),
+                                                                                                                                      html_sign: "The AVnode.net Team",
         text_sign: "The AVnode.net Team"
       }
     });
 
 
+    logger.warn(`signup msg lang=${req.body.lang} t=${t("We have sent a confirmation email, please confirm activate your account", req.body.lang)}`);
     if (req.isApi) {
       res.send({
         get: req.body,
-        msg: req.__("We have sent a confirmation email, please confirm activate your account"),
+        msg: t("We have sent a confirmation email, please confirm activate your account", req.body.lang),
         currentUrl: req.originalUrl,
         err: errors
       })
     } else {
-      req.flash('success', { msg: req.__("We have sent a confirmation email, please confirm activate your account") });
+      req.flash('success', { msg: t("We have sent a confirmation email, please confirm activate your account", req.body.lang) });
       res.render('admin/signup', {
         title: req.__('Create Account'),
         get: req.body,
@@ -173,6 +210,8 @@ router.signupValidator = async (req, put) => {
     });
   }
 
+  if (!put.privacy) errors.errors.privacy = { message: req.__("PRIVACY_TERMS_ACCEPTANCE_IS_REQUIRED") };
+  if (!put.terms) errors.errors.terms = { message: req.__("TERMS_ACCEPTANCE_IS_REQUIRED") };
   if (!put.password) errors.errors.password = { message: req.__("PASSWORD_IS_REQUIRED") };
   if (!put.confirmPassword) {
     errors.errors.confirmPassword = { message: req.__("PASSWORD_CONFIRM_IS_REQUIRED") };

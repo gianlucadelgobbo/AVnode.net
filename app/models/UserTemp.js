@@ -39,6 +39,8 @@ const userSchema = new Schema({
       }, msg: "Password is not valid, have to contain at least 1 number, 1 lower case and 1 uppercase characters. Try again..." //'INVALID_PASSWORD_CHR'
     }]
   },
+  privacy: { type: Date },
+  terms: { type: Date },
   confirm: String
 }, {
   timestamps: true,

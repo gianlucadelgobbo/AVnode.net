@@ -73,4 +73,20 @@ block content
               input.form-control(type='password' name='confirmPassword' onfocus="if ($(this).parent().find('.badge').length) $(this).parent().find('.badge').remove()" autocomplete='new-password' placeholder=__("Confirm Password") value='')
               if err && Object.keys(err.errors).indexOf('confirmPassword')!==-1
                 .badge.badge-danger!=err.errors.confirmPassword.message
+          .form-group.row
+            .col-md-9.offset-md-3.mb-2
+              .form-check
+                input.form-check-input#privacy(type='checkbox' name='privacy' value='true' required)
+                label.form-check-label(for='privacy')
+                  != __("I accept the") + ' <a href="/privacy" target="_blank">' + __("Privacy Policy") + '</a>'
+              if err && err.errors && err.errors.privacy
+                .badge.badge-danger!=err.errors.privacy.message
+          .form-group.row
+            .col-md-9.offset-md-3.mb-3
+              .form-check
+                input.form-check-input#terms(type='checkbox' name='terms' value='true' required)
+                label.form-check-label(for='terms')
+                  != __("I accept the") + ' <a href="/terms" target="_blank">' + __("Terms of Service") + '</a>'
+              if err && err.errors && err.errors.terms
+                .badge.badge-danger!=err.errors.terms.message
           button.btn.btn-primary.float-right.btn-lg.mb-3(type='submit')=__("SIGNUP")

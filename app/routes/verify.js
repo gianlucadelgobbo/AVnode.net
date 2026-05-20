@@ -38,6 +38,8 @@ router.get('/:sez/:code', async (req, res) => {
               user.addresses = [ { geometry: data.addresses[0].geometry, locality: data.addresses[0].locality, country: data.addresses[0].country, formatted_address: data.addresses[0].formatted_address } ];
             user.password = data.password;
             user.email = data.email;
+            if (data.privacy) user.privacy = data.privacy;
+            if (data.terms) user.terms = data.terms;
             user.emails = [{
               email: data.email,
               is_public: false,

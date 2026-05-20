@@ -114,7 +114,9 @@
             "confirmPassword": 1,
             "crewname": 1,
             "crewslug": 1,
-            "confirm": 1
+            "confirm": 1,
+            "privacy": 1,
+            "terms": 1
           },
           "selectaddon": {},
           "populate": []
