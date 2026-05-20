@@ -19,7 +19,7 @@ const sesClient = new SESClient(sesConf);
 
 const mySendMailer = async (data) => {
   try {
-    logger.info(`mySendMailer ${data.template} → ${data.message.to}`);
+    logger.warn(`mySendMailer ${data.template} → ${data.message.to}`);
 
     const fn_html = pug.compileFile(
       path.join(__dirname, "../views/emails/", data.template, "html_ses.pug")
@@ -52,7 +52,7 @@ const mySendMailer = async (data) => {
 
     const command = new SendEmailCommand(emailParams);
     await sesClient.send(command);
-    logger.info(`mySendMailer ✅ sent ${data.template} → ${data.message.to}`);
+    logger.warn(`mySendMailer ✅ sent ${data.template} → ${data.message.to}`);
 
   } catch (err) {
     logger.error(`mySendMailer ❌ ${data.template} → ${data.message.to}: ${err.message}`, { stack: err.stack });
