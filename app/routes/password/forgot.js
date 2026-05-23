@@ -12,8 +12,14 @@ const setIdentifier = () => {
 
 import { mySendMailer } from '../../utilities/mailer.js';
 import { logger, requestLogger, errorLogger } from '../../utilities/logger.js'; // Logger
+import config from 'getconfig';
 
 import _ from 'lodash';
+
+const getFrontendBase = (lang) => {
+  const domain = config.lang_to_domain?.[lang];
+  return domain && domain !== 'en' ? `https://${domain}.avnode.net` : 'https://avnode.net';
+};
 
 router.get('/', (req, res) => {
   res.render('password/forgot', {
@@ -69,7 +75,7 @@ router.post('/', async (req, res) => {
           email_content: {
             stagename: userBySecondary.stagename,
             email: email,
-            site: 'http://' + req.headers.host,
+            site: getFrontendBase(req.session.current_lang),
             title: req.__("Password reset"),
             subject: req.__("Password reset") + ' | AVnode.net',
             block_1: req.__("This email address is registered as a secondary email in your account. To reset your password, please use your primary email address."),
@@ -118,14 +124,14 @@ router.post('/', async (req, res) => {
           stagename: user.stagename,
           email: user.email,
           confirm: token,
-          site:    'http://'+req.headers.host,
+          site:    getFrontendBase(req.session.current_lang),
           title:    req.__("Password reset"),
           subject:  req.__("Password reset")+' | AVnode.net',
           block_1:  req.__("We’ve received a request to reset your password."),
           button:   req.__("Click here to reset your password"),
           block_2:  req.__("If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link:"),
           block_3:  req.__("Thanks."),
-          link:     'http://'+req.headers.host+'/password/reset/'+token,
+          link:     getFrontendBase(req.session.current_lang)+'/password/reset/'+token,
           html_sign: "The AVnode.net Team",
           text_sign:  "The AVnode.net Team"
         }
