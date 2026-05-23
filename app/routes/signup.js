@@ -93,11 +93,13 @@ router.post('/', async (req, res) => {
     put.slug = await helpers.mySlugify(User, put.stagename);
     put.crewslug = await helpers.mySlugify(User, put.crewname);
 
+    logger.warn(`signup attempt email=${put.email} lang=${put.lang} hasAddresses=${!!(put.addresses && put.addresses.length)} hasPrivacy=${!!put.privacy} hasTerms=${!!put.terms}`);
+
     // Validate signup data
     const errors = await router.signupValidator(req, put);
-    logger.info("Validation Errors:", errors);
 
     if (Object.keys(errors.errors).length) {
+      logger.warn(`signup validation failed email=${put.email} errors=${JSON.stringify(Object.keys(errors.errors))}`);
       if (req.isApi) {
         return res.send({
           get: req.body,
