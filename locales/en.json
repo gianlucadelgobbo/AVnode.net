@@ -225,10 +225,10 @@
 	"Password not generated, please retry.": "Password not generated, please retry.",
 	"User not found.": "User not found.",
 	"Password reset": "Password reset",
-	"We’ve received a request to reset your password.": "We’ve received a request to reset your password.",
+	"We've received a request to reset your password.": "We've received a request to reset your password.",
 	"Click here to reset your password": "Click here to reset your password",
-	"If you didn’t make the request, just ignore this message": {
-		" Otherwise, you can reset your password using this link": "If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link"
+	"If you didn't make the request, just ignore this message": {
+		" Otherwise, you can reset your password using this link": "If you didn't make the request, just ignore this message. Otherwise, you can reset your password using this link"
 	},
 	"Thanks.": "Thanks.",
 	"Password reset link sent to": "Password reset link sent to",
@@ -239,7 +239,7 @@
 	"Link to change the password has expired or is not valid.": "Link to change the password has expired or is not valid.",
 	"Your password has been reset.": "Your password has been reset.",
 	"Password and Password confirm does not match. Try again...": "Password and Password confirm does not match. Try again...",
-	"Enter the email address associated with your account, and we’ll email you a link to reset your password.": "Enter the email address associated with your account, and we’ll email you a link to reset your password.",
+	"Enter the email address associated with your account, and we'll email you a link to reset your password.": "Enter the email address associated with your account, and we'll email you a link to reset your password.",
 	"reset password": "reset password",
 	"Contact": "Contact",
 	"Contact request for": "Contact request for",
@@ -301,7 +301,7 @@
 	"TERMS_ACCEPTANCE_IS_REQUIRED": "TERMS_ACCEPTANCE_IS_REQUIRED",
 	"DATA_SAVED_WITH_SUCCESS": "Data saved successfully",
 	"Performance not found.": "Performance not found.",
-	"We’ve received a request to participate to": "We’ve received a request to participate to",
+	"We've received a request to participate to": "We've received a request to participate to",
 	"You will receive a feedback on your proposal as soon.": "You will receive a feedback on your proposal as soon.",
 	"SUMMARY": "SUMMARY",
 	"Call": "Call",
