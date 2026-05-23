@@ -720,7 +720,6 @@
 	"There are some errors": "Es gibt einige Fehler",
 	"Please select a call": "Bitte wählen Sie einen Anruf aus",
 	"This person is already in with another act and can not be edited": "Diese Person ist bereits bei einem anderen Akt dabei und kann nicht bearbeitet werden.",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
 	"Verification Failed": "Verification Failed",
 	"Verification was already done or someone subscribed with some of your data, please sign up again.": "Verification was already done or someone subscribed with some of your data, please sign up again.",
 	"SIGN UP": "SIGN UP",
@@ -777,4 +776,6 @@
 	"Email verify": "Email verify",
 	"I declare that I am the author of the images, videos, photographs uploaded to the site or that I am authorized for their disclosure. I release Flyer Srl from any liability related to the disclosure on this site": "I declare that I am the author of the images, videos, photographs uploaded to the site or that I am authorized for their disclosure. I release Flyer Srl from any liability related to the disclosure on this site",
 	"I authorize the processing of my personal data for the purposes set forth in the <a href='/privacy-policy'>privacy policy</a> of this site.": "I authorize the processing of my personal data for the purposes set forth in the <a href='/privacy-policy'>privacy policy</a> of this site.",
+	"If this email exists, a reset link will be sent.": "Falls diese E-Mail-Adresse existiert, erhalten Sie einen Link zum Zurücksetzen des Passworts.",
+	"This email address is registered as a secondary email in your account. To reset your password, please use your primary email address.": "Diese E-Mail-Adresse ist als sekundäre E-Mail in Ihrem Konto registriert. Um Ihr Passwort zurückzusetzen, verwenden Sie bitte Ihre primäre E-Mail-Adresse."
 }

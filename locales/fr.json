@@ -777,4 +777,6 @@
 	"Email verify": "Email verify",
 	"I declare that I am the author of the images, videos, photographs uploaded to the site or that I am authorized for their disclosure. I release Flyer Srl from any liability related to the disclosure on this site": "I declare that I am the author of the images, videos, photographs uploaded to the site or that I am authorized for their disclosure. I release Flyer Srl from any liability related to the disclosure on this site",
 	"I authorize the processing of my personal data for the purposes set forth in the <a href='/privacy-policy'>privacy policy</a> of this site.": "I authorize the processing of my personal data for the purposes set forth in the <a href='/privacy-policy'>privacy policy</a> of this site.",
+	"If this email exists, a reset link will be sent.": "Si cette adresse e-mail existe, un lien de réinitialisation vous sera envoyé.",
+	"This email address is registered as a secondary email in your account. To reset your password, please use your primary email address.": "Cette adresse e-mail est enregistrée comme e-mail secondaire dans votre compte. Pour réinitialiser votre mot de passe, veuillez utiliser votre adresse e-mail principale."
 }

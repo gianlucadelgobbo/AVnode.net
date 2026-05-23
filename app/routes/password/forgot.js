@@ -38,26 +38,59 @@ router.post('/', async (req, res) => {
       return res.redirect('/password/forgot');  
     }
   }
+  const neutralMsg = req.__("If this email exists, a reset link will be sent.");
+
   try {
     user = await User.findOne({email: email}, "_id stagename email");
-    logger.info("{email: email}")
-    logger.info({email: email})
   } catch (error) {
+    logger.error(`password/forgot DB error: ${error.message}`);
     if (req.isApi) {
-      return res.send({error: error, msg: {errors: {email: { message: req.__('User not found.')}}}})
+      return res.send({ error: false, msg: neutralMsg });
     } else {
-      req.flash('errors', {msg: {errors: {email: { message: req.__('User not found.')}}}});
-      return res.redirect('/password/forgot');  
+      req.flash('success', { msg: neutralMsg });
+      return res.redirect('/password/forgot');
     }
   }
-  logger.info("user")
-  logger.info(user)
+
   if (user === null) {
+    // Check if email exists as a secondary email
+    let userBySecondary;
+    try {
+      userBySecondary = await User.findOne({ 'emails.email': email }, "_id stagename email");
+    } catch (error) {
+      logger.error(`password/forgot secondary email DB error: ${error.message}`);
+    }
+
+    if (userBySecondary) {
+      try {
+        await mySendMailer({
+          template: 'reset-password',
+          message: { to: email },
+          email_content: {
+            stagename: userBySecondary.stagename,
+            email: email,
+            site: 'http://' + req.headers.host,
+            title: req.__("Password reset"),
+            subject: req.__("Password reset") + ' | AVnode.net',
+            block_1: req.__("This email address is registered as a secondary email in your account. To reset your password, please use your primary email address."),
+            block_2: req.__("If you have any questions, just reply to this email, we're always happy to help out."),
+            block_3: '',
+            button: '',
+            link: '',
+            html_sign: "The AVnode.net Team",
+            text_sign: "The AVnode.net Team"
+          }
+        });
+      } catch (err) {
+        logger.error(`password/forgot secondary email send error: ${err.message}`);
+      }
+    }
+
     if (req.isApi) {
-      return res.send({error: true, msg: {errors: {email: { message: req.__('User not found.')}}}})
+      return res.send({ error: false, msg: neutralMsg });
     } else {
-      req.flash('errors', {msg: {errors: {email: { message: req.__('User not found.')}}}});
-      return res.redirect('/password/forgot');  
+      req.flash('success', { msg: neutralMsg });
+      return res.redirect('/password/forgot');
     }
   } else {
     const token = setIdentifier();
