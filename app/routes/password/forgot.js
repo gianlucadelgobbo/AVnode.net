@@ -13,8 +13,24 @@ const setIdentifier = () => {
 import { mySendMailer } from '../../utilities/mailer.js';
 import { logger, requestLogger, errorLogger } from '../../utilities/logger.js'; // Logger
 import config from 'getconfig';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 import _ from 'lodash';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const _localeCatalogs = {};
+const t = (phrase, lang) => {
+  if (!_localeCatalogs[lang]) {
+    try {
+      _localeCatalogs[lang] = JSON.parse(readFileSync(path.join(__dirname, '../../../locales', `${lang}.json`), 'utf8'));
+    } catch (e) {
+      _localeCatalogs[lang] = null;
+    }
+  }
+  return (_localeCatalogs[lang] && _localeCatalogs[lang][phrase]) || phrase;
+};
 
 const getFrontendBase = (lang) => {
   const domain = config.lang_to_domain?.[lang];
@@ -36,15 +52,17 @@ router.post('/', async (req, res) => {
   
   const email = req.body?.email;
 
+  const lang = req.session.current_lang;
+
   if (!email || typeof email !== 'string' || email.trim() === '') {
     if (req.isApi) {
-      return res.send({error: true, msg: {errors: {email: { message: req.__('User not found.')}}}})
+      return res.send({error: true, msg: {errors: {email: { message: t('User not found.', lang)}}}})
     } else {
-      req.flash('errors', {msg: {errors: {email: { message: req.__('User not found.')}}}});
-      return res.redirect('/password/forgot');  
+      req.flash('errors', {msg: {errors: {email: { message: t('User not found.', lang)}}}});
+      return res.redirect('/password/forgot');
     }
   }
-  const neutralMsg = req.__("If this email exists, a reset link will be sent.");
+  const neutralMsg = t("If this email exists, a reset link will be sent.", lang);
 
   try {
     user = await User.findOne({email: email}, "_id stagename email");
@@ -76,10 +94,10 @@ router.post('/', async (req, res) => {
             stagename: userBySecondary.stagename,
             email: email,
             site: getFrontendBase(req.session.current_lang),
-            title: req.__("Password reset"),
-            subject: req.__("Password reset") + ' | AVnode.net',
-            block_1: req.__("This email address is registered as a secondary email in your account. To reset your password, please use your primary email address."),
-            block_2: req.__("If you have any questions, just reply to this email, we're always happy to help out."),
+            title: t("Password reset", lang),
+            subject: t("Password reset", lang) + ' | AVnode.net',
+            block_1: t("This email address is registered as a secondary email in your account. To reset your password, please use your primary email address.", lang),
+            block_2: t("If you have any questions, just reply to this email, we're always happy to help out.", lang),
             block_3: '',
             button: '',
             link: '',
@@ -108,9 +126,9 @@ router.post('/', async (req, res) => {
       user.save()
     } catch (error) {
       if (req.isApi) {
-        return res.send({error: error, msg: `${JSON.stringify({errors: {email: { message: req.__('Password not generated, please retry.')}}})}`})
+        return res.send({error: error, msg: `${JSON.stringify({errors: {email: { message: t('Password not generated, please retry.', lang)}}})}`})
       } else {
-        req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: req.__('Password not generated, please retry.')}}})}`});
+        req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: t('Password not generated, please retry.', lang)}}})}`});
         res.redirect('/password/forgot');
       }            
     }
@@ -125,28 +143,28 @@ router.post('/', async (req, res) => {
           email: user.email,
           confirm: token,
           site:    getFrontendBase(req.session.current_lang),
-          title:    req.__("Password reset"),
-          subject:  req.__("Password reset")+' | AVnode.net',
-          block_1:  req.__("We’ve received a request to reset your password."),
-          button:   req.__("Click here to reset your password"),
-          block_2:  req.__("If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link:"),
-          block_3:  req.__("Thanks."),
+          title:    t("Password reset", lang),
+          subject:  t("Password reset", lang)+’ | AVnode.net’,
+          block_1:  t("We’ve received a request to reset your password.", lang),
+          button:   t("Click here to reset your password", lang),
+          block_2:  t("If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link:", lang),
+          block_3:  t("Thanks.", lang),
           link:     getFrontendBase(req.session.current_lang)+'/password/reset/'+token,
           html_sign: "The AVnode.net Team",
           text_sign:  "The AVnode.net Team"
         }
       });
       if (req.isApi) {
-        return res.send({error: false, msg: req.__('Password reset link sent to:')+" "+email})
+        return res.send({error: false, msg: t('Password reset link sent to:', lang)+" "+email})
       } else {
-        req.flash('success', {msg: req.__('Password reset link sent to:')+" "+email });
+        req.flash('success', {msg: t('Password reset link sent to:', lang)+" "+email });
         res.redirect('/password/forgot');
       }
     } catch (error) {
       if (req.isApi) {
-        return res.send({error: error, msg: `${JSON.stringify({errors: {email: { message: req.__('Unable to send Confirm Email.')}}})}`})
+        return res.send({error: error, msg: `${JSON.stringify({errors: {email: { message: t('Unable to send Confirm Email.', lang)}}})}`})
       } else {
-        req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: req.__('Unable to send Confirm Email.')}}})}`});
+        req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: t('Unable to send Confirm Email.', lang)}}})}`});
         return res.redirect('/password/forgot');
       }
     }
