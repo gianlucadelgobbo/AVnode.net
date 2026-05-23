@@ -51,11 +51,13 @@ const mySendMailer = async (data) => {
     };
 
     const command = new SendEmailCommand(emailParams);
-    await sesClient.send(command);
-    logger.warn(`mySendMailer ✅ sent ${data.template} → ${data.message.to}`);
+    const result = await sesClient.send(command);
+    logger.warn(`mySendMailer ✅ sent ${data.template} → ${data.message.to} [msgId:${result.MessageId}]`);
 
   } catch (err) {
-    logger.error(`mySendMailer ❌ ${data.template} → ${data.message.to}: ${err.message}`, { stack: err.stack });
+    const sesCode = err?.name || err?.Code || err?.$metadata?.httpStatusCode || 'unknown';
+    const sesRequestId = err?.$metadata?.requestId || '';
+    logger.error(`mySendMailer ❌ ${data.template} → ${data.message.to} [${sesCode}${sesRequestId ? ' req:' + sesRequestId : ''}]: ${err.message}`);
     throw err;
   }
 };

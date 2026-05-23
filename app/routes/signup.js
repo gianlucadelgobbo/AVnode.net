@@ -68,6 +68,19 @@ router.post('/', async (req, res) => {
     }
     if (req.body.privacy) req.body.privacy = new Date();
     if (req.body.terms) req.body.terms = new Date();
+    if (req.body.birthday) {
+      const parts = String(req.body.birthday).trim().split('/');
+      if (parts.length === 3) {
+        if (parts[2].length === 4) {
+          // DD/MM/YYYY → YYYY/MM/DD
+          req.body.birthday = `${parts[2]}/${parts[1]}/${parts[0]}`;
+        } else if (parts[0].length === 4) {
+          const p1 = parseInt(parts[1]), p2 = parseInt(parts[2]);
+          // YYYY/DD/MM (day and month swapped) → YYYY/MM/DD
+          if (p1 > 12 && p2 <= 12) req.body.birthday = `${parts[0]}/${parts[2]}/${parts[1]}`;
+        }
+      }
+    }
 
     let select = config.cpanel.signup.forms.signup.select;
     let put = {};
