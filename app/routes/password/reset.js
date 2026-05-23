@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
     console.log(user)
     if (!user) {
       if (req.isApi) {
-        return res.send({error: error, msg: `${JSON.stringify({errors: {token: { message: req.__('Link to change the password has expired or is not valid.')}}})}`})
+        return res.send({error: true, msg: `${JSON.stringify({errors: {token: { message: req.__('Link to change the password has expired or is not valid.')}}})}`})
       } else {
         req.flash('errors', {msg: `${JSON.stringify({errors: {token: { message: req.__('Link to change the password has expired or is not valid.')}}})}`});
         return res.redirect('/password/forgot');  
@@ -55,17 +55,17 @@ router.post('/', async (req, res) => {
       user.password = req.body.password;
       //res.redirect('/password/reset/'+req.body.token);
       try {
-        //user.save()
+        await user.save();
       } catch (error) {
         if (req.isApi) {
-          return res.send({error: true, msg: err})
+          return res.send({error: true, msg: `${JSON.stringify({errors: {password: { message: req.__('Password not generated, please retry.')}}})}`})
         } else {
-          req.flash('errors', {msg: err});
+          req.flash('errors', {msg: req.__('Password not generated, please retry.')});
           res.redirect('/password/reset/'+req.body.token);
         }
       }
       if (req.isApi) {
-        return res.send({error: true, msg: req.__('Your password has been reset.')})
+        return res.send({error: false, msg: req.__('Your password has been reset.')})
       } else {
         req.flash('success', {msg: req.__('Your password has been reset.')});
           res.redirect('/login');  
