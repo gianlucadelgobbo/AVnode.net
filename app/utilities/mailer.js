@@ -36,9 +36,11 @@ const mySendMailer = async (data) => {
     const HTML_FORMAT_BODY = fn_html(locals);
     const TEXT_FORMAT_BODY = fn_text(locals).split("<br/>").join("\n");
 
+    const ccAddresses = Array.isArray(data.message.cc) ? data.message.cc : (data.message.cc ? [data.message.cc] : []);
     const emailParams = {
       Destination: {
         ToAddresses: [data.message.to],
+        ...(ccAddresses.length ? { CcAddresses: ccAddresses } : {})
       },
       Message: {
         Body: {

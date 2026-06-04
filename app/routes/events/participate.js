@@ -409,7 +409,7 @@ router.post('/', async (req, res) => {
           }
         });
       } catch (emailErr) {
-        logger.info('API participate email failure:', emailErr);
+        logger.error(`participate API email failure: ${emailErr.message}`);
       }
 
       return res.json({success: true, program: subsub.toObject({virtuals: false})});
@@ -869,8 +869,7 @@ router.post('/', async (req, res) => {
               req.session.call.step = parseInt(req.body.step)+1;
               req.session.call.saved = true;
             } catch (err) {
-              logger.info("Email sending failure");
-              logger.info(err);
+              logger.error(`participate summary email failure: ${err.message}`);
               msg = {e:[{name:'index', m:req.__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
             }
             if (req.isApi) {
