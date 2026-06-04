@@ -95,28 +95,29 @@ block content
                             b!=__("This person is already in with another act and already choose his packages")
                       else
                         each package in subscription.packages
+                          - var cpkg = (package.id != null && event.organizationsettings.call.calls[call].packages[package.id]) ? event.organizationsettings.call.calls[call].packages[package.id] : package
                           tr
-                            - if (event.organizationsettings.call.calls[call].packages[package.id].daily)
-                              - total+=event.organizationsettings.call.calls[call].packages[package.id].price*subscription.days.length
-                              - subscriber_total+=event.organizationsettings.call.calls[call].packages[package.id].price*subscription.days.length
-                            - else 
-                              - total+=event.organizationsettings.call.calls[call].packages[package.id].price
-                              - subscriber_total+=event.organizationsettings.call.calls[call].packages[package.id].price
+                            - if (cpkg && cpkg.daily)
+                              - total+=cpkg.price*subscription.days.length
+                              - subscriber_total+=cpkg.price*subscription.days.length
+                            - else if (cpkg)
+                              - total+=cpkg.price
+                              - subscriber_total+=cpkg.price
                             td(bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 10px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
-                              b!=event.organizationsettings.call.calls[call].packages[package.id].name + (event.organizationsettings.call.calls[call].packages[package.id].requested ? " ("+__("requested")+")" : "")
-                              div!=event.organizationsettings.call.calls[call].packages[package.id].description
-                              - if (event.organizationsettings.call.calls[call].packages[package.id].allow_options)
-                                p=event.organizationsettings.call.calls[call].packages[package.id].options_name+": "+package.option
+                              b!=cpkg.name + (cpkg.requested ? " ("+__("requested")+")" : "")
+                              div!=cpkg.description
+                              - if (cpkg.allow_options)
+                                p=cpkg.options_name+": "+package.option
                             td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 10px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
-                              if event.organizationsettings.call.calls[call].packages[package.id].personal && event.organizationsettings.call.calls[call].packages[package.id].daily
+                              if cpkg.personal && cpkg.daily
                                 div=__("per person/per day")
-                              else if event.organizationsettings.call.calls[call].packages[package.id].personal 
+                              else if cpkg.personal
                                 div=__("per person")
-                              else if event.organizationsettings.call.calls[call].packages[package.id].daily 
+                              else if cpkg.daily
                                 div=__("per day")
                             td(nowrap, bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
-                              !="€ "+event.organizationsettings.call.calls[call].packages[package.id].price
-                          if event.organizationsettings.call.calls[call].packages[package.id].daily
+                              !="€ "+cpkg.price
+                          if cpkg && cpkg.daily
                             tr
                               td(bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 10px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
                                 if subscription.days.length = 1

@@ -347,6 +347,7 @@ router.post('/', async (req, res) => {
         const packages = (sub.packages || []).map(p => {
           const pack = JSON.parse(JSON.stringify(callEntry.packages[p.id] || {}));
           pack.option = p.option || '';
+          pack.id = p.id;
           return pack;
         });
         subscriptionsData.push({
@@ -782,10 +783,11 @@ router.post('/', async (req, res) => {
                   sub = JSON.parse(JSON.stringify(req.session.call.subscriptions[a]));
                   sub.packages = req.session.call.subscriptions[a].packages;
                 } else {
-                  var packages = []; 
+                  var packages = [];
                   for (var b=0; b<req.session.call.subscriptions[a].packages.length; b++) {
                     var pack = JSON.parse(JSON.stringify(data.organizationsettings.call.calls[req.session.call.index].packages[req.session.call.subscriptions[a].packages[b].id]));
                     pack.option = req.session.call.subscriptions[a].packages[b].option;
+                    pack.id = req.session.call.subscriptions[a].packages[b].id;
                     packages.push(pack);
                   }
                   sub = JSON.parse(JSON.stringify(req.session.call.subscriptions[a]));
