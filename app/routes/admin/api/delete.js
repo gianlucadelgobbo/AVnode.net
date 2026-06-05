@@ -65,7 +65,7 @@ router.getDelete = async (req, res) => {
       results = await deleteVideo(data, res);
       break;
     case "performances" :
-      results = await deletePerformance(data, res);
+      results = await deletePerformance(data, res, req);
       break;
     case "events" :
       results = await deleteEvent(data, res);
@@ -189,21 +189,21 @@ async function deleteVideo(data, res) {
   return results;
 }
 
-async function deletePerformance(data, res) {
+async function deletePerformance(data, res, req) {
   logger.info("getDelete deletePerformance");
   logger.info(data);
   let results = {};
   if ((!data.bookings || !data.bookings.length) && (!data.galleries || !data.galleries.length) && (!data.videos || !data.videos.length)) {
-    results.Performance = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
     results.Performance = await safeExecute(
-      Models["Performance"].updateMany( {_id: { $in: data.performances}}, { $pullAll: {videos: [data._id] } }),
-      "Error updating Performances after Video delete",
+      Models["Performance"].deleteOne({_id: data._id}),
+      "Error deleting Performance",
       res,
-      false
+      true
     );
+    if (!results.Performance) return;
     results.User = await safeExecute(
       Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {performances: [data._id] } }),
-      "Error updating Users after Video delete",
+      "Error updating Users after Performance delete",
       res,
       false
     );
@@ -217,9 +217,9 @@ async function deletePerformance(data, res) {
   } else {
     logger.info("getDelete 4");
     let errors = [];
-    if (data.bookings && data.bookings.length) errors.push({error:req.__("Performace is booked and can not be deleted"), bookings: data.bookings});
-    if (data.galleries && data.galleries.length) errors.push({error:req.__("Performace own galleries and can not be deleted"), galleries: data.galleries});
-    if (data.videos && data.videos.length) errors.push({error:req.__("Performace own videos and can not be deleted"), videos: data.videos});
+    if (data.bookings && data.bookings.length) errors.push({error: "Performance is booked and can not be deleted", bookings: data.bookings});
+    if (data.galleries && data.galleries.length) errors.push({error: "Performance owns galleries and can not be deleted", galleries: data.galleries});
+    if (data.videos && data.videos.length) errors.push({error: "Performance owns videos and can not be deleted", videos: data.videos});
     return res.json(errors);
   }
 }
