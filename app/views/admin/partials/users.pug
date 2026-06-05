@@ -7,7 +7,7 @@
 				a(href='#' data-id=user._id data-obj=get.sez data-objid=data._id class=(data.users.length == 1 ? "disabled" : undefined))
 					i.icon-trash
 				!=" | "
-				!=user.stagename
+				span(style='color: var(--emerald)')= user.stagename
 	.row
 		.col-md-6.offset-md-3
 			.input-group.autocomplete_users
