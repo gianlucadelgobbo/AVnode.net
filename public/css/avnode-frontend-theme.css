@@ -56,10 +56,9 @@ html body footer {
 }
 
 /* Catch-all: any generic block element gets a transparent bg, so Bootstrap's
-   stray white backgrounds don't bleed through. Specific elements that NEED
-   a background (navbar, modal-content, alert-secondary header, textarea, btn-*)
-   override this via class-level rules with !important. */
-html body div,
+   stray white backgrounds don't bleed through. Modal elements are excluded
+   because they need their own background. */
+html body div:not([class*="modal"]),
 html body section,
 html body article,
 html body fieldset,
@@ -760,7 +759,7 @@ html body .form-group {
 
 /* ---------- Modals ---------- */
 .modal-content {
-  background: var(--darkblue) !important;
+  background: var(--darkblue);
   border: 2px solid var(--emerald);
   border-radius: var(--radius-lg);
   color: var(--light);
