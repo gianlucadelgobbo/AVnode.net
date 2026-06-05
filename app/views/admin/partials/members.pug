@@ -8,7 +8,7 @@
 				a(href='#' data-id=member._id data-crewid=data._id class=(data.members.length == 1 ? "disabled" : undefined))
 					i.icon-trash
 				!=" | "
-				!=member.stagename
+				span(style='color: var(--emerald)')= member.stagename
 		#hide_members_cnt.form-check.mb-3.mt-3
 			input.form-check-input(type='checkbox' id='hide_members' name='hide_members' value='true' checked=data.hide_members ? "checked" : undefined)
 			label.labelField(for='hide_members')=__("Hide Members on public pages")
