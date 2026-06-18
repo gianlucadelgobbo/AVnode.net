@@ -386,7 +386,6 @@
 	"per person/per day": "per person/per day",
 	"days": "days",
 	"Total": "Total",
-	"We've received a request to participate to": "We've received a request to participate to",
 	"day": "day",
 	"Submission of": "Submission of",
 	"to": "to",
@@ -432,5 +431,8 @@
 	"Signup verify": "Signup verify",
 	"Verification Success!!!": "Verification Success!!!",
 	"Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.": "Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.",
-	"LOG IN": "LOG IN"
+	"LOG IN": "LOG IN",
+	"Edit schedule": "Edit schedule",
+	"The Program of": "The Program of",
+	"of": "of"
 }
