@@ -418,7 +418,9 @@ function programSortableUpdate() {
           $(boxes[b]).find(".index").html(b+1);
           $(boxes[b]).removeAttr("style");
         } else {
-
+          if (Array.isArray(day.program[b].schedule) && day.program[b].schedule.length) {
+            day.program[b].schedule = day.program[b].schedule[0];
+          }
           if (day.room.venue.breakduration>-1) {
             var daylyend = new Date (timing);
             daylyend.setUTCHours(new Date (day.program[b].schedule.endtime).getUTCHours())
