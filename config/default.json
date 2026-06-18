@@ -1255,7 +1255,6 @@
           "select": {
             "topics": 1,
             "call": 1,
-            "schedule": 1,
             "subscriptions.freezed": 1,
             "subscriptions.wepay": 1,
             "subscriptions.cash": 1,

@@ -998,7 +998,7 @@ router.get('/:event/program', async (req, res) => {
   try {
     let event = await Event.
     findOne({"_id": req.params.event}).
-    select({title: 1, schedule: 1, organizationsettings: 1}).
+    select({title: 1, schedule: 1, program: 1, organizationsettings: 1}).
     populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
     exec();
     event.schedule.sort((a,b) => {
@@ -1018,6 +1018,10 @@ router.get('/:event/program', async (req, res) => {
       data.event = event;
       //data.status = config.cpanel["events_advanced"].status;
       data.program = program;
+      const scheduleBySubId = {};
+      for (const ep of event.program || []) {
+        if (ep.subscription_id) scheduleBySubId[ep.subscription_id.toString()] = ep.schedule || [];
+      }
       data.admitted = [];
       let admittedO = {};
       for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
@@ -1097,60 +1101,56 @@ router.get('/:event/program', async (req, res) => {
         }
       }
       for(let a=0;a<data.program.length;a++) {
+        const progSchedule = scheduleBySubId[data.program[a]._id.toString()] || [];
         if (data.program[a].performance) {
           var duration = data.program[a].performance.duration;
-          if (data.program[a].schedule && data.program[a].schedule.length) {
-            for(let b=0;b<data.program[a].schedule.length;b++) {
-              var delSchedule = false;
-              if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
-                if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
-                  let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-                  if (date.getUTCHours()<10) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
+          if (progSchedule && progSchedule.length) {
+            for(let b=0;b<progSchedule.length;b++) {
+              if (progSchedule[b] && progSchedule[b].venue && progSchedule[b].venue.room) {
+                if ((progSchedule[b].endtime-progSchedule[b].starttime)/(24*60*60*1000)<1) {
+                  let date = new Date(progSchedule[b].starttime);  // dateStr you get from mongodb
+                  if (date.getUTCHours()<10) date = new Date(progSchedule[b].starttime-(24*60*60*1000));
                   let d = ('0'+date.getUTCDate()).substr(-2);
                   let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                   let y = date.getUTCFullYear();
                   let program = JSON.parse(JSON.stringify(data.program[a]));
-                  program.schedule = data.program[a].schedule[b];
+                  program.schedule = progSchedule[b];
                   logger.info(data.program[a].performance.title);
                   logger.info(data.program[a].performance._id);
-                  if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
-                    data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
+                  if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[progSchedule[b].venue.room]) {
+                    data.programmebydayvenue[y+"-"+m+"-"+d].rooms[progSchedule[b].venue.room].program.push(program);
                   } else {
                     logger.info("------------------------------------------------------------");
-
-                    //delete data.program[a].schedule[b];
                   }
                 } else {
-                  var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
+                  var days = Math.floor((progSchedule[b].endtime-progSchedule[b].starttime)/(24*60*60*1000))+1;
                   logger.info("stocazzooooooo");
                   logger.info(data.program[a].performance._id);
                   logger.info(data.program[a].performance.title);
-                  logger.info(data.program[a].schedule.length);
+                  logger.info(progSchedule.length);
                   logger.info(days);
                   logger.info(a);
                   logger.info(b);
                   for(let c=0;c<days;c++){
-                    let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
+                    let date = new Date((progSchedule[b].starttime.getTime())+((24*60*60*1000)*c));
                     let d = ('0'+date.getUTCDate()).substr(-2);
                     let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                     let y = date.getUTCFullYear();
                     let program = JSON.parse(JSON.stringify(data.program[a]));
-                    program.schedule = data.program[a].schedule[b];
+                    program.schedule = progSchedule[b];
                     data.program[a].performance.duration = duration/days;
-                    logger.info(data.program[a].schedule[b].venue.room);
-                    logger.info(data.program[a].schedule[b].starttime);
-                    if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
-                      data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
+                    logger.info(progSchedule[b].venue.room);
+                    logger.info(progSchedule[b].starttime);
+                    if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[progSchedule[b].venue.room]) {
+                      data.programmebydayvenue[y+"-"+m+"-"+d].rooms[progSchedule[b].venue.room].program.push(program);
                     } else {
                       logger.info("------------------------------------------------------------");
-                      //delSchedule = true;
                     }
                   }
                   logger.info("stocazzo end");
                 }
               }
-              if (delSchedule) delete data.program[a].schedule[b];
-            }  
+            }
           }
         }
       }

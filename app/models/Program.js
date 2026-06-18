@@ -29,7 +29,7 @@ const programSchema = new Schema({
   event: { type: Schema.ObjectId, ref: 'Event', required: true },
   call: { type: Number},
   topics: { type: [String], minlength: 1},
-  schedule: [Schedule],
+  // schedule: [Schedule], // moved to Event.program[].schedule
   performance: { type: Schema.ObjectId, ref: 'Performance' },
   performance_category: { type : Schema.ObjectId, ref : 'Category' },
   reference: { type: Schema.ObjectId, ref: 'User', required: true },
