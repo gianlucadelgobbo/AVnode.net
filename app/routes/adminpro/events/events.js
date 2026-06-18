@@ -373,13 +373,17 @@ router.getActsData = async (req, res, cb) => {
       populate(populate).
       exec()
 
-      // Build map: Program._id → performance id (from event.program embedded array)
+      // Build maps from event.program[]: performance and schedule keyed by Program._id
       const perfBySubId = {};
+      const scheduleBySubId = {};
       const perfIds = [];
       for (const ep of event.program) {
-        if (ep.subscription_id && ep.performance) {
-          perfBySubId[ep.subscription_id.toString()] = ep.performance.toString();
-          perfIds.push(ep.performance);
+        if (ep.subscription_id) {
+          if (ep.performance) {
+            perfBySubId[ep.subscription_id.toString()] = ep.performance.toString();
+            perfIds.push(ep.performance);
+          }
+          scheduleBySubId[ep.subscription_id.toString()] = ep.schedule || [];
         }
       }
 
@@ -397,11 +401,12 @@ router.getActsData = async (req, res, cb) => {
       data.event = event;
       data.status = config.cpanel["events_advanced"].status;
 
-      // Merge: use Program docs (reference, status, subscriptions) + performance from event.program
+      // Merge: use Program docs + performance and schedule from event.program
       data.program = program.map(item => {
         const obj = item.toObject ? item.toObject({virtuals: true}) : JSON.parse(JSON.stringify(item));
         const perfId = perfBySubId[item._id.toString()];
         obj.performance = perfId ? (perfById[perfId] || null) : null;
+        obj.schedule = scheduleBySubId[item._id.toString()] || [];
         return obj;
       });
 
@@ -1017,11 +1022,15 @@ router.get('/:event/program', async (req, res) => {
       exec();
       data.event = event;
       //data.status = config.cpanel["events_advanced"].status;
-      data.program = program;
       const scheduleBySubId = {};
       for (const ep of event.program || []) {
         if (ep.subscription_id) scheduleBySubId[ep.subscription_id.toString()] = ep.schedule || [];
       }
+      data.program = program.map(prog => {
+        const obj = prog.toObject({ virtuals: true });
+        obj.schedule = scheduleBySubId[obj._id.toString()] || [];
+        return obj;
+      });
       data.admitted = [];
       let admittedO = {};
       for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);

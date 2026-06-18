@@ -336,7 +336,7 @@ app.use((req, res, next) => {
   res.locals.isApi = isApi; // ✅ Make available in templates
 
   // ✅ Localized moment instances (prevent global race conditions)
-  req.moment = () => moment().locale(lang);
+  req.moment = (date) => moment(date).locale(lang);
   res.locals.moment = (date) => moment(date).locale(lang);
 
   // ✅ i18n Setup
