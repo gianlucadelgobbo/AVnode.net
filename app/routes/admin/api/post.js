@@ -846,7 +846,6 @@ router.updateProgram = (req, res) => {
       logger.info(program[a]._id);
       logger.info(program[a].schedule);
     }
-    promises.push(Models.Program.findOneAndUpdate({_id: program[a]._id}, { $set: { schedule: !program[a].schedule ? [] : program[a].schedule }}, {upsert: true, useFindAndModify: false}));
   }
   logger.info("eventProgram");
   logger.info(eventProgram);
@@ -890,7 +889,7 @@ router.updateProgram = (req, res) => {
           Models.Event.findOne({_id:req.body.event}).exec((err, event) => {
             for (var a=0;a<event.program.length;a++) {
               for (var b=0;b<eventProgram.length;b++) {
-                if (event.program[a].performance.toString() === eventProgram[b].performance.toString()) {
+                if (event.program[a].subscription_id && event.program[a].subscription_id.toString() === eventProgram[b].subscription_id.toString()) {
                   event.program[a].schedule = eventProgram[b].schedule;
                 }
               }
