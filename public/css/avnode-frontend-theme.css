@@ -1027,7 +1027,6 @@ html body .table th {
   border-top: 1px solid var(--emerald-line) !important;
   border-bottom: 0 !important;
   padding: 0.85rem 0.85rem;
-  vertical-align: middle;
   font-family: var(--font-sans);
 }
 
