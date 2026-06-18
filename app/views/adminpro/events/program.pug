@@ -64,7 +64,7 @@ block content
                         .authors.mb-2=program.performance.users.map(user => {return user.stagename}).join(", ")
                         .float-left
                           a.lock-schedule(href="#")
-                            i(class=program.schedule && program.schedule.disableautoschedule ? "icon-lock" : "icon-lock-open")
+                            i(class=program.schedule && program.schedule[0] && program.schedule[0].disableautoschedule ? "icon-lock" : "icon-lock-open")
                           a.pl-3.duplicate(href="#")
                             i.icon-clone
                           a.pl-3.edit-schedule(href="#")
@@ -101,7 +101,7 @@ block content
                               - conta++
                               if room.program
                                 each program,ii in room.program
-                                  li.list-group-item(class=program.schedule.disableautoschedule ? "disabled" : undefined)
+                                  li.list-group-item(class=program.schedule && program.schedule.disableautoschedule ? "disabled" : undefined)
                                     .timing.small=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime
                                     .index.badge.disabled=(ii+1)
                                     .title.mt-2

@@ -403,14 +403,10 @@ function programSortableUpdate() {
             var end = new Date (timing+(parseFloat(day.program[b].performance.duration)*(60*1000)));
           }
           if (day.program[b].schedule.length) day.program[b].schedule = day.program[b].schedule[0];
-          /* day.program[b].schedule = {
-            starttime: start.toISOString(),
-            endtime: end.toISOString(),
-            venue: day.room.venue
-          }; */
           day.program[b].schedule.starttime = start.toISOString();
           day.program[b].schedule.endtime = end.toISOString();
           day.program[b].schedule.venue = day.room.venue;
+          day.program[b].schedule.disableautoschedule = false;
 
           $(boxes[b]).find("input").val(JSON.stringify(day.program[b]))
           day.program[b].schedule = [day.program[b].schedule]
@@ -450,12 +446,16 @@ function programSortableUpdate() {
       tobescheduled.push({_id: day.program[b]._id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event});
     }
   }
+  console.log("programSortableUpdate data:", JSON.stringify(data));
+  console.log("event:", day.event);
   $.ajax({
     url: "/admin/api/programupdate",
     method: "post",
     data: {data: data, tobescheduled: tobescheduled, event: day.event}
-  }).done(function(data) {
-    //console.log(data);
+  }).done(function(res) {
+    console.log("programupdate response:", res);
+  }).fail(function(err) {
+    console.error("programupdate error:", err);
   });
 }
 function getFormData($form){
