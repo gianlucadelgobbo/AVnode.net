@@ -879,27 +879,22 @@ router.updateProgram = (req, res) => {
       }
       Promise.all(
         promisesPerfSave
-      ).then( (resultsPromisePerfSave) => {
-        const acceptedonly = false;
-        if (acceptedonly) {
-          Models.Event.findOneAndUpdate({_id:program[0].event}, {$set: {program: eventProgram}}, {upsert: true, useFindAndModify: false}).exec((err, result) => {
-            res.json(err || result);
-          });
-        } else {
-          Models.Event.findOne({_id:req.body.event}).exec((err, event) => {
-            for (var a=0;a<event.program.length;a++) {
-              for (var b=0;b<eventProgram.length;b++) {
-                if (event.program[a].subscription_id && event.program[a].subscription_id.toString() === eventProgram[b].subscription_id.toString()) {
-                  event.program[a].schedule = eventProgram[b].schedule;
-                }
+      ).then( async (resultsPromisePerfSave) => {
+        try {
+          const event = await Models.Event.findOne({_id:req.body.event}).exec();
+          for (var a=0;a<event.program.length;a++) {
+            for (var b=0;b<eventProgram.length;b++) {
+              if (event.program[a].subscription_id && event.program[a].subscription_id.toString() === eventProgram[b].subscription_id.toString()) {
+                event.program[a].schedule = eventProgram[b].schedule;
               }
             }
-            event.save((err) => {
-              res.json(err);
-            });
-          });
+          }
+          await event.save();
+          res.json(null);
+        } catch(err) {
+          res.json(err);
         }
-      }); 
+      });
     });
   });
 }
