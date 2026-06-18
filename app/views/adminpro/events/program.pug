@@ -64,7 +64,7 @@ block content
                         .authors.mb-2=program.performance.users.map(user => {return user.stagename}).join(", ")
                         .float-left
                           a.lock-schedule(href="#")
-                            i.fa(class=program.schedule && program.schedule.disableautoschedule ? "fa-lock" : "fa-lock-open")
+                            i(class=program.schedule && program.schedule.disableautoschedule ? "icon-lock" : "icon-lock-open")
                           a.pl-3.duplicate(href="#")
                             i.icon-clone
                           a.pl-3.edit-schedule(href="#")
@@ -122,7 +122,7 @@ block content
                                     .clearfix
                                       .float-left
                                         a.lock-schedule(href="#")
-                                          i.fa(class=program.schedule && program.schedule.disableautoschedule ? "fa-lock" : "fa-lock-open")
+                                          i(class=program.schedule && program.schedule.disableautoschedule ? "icon-lock" : "icon-lock-open")
                                         a.pl-3.duplicate(href="#")
                                           i.icon-clone
                                         a.pl-3.edit-schedule(href="#")

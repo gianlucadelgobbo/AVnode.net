@@ -466,15 +466,15 @@ function getFormData($form){
 
   return indexed_array;
 }
-$( ".lock-schedule" ).click(function( event ) {
+$(document).on("click", ".lock-schedule", function( event ) {
   event.preventDefault();
   if($(this).parent().parent().parent().hasClass("disabled")){
-    $(this).find("i").removeClass("fa-lock")
-    $(this).find("i").addClass("fa-lock-open")
+    $(this).find("i").removeClass("icon-lock")
+    $(this).find("i").addClass("icon-lock-open")
     $(this).parent().parent().parent().removeClass("disabled")
   } else {
-    $(this).find("i").removeClass("fa-lock-open")
-    $(this).find("i").addClass("fa-lock")
+    $(this).find("i").removeClass("icon-lock-open")
+    $(this).find("i").addClass("icon-lock")
     $(this).parent().parent().parent().addClass("disabled")
   }
   programSortableUpdate();
