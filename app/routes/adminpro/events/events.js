@@ -1110,7 +1110,15 @@ router.get('/:event/program', async (req, res) => {
         }
       }
       for(let a=0;a<data.program.length;a++) {
-        const progSchedule = scheduleBySubId[data.program[a]._id.toString()] || [];
+        const progScheduleRaw = scheduleBySubId[data.program[a]._id.toString()] || [];
+        const seenKeys = new Set();
+        const progSchedule = progScheduleRaw.filter(s => {
+          if (!s || !s.starttime || !s.endtime || !s.venue || !s.venue.room) return true;
+          const key = new Date(s.starttime).getTime() + '_' + new Date(s.endtime).getTime() + '_' + s.venue.room;
+          if (seenKeys.has(key)) return false;
+          seenKeys.add(key);
+          return true;
+        });
         if (data.program[a].performance) {
           var duration = data.program[a].performance.duration;
           if (progSchedule && progSchedule.length) {

@@ -459,6 +459,13 @@ function programSortableUpdate() {
   var data = [];
   var tobescheduled = [];
   for (var id in programMap) {
+    var seen = {};
+    programMap[id].schedule = programMap[id].schedule.filter(function(s) {
+      var key = (s.starttime || '') + '_' + (s.endtime || '') + '_' + (s.venue && s.venue.room ? s.venue.room : '');
+      if (seen[key]) return false;
+      seen[key] = true;
+      return true;
+    });
     if (programMap[id].schedule.length > 0) {
       data.push(programMap[id]);
     } else {
