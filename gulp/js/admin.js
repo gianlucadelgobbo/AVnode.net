@@ -385,11 +385,15 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
 });
 
 function programSortableUpdate() {
+  console.log("=== programSortableUpdate START ===");
   var programMap = {};
   var connectedSortable = $(".connectedSortable").parent();
+  console.log("Forms totali:", connectedSortable.length, "(1 left + "+(connectedSortable.length-1)+" rooms)");
   for (var a=1;a<connectedSortable.length;a++) {
     var day = $(connectedSortable[a]).serializeJSON();
     day.room = JSON.parse(day.room);
+    var formId = $(connectedSortable[a]).find("form").attr("id") || "form-"+a;
+    console.log("Room form", formId, "room:", day.room.venue.room, "programs:", day.program ? day.program.length : 0);
     if (day.program && day.program.length) {
       var boxes = $(connectedSortable[a]).find("li");
       var room_starttime = new Date (day.room.starttime).getTime();
@@ -436,43 +440,46 @@ function programSortableUpdate() {
           scheduleItem = day.program[b].schedule;
         }
         var id = day.program[b]._id;
+        var alreadyInMap = !!programMap[id];
         if (!programMap[id]) {
           programMap[id] = {_id: id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event};
         }
         programMap[id].schedule.push(scheduleItem);
+        console.log("  box", b, "_id:", id, "room:", scheduleItem.venue.room, "already:", alreadyInMap, "schedules now:", programMap[id].schedule.length);
       }
     }
   }
   var day = $(connectedSortable[0]).serializeJSON();
   var boxes = $(connectedSortable[0]).find("li");
+  console.log("Left column (TO BE SCHEDULED) programs:", day.program ? day.program.length : 0);
   if (day.program && day.program.length) {
     for (var b=0;b<day.program.length;b++) {
       $(boxes[b]).find(".timing").html("TBD");
       $(boxes[b]).find(".index").html(b+1);
       day.program[b] = JSON.parse(day.program[b]);
       var id = day.program[b]._id;
+      var alreadyInMap = !!programMap[id];
       if (!programMap[id]) {
         programMap[id] = {_id: id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event};
       }
+      console.log("  tbs", b, "_id:", id, "already:", alreadyInMap, "schedules:", programMap[id].schedule.length);
     }
   }
   var data = [];
   var tobescheduled = [];
   for (var id in programMap) {
-    var seen = {};
-    programMap[id].schedule = programMap[id].schedule.filter(function(s) {
-      var date = new Date(s.starttime);
-      var day = date.getUTCFullYear() + '-' + ('0'+(date.getUTCMonth()+1)).substr(-2) + '-' + ('0'+date.getUTCDate()).substr(-2);
-      var key = day + '_' + (s.venue && s.venue.room ? s.venue.room : '');
-      if (seen[key]) return false;
-      seen[key] = true;
-      return true;
-    });
     if (programMap[id].schedule.length > 0) {
       data.push(programMap[id]);
     } else {
       tobescheduled.push(programMap[id]);
     }
+  }
+  console.log("=== SENDING: data:", data.length, "tobescheduled:", tobescheduled.length, "===");
+  for (var i=0;i<data.length;i++) {
+    console.log("  data["+i+"] _id:", data[i]._id, "schedules:", data[i].schedule.length, data[i].schedule.map(function(s){return s.venue.room+" "+s.starttime}).join(" | "));
+  }
+  for (var i=0;i<tobescheduled.length;i++) {
+    console.log("  tbs["+i+"] _id:", tobescheduled[i]._id);
   }
   $.ajax({
     url: "/admin/api/programupdate",

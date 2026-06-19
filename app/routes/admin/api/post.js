@@ -840,7 +840,21 @@ router.updateProgram = (req, res) => {
     } 
   }
   for (var a=0;a<program.length;a++) {
-    eventProgram.push({subscription_id: program[a]._id, performance: program[a].performance, schedule: !program[a].schedule ? [] : program[a].schedule});
+    var schedule = !program[a].schedule ? [] : (Array.isArray(program[a].schedule) ? program[a].schedule : [program[a].schedule]);
+    var seenKeys = {};
+    schedule = schedule.filter(function(s) {
+      if (!s || !s.starttime || !s.venue || !s.venue.room) return true;
+      var date = new Date(s.starttime);
+      var day = date.toISOString().split('T')[0];
+      var key = day + '_' + s.venue.room;
+      if (seenKeys[key]) {
+        logger.info("DEDUP: removing duplicate schedule for " + program[a]._id + " key=" + key);
+        return false;
+      }
+      seenKeys[key] = true;
+      return true;
+    });
+    eventProgram.push({subscription_id: program[a]._id, performance: program[a].performance, schedule: schedule});
     if (program[a].performance.toString() == "60ef195282f94366b0a464d2") {
       logger.info("60ef195282f94366b0a464d260ef195282f94366b0a464d2");
       logger.info(program[a]._id);
