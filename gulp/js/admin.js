@@ -322,9 +322,14 @@ $(function() {
 
 
 // PROGRAM
+var programUpdateTimer = null;
 $( ".program .connectedSortable" ).sortable({
   update: function( e, ui ) {
-    programSortableUpdate();
+    console.log("sortable update fired on:", $(this).attr("id"), "sender:", ui.sender ? ui.sender.attr("id") : "none");
+    clearTimeout(programUpdateTimer);
+    programUpdateTimer = setTimeout(function() {
+      programSortableUpdate();
+    }, 100);
   },
   connectWith: ".connectedSortable"
 }).disableSelection();
@@ -383,15 +388,19 @@ function programSortableUpdate() {
   var data = [];
   var tobescheduled = [];
   var connectedSortable = $(".connectedSortable").parent();
+  console.log("=== programSortableUpdate === forms:", connectedSortable.length);
   for (var a=1;a<connectedSortable.length;a++) {
     var day = $(connectedSortable[a]).serializeJSON();
     day.room = JSON.parse(day.room);
+    var formId = $(connectedSortable[a]).find("form").attr("id") || "form-"+a;
+    console.log("Form", formId, "room:", day.room.venue.room, "programs:", day.program ? day.program.length : 0);
     if (day.program && day.program.length) {
       var boxes = $(connectedSortable[a]).find("li");
       var room_starttime = new Date (day.room.starttime).getTime();
       var timing = new Date (day.room.starttime).getTime();
       for (var b=0;b<day.program.length;b++) {
         day.program[b] = JSON.parse(day.program[b]);
+        console.log("  item", b, "_id:", day.program[b]._id, "perf:", day.program[b].performance?.title || day.program[b].performance?._id || day.program[b].performance);
         if (!$(boxes[b]).hasClass("disabled")) {
           // AGGIUNGO INTERVALLO SE PREVISTO
           if (day.room.venue.breakduration>-1 && b > 0) timing+= parseFloat(day.room.venue.breakduration)*(60*1000);
@@ -446,7 +455,10 @@ function programSortableUpdate() {
       tobescheduled.push({_id: day.program[b]._id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event});
     }
   }
-  console.log("programSortableUpdate data:", JSON.stringify(data));
+  console.log("tobescheduled:", tobescheduled.length, tobescheduled.map(function(t){return t._id}));
+  var idCounts = {};
+  data.forEach(function(d){ idCounts[d._id] = (idCounts[d._id]||0) + 1; });
+  console.log("data items:", data.length, "unique _ids:", Object.keys(idCounts).length, "duplicates:", Object.entries(idCounts).filter(function(e){return e[1]>1}).map(function(e){return e[0]+"(x"+e[1]+")"}));
   console.log("event:", day.event);
   $.ajax({
     url: "/admin/api/programupdate",
