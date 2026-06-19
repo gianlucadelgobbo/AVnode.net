@@ -385,24 +385,19 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
 });
 
 function programSortableUpdate() {
-  var data = [];
-  var tobescheduled = [];
+  var programMap = {};
   var connectedSortable = $(".connectedSortable").parent();
-  console.log("=== programSortableUpdate === forms:", connectedSortable.length);
   for (var a=1;a<connectedSortable.length;a++) {
     var day = $(connectedSortable[a]).serializeJSON();
     day.room = JSON.parse(day.room);
-    var formId = $(connectedSortable[a]).find("form").attr("id") || "form-"+a;
-    console.log("Form", formId, "room:", day.room.venue.room, "programs:", day.program ? day.program.length : 0);
     if (day.program && day.program.length) {
       var boxes = $(connectedSortable[a]).find("li");
       var room_starttime = new Date (day.room.starttime).getTime();
       var timing = new Date (day.room.starttime).getTime();
       for (var b=0;b<day.program.length;b++) {
         day.program[b] = JSON.parse(day.program[b]);
-        console.log("  item", b, "_id:", day.program[b]._id, "perf:", day.program[b].performance?.title || day.program[b].performance?._id || day.program[b].performance);
+        var scheduleItem;
         if (!$(boxes[b]).hasClass("disabled")) {
-          // AGGIUNGO INTERVALLO SE PREVISTO
           if (day.room.venue.breakduration>-1 && b > 0) timing+= parseFloat(day.room.venue.breakduration)*(60*1000);
           var start = new Date (timing);
           if (day.room.venue.breakduration>-1) {
@@ -418,7 +413,7 @@ function programSortableUpdate() {
           day.program[b].schedule.disableautoschedule = false;
 
           $(boxes[b]).find("input").val(JSON.stringify(day.program[b]))
-          day.program[b].schedule = [day.program[b].schedule]
+          scheduleItem = day.program[b].schedule;
           $(boxes[b]).find(".timing").html(moment(start).utc().format("H:mm")+" - "+moment(end).utc().format("H:mm"));
           $(boxes[b]).find(".index").html(b+1);
           $(boxes[b]).removeAttr("style");
@@ -438,12 +433,15 @@ function programSortableUpdate() {
             }
           }
           day.program[b].schedule.disableautoschedule = true;
-          day.program[b].schedule = [day.program[b].schedule]
+          scheduleItem = day.program[b].schedule;
         }
-        data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
+        var id = day.program[b]._id;
+        if (!programMap[id]) {
+          programMap[id] = {_id: id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event};
+        }
+        programMap[id].schedule.push(scheduleItem);
       }
     }
-    //
   }
   var day = $(connectedSortable[0]).serializeJSON();
   var boxes = $(connectedSortable[0]).find("li");
@@ -452,14 +450,21 @@ function programSortableUpdate() {
       $(boxes[b]).find(".timing").html("TBD");
       $(boxes[b]).find(".index").html(b+1);
       day.program[b] = JSON.parse(day.program[b]);
-      tobescheduled.push({_id: day.program[b]._id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event});
+      var id = day.program[b]._id;
+      if (!programMap[id]) {
+        programMap[id] = {_id: id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event};
+      }
     }
   }
-  console.log("tobescheduled:", tobescheduled.length, tobescheduled.map(function(t){return t._id}));
-  var idCounts = {};
-  data.forEach(function(d){ idCounts[d._id] = (idCounts[d._id]||0) + 1; });
-  console.log("data items:", data.length, "unique _ids:", Object.keys(idCounts).length, "duplicates:", Object.entries(idCounts).filter(function(e){return e[1]>1}).map(function(e){return e[0]+"(x"+e[1]+")"}));
-  console.log("event:", day.event);
+  var data = [];
+  var tobescheduled = [];
+  for (var id in programMap) {
+    if (programMap[id].schedule.length > 0) {
+      data.push(programMap[id]);
+    } else {
+      tobescheduled.push(programMap[id]);
+    }
+  }
   $.ajax({
     url: "/admin/api/programupdate",
     method: "post",
