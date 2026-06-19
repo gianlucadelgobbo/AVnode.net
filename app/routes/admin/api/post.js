@@ -840,6 +840,15 @@ router.updateProgram = (req, res) => {
     } 
   }
   for (var a=0;a<program.length;a++) {
+    if (program[a].schedule && program[a].schedule.length > 1) {
+      var seen = {};
+      program[a].schedule = program[a].schedule.filter(function(s) {
+        var key = (s.starttime || '') + '|' + (s.venue && s.venue.room || '');
+        if (seen[key]) return false;
+        seen[key] = true;
+        return true;
+      });
+    }
     eventProgram.push({subscription_id: program[a]._id, performance: program[a].performance, schedule: !program[a].schedule ? [] : program[a].schedule});
     if (program[a].performance.toString() == "60ef195282f94366b0a464d2") {
       logger.info("60ef195282f94366b0a464d260ef195282f94366b0a464d2");
