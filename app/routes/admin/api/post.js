@@ -802,115 +802,56 @@ router.updatePartnerships = async (req, res) => {
   }
 }
 
-router.updateProgram = (req, res) => {
+router.updateProgram = async (req, res) => {
   logger.info("updateProgram");
-  logger.info("req.body");
-  logger.info(req.body);
-  var performances = [];
-  var programIDS = [];
-  var program = [];
-  var eventProgram = [];
-  var promises = [];
-  var promisesPerf = [];
-  if (req.body.tobescheduled && req.body.tobescheduled.length) {
-    for (var a=0;a<req.body.tobescheduled.length;a++) {
-      var index = programIDS.indexOf(req.body.tobescheduled[a]._id);
-      logger.info("req.body.tobescheduled[a]");
-      logger.info(req.body.tobescheduled[a]);
-      if (index===-1) {
-        programIDS.push(req.body.tobescheduled[a]._id);
-        program.push(req.body.tobescheduled[a]);
-      } else {
-        console.log("DOPPIO TO BE SCHEDULED!!!");
+  try {
+    var programMap = {};
+    if (req.body.tobescheduled) {
+      var items = Array.isArray(req.body.tobescheduled) ? req.body.tobescheduled : [req.body.tobescheduled];
+      for (var a = 0; a < items.length; a++) {
+        programMap[items[a]._id] = { performance: items[a].performance, schedule: [] };
       }
-    }  
-  }  
-  if (req.body.data && req.body.data.length) {
-    for (var a=0;a<req.body.data.length;a++) {
-      var index = programIDS.indexOf(req.body.data[a]._id);
-      logger.info("req.body.data[a]");
-      logger.info(req.body.data[a]);
-      if (index===-1) {
-        programIDS.push(req.body.data[a]._id);
-        program.push(req.body.data[a]);
-      } else {
-        if (!program[index].schedule) program[index].schedule = [];
-        program[index].schedule.push(req.body.data[a].schedule[0]);
-      }
-    } 
-  }
-  for (var a=0;a<program.length;a++) {
-    var schedule = !program[a].schedule ? [] : (Array.isArray(program[a].schedule) ? program[a].schedule : [program[a].schedule]);
-    var seenKeys = {};
-    schedule = schedule.filter(function(s) {
-      if (!s || !s.starttime || !s.venue || !s.venue.room) return true;
-      var date = new Date(s.starttime);
-      var day = date.toISOString().split('T')[0];
-      var key = day + '_' + s.venue.room;
-      if (seenKeys[key]) {
-        logger.info("DEDUP: removing duplicate schedule for " + program[a]._id + " key=" + key);
-        return false;
-      }
-      seenKeys[key] = true;
-      return true;
-    });
-    eventProgram.push({subscription_id: program[a]._id, performance: program[a].performance, schedule: schedule});
-    if (program[a].performance.toString() == "60ef195282f94366b0a464d2") {
-      logger.info("60ef195282f94366b0a464d260ef195282f94366b0a464d2");
-      logger.info(program[a]._id);
-      logger.info(program[a].schedule);
     }
-  }
-  logger.info("eventProgram");
-  logger.info(eventProgram);
-  Promise.all(
-    promises
-  ).then( (resultsPromise) => {
-    for (var a=0;a<program.length;a++) {
-      promisesPerf.push(Models.Performance.findOne({_id: program[a].performance}));
-    }
-    Promise.all(
-      promisesPerf
-    ).then( (resultsPromisePerf) => {
-      var promisesPerfSave = [];
-      for (var a=0;a<resultsPromisePerf.length;a++) {
-        if (resultsPromisePerf[a].bookings.length) {
-          let notfound = true;
-          for (var b=0;b<resultsPromisePerf[a].bookings.length;b++) {
-            if (resultsPromisePerf[a].bookings[b].event && resultsPromisePerf[a].bookings[b].event.toString()==req.body.event) {    
-              resultsPromisePerf[a].bookings[b].schedule = program[a].schedule;
-              notfound = false;
-            }
-          }
-          if (notfound) resultsPromisePerf[a].bookings.push({event:req.body.event,schedule: program[a].schedule});
-        } else {
-          resultsPromisePerf[a].bookings = [{event:req.body.event,schedule: program[a].schedule}];
-        }
-        logger.info("resultsPromisePerf[a].bookings")
-        logger.info(resultsPromisePerf[a].title)
-        logger.info(req.body.event)
-        promisesPerfSave.push(Models.Performance.updateOne({_id:resultsPromisePerf[a]._id}, resultsPromisePerf[a]));
+    if (req.body.data) {
+      var items = Array.isArray(req.body.data) ? req.body.data : [req.body.data];
+      for (var a = 0; a < items.length; a++) {
+        var schedule = Array.isArray(items[a].schedule) ? items[a].schedule : (items[a].schedule ? [items[a].schedule] : []);
+        programMap[items[a]._id] = { performance: items[a].performance, schedule: schedule };
       }
-      Promise.all(
-        promisesPerfSave
-      ).then( async (resultsPromisePerfSave) => {
-        try {
-          const event = await Models.Event.findOne({_id:req.body.event}).exec();
-          for (var a=0;a<event.program.length;a++) {
-            for (var b=0;b<eventProgram.length;b++) {
-              if (event.program[a].subscription_id && event.program[a].subscription_id.toString() === eventProgram[b].subscription_id.toString()) {
-                event.program[a].schedule = eventProgram[b].schedule;
-              }
-            }
+    }
+    logger.info("programMap: " + Object.keys(programMap).length + " programs");
+    for (var id in programMap) {
+      logger.info("  " + id + " schedules:" + programMap[id].schedule.length);
+    }
+    for (var id in programMap) {
+      var perf = await Models.Performance.findOne({_id: programMap[id].performance});
+      if (perf) {
+        if (!perf.bookings) perf.bookings = [];
+        var found = false;
+        for (var b = 0; b < perf.bookings.length; b++) {
+          if (perf.bookings[b].event && perf.bookings[b].event.toString() == req.body.event) {
+            perf.bookings[b].schedule = programMap[id].schedule;
+            found = true;
           }
-          await event.save();
-          res.json(null);
-        } catch(err) {
-          res.json(err);
         }
-      });
-    });
-  });
+        if (!found) perf.bookings.push({event: req.body.event, schedule: programMap[id].schedule});
+        await Models.Performance.updateOne({_id: perf._id}, perf);
+      }
+    }
+    const event = await Models.Event.findOne({_id: req.body.event}).exec();
+    for (var a = 0; a < event.program.length; a++) {
+      var subId = event.program[a].subscription_id ? event.program[a].subscription_id.toString() : null;
+      if (subId && programMap[subId]) {
+        event.program[a].schedule = programMap[subId].schedule;
+      }
+    }
+    await event.save();
+    logger.info("updateProgram saved OK");
+    res.json(null);
+  } catch(err) {
+    logger.error("updateProgram error:", err);
+    res.json(err);
+  }
 }
 /*
 orderID: data.orderID,
