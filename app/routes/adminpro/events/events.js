@@ -1113,8 +1113,11 @@ router.get('/:event/program', async (req, res) => {
         const progScheduleRaw = scheduleBySubId[data.program[a]._id.toString()] || [];
         const seenKeys = new Set();
         const progSchedule = progScheduleRaw.filter(s => {
-          if (!s || !s.starttime || !s.endtime || !s.venue || !s.venue.room) return true;
-          const key = new Date(s.starttime).getTime() + '_' + new Date(s.endtime).getTime() + '_' + s.venue.room;
+          if (!s || !s.starttime || !s.venue || !s.venue.room) return true;
+          let date = new Date(s.starttime);
+          if (date.getUTCHours() < 10) date = new Date(date.getTime() - (24*60*60*1000));
+          const day = date.getUTCFullYear() + '-' + ('0'+(date.getUTCMonth()+1)).substr(-2) + '-' + ('0'+date.getUTCDate()).substr(-2);
+          const key = day + '_' + s.venue.room;
           if (seenKeys.has(key)) return false;
           seenKeys.add(key);
           return true;

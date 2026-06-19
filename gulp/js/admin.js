@@ -461,7 +461,9 @@ function programSortableUpdate() {
   for (var id in programMap) {
     var seen = {};
     programMap[id].schedule = programMap[id].schedule.filter(function(s) {
-      var key = (s.starttime || '') + '_' + (s.endtime || '') + '_' + (s.venue && s.venue.room ? s.venue.room : '');
+      var date = new Date(s.starttime);
+      var day = date.getUTCFullYear() + '-' + ('0'+(date.getUTCMonth()+1)).substr(-2) + '-' + ('0'+date.getUTCDate()).substr(-2);
+      var key = day + '_' + (s.venue && s.venue.room ? s.venue.room : '');
       if (seen[key]) return false;
       seen[key] = true;
       return true;
