@@ -390,7 +390,6 @@ select.form-control option {
 
 .form-check, .form-check-inline {
   padding-left: 0;
-  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
 }
