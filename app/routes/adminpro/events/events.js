@@ -1157,7 +1157,13 @@ router.get('/:event/program', async (req, res) => {
                     let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                     let y = date.getUTCFullYear();
                     let program = JSON.parse(JSON.stringify(data.program[a]));
-                    program.schedule = progSchedule[b];
+                    let daySchedule = JSON.parse(JSON.stringify(progSchedule[b]));
+                    daySchedule.starttime = new Date(progSchedule[b].starttime.getTime() + (24*60*60*1000*c));
+                    daySchedule.endtime = new Date(Math.min(
+                      progSchedule[b].starttime.getTime() + (24*60*60*1000*(c+1)),
+                      progSchedule[b].endtime.getTime()
+                    ));
+                    program.schedule = daySchedule;
                     data.program[a].performance.duration = duration/days;
                     logger.info(progSchedule[b].venue.room);
                     logger.info(progSchedule[b].starttime);

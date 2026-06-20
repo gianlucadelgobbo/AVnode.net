@@ -393,7 +393,7 @@ function programSortableUpdate() {
     var day = $(connectedSortable[a]).serializeJSON();
     day.room = JSON.parse(day.room);
     var formId = $(connectedSortable[a]).find("form").attr("id") || "form-"+a;
-    console.log("Room form", formId, "room:", day.room.venue.room, "programs:", day.program ? day.program.length : 0);
+    console.log("Room form", formId, "room:", day.room.venue.room, "date:", day.room.starttime, "programs:", day.program ? day.program.length : 0);
     if (day.program && day.program.length) {
       var boxes = $(connectedSortable[a]).find("li");
       var room_starttime = new Date (day.room.starttime).getTime();
@@ -425,10 +425,22 @@ function programSortableUpdate() {
           if (Array.isArray(day.program[b].schedule) && day.program[b].schedule.length) {
             day.program[b].schedule = day.program[b].schedule[0];
           }
+          var roomDate = new Date(day.room.starttime);
+          var origStart = new Date(day.program[b].schedule.starttime);
+          var origEnd = new Date(day.program[b].schedule.endtime);
+          day.program[b].schedule.starttime = new Date(Date.UTC(
+            roomDate.getUTCFullYear(), roomDate.getUTCMonth(), roomDate.getUTCDate(),
+            origStart.getUTCHours(), origStart.getUTCMinutes()
+          )).toISOString();
+          day.program[b].schedule.endtime = new Date(Date.UTC(
+            roomDate.getUTCFullYear(), roomDate.getUTCMonth(), roomDate.getUTCDate(),
+            origEnd.getUTCHours(), origEnd.getUTCMinutes()
+          )).toISOString();
+          day.program[b].schedule.venue = day.room.venue;
           if (day.room.venue.breakduration>-1) {
             var daylyend = new Date (timing);
-            daylyend.setUTCHours(new Date (day.program[b].schedule.endtime).getUTCHours())
-            daylyend.setUTCMinutes(new Date (day.program[b].schedule.endtime).getUTCMinutes())
+            daylyend.setUTCHours(origEnd.getUTCHours())
+            daylyend.setUTCMinutes(origEnd.getUTCMinutes())
             if (daylyend.getTime()<timing) {
               timing = daylyend.getTime()
               timing+=24*60*60*1000
@@ -444,8 +456,15 @@ function programSortableUpdate() {
         if (!programMap[id]) {
           programMap[id] = {_id: id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event};
         }
-        programMap[id].schedule.push(scheduleItem);
-        console.log("  box", b, "_id:", id, "room:", scheduleItem.venue.room, "already:", alreadyInMap, "schedules now:", programMap[id].schedule.length);
+        var schedDate = new Date(scheduleItem.starttime).toISOString().split('T')[0];
+        var schedKey = schedDate + '_' + scheduleItem.venue.room;
+        var isDup = programMap[id].schedule.some(function(s) {
+          return new Date(s.starttime).toISOString().split('T')[0] + '_' + s.venue.room === schedKey;
+        });
+        if (!isDup) {
+          programMap[id].schedule.push(scheduleItem);
+        }
+        console.log("  box", b, "_id:", id, "room:", scheduleItem.venue.room, "start:", scheduleItem.starttime, "dup:", isDup, "schedules:", programMap[id].schedule.length);
       }
     }
   }
