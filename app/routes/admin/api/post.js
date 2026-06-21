@@ -440,7 +440,10 @@ router.editSubscription = (req, res) => {
 router.editSubscriptionPrice = async (req, res) => {
   logger.info(req.body);
   try {
-    const sub = await Models.Program.findOne({_id: req.body.id}).select({schedule: 1}).exec();
+    const sub = await Models.Program.findOne({_id: req.body.id}).select({event: 1}).exec();
+    const event = await Models.Event.findOne({_id: sub.event, "program.subscription_id": req.body.id}).select({"program.$": 1}).exec();
+    const schedule = event && event.program && event.program[0] ? event.program[0].schedule : [];
+    sub.schedule = schedule;
     res.render('adminpro/events/acts-edit-sub-price', {sub: sub}, function(err, body) {
       res.json(body);
     });
