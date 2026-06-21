@@ -428,6 +428,12 @@ html body .input-group {
 html body .input-group > .form-control {
   flex: 1 1 auto;
   border-radius: var(--radius) !important;
+  height: auto;
+}
+
+html body .input-group > .input-group-prepend,
+html body .input-group > .input-group-append {
+  display: flex;
 }
 
 html body .input-group > .form-control:not(:first-child) {
