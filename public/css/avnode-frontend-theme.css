@@ -554,6 +554,10 @@ html body .input-group > .input-group-append:last-child > .btn {
   color: var(--darkblue) !important;
 }
 
+.dashboardcode-bsmultiselect ul.dropdown-menu > li {
+  color: var(--light);
+}
+
 /* ---------- Sidebar ---------- */
 /* Force sidebar visible only on desktop (lg+) */
 @media (min-width: 992px) {
