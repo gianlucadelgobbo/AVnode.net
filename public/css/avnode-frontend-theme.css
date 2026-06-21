@@ -59,7 +59,7 @@ html body footer {
 /* Catch-all: any generic block element gets a transparent bg, so Bootstrap's
    stray white backgrounds don't bleed through. Modal elements are excluded
    because they need their own background. */
-html body div:not([class*="modal"]),
+html body div:not([class*="modal"]):not(.pac-container):not(.pac-item):not(.dropdown-menu):not(.select2-dropdown):not(.select2-results):not(.select2-results__options),
 html body section,
 html body article,
 html body fieldset,
@@ -534,7 +534,7 @@ html body .input-group > .input-group-append:last-child > .btn {
 }
 
 .dropdown-menu {
-  background: var(--darkblue);
+  background: var(--darkblue) !important;
   border: 2px solid var(--emerald);
   border-radius: var(--radius-lg);
   padding: 0.5rem;
