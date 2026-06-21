@@ -251,31 +251,32 @@ router.editSubscriptionSave = async (req, res) => {
   try {
     const program = await Models.Program.findOne({_id: req.body.program}).exec();
     if (req.body.schedule != undefined) {
-      for (var a = 0; a < req.body.schedule.length; a++) {
-        program.schedule[a].price = req.body.schedule[a].price;
-        program.schedule[a].paypal = req.body.schedule[a].paypal;
-        program.schedule[a].alleventschedulewithoneprice = req.body.schedule[a].alleventschedulewithoneprice === "1";
-        program.schedule[a].priceincludesothershows = req.body.schedule[a].priceincludesothershows === "1";
-      }
-      await program.save();
-      const performance = await Models.Performance.findOne({_id: program.performance}).exec();
-      logger.info({_id: program.performance});
-      for (var a = 0; a < performance.bookings.length; a++) {
-        if (performance.bookings[a].event && performance.bookings[a].event.toString() === program.event.toString()) {
-          performance.bookings[a].schedule = program.schedule;
-        }
-      }
-      logger.info(performance.bookings);
-      await performance.save();
       const event = await Models.Event.findOne({"program.subscription_id": req.body.program}).exec();
-      logger.info(event.program);
+      var eventSchedule = null;
       for (var a = 0; a < event.program.length; a++) {
         if (event.program[a].subscription_id.toString() === req.body.program.toString()) {
-          event.program[a].schedule = program.schedule;
+          eventSchedule = event.program[a].schedule;
+          break;
         }
       }
-      logger.info(event.program);
+      for (var a = 0; a < req.body.schedule.length; a++) {
+        if (eventSchedule[a]) {
+          eventSchedule[a].price = req.body.schedule[a].price;
+          eventSchedule[a].paypal = req.body.schedule[a].paypal;
+          eventSchedule[a].alleventschedulewithoneprice = req.body.schedule[a].alleventschedulewithoneprice === "1";
+          eventSchedule[a].priceincludesothershows = req.body.schedule[a].priceincludesothershows === "1";
+        }
+      }
       await event.save();
+      const performance = await Models.Performance.findOne({_id: program.performance}).exec();
+      if (performance) {
+        for (var a = 0; a < performance.bookings.length; a++) {
+          if (performance.bookings[a].event && performance.bookings[a].event.toString() === program.event.toString()) {
+            performance.bookings[a].schedule = eventSchedule;
+          }
+        }
+        await performance.save();
+      }
       res.json({success: true});
     } else if (req.body.fee != undefined) {
       program.fee = req.body.fee;
