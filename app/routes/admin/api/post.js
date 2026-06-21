@@ -467,28 +467,30 @@ router.editSubscription = (req, res) => {
   });
 }
 
-router.editSubscriptionPrice = (req, res) => {
+router.editSubscriptionPrice = async (req, res) => {
   logger.info(req.body);
-  Models.Program
-  .findOne({_id: req.body.id/* , members:req.user._id */})
-  .select({schedule: 1})
-  .exec((err, sub) => {
+  try {
+    const sub = await Models.Program.findOne({_id: req.body.id}).select({schedule: 1}).exec();
     res.render('adminpro/events/acts-edit-sub-price', {sub: sub}, function(err, body) {
       res.json(body);
     });
-  });
+  } catch(err) {
+    logger.error(err);
+    res.status(500).json(err);
+  }
 }
 
-router.editSubscriptionCost = (req, res) => {
+router.editSubscriptionCost = async (req, res) => {
   logger.info(req.body);
-  Models.Program
-  .findOne({_id: req.body.id/* , members:req.user._id */})
-  .select({fee: 1, technical_cost: 1, accommodation_cost: 1, transfer_cost: 1})
-  .exec((err, sub) => {
+  try {
+    const sub = await Models.Program.findOne({_id: req.body.id}).select({fee: 1, technical_cost: 1, accommodation_cost: 1, transfer_cost: 1}).exec();
     res.render('adminpro/events/acts-edit-sub-cost', {sub: sub}, function(err, body) {
       res.json(body);
     });
-  });
+  } catch(err) {
+    logger.error(err);
+    res.status(500).json(err);
+  }
 }
 
 router.linkPartner = (req, res) => {
