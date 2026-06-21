@@ -435,6 +435,8 @@ html body .input-group {
 html body .input-group > .form-control {
   flex: 1 1 auto;
   border-radius: var(--radius) !important;
+  height: auto !important;
+  align-self: stretch;
 }
 
 html body .input-group > .input-group-prepend,
