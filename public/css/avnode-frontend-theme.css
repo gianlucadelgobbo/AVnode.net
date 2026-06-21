@@ -453,9 +453,9 @@ html body .input-group-append .btn,
 html body .input-group-append .input-group-text {
   border-radius: 0 !important;
   border: 2px solid var(--emerald) !important;
-  padding: 0.55rem 1rem;
-  font-size: 0.9375rem;
-  line-height: 1.5;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
 }
 
 html body .input-group-append .btn-danger {
