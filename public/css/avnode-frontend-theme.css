@@ -454,6 +454,9 @@ html body .input-group-append .btn,
 html body .input-group-append .input-group-text {
   border-radius: 0 !important;
   border: 2px solid var(--emerald) !important;
+  padding: 0.55rem 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
 }
 
 html body .input-group-append .btn-danger {
@@ -1131,6 +1134,15 @@ html body .table-responsive {
 .d-flex { display: flex !important; }
 .justify-content-between { justify-content: space-between; }
 .align-items-center { align-items: center; }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
 
 /* ---------- Icon fallbacks (LOCAL DUMP PREVIEW ONLY) ----------
    The admin custom icon font isn't shipped with the HTML dump in BACKEND/,

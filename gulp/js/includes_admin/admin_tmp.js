@@ -776,9 +776,9 @@ $(function () {
 			$("#users .alert").html("");
 			$("#users .alert").addClass("d-none")
 			if(confirm("Are you sure you want to remove the user?")) {
-				$(elem).find("i").addClass("fa-spinner");
+				$(elem).find("i").addClass("icon-spinner");
 				$(elem).find("i").addClass("animate-spin");
-				$(elem).find("i").removeClass("fa-trash");
+				$(elem).find("i").removeClass("icon-trash");
 				$.ajax({
 					url: "/admin/api/"+get.sez+"/"+$(elem).data("objid")+"/users/remove/"+$(elem).data("id")+"",
 					method: "get"
@@ -786,9 +786,9 @@ $(function () {
 					$(elem).parent().remove();
 				})
 				.fail((error) => {
-					$(elem).find("i").removeClass("fa-spinner");
+					$(elem).find("i").removeClass("icon-spinner");
 					$(elem).find("i").removeClass("animate-spin");
-					$(elem).find("i").addClass("fa-trash");
+					$(elem).find("i").addClass("icon-trash");
 					$("#users .alert").addClass("alert-danger");
 					$("#users .alert").html(error.responseJSON.message);
 					$("#users .alert").removeClass("d-none")
@@ -811,9 +811,9 @@ $(function () {
 				url: "/admin/api/"+ obj +"/"+ objid +"/users/add/"+selectedItem.value,
 				method: "get"
 			}).done((data) => {
-				$("#users .saving a:last i").removeClass("fa-spinner");
+				$("#users .saving a:last i").removeClass("icon-spinner");
 				$("#users .saving a:last i").removeClass("animate-spin");
-				$("#users .saving a:last i").addClass("fa-trash");
+				$("#users .saving a:last i").addClass("icon-trash");
 				$("#users .saving a:last").attr("data-id", selectedItem.value)
 				$("#users .saving").removeClass("saving");
 				$("#users a:last").on("click", function (event) {
@@ -1037,9 +1037,9 @@ $(function () {
 			$("#members .alert").html("");
 			$("#members .alert").addClass("d-none")
 			if(confirm("Are you sure you want to remove elem member?")) {
-				$(elem).find("i").addClass("fa-spinner");
+				$(elem).find("i").addClass("icon-spinner");
 				$(elem).find("i").addClass("animate-spin");
-				$(elem).find("i").removeClass("fa-trash");
+				$(elem).find("i").removeClass("icon-trash");
 				$.ajax({
 					url: "/admin/api/crews/"+$(elem).data("crewid")+"/members/remove/"+$(elem).data("id")+"",
 					method: "get"
@@ -1047,9 +1047,9 @@ $(function () {
 					$(elem).parent().remove();
 				})
 				.fail((error) => {
-					$(elem).find("i").removeClass("fa-spinner");
+					$(elem).find("i").removeClass("icon-spinner");
 					$(elem).find("i").removeClass("animate-spin");
-					$(elem).find("i").addClass("fa-trash");
+					$(elem).find("i").addClass("icon-trash");
 					$("#members .alert").addClass("alert-danger");
 					$("#members .alert").html(error.responseJSON.message);
 					$("#members .alert").removeClass("d-none")
@@ -1067,9 +1067,9 @@ $(function () {
 					url: "/admin/api/crews/"+ crewid +"/members/add/"+item.value,
 					method: "get"
 				}).done((data) => {
-					$("#members .saving a:last i").removeClass("fa-spinner");
+					$("#members .saving a:last i").removeClass("icon-spinner");
 					$("#members .saving a:last i").removeClass("animate-spin");
-					$("#members .saving a:last i").addClass("fa-trash");
+					$("#members .saving a:last i").addClass("icon-trash");
 					$("#members .saving a:last").attr("data-id", item.value)
 					$("#members .saving").removeClass("saving");
 					$("#members a:last").on("click", function (event) {
@@ -1466,7 +1466,7 @@ var genUrl = [
 function generateHomes() {
 	var a=0;
 	function apri() {
-		$('#myModal .modal-body').append("<div id=\"genUrl"+a+"\"><i class=\"fas fa-spinner animate-spin\"></i> "+genUrl[a]+"</div>");
+		$('#myModal .modal-body').append("<div id=\"genUrl"+a+"\"><i class=\"icon-spinner animate-spin\"></i> "+genUrl[a]+"</div>");
 		window.open(genUrl[a], a);
 		console.log(genUrl[a])
 		console.log(a);
