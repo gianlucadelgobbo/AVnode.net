@@ -46,13 +46,14 @@ html body .main,
 html body .formcontainer,
 html body #app,
 html body #app > div,
+html body #app .maincontent,
 html body main,
 html body section,
 html body aside,
 html body .d-print-none,
 html body footer {
   background-color: transparent !important;
-  color: inherit;
+  color: var(--light);
 }
 
 /* Catch-all: any generic block element gets a transparent bg, so Bootstrap's
