@@ -268,6 +268,13 @@ html body .btn-success:focus {
   background-color: transparent !important;
   color: var(--emerald) !important;
 }
+html body .btn-success.disabled,
+html body .btn-success:disabled {
+  background-color: var(--darkblue-2) !important;
+  color: var(--emerald) !important;
+  border-color: var(--emerald) !important;
+  opacity: 0.6;
+}
 
 html body .btn-danger,
 html body a.btn-danger,
