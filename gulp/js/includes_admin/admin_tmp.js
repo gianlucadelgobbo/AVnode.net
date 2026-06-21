@@ -1447,21 +1447,21 @@ var error=0;
 var timeout;
 var genUrl = [
 	"https://gianlucadelgobbo.net/?createcache=1", "https://gianlucadelgobbo.net/it/?createcache=1",
-	"https://flyer.it/?createcache=1","https://flyer.it/it/?createcache=1",
+	"https://flyer.it/?createcache=1", "https://flyer.it/it/?createcache=1",
 	"https://linux-club.org/?createcache=1",
 	"https://pacnetwork.org/?createcache=1",
-				
-	"https://livecinemafestival.com/?createcache=1","https://livecinemafestival.com/en/?createcache=1",
-	
-	"https://fotonicafestival.com/?createcache=1","https://fotonicafestival.com/en/?createcache=1",
-	
-	"https://liveperformersmeeting.net/?createcache=1",
-	
-	"https://shockart.net/?createcache=1","https://shockart.net/it/?createcache=1",
+	"https://liveperformersmeeting.net/?createcache=1", "https://liveperformersmeeting.net/it/?createcache=1",
+	"https://livecinemafestival.com/?createcache=1", "https://livecinemafestival.com/en/?createcache=1",
+	"https://chromosphere.eu/?createcache=1",
 	"https://vjtelevision.com/?createcache=1",
-	"https://wam.flyer.it/?createcache=1","https://wam.flyer.it/it/?createcache=1",
-	"https://chromosphere.eu/?createcache=1","https://chromosphere.eu/en/?createcache=1"
-
+	"https://shockart.net/?createcache=1", "https://shockart.net/it/?createcache=1",
+	"https://wam.flyer.it/?createcache=1", "https://wam.flyer.it/it/?createcache=1",
+	"https://fotonicafestival.com/?createcache=1", "https://fotonicafestival.com/en/?createcache=1",
+	"https://flxer.net/?createcache=1", "https://flxer.net/it/?createcache=1",
+	"https://electrokids.net/?createcache=1",
+	"https://digitalatium.fotonicafestival.com/?createcache=1", "https://digitalatium.fotonicafestival.com/it/?createcache=1",
+	"https://visualsound.org/?createcache=1", "https://visualsound.org/en/?createcache=1",
+	"https://visualsoundacademy.com/?createcache=1", "https://visualsoundacademy.com/en/?createcache=1"
 ];
 function generateHomes() {
 	var a=0;
