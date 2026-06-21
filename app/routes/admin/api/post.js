@@ -245,120 +245,90 @@ router.cancelSubscription = async (req, res) => {
   }
 }
 
-router.editSubscriptionSave = (req, res) => {
+router.editSubscriptionSave = async (req, res) => {
   logger.info("editSubscriptionSave");
-  logger.info("req.body");
   logger.info(req.body);
-  Models.Program.findOne({_id: req.body.program})
-  .exec((err, program) => {
-    if (req.body.schedule!=undefined) {
-      for(var a=0;a<req.body.schedule.length;a++){
+  try {
+    const program = await Models.Program.findOne({_id: req.body.program}).exec();
+    if (req.body.schedule != undefined) {
+      for (var a = 0; a < req.body.schedule.length; a++) {
         program.schedule[a].price = req.body.schedule[a].price;
         program.schedule[a].paypal = req.body.schedule[a].paypal;
-        program.schedule[a].alleventschedulewithoneprice = req.body.schedule[a].alleventschedulewithoneprice==="1";
-        program.schedule[a].priceincludesothershows = req.body.schedule[a].priceincludesothershows==="1";
+        program.schedule[a].alleventschedulewithoneprice = req.body.schedule[a].alleventschedulewithoneprice === "1";
+        program.schedule[a].priceincludesothershows = req.body.schedule[a].priceincludesothershows === "1";
       }
-      program.save(function(err){
-        if (err) {
-          res.json(err);
-        } else {
-          Models.Performance.findOne({_id: program.performance})
-          .exec((err, performance) => {
-            logger.info({_id: program.performance});
-            for(var a=0;a<performance.bookings.length;a++){
-              if (performance.bookings[a].event && performance.bookings[a].event.toString()===program.event.toString()) {
-                performance.bookings[a].schedule = program.schedule;
-              }
-            }
-            logger.info(performance.bookings);
-            performance.save(function(err){
-              Models.Event.findOne({"program.subscription_id": req.body.program})
-              .exec((err, event) => {
-                logger.info(event.program);
-                for(var a=0;a<event.program.length;a++){
-                  if (event.program[a].subscription_id.toString()===req.body.program.toString()) {
-                    event.program[a].schedule = program.schedule;
-                  }
-                }
-                logger.info(event.program);
-                event.save(function(err){
-                  if (err) {
-                    res.json(err);
-                  } else {
-                    res.json({success: true});
-                  }
-                });
-              });
-            });
-          });
+      await program.save();
+      const performance = await Models.Performance.findOne({_id: program.performance}).exec();
+      logger.info({_id: program.performance});
+      for (var a = 0; a < performance.bookings.length; a++) {
+        if (performance.bookings[a].event && performance.bookings[a].event.toString() === program.event.toString()) {
+          performance.bookings[a].schedule = program.schedule;
         }
-      });
-    } else if (req.body.fee!=undefined) {
+      }
+      logger.info(performance.bookings);
+      await performance.save();
+      const event = await Models.Event.findOne({"program.subscription_id": req.body.program}).exec();
+      logger.info(event.program);
+      for (var a = 0; a < event.program.length; a++) {
+        if (event.program[a].subscription_id.toString() === req.body.program.toString()) {
+          event.program[a].schedule = program.schedule;
+        }
+      }
+      logger.info(event.program);
+      await event.save();
+      res.json({success: true});
+    } else if (req.body.fee != undefined) {
       program.fee = req.body.fee;
       program.technical_cost = req.body.technical_cost;
       program.accommodation_cost = req.body.accommodation_cost;
       program.transfer_cost = req.body.transfer_cost;
-      program.save(function(err){
-        if (err) {
-          res.json(err);
-        } else {
-          res.json({success: true});
-        }
-      });
+      await program.save();
+      res.json({success: true});
     } else {
-      var subscriptions = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed!="1");
-      var subscriptions_freezed = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed=="1").map(item => {return item.subscriber_id.toString()});
-      for (var item=0;item<subscriptions.length;item++) {
+      var subscriptions = req.body.subscriptions.filter(item => item.subscriber_id != "" && item.freezed != "1");
+      var subscriptions_freezed = req.body.subscriptions.filter(item => item.subscriber_id != "" && item.freezed == "1").map(item => { return item.subscriber_id.toString() });
+      for (var item = 0; item < subscriptions.length; item++) {
         if (subscriptions[item].packages && subscriptions[item].packages.length) {
-          for (var pack=0;pack<subscriptions[item].packages.length;pack++) {
-            var tmpPack = JSON.parse("["+subscriptions[item].packages[pack].package+"]");
+          for (var pack = 0; pack < subscriptions[item].packages.length; pack++) {
+            var tmpPack = JSON.parse("[" + subscriptions[item].packages[pack].package + "]");
             tmpPack[0].option = subscriptions[item].packages[pack].option;
             subscriptions[item].packages[pack] = tmpPack[0];
           }
           logger.info("subscriptions[item].packages");
-          logger.info(subscriptions[item].packages);  
+          logger.info(subscriptions[item].packages);
         }
       }
-      for (var item=0;item<program.subscriptions.length;item++) {
-        if (subscriptions_freezed.indexOf(program.subscriptions[item].subscriber_id.toString())!=-1) {
+      for (var item = 0; item < program.subscriptions.length; item++) {
+        if (subscriptions_freezed.indexOf(program.subscriptions[item].subscriber_id.toString()) != -1) {
           program.subscriptions[item].freezed = true;
           subscriptions.push(program.subscriptions[item]);
         }
       }
       program.reference = req.body.reference;
       program.subscriptions = subscriptions;
-      program.save(function(err){
-        if (err) {
-          res.json(err);
-        } else {
-          Models.Program.find({_id: {$ne: program._id}, event:program.event, "subscriptions.subscriber_id": program.subscriptions.map(item => {return item.subscriber_id;})})
-          .exec((err, programs) => {
-            if (programs.length) {
-              let promises = [];
-              for (var item=0;item<programs.length;item++) { 
-                for (var subscription=0;subscription<programs[item].subscriptions.length;subscription++) { 
-                  for (var subnew=0;subnew<program.subscriptions.length;subnew++) { 
-                    if (program.subscriptions[subnew].subscriber_id.toString() == programs[item].subscriptions[subscription].subscriber_id.toString()) {
-                      program.subscriptions[subnew].freezed = programs[item].subscriptions[subscription].freezed;
-                      programs[item].subscriptions[subscription] = program.subscriptions[subnew];
-                    }
-                  }
-                }
-                promises.push(Models.Program.findOneAndUpdate({_id: programs[item]._id}, programs[item]), {upsert: true, useFindAndModify: false});
+      await program.save();
+      const programs = await Models.Program.find({_id: {$ne: program._id}, event: program.event, "subscriptions.subscriber_id": program.subscriptions.map(item => { return item.subscriber_id; })}).exec();
+      if (programs.length) {
+        let promises = [];
+        for (var item = 0; item < programs.length; item++) {
+          for (var subscription = 0; subscription < programs[item].subscriptions.length; subscription++) {
+            for (var subnew = 0; subnew < program.subscriptions.length; subnew++) {
+              if (program.subscriptions[subnew].subscriber_id.toString() == programs[item].subscriptions[subscription].subscriber_id.toString()) {
+                program.subscriptions[subnew].freezed = programs[item].subscriptions[subscription].freezed;
+                programs[item].subscriptions[subscription] = program.subscriptions[subnew];
               }
-              Promise.all(
-                promises
-              ).then( (resultsPromise) => {
-                res.json({success: true});
-              });          
-            } else {
-              res.json({success: true});
             }
-          });
+          }
+          promises.push(Models.Program.findOneAndUpdate({_id: programs[item]._id}, programs[item]));
         }
-      });   
+        await Promise.all(promises);
+      }
+      res.json({success: true});
     }
-  });
+  } catch(err) {
+    logger.error("editSubscriptionSave error:", err);
+    res.status(500).json(err);
+  }
 }
 
 router.shareOnTelegram = (req, res) => {
