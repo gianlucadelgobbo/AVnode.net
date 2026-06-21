@@ -391,6 +391,7 @@ select.form-control option {
 }
 
 .form-check, .form-check-inline {
+  display: flex;
   padding-left: 0;
   align-items: center;
   gap: 0.5rem;
@@ -471,8 +472,9 @@ html body .input-group > .input-group-append:last-child > .btn {
   border: 2px solid var(--emerald);
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  padding: 0.5rem 0.85rem;
+  padding: 0.55rem 0.85rem;
   display: flex;
+  align-self: stretch;
   align-items: center;
   white-space: nowrap;
 }
@@ -858,6 +860,14 @@ html body .dz-clickable .attachment-dropzone {
   border: none !important;
   border-radius: 6px !important;
   color: var(--light) !important;
+}
+
+html body .dz-clickable .btn,
+html body .dz-clickable button,
+html body #formupload .btn,
+html body #formupload button {
+  color: var(--light) !important;
+  border-color: var(--emerald) !important;
 }
 
 .labelFieldUpload {
