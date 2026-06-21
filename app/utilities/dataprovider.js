@@ -2036,7 +2036,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
                 req.session[data._id+"#IMG:"+data.medias[item].slug] = true;
                 if (!data.medias[item].stats) data.medias[item].stats = {}
                 data.medias[item].stats.visits = data.medias[item].stats.visits ? data.medias[item].stats.visits+1 : 1;
-                model.updateOne({_id:data._id},{"medias":data.medias});
+                model.updateOne({_id:data._id},{"medias":data.medias}).exec();
               }
               data.img = data.medias[item];
               data.img.index = item;
@@ -2060,8 +2060,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
                 req.session[data.galleries[0]._id+"#IMG:"+data.galleries[0].medias[item].slug] = true;
                 if (!data.galleries[0].medias[item].stats) data.galleries[0].medias[item].stats = {}
                 data.galleries[0].medias[item].stats.visits = data.galleries[0].medias[item].stats.visits ? data.galleries[0].medias[item].stats.visits+1 : 1;
-                model.updateOne({_id:data.galleries[0]._id},{"medias":data.galleries[0].medias}, (err, raw) => {
-                });
+                model.updateOne({_id:data.galleries[0]._id},{"medias":data.galleries[0].medias}).exec();
               }
               data.galleries[0].img = data.galleries[0].medias[item];
               data.galleries[0].img.index = item;
@@ -2083,7 +2082,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
             req.session[data._id] = true;
             if (!data.stats) data.stats = {};
             data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
-            model.updateOne({_id:data._id},{"stats.visits":data.stats.visits});
+            model.updateOne({_id:data._id},{"stats.visits":data.stats.visits}).exec();
           }  
           logger.info("ecchime4")
           if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
