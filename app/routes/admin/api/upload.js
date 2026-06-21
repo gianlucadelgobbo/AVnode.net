@@ -175,7 +175,7 @@ upload.setImage = (req, res) => {
                   }
                   doc[options.fields.name] = put[options.fields.name];
                   try {
-                    doc.save()
+                    await doc.save()
                   } catch (err) {
                     return res.status(500).send({ message: `${JSON.stringify(err)}` });
                   }
