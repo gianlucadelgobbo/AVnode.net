@@ -390,74 +390,6 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   currentLi.addClass("disabled");
   currentLi.find(".lock-schedule i").removeClass("icon-lock-open").addClass("icon-lock");
 
-  if (formdata.startday !== formdata.endday) {
-    var currentForm = current.closest("form");
-    var roomInput = currentForm.find("input[name='room']");
-
-    if (roomInput.length) {
-      var roomData = JSON.parse(roomInput.val());
-      var currentRoomName = roomData.venue.room;
-      var performanceId = currentObj._id;
-
-      var rangeStart = new Date(formdata.startday + "T00:00:00Z");
-      var rangeEnd = new Date(formdata.endday + "T00:00:00Z");
-
-      $("input[name='room']").each(function() {
-        var rd = JSON.parse($(this).val());
-        if (rd.venue.room !== currentRoomName) return;
-
-        var rdDate = new Date(rd.starttime);
-        var rdDateOnly = new Date(rdDate.toISOString().split("T")[0] + "T00:00:00Z");
-        if (rdDateOnly < rangeStart || rdDateOnly > rangeEnd) return;
-
-        var thisForm = $(this).closest("form");
-        if (thisForm.is(currentForm)) return;
-
-        var alreadyExists = false;
-        thisForm.find("input[name='program[]']").each(function() {
-          var prog = JSON.parse($(this).val());
-          if (prog._id === performanceId) {
-            alreadyExists = true;
-            prog.schedule.starttime = new Date(Date.UTC(
-              rdDate.getUTCFullYear(), rdDate.getUTCMonth(), rdDate.getUTCDate(),
-              startHours, startMinutes
-            )).toISOString();
-            prog.schedule.endtime = new Date(Date.UTC(
-              rdDate.getUTCFullYear(), rdDate.getUTCMonth(), rdDate.getUTCDate(),
-              endHours, endMinutes
-            )).toISOString();
-            prog.schedule.disableautoschedule = true;
-            prog.schedule.venue = rd.venue;
-            $(this).val(JSON.stringify(prog));
-            $(this).closest("li").addClass("disabled");
-            $(this).closest("li").find(".timing").html(timestr);
-            $(this).closest("li").find(".lock-schedule i").removeClass("icon-lock-open").addClass("icon-lock");
-          }
-        });
-
-        if (!alreadyExists) {
-          var clone = currentLi.clone();
-          var cloneObj = JSON.parse(JSON.stringify(currentObj));
-          cloneObj.schedule.starttime = new Date(Date.UTC(
-            rdDate.getUTCFullYear(), rdDate.getUTCMonth(), rdDate.getUTCDate(),
-            startHours, startMinutes
-          )).toISOString();
-          cloneObj.schedule.endtime = new Date(Date.UTC(
-            rdDate.getUTCFullYear(), rdDate.getUTCMonth(), rdDate.getUTCDate(),
-            endHours, endMinutes
-          )).toISOString();
-          cloneObj.schedule.disableautoschedule = true;
-          cloneObj.schedule.venue = rd.venue;
-          clone.find("input[name='program[]']").val(JSON.stringify(cloneObj));
-          clone.addClass("disabled");
-          clone.find(".timing").html(timestr);
-          clone.find(".lock-schedule i").removeClass("icon-lock-open").addClass("icon-lock");
-          thisForm.find("ul.connectedSortable").append(clone);
-        }
-      });
-    }
-  }
-
   $('#modalEditSchedule').modal('hide');
   programSortableUpdate();
 });
@@ -479,6 +411,7 @@ function programSortableUpdate() {
       for (var b=0;b<day.program.length;b++) {
         day.program[b] = JSON.parse(day.program[b]);
         var scheduleItem;
+        var origStart = null, origEnd = null;
         if (!$(boxes[b]).hasClass("disabled")) {
           if (day.room.venue.breakduration>-1 && b > 0) timing+= parseFloat(day.room.venue.breakduration)*(60*1000);
           var start = new Date (timing);
@@ -504,8 +437,8 @@ function programSortableUpdate() {
             day.program[b].schedule = day.program[b].schedule[0];
           }
           var roomDate = new Date(day.room.starttime);
-          var origStart = new Date(day.program[b].schedule.starttime);
-          var origEnd = new Date(day.program[b].schedule.endtime);
+          origStart = new Date(day.program[b].schedule.starttime);
+          origEnd = new Date(day.program[b].schedule.endtime);
           day.program[b].schedule.starttime = new Date(Date.UTC(
             roomDate.getUTCFullYear(), roomDate.getUTCMonth(), roomDate.getUTCDate(),
             origStart.getUTCHours(), origStart.getUTCMinutes()
@@ -541,6 +474,37 @@ function programSortableUpdate() {
         });
         if (!isDup) {
           programMap[id].schedule.push(scheduleItem);
+        }
+        if (origStart && origEnd && scheduleItem.disableautoschedule) {
+          var origStartDate = origStart.toISOString().split('T')[0];
+          var origEndDate = origEnd.toISOString().split('T')[0];
+          if (origStartDate !== origEndDate) {
+            var multiCurrent = new Date(origStartDate + 'T00:00:00Z');
+            var multiEnd = new Date(origEndDate + 'T00:00:00Z');
+            while (multiCurrent <= multiEnd) {
+              var multiDateStr = multiCurrent.toISOString().split('T')[0];
+              var multiKey = multiDateStr + '_' + scheduleItem.venue.room;
+              var multiExists = programMap[id].schedule.some(function(s) {
+                return new Date(s.starttime).toISOString().split('T')[0] + '_' + s.venue.room === multiKey;
+              });
+              if (!multiExists) {
+                programMap[id].schedule.push({
+                  starttime: new Date(Date.UTC(
+                    multiCurrent.getUTCFullYear(), multiCurrent.getUTCMonth(), multiCurrent.getUTCDate(),
+                    origStart.getUTCHours(), origStart.getUTCMinutes()
+                  )).toISOString(),
+                  endtime: new Date(Date.UTC(
+                    multiCurrent.getUTCFullYear(), multiCurrent.getUTCMonth(), multiCurrent.getUTCDate(),
+                    origEnd.getUTCHours(), origEnd.getUTCMinutes()
+                  )).toISOString(),
+                  venue: scheduleItem.venue,
+                  disableautoschedule: true
+                });
+                console.log("  multi-day added:", multiDateStr, scheduleItem.venue.room);
+              }
+              multiCurrent.setUTCDate(multiCurrent.getUTCDate() + 1);
+            }
+          }
         }
         console.log("  box", b, "_id:", id, "room:", scheduleItem.venue.room, "start:", scheduleItem.starttime, "dup:", isDup, "schedules:", programMap[id].schedule.length);
       }
