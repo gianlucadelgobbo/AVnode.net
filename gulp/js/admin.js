@@ -335,22 +335,22 @@ $( ".program .connectedSortable" ).sortable({
 }).disableSelection();
 
 var current;
-$( ".edit-schedule" ).click(function( event ) {
+$(document).on("click", ".edit-schedule", function( event ) {
+  event.preventDefault();
   current = $(this).parent().parent().find("input");
   var schedule = JSON.parse(current.val()).schedule;
   var starttime = new Date(schedule.starttime);
-  $('#modalEditSchedule input[name="startday"][value="'+starttime.getFullYear()+"-"+("0"+(starttime.getMonth()+1)).substr(-2)+"-"+("0"+(starttime.getDate())).substr(-2)+'"]').attr("checked","checked");
+  $('#modalEditSchedule input[name="startday"]').prop("checked", false);
+  $('#modalEditSchedule input[name="endday"]').prop("checked", false);
+  $('#modalEditSchedule input[name="startday"][value="'+starttime.getFullYear()+"-"+("0"+(starttime.getMonth()+1)).substr(-2)+"-"+("0"+(starttime.getDate())).substr(-2)+'"]').prop("checked", true);
   var endtime = new Date(schedule.endtime);
-  $('#modalEditSchedule input[name="endday"][value="'+endtime.getFullYear()+"-"+("0"+(endtime.getMonth()+1)).substr(-2)+"-"+("0"+(endtime.getDate())).substr(-2)+'"]').attr("checked","checked");
+  $('#modalEditSchedule input[name="endday"][value="'+endtime.getFullYear()+"-"+("0"+(endtime.getMonth()+1)).substr(-2)+"-"+("0"+(endtime.getDate())).substr(-2)+'"]').prop("checked", true);
 
   $('#modalEditSchedule .starttime_hours').val(starttime.getUTCHours());
   $('#modalEditSchedule .starttime_minutes').val(starttime.getUTCMinutes())
   $('#modalEditSchedule .endtime_hours').val(endtime.getUTCHours())
   $('#modalEditSchedule .endtime_minutes').val(endtime.getUTCMinutes())
 
-//$('#modalEditSchedule .endtime').html("Loading data...");
-  //$('#modalEditSchedule .alert-danger').addClass('d-none');
-  //$('#modalEditSchedule .alert-success').addClass('d-none');
   $('#modalEditSchedule').modal();
 });
 
@@ -358,19 +358,24 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   event.preventDefault();
   var formdata = getFormData($( this ));
   var currentObj = JSON.parse(current.val());
+  var startHours = parseFloat(formdata.starttime_hours);
+  var startMinutes = parseFloat(formdata.starttime_minutes);
+  var endHours = parseFloat(formdata.endtime_hours);
+  var endMinutes = parseFloat(formdata.endtime_minutes);
+
   currentObj.schedule.starttime = new Date(Date.UTC(
     parseFloat(formdata.startday.split("-")[0]),
     parseFloat(formdata.startday.split("-")[1])-1,
     parseFloat(formdata.startday.split("-")[2]),
-    parseFloat(formdata.starttime_hours),
-    parseFloat(formdata.starttime_minutes)
+    startHours,
+    startMinutes
   ));
   currentObj.schedule.endtime = new Date(Date.UTC(
     parseFloat(formdata.endday.split("-")[0]),
     parseFloat(formdata.endday.split("-")[1])-1,
     parseFloat(formdata.endday.split("-")[2]),
-    parseFloat(formdata.endtime_hours),
-    parseFloat(formdata.endtime_minutes)
+    endHours,
+    endMinutes
   ));
 
   var timestr = "";
@@ -378,9 +383,82 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   timestr+= " - ";
   timestr+= ("0"+formdata.endtime_hours).substr(-2)+":"+("0"+formdata.endtime_minutes).substr(-2);
 
+  currentObj.schedule.disableautoschedule = true;
   current.val(JSON.stringify(currentObj));
-  $(current.parent().parent().parent().find(".timing")).html(timestr);
-  $(current.parent().parent()).addClass("disabled");
+  var currentLi = current.closest("li");
+  currentLi.find(".timing").html(timestr);
+  currentLi.addClass("disabled");
+  currentLi.find(".lock-schedule i").removeClass("icon-lock-open").addClass("icon-lock");
+
+  if (formdata.startday !== formdata.endday) {
+    var currentForm = current.closest("form");
+    var roomInput = currentForm.find("input[name='room']");
+
+    if (roomInput.length) {
+      var roomData = JSON.parse(roomInput.val());
+      var currentRoomName = roomData.venue.room;
+      var performanceId = currentObj._id;
+
+      var rangeStart = new Date(formdata.startday + "T00:00:00Z");
+      var rangeEnd = new Date(formdata.endday + "T00:00:00Z");
+
+      $("input[name='room']").each(function() {
+        var rd = JSON.parse($(this).val());
+        if (rd.venue.room !== currentRoomName) return;
+
+        var rdDate = new Date(rd.starttime);
+        var rdDateOnly = new Date(rdDate.toISOString().split("T")[0] + "T00:00:00Z");
+        if (rdDateOnly < rangeStart || rdDateOnly > rangeEnd) return;
+
+        var thisForm = $(this).closest("form");
+        if (thisForm.is(currentForm)) return;
+
+        var alreadyExists = false;
+        thisForm.find("input[name='program[]']").each(function() {
+          var prog = JSON.parse($(this).val());
+          if (prog._id === performanceId) {
+            alreadyExists = true;
+            prog.schedule.starttime = new Date(Date.UTC(
+              rdDate.getUTCFullYear(), rdDate.getUTCMonth(), rdDate.getUTCDate(),
+              startHours, startMinutes
+            )).toISOString();
+            prog.schedule.endtime = new Date(Date.UTC(
+              rdDate.getUTCFullYear(), rdDate.getUTCMonth(), rdDate.getUTCDate(),
+              endHours, endMinutes
+            )).toISOString();
+            prog.schedule.disableautoschedule = true;
+            prog.schedule.venue = rd.venue;
+            $(this).val(JSON.stringify(prog));
+            $(this).closest("li").addClass("disabled");
+            $(this).closest("li").find(".timing").html(timestr);
+            $(this).closest("li").find(".lock-schedule i").removeClass("icon-lock-open").addClass("icon-lock");
+          }
+        });
+
+        if (!alreadyExists) {
+          var clone = currentLi.clone();
+          var cloneObj = JSON.parse(JSON.stringify(currentObj));
+          cloneObj.schedule.starttime = new Date(Date.UTC(
+            rdDate.getUTCFullYear(), rdDate.getUTCMonth(), rdDate.getUTCDate(),
+            startHours, startMinutes
+          )).toISOString();
+          cloneObj.schedule.endtime = new Date(Date.UTC(
+            rdDate.getUTCFullYear(), rdDate.getUTCMonth(), rdDate.getUTCDate(),
+            endHours, endMinutes
+          )).toISOString();
+          cloneObj.schedule.disableautoschedule = true;
+          cloneObj.schedule.venue = rd.venue;
+          clone.find("input[name='program[]']").val(JSON.stringify(cloneObj));
+          clone.addClass("disabled");
+          clone.find(".timing").html(timestr);
+          clone.find(".lock-schedule i").removeClass("icon-lock-open").addClass("icon-lock");
+          thisForm.find("ul.connectedSortable").append(clone);
+        }
+      });
+    }
+  }
+
+  $('#modalEditSchedule').modal('hide');
   programSortableUpdate();
 });
 
@@ -767,8 +845,9 @@ $(document).on("click", ".lock-schedule", function( event ) {
   };
 
 
-  $( ".duplicate" ).click(function( event ) {
-    $(this).parent().parent().parent().clone().insertAfter($(this).parent().parent().parent())
+  $(document).on("click", ".duplicate", function( event ) {
+    event.preventDefault();
+    $(this).closest("li").clone().insertAfter($(this).closest("li"));
   });
 
   if ($(".multiple-select").length) $(".multiple-select").bsMultiSelect({  placeholder:'Room'});
