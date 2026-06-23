@@ -68,8 +68,9 @@ Schedule.virtual('boxDateFull').get(function () {
     let boxDate;
 
     if (days > 1) {
-      boxDate = `From: ${moment.utc(start).format(config.dateFormat[lang].weekdaydaymonthyear)}<br />` +
-                `To: ${moment.utc(end).format(config.dateFormat[lang].weekdaydaymonthyear)}<br />` +
+      var __ = this.$locals.__ || ((t) => t);
+      boxDate = `${__("From")}: ${moment.utc(start).format(config.dateFormat[lang].weekdaydaymonthyear)}<br />` +
+                `${__("To")}: ${moment.utc(end).format(config.dateFormat[lang].weekdaydaymonthyear)}<br />` +
                 `${moment.utc(this.starttime).format("HH:mm")} > ${moment.utc(this.endtime).format("HH:mm")}`;
     } else {
       boxDate = moment.utc(this.starttime - 10 * 60 * 60 * 1000).format(config.dateFormat[lang].weekdaydaymonthyear);

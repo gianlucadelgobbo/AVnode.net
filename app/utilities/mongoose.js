@@ -7,6 +7,14 @@ import path from "path";
 import config from "getconfig";
 import { getCurrentRequest } from "./requestContext.js";
 
+function createLocalizedMoment(locale) {
+  const fn = (date) => moment(date).locale(locale);
+  fn.utc = (...args) => moment.utc(...args).locale(locale);
+  fn.duration = (...args) => moment.duration(...args).locale(locale);
+  fn.locale = () => locale;
+  return fn;
+}
+
 let connectionAttempts = 0;
 const MAX_RETRIES = 5;
 
@@ -19,12 +27,12 @@ mongoose.plugin((schema) => {
       this.$locals.__ = typeof this.options.req.__ === "function" ? this.options.req.__ : (text) => text;
       this.$locals.locale = this.options.req.session?.current_lang || "en";
 
-      this.$locals.moment = this.options.req.moment || ((date) => moment(date).locale(this.$locals.locale));
+      this.$locals.moment = this.options.req.moment ? createLocalizedMoment(this.$locals.locale) : createLocalizedMoment(this.$locals.locale);
     } else {
       console.warn("❌ WARNING: No `req` found in query. Defaulting to 'en'.");
       this.$locals.__ = (text) => text;
       this.$locals.locale = "en";
-      this.$locals.moment = (date) => moment(date).locale("en");
+      this.$locals.moment = createLocalizedMoment("en");
     }
 
     next();
@@ -33,17 +41,10 @@ mongoose.plugin((schema) => {
   schema.post("init", function (doc) {
     if (!doc.$locals) doc.$locals = {};
 
-    if (typeof doc.$locals.__ !== "function") {
-      doc.$locals.__ = function (text) {
-        return text; // ✅ Returns text as fallback if translation function is missing
-      };
-    }
-
     var currentReq = getCurrentRequest();
     doc.$locals.locale = currentReq?.session?.current_lang || "en";
-
-    var docLocale = doc.$locals.locale;
-    doc.$locals.moment = (date) => moment(date).locale(docLocale);
+    doc.$locals.__ = (currentReq && typeof currentReq.__ === "function") ? currentReq.__.bind(currentReq) : (text) => text;
+    doc.$locals.moment = createLocalizedMoment(doc.$locals.locale);
 
     /* console.log("⚠️ DEBUG: Post-init Hook Executed", {
       docLang: doc.$locals.locale,
