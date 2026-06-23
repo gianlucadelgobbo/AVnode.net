@@ -475,35 +475,37 @@ function programSortableUpdate() {
         if (!isDup) {
           programMap[id].schedule.push(scheduleItem);
         }
-        if (origStart && origEnd && scheduleItem.disableautoschedule) {
-          var origStartDate = origStart.toISOString().split('T')[0];
-          var origEndDate = origEnd.toISOString().split('T')[0];
-          if (origStartDate !== origEndDate) {
-            var multiCurrent = new Date(origStartDate + 'T00:00:00Z');
-            var multiEnd = new Date(origEndDate + 'T00:00:00Z');
-            while (multiCurrent <= multiEnd) {
-              var multiDateStr = multiCurrent.toISOString().split('T')[0];
-              var multiKey = multiDateStr + '_' + scheduleItem.venue.room;
-              var multiExists = programMap[id].schedule.some(function(s) {
-                return new Date(s.starttime).toISOString().split('T')[0] + '_' + s.venue.room === multiKey;
+        var roomStart = new Date(day.room.starttime);
+        var roomEnd = new Date(day.room.endtime);
+        var roomStartDate = roomStart.toISOString().split('T')[0];
+        var roomEndDate = roomEnd.toISOString().split('T')[0];
+        if (roomStartDate !== roomEndDate) {
+          var schedItemStart = new Date(scheduleItem.starttime);
+          var schedItemEnd = new Date(scheduleItem.endtime);
+          var multiCurrent = new Date(roomStartDate + 'T00:00:00Z');
+          var multiEnd = new Date(roomEndDate + 'T00:00:00Z');
+          while (multiCurrent <= multiEnd) {
+            var multiDateStr = multiCurrent.toISOString().split('T')[0];
+            var multiKey = multiDateStr + '_' + scheduleItem.venue.room;
+            var multiExists = programMap[id].schedule.some(function(s) {
+              return new Date(s.starttime).toISOString().split('T')[0] + '_' + s.venue.room === multiKey;
+            });
+            if (!multiExists) {
+              programMap[id].schedule.push({
+                starttime: new Date(Date.UTC(
+                  multiCurrent.getUTCFullYear(), multiCurrent.getUTCMonth(), multiCurrent.getUTCDate(),
+                  schedItemStart.getUTCHours(), schedItemStart.getUTCMinutes()
+                )).toISOString(),
+                endtime: new Date(Date.UTC(
+                  multiCurrent.getUTCFullYear(), multiCurrent.getUTCMonth(), multiCurrent.getUTCDate(),
+                  schedItemEnd.getUTCHours(), schedItemEnd.getUTCMinutes()
+                )).toISOString(),
+                venue: scheduleItem.venue,
+                disableautoschedule: scheduleItem.disableautoschedule
               });
-              if (!multiExists) {
-                programMap[id].schedule.push({
-                  starttime: new Date(Date.UTC(
-                    multiCurrent.getUTCFullYear(), multiCurrent.getUTCMonth(), multiCurrent.getUTCDate(),
-                    origStart.getUTCHours(), origStart.getUTCMinutes()
-                  )).toISOString(),
-                  endtime: new Date(Date.UTC(
-                    multiCurrent.getUTCFullYear(), multiCurrent.getUTCMonth(), multiCurrent.getUTCDate(),
-                    origEnd.getUTCHours(), origEnd.getUTCMinutes()
-                  )).toISOString(),
-                  venue: scheduleItem.venue,
-                  disableautoschedule: true
-                });
-                console.log("  multi-day added:", multiDateStr, scheduleItem.venue.room);
-              }
-              multiCurrent.setUTCDate(multiCurrent.getUTCDate() + 1);
+              console.log("  multi-day room added:", multiDateStr, scheduleItem.venue.room);
             }
+            multiCurrent.setUTCDate(multiCurrent.getUTCDate() + 1);
           }
         }
         console.log("  box", b, "_id:", id, "room:", scheduleItem.venue.room, "start:", scheduleItem.starttime, "dup:", isDup, "schedules:", programMap[id].schedule.length);
