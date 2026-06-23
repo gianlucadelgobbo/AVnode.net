@@ -472,41 +472,21 @@ function programSortableUpdate() {
         var isDup = programMap[id].schedule.some(function(s) {
           return new Date(s.starttime).toISOString().split('T')[0] + '_' + s.venue.room === schedKey;
         });
-        if (!isDup) {
-          programMap[id].schedule.push(scheduleItem);
-        }
         var roomStart = new Date(day.room.starttime);
-        var roomEnd = new Date(day.room.endtime);
+        var roomEnd = day.room.endtime ? new Date(day.room.endtime) : roomStart;
         var roomStartDate = roomStart.toISOString().split('T')[0];
         var roomEndDate = roomEnd.toISOString().split('T')[0];
         if (roomStartDate !== roomEndDate) {
           var schedItemStart = new Date(scheduleItem.starttime);
           var schedItemEnd = new Date(scheduleItem.endtime);
-          var multiCurrent = new Date(roomStartDate + 'T00:00:00Z');
-          var multiEnd = new Date(roomEndDate + 'T00:00:00Z');
-          while (multiCurrent <= multiEnd) {
-            var multiDateStr = multiCurrent.toISOString().split('T')[0];
-            var multiKey = multiDateStr + '_' + scheduleItem.venue.room;
-            var multiExists = programMap[id].schedule.some(function(s) {
-              return new Date(s.starttime).toISOString().split('T')[0] + '_' + s.venue.room === multiKey;
-            });
-            if (!multiExists) {
-              programMap[id].schedule.push({
-                starttime: new Date(Date.UTC(
-                  multiCurrent.getUTCFullYear(), multiCurrent.getUTCMonth(), multiCurrent.getUTCDate(),
-                  schedItemStart.getUTCHours(), schedItemStart.getUTCMinutes()
-                )).toISOString(),
-                endtime: new Date(Date.UTC(
-                  multiCurrent.getUTCFullYear(), multiCurrent.getUTCMonth(), multiCurrent.getUTCDate(),
-                  schedItemEnd.getUTCHours(), schedItemEnd.getUTCMinutes()
-                )).toISOString(),
-                venue: scheduleItem.venue,
-                disableautoschedule: scheduleItem.disableautoschedule
-              });
-              console.log("  multi-day room added:", multiDateStr, scheduleItem.venue.room);
-            }
-            multiCurrent.setUTCDate(multiCurrent.getUTCDate() + 1);
-          }
+          scheduleItem.endtime = new Date(Date.UTC(
+            roomEnd.getUTCFullYear(), roomEnd.getUTCMonth(), roomEnd.getUTCDate(),
+            schedItemEnd.getUTCHours(), schedItemEnd.getUTCMinutes()
+          )).toISOString();
+
+        }
+        if (!isDup) {
+          programMap[id].schedule.push(scheduleItem);
         }
         console.log("  box", b, "_id:", id, "room:", scheduleItem.venue.room, "start:", scheduleItem.starttime, "dup:", isDup, "schedules:", programMap[id].schedule.length);
       }

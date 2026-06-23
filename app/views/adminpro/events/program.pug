@@ -86,57 +86,71 @@ block content
             table(style='width: 100%')
               - var conta = 1
               each day in data.programmebydayvenue
-                tr
-                  td(colspan=Object.keys(day.rooms).length)
-                    h2=day.date
-                tr
-                  each room,i in day.rooms
-                    if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'].indexOf(room.schedule.venue.room)>-1)
-                      td(style="width:"+(100/cols)+"%;overflow: hidden;min-width: 300px;")
-                        b=room.schedule.venue.room
-                        div
-                          form(id="form"+conta)
-                            input(type="hidden", name="room", value=JSON.stringify(room.schedule))
-                            ul.list-group.connectedSortable(id="sortable"+conta)
-                              - conta++
-                              if room.program
-                                each program,ii in room.program
-                                  li.list-group-item(class=program.schedule && program.schedule.disableautoschedule ? "disabled" : undefined)
-                                    .timing.small=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime
-                                    .index.badge.disabled=(ii+1)
-                                    .title.mt-2
-                                      b!=program.performance.title
-                                    .clearfix
-                                      .float-left
-                                        .type.small
-                                          !=program.performance.type.name
-                                          if program.performance.genre && program.performance.genre.name
-                                            !=" | "+program.performance.genre.name
-                                          if program.performance.tecnique && program.performance.tecnique.name
-                                            !=" | "+program.performance.tecnique.name
-                                          !=" | "+program.topics.join(", ")
-                                      .float-right
-                                        .duration.small=program.performance.duration+" min."
+                - var hasVisibleRooms = false
+                each tmproom in day.rooms
+                  if (tmproom.schedule && tmproom.schedule.venue && get['bookings.schedule.venue.room'] && (Array.isArray(get['bookings.schedule.venue.room']) ? get['bookings.schedule.venue.room'].indexOf(tmproom.schedule.venue.room)>-1 : get['bookings.schedule.venue.room'] === tmproom.schedule.venue.room))
+                    - hasVisibleRooms = true
+                if hasVisibleRooms
+                  - var dayRangeEnd = null
+                  each tmproom2 in day.rooms
+                    if (tmproom2.schedule && tmproom2.schedule.venue && tmproom2.schedule.starttime && tmproom2.schedule.endtime)
+                      - var tmpStart = new Date(tmproom2.schedule.starttime).toISOString().split('T')[0]
+                      - var tmpEnd = new Date(tmproom2.schedule.endtime).toISOString().split('T')[0]
+                      - if (tmpStart !== tmpEnd) { try { dayRangeEnd = moment(new Date(tmproom2.schedule.endtime)).format("dddd, DD MMMM YYYY"); } catch(e) { dayRangeEnd = tmpEnd; } }
+                  tr
+                    td(colspan=Object.keys(day.rooms).length)
+                      if dayRangeEnd
+                        h2=day.date + " → " + dayRangeEnd
+                      else
+                        h2=day.date
+                  tr
+                    each room,i in day.rooms
+                      if (get['bookings.schedule.venue.room'] && (Array.isArray(get['bookings.schedule.venue.room']) ? get['bookings.schedule.venue.room'].indexOf(room.schedule.venue.room)>-1 : get['bookings.schedule.venue.room'] === room.schedule.venue.room))
+                        td(style="width:"+(100/cols)+"%;overflow: hidden;min-width: 300px;")
+                          b=room.schedule.venue.room
+                          div
+                            form(id="form"+conta)
+                              input(type="hidden", name="room", value=JSON.stringify(room.schedule))
+                              ul.list-group.connectedSortable(id="sortable"+conta)
+                                - conta++
+                                if room.program
+                                  each program,ii in room.program
+                                    li.list-group-item(class=program.schedule && program.schedule.disableautoschedule ? "disabled" : undefined)
+                                      .timing.small=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime
+                                      .index.badge.disabled=(ii+1)
+                                      .title.mt-2
+                                        b!=program.performance.title
+                                      .clearfix
+                                        .float-left
+                                          .type.small
+                                            !=program.performance.type.name
+                                            if program.performance.genre && program.performance.genre.name
+                                              !=" | "+program.performance.genre.name
+                                            if program.performance.tecnique && program.performance.tecnique.name
+                                              !=" | "+program.performance.tecnique.name
+                                            !=" | "+program.topics.join(", ")
+                                        .float-right
+                                          .duration.small=program.performance.duration+" min."
 
-                                    .authors.mb-1=program.performance.users.map(user => {return user.stagename}).join(", ")
-                                    .clearfix
-                                      .float-left
-                                        a.lock-schedule(href="#")
-                                          i(class=program.schedule && program.schedule.disableautoschedule ? "icon-lock" : "icon-lock-open")
-                                        a.pl-3.duplicate(href="#")
-                                          i.icon-clone
-                                        a.pl-3.edit-schedule(href="#")
-                                          i.icon-edit
-                                      .float-right
-                                        .availability.text-right
-                                          - var daydayA = []
-                                          each subscription in program.subscriptions
-                                            each day, i in data.days
-                                              - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return new Date(item).getTime()}).indexOf(day)
-                                          each day, i in daydayA
-                                            span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
-                                              !=new Date(data.days[i]).getDate()
-                                        input(type="hidden", name="program[]", value=JSON.stringify(program))
+                                      .authors.mb-1=program.performance.users.map(user => {return user.stagename}).join(", ")
+                                      .clearfix
+                                        .float-left
+                                          a.lock-schedule(href="#")
+                                            i(class=program.schedule && program.schedule.disableautoschedule ? "icon-lock" : "icon-lock-open")
+                                          a.pl-3.duplicate(href="#")
+                                            i.icon-clone
+                                          a.pl-3.edit-schedule(href="#")
+                                            i.icon-edit
+                                        .float-right
+                                          .availability.text-right
+                                            - var daydayA = []
+                                            each subscription in program.subscriptions
+                                              each day, i in data.days
+                                                - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return new Date(item).getTime()}).indexOf(day)
+                                            each day, i in daydayA
+                                              span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
+                                                !=new Date(data.days[i]).getDate()
+                                          input(type="hidden", name="program[]", value=JSON.stringify(program))
   #modalEditSchedule.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalEditScheduleLabel', aria-hidden='true')
     .modal-dialog.modal-lg(role='document')
       .modal-content
