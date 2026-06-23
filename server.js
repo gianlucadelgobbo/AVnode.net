@@ -16,6 +16,7 @@ import i18n from "./app/utilities/i18n.js";
 import { passport } from './app/utilities/passport.js';
 import routes from "./app/routes/index.js";
 import { logger, requestLogger, errorLogger as expressErrorLogger } from './app/utilities/logger.js';
+import { runWithRequest } from './app/utilities/requestContext.js';
 
 // Initialize Express app
 const app = express();
@@ -220,9 +221,7 @@ app.use(flash());
 app.use(i18n.init);
 
 app.use((req, res, next) => {
-  //console.log("✅ Setting global.currentRequest:", req.originalUrl);
-  global.currentRequest = req;
-  next();
+  runWithRequest(req, () => next());
 });
 /* // 🔥 Block access from certain IPs
 const blockedIPs = new Set((process.env.BLOCKED_IPS || "").split(","));

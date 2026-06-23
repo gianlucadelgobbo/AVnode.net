@@ -4,7 +4,8 @@ import "moment-duration-format";
 
 import fs from "fs";
 import path from "path";
-import config from "getconfig"; // Assumendo che esista un file config.js
+import config from "getconfig";
+import { getCurrentRequest } from "./requestContext.js";
 
 let connectionAttempts = 0;
 const MAX_RETRIES = 5;
@@ -18,19 +19,12 @@ mongoose.plugin((schema) => {
       this.$locals.__ = typeof this.options.req.__ === "function" ? this.options.req.__ : (text) => text;
       this.$locals.locale = this.options.req.session?.current_lang || "en";
 
-      // ✅ Use req.moment if available, otherwise use the default moment instance
-      this.$locals.moment = this.options.req.moment || moment;
-      
-      if (!this.options.req.moment) {
-        // ✅ Only set locale if we're using the default moment instance
-        this.$locals.moment.locale(this.$locals.locale);
-      }
+      this.$locals.moment = this.options.req.moment || ((date) => moment(date).locale(this.$locals.locale));
     } else {
       console.warn("❌ WARNING: No `req` found in query. Defaulting to 'en'.");
-      this.$locals.__ = (text) => text; // Fallback
-      this.$locals.locale = "en"; // Default
-      this.$locals.moment = moment; // ✅ Assign full moment object
-      this.$locals.moment.locale("en"); // ✅ Set default locale only if moment is newly assigned
+      this.$locals.__ = (text) => text;
+      this.$locals.locale = "en";
+      this.$locals.moment = (date) => moment(date).locale("en");
     }
 
     next();
@@ -45,11 +39,11 @@ mongoose.plugin((schema) => {
       };
     }
 
-    doc.$locals.locale = global.currentRequest?.session?.current_lang || "en";
+    var currentReq = getCurrentRequest();
+    doc.$locals.locale = currentReq?.session?.current_lang || "en";
 
-    // ✅ Assign the full moment object instead of a function wrapper
-    doc.$locals.moment = moment;
-    doc.$locals.moment.locale(doc.$locals.locale);
+    var docLocale = doc.$locals.locale;
+    doc.$locals.moment = (date) => moment(date).locale(docLocale);
 
     /* console.log("⚠️ DEBUG: Post-init Hook Executed", {
       docLang: doc.$locals.locale,
@@ -64,13 +58,11 @@ mongoose.plugin((schema) => {
 const originalExec = mongoose.Query.prototype.exec;
 
 mongoose.Query.prototype.exec = async function (...args) {
-  if (!this.options.req && global.currentRequest) {
-    /* console.log("⚠️ DEBUG: Attaching `req.session.current_lang` to query", {
-      globalReqExists: !!global.currentRequest,
-      globalLang: global.currentRequest?.session?.current_lang || "⚠️ MISSING",
-    }); */
-
-    this.setOptions({ req: global.currentRequest });
+  if (!this.options.req) {
+    var currentReq = getCurrentRequest();
+    if (currentReq) {
+      this.setOptions({ req: currentReq });
+    }
   }
 
   try {
