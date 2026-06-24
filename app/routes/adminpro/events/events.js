@@ -1110,18 +1110,7 @@ router.get('/:event/program', async (req, res) => {
         }
       }
       for(let a=0;a<data.program.length;a++) {
-        const progScheduleRaw = scheduleBySubId[data.program[a]._id.toString()] || [];
-        const seenKeys = new Set();
-        const progSchedule = progScheduleRaw.filter(s => {
-          if (!s || !s.starttime || !s.venue || !s.venue.room) return true;
-          let date = new Date(s.starttime);
-          if (date.getUTCHours() < 10) date = new Date(date.getTime() - (24*60*60*1000));
-          const day = date.getUTCFullYear() + '-' + ('0'+(date.getUTCMonth()+1)).substr(-2) + '-' + ('0'+date.getUTCDate()).substr(-2);
-          const key = day + '_' + s.venue.room;
-          if (seenKeys.has(key)) return false;
-          seenKeys.add(key);
-          return true;
-        });
+        const progSchedule = scheduleBySubId[data.program[a]._id.toString()] || [];
         if (data.program[a].performance) {
           var duration = data.program[a].performance.duration;
           if (progSchedule && progSchedule.length) {
@@ -1157,13 +1146,7 @@ router.get('/:event/program', async (req, res) => {
                     let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                     let y = date.getUTCFullYear();
                     let program = JSON.parse(JSON.stringify(data.program[a]));
-                    let daySchedule = JSON.parse(JSON.stringify(progSchedule[b]));
-                    daySchedule.starttime = new Date(progSchedule[b].starttime.getTime() + (24*60*60*1000*c));
-                    daySchedule.endtime = new Date(Math.min(
-                      progSchedule[b].starttime.getTime() + (24*60*60*1000*(c+1)),
-                      progSchedule[b].endtime.getTime()
-                    ));
-                    program.schedule = daySchedule;
+                    program.schedule = progSchedule[b];
                     data.program[a].performance.duration = duration/days;
                     logger.info(progSchedule[b].venue.room);
                     logger.info(progSchedule[b].starttime);
