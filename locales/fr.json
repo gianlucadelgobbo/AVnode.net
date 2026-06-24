@@ -791,5 +791,29 @@
 	"Privacy Policy": "Politique de Confidentialité",
 	"Cookie Policy": "Politique de Cookies",
 	"Model 231": "Model 231",
-	"To": "À"
+	"To": "À",
+	"User do not exists": "L'utilisateur n'existe pas",
+	"Messagge sent": "Message envoyé",
+	"Password not generated, please retry.": "Mot de passe non généré, veuillez réessayer.",
+	"Password reset link sent to": "Lien de réinitialisation du mot de passe envoyé à",
+	"Performance not found.": "Performance non trouvée.",
+	"Proposal, sent.": "Proposition envoyée.",
+	"Please confirm your personal data to go forward": "Veuillez confirmer vos données personnelles pour continuer",
+	"Please accept the terms and conditions to go forward": "Veuillez accepter les conditions générales pour continuer",
+	"Submission of": "Soumission de",
+	"to": "à",
+	"sent with success!!!": "envoyé avec succès !!!",
+	"We have sent you an email with a copy of your submission to": "Nous vous avons envoyé un email avec une copie de votre soumission à",
+	"Please select a performance to go forward": "Veuillez sélectionner une performance pour continuer",
+	"Please select at least 1 topic to go forward": "Veuillez sélectionner au moins 1 thème pour continuer",
+	"Unknow error": "Erreur inconnue",
+	"To have your performance at https": "//avnode.net/performances/maperformance, veuillez insérer maperformance (minuscules, sans espaces, sans caractères spéciaux)",
+	"The list of Events": " Tous Les plus récents",
+	"To have your video at https": "//avnode.net/videos/mavideo, veuillez insérer mavideo (minuscules, sans espaces, sans caractères spéciaux)",
+	"The list of Learnings": " Tous Les plus récents",
+	"To have your gallery at https": "//avnode.net/galleries/magalerie, veuillez insérer magalerie (minuscules, sans espaces, sans caractères spéciaux)",
+	"The list of Videos": " Tous Les plus récents",
+	"If you didn't make the request, just ignore this message": {
+		". Otherwise, you can add the email using this link:": ". Sinon, vous pouvez ajouter l'email en utilisant ce lien :"
+	}
 }

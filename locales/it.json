@@ -790,5 +790,29 @@
 	"Privacy Policy": "Informativa sulla Privacy",
 	"Cookie Policy": "Informativa sui Cookie",
 	"Model 231": "Model 231",
-	"To": "Al"
+	"To": "Al",
+	"User do not exists": "L'utente non esiste",
+	"Messagge sent": "Messaggio inviato",
+	"Password not generated, please retry.": "Password non generata, riprova.",
+	"Password reset link sent to": "Link per reimpostare la password inviato a",
+	"Performance not found.": "Performance non trovata.",
+	"Proposal, sent.": "Proposta inviata.",
+	"Please confirm your personal data to go forward": "Conferma i tuoi dati personali per procedere",
+	"Please accept the terms and conditions to go forward": "Accetta i termini e le condizioni per procedere",
+	"Submission of": "Invio di",
+	"to": "a",
+	"sent with success!!!": "inviato con successo!!!",
+	"We have sent you an email with a copy of your submission to": "Ti abbiamo inviato un'email con una copia della tua candidatura a",
+	"Please select a performance to go forward": "Seleziona una performance per procedere",
+	"Please select at least 1 topic to go forward": "Seleziona almeno 1 argomento per procedere",
+	"Unknow error": "Errore sconosciuto",
+	"To have your performance at https": "//avnode.net/performances/miaperformance, inserisci miaperformance (minuscole, senza spazi, senza caratteri speciali)",
+	"The list of Events": " Tutti I più recenti",
+	"To have your video at https": "//avnode.net/videos/miovideo, inserisci miovideo (minuscole, senza spazi, senza caratteri speciali)",
+	"The list of Learnings": " Tutti I più recenti",
+	"To have your gallery at https": "//avnode.net/galleries/miagalleria, inserisci miagalleria (minuscole, senza spazi, senza caratteri speciali)",
+	"The list of Videos": " Tutti I più recenti",
+	"If you didn't make the request, just ignore this message": {
+		". Otherwise, you can add the email using this link:": ". Altrimenti, puoi aggiungere l'email usando questo link:"
+	}
 }

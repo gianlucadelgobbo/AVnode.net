@@ -790,5 +790,29 @@
 	"Privacy Policy": "Datenschutzrichtlinie",
 	"Cookie Policy": "Cookie-Richtlinie",
 	"Model 231": "Model 231",
-	"To": "Bis"
+	"To": "Bis",
+	"User do not exists": "Benutzer existiert nicht",
+	"Messagge sent": "Nachricht gesendet",
+	"Password not generated, please retry.": "Passwort nicht generiert, bitte erneut versuchen.",
+	"Password reset link sent to": "Link zum Zurücksetzen des Passworts gesendet an",
+	"Performance not found.": "Aufführung nicht gefunden.",
+	"Proposal, sent.": "Vorschlag gesendet.",
+	"Please confirm your personal data to go forward": "Bitte bestätigen Sie Ihre persönlichen Daten, um fortzufahren",
+	"Please accept the terms and conditions to go forward": "Bitte akzeptieren Sie die AGB, um fortzufahren",
+	"Submission of": "Einreichung von",
+	"to": "an",
+	"sent with success!!!": "erfolgreich gesendet!!!",
+	"We have sent you an email with a copy of your submission to": "Wir haben Ihnen eine E-Mail mit einer Kopie Ihrer Einreichung gesendet an",
+	"Please select a performance to go forward": "Bitte wählen Sie eine Aufführung, um fortzufahren",
+	"Please select at least 1 topic to go forward": "Bitte wählen Sie mindestens 1 Thema, um fortzufahren",
+	"Unknow error": "Unbekannter Fehler",
+	"To have your performance at https": "//avnode.net/performances/meineperformance, bitte meineperformance eingeben (Kleinbuchstaben, keine Leerzeichen, keine Sonderzeichen)",
+	"The list of Events": " Alle Neueste",
+	"To have your video at https": "//avnode.net/videos/meinvideo, bitte meinvideo eingeben (Kleinbuchstaben, keine Leerzeichen, keine Sonderzeichen)",
+	"The list of Learnings": " Alle Neueste",
+	"To have your gallery at https": "//avnode.net/galleries/meinegalerie, bitte meinegalerie eingeben (Kleinbuchstaben, keine Leerzeichen, keine Sonderzeichen)",
+	"The list of Videos": " Alle Neueste",
+	"If you didn't make the request, just ignore this message": {
+		". Otherwise, you can add the email using this link:": ". Andernfalls können Sie die E-Mail über diesen Link hinzufügen:"
+	}
 }

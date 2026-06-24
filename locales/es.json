@@ -791,5 +791,29 @@
 	"Privacy Policy": "Política de Privacidad",
 	"Cookie Policy": "Política de Cookies",
 	"Model 231": "Model 231",
-	"To": "Hasta"
+	"To": "Hasta",
+	"User do not exists": "El usuario no existe",
+	"Messagge sent": "Mensaje enviado",
+	"Password not generated, please retry.": "Contraseña no generada, inténtalo de nuevo.",
+	"Password reset link sent to": "Enlace para restablecer la contraseña enviado a",
+	"Performance not found.": "Actuación no encontrada.",
+	"Proposal, sent.": "Propuesta enviada.",
+	"Please confirm your personal data to go forward": "Confirma tus datos personales para continuar",
+	"Please accept the terms and conditions to go forward": "Acepta los términos y condiciones para continuar",
+	"Submission of": "Envío de",
+	"to": "a",
+	"sent with success!!!": "¡¡¡enviado con éxito!!!",
+	"We have sent you an email with a copy of your submission to": "Te hemos enviado un email con una copia de tu envío a",
+	"Please select a performance to go forward": "Selecciona una actuación para continuar",
+	"Please select at least 1 topic to go forward": "Selecciona al menos 1 tema para continuar",
+	"Unknow error": "Error desconocido",
+	"To have your performance at https": "//avnode.net/performances/miactuacion, inserta miactuacion (minúsculas, sin espacios, sin caracteres especiales)",
+	"The list of Events": " Todos Los más recientes",
+	"To have your video at https": "//avnode.net/videos/mivideo, inserta mivideo (minúsculas, sin espacios, sin caracteres especiales)",
+	"The list of Learnings": " Todos Los más recientes",
+	"To have your gallery at https": "//avnode.net/galleries/migaleria, inserta migaleria (minúsculas, sin espacios, sin caracteres especiales)",
+	"The list of Videos": " Todos Los más recientes",
+	"If you didn't make the request, just ignore this message": {
+		". Otherwise, you can add the email using this link:": ". De lo contrario, puedes añadir el email usando este enlace:"
+	}
 }

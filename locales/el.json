@@ -742,5 +742,29 @@
 	"Model 231": "Model 231",
 	"The Program of": "The Program of",
 	"STATUS": "ΚΑΤΑΣΤΑΣΗ",
-	"To": "Έως"
+	"To": "Έως",
+	"User do not exists": "Ο χρήστης δεν υπάρχει",
+	"Messagge sent": "Μήνυμα εστάλη",
+	"Password not generated, please retry.": "Ο κωδικός δεν δημιουργήθηκε, δοκιμάστε ξανά.",
+	"Password reset link sent to": "Σύνδεσμος επαναφοράς κωδικού εστάλη στο",
+	"Performance not found.": "Η παράσταση δεν βρέθηκε.",
+	"Proposal, sent.": "Πρόταση εστάλη.",
+	"Please confirm your personal data to go forward": "Επιβεβαιώστε τα προσωπικά σας στοιχεία για να συνεχίσετε",
+	"Please accept the terms and conditions to go forward": "Αποδεχτείτε τους όρους για να συνεχίσετε",
+	"Submission of": "Υποβολή του",
+	"to": "σε",
+	"sent with success!!!": "εστάλη με επιτυχία!!!",
+	"We have sent you an email with a copy of your submission to": "Σας στείλαμε email με αντίγραφο της υποβολής σας στο",
+	"Please select a performance to go forward": "Επιλέξτε μία παράσταση για να συνεχίσετε",
+	"Please select at least 1 topic to go forward": "Επιλέξτε τουλάχιστον 1 θέμα για να συνεχίσετε",
+	"Unknow error": "Άγνωστο σφάλμα",
+	"To have your performance at https": "//avnode.net/performances/myperformance, εισάγετε myperformance (πεζά, χωρίς κενά, χωρίς ειδικούς χαρακτήρες)",
+	"The list of Events": " Όλα Πιο πρόσφατα",
+	"To have your video at https": "//avnode.net/videos/myvideo, εισάγετε myvideo (πεζά, χωρίς κενά, χωρίς ειδικούς χαρακτήρες)",
+	"The list of Learnings": " Όλα Πιο πρόσφατα",
+	"To have your gallery at https": "//avnode.net/galleries/mygallery, εισάγετε mygallery (πεζά, χωρίς κενά, χωρίς ειδικούς χαρακτήρες)",
+	"The list of Videos": " Όλα Πιο πρόσφατα",
+	"If you didn't make the request, just ignore this message": {
+		". Otherwise, you can add the email using this link:": ". Διαφορετικά, μπορείτε να προσθέσετε το email χρησιμοποιώντας αυτόν τον σύνδεσμο:"
+	}
 }

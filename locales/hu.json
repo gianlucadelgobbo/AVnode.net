@@ -791,5 +791,29 @@
 	"Privacy Policy": "Adatvédelmi Irányelvek",
 	"Cookie Policy": "Cookie Szabályzat",
 	"Model 231": "Model 231",
-	"To": "Ig"
+	"To": "Ig",
+	"User do not exists": "A felhasználó nem létezik",
+	"Messagge sent": "Üzenet elküldve",
+	"Password not generated, please retry.": "Jelszó nem generálódott, próbálja újra.",
+	"Password reset link sent to": "Jelszó visszaállító link elküldve ide",
+	"Performance not found.": "Előadás nem található.",
+	"Proposal, sent.": "Javaslat elküldve.",
+	"Please confirm your personal data to go forward": "Kérjük, erősítse meg személyes adatait a folytatáshoz",
+	"Please accept the terms and conditions to go forward": "Kérjük, fogadja el a feltételeket a folytatáshoz",
+	"Submission of": "Beküldés:",
+	"to": "ide",
+	"sent with success!!!": "sikeresen elküldve!!!",
+	"We have sent you an email with a copy of your submission to": "Küldtünk egy emailt a beküldés másolatával ide",
+	"Please select a performance to go forward": "Kérjük, válasszon egy előadást a folytatáshoz",
+	"Please select at least 1 topic to go forward": "Kérjük, válasszon legalább 1 témát a folytatáshoz",
+	"Unknow error": "Ismeretlen hiba",
+	"To have your performance at https": "//avnode.net/performances/eloadasom, írja be eloadasom (kisbetűk, szóközök nélkül, speciális karakterek nélkül)",
+	"The list of Events": " Összes Legújabb",
+	"To have your video at https": "//avnode.net/videos/videom, írja be videom (kisbetűk, szóközök nélkül, speciális karakterek nélkül)",
+	"The list of Learnings": " Összes Legújabb",
+	"To have your gallery at https": "//avnode.net/galleries/galeriam, írja be galeriam (kisbetűk, szóközök nélkül, speciális karakterek nélkül)",
+	"The list of Videos": " Összes Legújabb",
+	"If you didn't make the request, just ignore this message": {
+		". Otherwise, you can add the email using this link:": ". Ellenkező esetben az alábbi linken adhatja hozzá az emailt:"
+	}
 }

@@ -791,5 +791,29 @@
 	"Privacy Policy": "Палітыка прыватнасці",
 	"Cookie Policy": "Палітыка файлаў cookie",
 	"Model 231": "Model 231",
-	"To": "Да"
+	"To": "Да",
+	"User do not exists": "Карыстальнік не існуе",
+	"Messagge sent": "Паведамленне адпраўлена",
+	"Password not generated, please retry.": "Пароль не створаны, паспрабуйце яшчэ раз.",
+	"Password reset link sent to": "Спасылка для скіду пароля адпраўлена на",
+	"Performance not found.": "Выступленне не знойдзена.",
+	"Proposal, sent.": "Прапанова адпраўлена.",
+	"Please confirm your personal data to go forward": "Пацвердзіце вашы асабістыя дадзеныя для працягу",
+	"Please accept the terms and conditions to go forward": "Прыміце ўмовы для працягу",
+	"Submission of": "Адпраўка",
+	"to": "да",
+	"sent with success!!!": "паспяхова адпраўлена!!!",
+	"We have sent you an email with a copy of your submission to": "Мы адправілі вам ліст з копіяй вашай заяўкі на",
+	"Please select a performance to go forward": "Абярыце выступленне для працягу",
+	"Please select at least 1 topic to go forward": "Абярыце хаця б 1 тэму для працягу",
+	"Unknow error": "Невядомая памылка",
+	"To have your performance at https": "//avnode.net/performances/маёвыступленне, увядзіце маёвыступленне (малыя літары, без прабелаў, без спецсімвалаў)",
+	"The list of Events": " Усе Апошнія",
+	"To have your video at https": "//avnode.net/videos/маёвідэа, увядзіце маёвідэа (малыя літары, без прабелаў, без спецсімвалаў)",
+	"The list of Learnings": " Усе Апошнія",
+	"To have your gallery at https": "//avnode.net/galleries/маягалерэя, увядзіце маягалерэя (малыя літары, без прабелаў, без спецсімвалаў)",
+	"The list of Videos": " Усе Апошнія",
+	"If you didn't make the request, just ignore this message": {
+		". Otherwise, you can add the email using this link:": ". Інакш вы можаце дадаць email па гэтай спасылцы:"
+	}
 }

@@ -791,5 +791,29 @@
 	"Privacy Policy": "Política de Privacidade",
 	"Cookie Policy": "Política de Cookies",
 	"Model 231": "Model 231",
-	"To": "Até"
+	"To": "Até",
+	"User do not exists": "O utilizador não existe",
+	"Messagge sent": "Mensagem enviada",
+	"Password not generated, please retry.": "Palavra-passe não gerada, tente novamente.",
+	"Password reset link sent to": "Link de redefinição de palavra-passe enviado para",
+	"Performance not found.": "Performance não encontrada.",
+	"Proposal, sent.": "Proposta enviada.",
+	"Please confirm your personal data to go forward": "Confirme os seus dados pessoais para prosseguir",
+	"Please accept the terms and conditions to go forward": "Aceite os termos e condições para prosseguir",
+	"Submission of": "Submissão de",
+	"to": "para",
+	"sent with success!!!": "enviado com sucesso!!!",
+	"We have sent you an email with a copy of your submission to": "Enviámos-lhe um email com uma cópia da sua submissão para",
+	"Please select a performance to go forward": "Selecione uma performance para prosseguir",
+	"Please select at least 1 topic to go forward": "Selecione pelo menos 1 tema para prosseguir",
+	"Unknow error": "Erro desconhecido",
+	"To have your performance at https": "//avnode.net/performances/minhaperformance, insira minhaperformance (minúsculas, sem espaços, sem caracteres especiais)",
+	"The list of Events": " Todos Mais recentes",
+	"To have your video at https": "//avnode.net/videos/meuvideo, insira meuvideo (minúsculas, sem espaços, sem caracteres especiais)",
+	"The list of Learnings": " Todos Mais recentes",
+	"To have your gallery at https": "//avnode.net/galleries/minhagaleria, insira minhagaleria (minúsculas, sem espaços, sem caracteres especiais)",
+	"The list of Videos": " Todos Mais recentes",
+	"If you didn't make the request, just ignore this message": {
+		". Otherwise, you can add the email using this link:": ". Caso contrário, pode adicionar o email usando este link:"
+	}
 }

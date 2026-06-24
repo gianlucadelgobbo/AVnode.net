@@ -791,5 +791,29 @@
 	"Privacy Policy": "Политика конфиденциальности",
 	"Cookie Policy": "Политика использования файлов cookie",
 	"Model 231": "Model 231",
-	"To": "До"
+	"To": "До",
+	"User do not exists": "Пользователь не существует",
+	"Messagge sent": "Сообщение отправлено",
+	"Password not generated, please retry.": "Пароль не сгенерирован, попробуйте снова.",
+	"Password reset link sent to": "Ссылка для сброса пароля отправлена на",
+	"Performance not found.": "Выступление не найдено.",
+	"Proposal, sent.": "Предложение отправлено.",
+	"Please confirm your personal data to go forward": "Подтвердите ваши личные данные для продолжения",
+	"Please accept the terms and conditions to go forward": "Примите условия для продолжения",
+	"Submission of": "Отправка",
+	"to": "в",
+	"sent with success!!!": "успешно отправлено!!!",
+	"We have sent you an email with a copy of your submission to": "Мы отправили вам письмо с копией вашей заявки на",
+	"Please select a performance to go forward": "Выберите выступление для продолжения",
+	"Please select at least 1 topic to go forward": "Выберите хотя бы 1 тему для продолжения",
+	"Unknow error": "Неизвестная ошибка",
+	"To have your performance at https": "//avnode.net/performances/моёвыступление, введите моёвыступление (строчные буквы, без пробелов, без спецсимволов)",
+	"The list of Events": " Все Последние",
+	"To have your video at https": "//avnode.net/videos/моёвидео, введите моёвидео (строчные буквы, без пробелов, без спецсимволов)",
+	"The list of Learnings": " Все Последние",
+	"To have your gallery at https": "//avnode.net/galleries/моягалерея, введите моягалерея (строчные буквы, без пробелов, без спецсимволов)",
+	"The list of Videos": " Все Последние",
+	"If you didn't make the request, just ignore this message": {
+		". Otherwise, you can add the email using this link:": ". В противном случае вы можете добавить email по этой ссылке:"
+	}
 }
