@@ -555,88 +555,51 @@ router.unlinkPartner = (req, res) => {
     }
   });
 }
-router.setStatus = (req, res) => {
+router.setStatus = async (req, res) => {
   logger.info('/partners/status/');
   logger.info(req.body);
   if (!req.body || !req.body.owner || !req.body.id || !req.body.name || req.body.value === undefined) {
-    res.status(400).send("NO DATA");
-  } else {
-    Models.User.
-    findOne({_id: req.body.owner})
-    .select({partners:1})
-    .exec((err, user) => {
-      if (err || !user) {
-        logger.info('user err');
-        logger.info(err);
-        res.status(400).send(err);
-      } else {
-        for (var a=0;a<user.partners.length;a++) {
-          if (user.partners[a].partner._id.toString() === req.body.id) {
-            user.partners[a][req.body.name] = req.body.value;
-            logger.info(user.partners[a]);
-          }
-        }
-        user.save((err) => {
-          logger.info(err);
-          if (err) {
-            logger.info('save user err');
-            logger.info(err);
-            res.status(400).send(err);
-          } else {
-            logger.info("save user success 2");
-            logger.info(req.body);
-            res.json(req.body);                    
-          }
-        });
+    return res.status(400).send("NO DATA");
+  }
+  try {
+    const user = await Models.User.findOne({_id: req.body.owner}).select({partners: 1}).exec();
+    if (!user) return res.status(400).send({message: "User not found"});
+    for (var a = 0; a < user.partners.length; a++) {
+      if (user.partners[a].partner._id.toString() === req.body.id) {
+        user.partners[a][req.body.name] = req.body.value;
       }
-    });
-
+    }
+    await user.save();
+    res.json(req.body);
+  } catch (err) {
+    logger.error("setStatus error:", err);
+    res.status(400).send(err);
   }
 }
 
-router.setCategories = (req, res) => {
+router.setCategories = async (req, res) => {
   logger.info('/partners/categories/');
   logger.info(req.body);
   if (!req.body || !req.body.owner || !req.body.id || !req.body.category || req.body.value === undefined) {
-    res.status(400).send("NO DATA");
-  } else {
-    Models.User.
-    findOne({_id: req.body.owner})
-    .select({partners:1})
-    .exec((err, user) => {
-      if (err || !user) {
-        logger.info('user err');
-        logger.info(err);
-        res.status(400).send(err);
-      } else {
-        for (var a=0;a<user.partners.length;a++) {
-          if (user.partners[a].partner._id.toString() === req.body.id) {
-            if (req.body.value==="true") {
-              user.partners[a].categories.push(req.body.category)
-            } else {
-              logger.info("req.body.category");
-              logger.info(req.body.category);
-              logger.info(user.partners[a].categories.map(item => {return item.toString()}));
-              user.partners[a].categories.splice(user.partners[a].categories.map(item => {return item.toString()}).indexOf(req.body.category))
-            }
-            logger.info(user.partners[a].categories);
-          }
+    return res.status(400).send("NO DATA");
+  }
+  try {
+    const user = await Models.User.findOne({_id: req.body.owner}).select({partners: 1}).exec();
+    if (!user) return res.status(400).send({message: "User not found"});
+    for (var a = 0; a < user.partners.length; a++) {
+      if (user.partners[a].partner._id.toString() === req.body.id) {
+        if (req.body.value === "true") {
+          user.partners[a].categories.push(req.body.category);
+        } else {
+          user.partners[a].categories.splice(user.partners[a].categories.map(item => item.toString()).indexOf(req.body.category), 1);
         }
-        user.save((err) => {
-          logger.info(err);
-          if (err) {
-            logger.info('save user err');
-            logger.info(err);
-            res.status(400).send(err);
-          } else {
-            logger.info("save user success 3");
-            //logger.info(req.body);
-            res.json(req.body);                    
-          }
-        });
       }
-    });
-
+    }
+    await user.save();
+    res.json(req.body);
+  } catch (err) {
+    logger.error("setCategories error:", err);
+    res.status(400).send(err);
   }
 }
 
