@@ -640,81 +640,46 @@ router.setCategories = (req, res) => {
   }
 }
 
-router.addContacts = (req, res) => {
+router.addContacts = async (req, res) => {
   logger.info('/partners/contacts/add/');
   logger.info(req.body);
-  Models.User.
-  findOne({_id: req.body.crew})
-  .exec((err, user) => {
-  //select({stagename: 1, createdAt: 1, crews:1}).
-    if (err || !user) {
-      logger.info('user err');
-      logger.info(err);
-      res.status(400).send(err);
+  try {
+    const user = await Models.User.findOne({_id: req.body.crew}).exec();
+    if (!user) return res.status(400).send({message: "User not found"});
+    delete req.body.crew;
+    if (req.body.index) {
+      user.organizationData.contacts.splice(req.body.index, 1, req.body);
     } else {
-      delete req.body.crew;
-      if (req.body.index) {
-        user.organizationData.contacts.splice(req.body.index, 1, req.body);
+      delete req.body.index;
+      delete req.body.stagename;
+      if (!user.organizationData) user.organizationData = {};
+      if (!user.organizationData.contacts || !user.organizationData.contacts.length) {
+        user.organizationData.contacts = [req.body];
       } else {
-        logger.info(user);
-        logger.info("useruseruseruseruseruseruseruseruseruseruseruser");
-        delete req.body.index;
-        delete req.body.stagename;
-        if (!user.organizationData) user.organizationData = {};
-        if (!user.organizationData.contacts || !user.organizationData.contacts.length) {
-          user.organizationData.contacts = [req.body];
-        } else {
-          user.organizationData.contacts.push(req.body);
-        }
-      };
-      logger.info(user.organizationData.contacts[0]);
-      user.save((err) => {
-        logger.info(err);
-        if (err) {
-          logger.info('save user err');
-          logger.info(err);
-          res.status(400).send(err);
-        } else {
-          logger.info("save user success 4");
-          logger.info(user.organizationData.contacts);
-          res.json(user.organizationData.contacts);                    
-        }
-      });
+        user.organizationData.contacts.push(req.body);
+      }
     }
-  });
+    await user.save();
+    res.json(user.organizationData.contacts);
+  } catch (err) {
+    logger.error("addContacts error:", err);
+    res.status(400).send(err);
+  }
 }
 
-router.deleteContacts = (req, res) => {
+router.deleteContacts = async (req, res) => {
   logger.info('/partners/contacts/deleteContacts/');
   logger.info(req.body);
-  Models.User.
-  findOne({_id: req.body.id})
-  .exec((err, user) => {
-  //select({stagename: 1, createdAt: 1, crews:1}).
-    logger.info('stocazzo');
-    logger.info(user);
-    if (err || !user) {
-      logger.info('user err');
-      logger.info(err);
-      res.status(400).send(err);
-    } else {
-      logger.info(req.body.index);
-      user.organizationData.contacts.splice(req.body.index, 1);
-      logger.info(user.organizationData.contacts);   
-      user.save((err) => {
-        logger.info(err);
-        if (err) {
-          logger.info('save user err');
-          logger.info(err);
-          res.status(400).send(err);
-        } else {
-          logger.info("save user success 5");
-          logger.info(user.organizationData.contacts);
-          res.json(user.organizationData.contacts);                    
-        }
-      });
-    }
-  });
+  try {
+    const user = await Models.User.findOne({_id: req.body.id}).exec();
+    if (!user) return res.status(400).send({message: "User not found"});
+    user.organizationData.contacts.splice(req.body.index, 1);
+    await user.save();
+    res.json(user.organizationData.contacts);
+  } catch (err) {
+    logger.error("deleteContacts error:", err);
+    res.status(400).send(err);
+  }
 }
 
 
