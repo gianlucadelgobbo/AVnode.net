@@ -71,21 +71,26 @@ block content
             small.text-muted
               a(href="https://myaccount.google.com/apppasswords" target="_blank") Generate App Password from Google Account
               ="  (requires 2FA enabled)"
+      .row
         .col-sm-6
           p
-            label(for='subject_add')="Subject"
-            input(type="text",onkeyup="jQuery('#subject_preview').html('[org_name] | '+this.value);jQuery('#subject').val('[org_name] | '+this.value)",placeholder="Subject", value=typeof(body)!=="undefined" && body.subject_add ? body.subject_add : '', name='subject_add')#subject_add.form-control
-            b#subject_preview!="[org_name] | "+(typeof(body)!=="undefined" && body.subject_add ? body.subject_add : '')
-            input(type="hidden",value=typeof(body)!=="undefined" && body.subject ? body.subject : '[org_name] | ', name='subject')#subject
+            label(for='subject_add_it')="Subject IT"
+            input(type="text",placeholder="Subject IT", value=typeof(body)!=="undefined" && body.subject_add_it ? body.subject_add_it : '', name='subject_add_it')#subject_add_it.form-control
+            small.text-muted [org_name] = nome organizzazione
+        .col-sm-6
+          p
+            label(for='subject_add_en')="Subject EN"
+            input(type="text",placeholder="Subject EN", value=typeof(body)!=="undefined" && body.subject_add_en ? body.subject_add_en : '', name='subject_add_en')#subject_add_en.form-control
+            small.text-muted [org_name] = organization name
       .row
         .col-sm-6
           p
             label(for='message_it')="Message IT"
-            textarea(rows="20",name="message_it")#message_it.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_it : 'Ciao [name],\n\n\n[slug]\n\n\n[signature]\n\n\n[signature]\n\n\n[signature]')
+            textarea(rows="20",name="message_it")#message_it.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_it : 'Ciao [name],\n\n\n[slug]\n\n\n[signature]')
         .col-sm-6
           p
             label(for='message_en')="Message EN"
-            textarea(rows="20",name="message_en")#message_en.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_en : 'Ciao [name],\n\n\n[slug]\n\n\n[signature]')
+            textarea(rows="20",name="message_en")#message_en.form-control=(typeof(body)!=="undefined" && body.message_en ? body.message_en : 'Dear [name],\n\n\n[slug]\n\n\n[signature]')
       - if (query.all!="1") {
             - if (query.is_active=="1") data.partners = data.partners.filter(partner => partner.is_active == (query.is_active=="1"));
             - if (query.is_event=="1") data.partners = data.partners.filter(partner => partner.is_event == (query.is_event=="1"));
@@ -117,9 +122,11 @@ block content
               each contact, cindex in item.partner.organizationData.contacts
                 - if (cindex===0)
                   - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
-                  - item.text = body["message_"+(contact.lang=="it" ? "it" : "en")]
+                  - item.lang = contact.lang=="it" ? "it" : "en"
+                  - item.text = body["message_"+item.lang]
                   - item.text = item.text.split("[name]").join(contact.name);
                   - item.text = item.text.split("[slug]").join(item.slug);
+                  - item.subject = (body["subject_add_"+item.lang] || body.subject_add_it || '').split("[org_name]").join(item.partner.stagename)
                 - else
                   - item.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt")
               li
@@ -127,7 +134,7 @@ block content
                 p!="To: <b>"+item.to_html+"</b>"
                 - if (item.cc_html)
                   p!="CC: <b>"+item.cc_html.join("</b>, <b>")+"</b>"
-                p!="Subject: <b>"+body.subject.split("[org_name]").join(item.partner.stagename)+"</b>"
+                p!="Subject: <b>"+(item.subject || '')+"</b>"
                 p="Message:"
                   pre=item.text
       .text-center

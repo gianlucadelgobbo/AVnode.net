@@ -30,7 +30,19 @@ block content
                 td!=(item.event ? item.event.title : "No event filter")
                 td!=item.user.stagename
                 td!=item.subject
-                td!=(item.messages_tosend ? item.messages_tosend.length : 0).toString()
-                td!=(item.messages_sent ? item.messages_sent.length : 0).toString()
+                td
+                  a(data-toggle="collapse" href="#tosend"+index role="button")!=(item.messages_tosend ? item.messages_tosend.length : 0).toString()
+                  .collapse(id="tosend"+index)
+                    small
+                      if item.messages_tosend
+                        each msg in item.messages_tosend
+                          div!=msg.to_html
+                td
+                  a(data-toggle="collapse" href="#sent"+index role="button")!=(item.messages_sent ? item.messages_sent.length : 0).toString()
+                  .collapse(id="sent"+index)
+                    small
+                      if item.messages_sent
+                        each msg in item.messages_sent
+                          div!=msg.to_html
                 td
                   button.btn.btn-sm.btn-primary.send(type="button", data-emailqueue=item._id)!="SEND"

@@ -5,6 +5,7 @@ const router = createRouter();
 import fs from 'fs';
 import imageUtil from '../../utilities/image.js';
 import { mySendMailer } from '../../utilities/mailer.js';
+import { gMailer } from '../../utilities/gmailer.js';
 import { logger, requestLogger, errorLogger } from '../../utilities/logger.js';
 
 import mongoose from 'mongoose';
@@ -147,29 +148,25 @@ router.post('/emailqueue', async (req, res) => {
       };
       const mail = {
         from: data.from_name + " <"+ data.from_email + ">",
-        //to: data.from_name + " <"+ data.from_email + ">",
         to: data.to_html,
         subject: data.subject,
         text: data.text
       };
       if (data.cc_html && data.cc_html.length) mail.cc = data.cc_html.join(", ");
-      const gmailer = require('../../utilities/gmailer');
-      gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
+      gMailer({auth:auth, mail:mail}, async function (err, result){
         if (err) {
-          logger.info("Email sending failure");
-          logger.info(err);
+          logger.error("Email sending failure:", err);
           res.json({error: true, msg: "Email sending failure", id: req.body.id, err: err});
         } else {
           logger.info("Email sending OK");
           emailqueue.messages_sent.push(emailqueue.messages_tosend[0]);
-          emailqueue.messages_tosend = emailqueue.messages_tosend.splice(1, emailqueue.messages_tosend.length)
-          emailqueue.save((err) => {
-            if (err) {
-              res.json({error: true, msg: "Saving email queue failed", id: req.body.id});
-            } else {
-              res.json({error: false, msg: "Email sending success", id: req.body.id});
-            }
-          });
+          emailqueue.messages_tosend = emailqueue.messages_tosend.splice(1, emailqueue.messages_tosend.length);
+          try {
+            await emailqueue.save();
+            res.json({error: false, msg: "Email sending success", id: req.body.id});
+          } catch (saveErr) {
+            res.json({error: true, msg: "Saving email queue failed", id: req.body.id});
+          }
         }
       });
     } else {

@@ -770,8 +770,8 @@ dataprovider.getData = async (req, res, view) => {
           if (view == "json") {
             res.json(send);
           } else {
-            if (req.params.sez == "partners" && req.body.subject && req.body.submit=="send") {
-              router.addPartnersToQueque(req, res, data, () => {
+            if (req.params.sez == "partners" && (req.body.subject || req.body.subject_add_it || req.body.subject_add_en) && req.body.submit=="send") {
+              dataprovider.addPartnersToQueque(req, res, data, () => {
                 req.flash('success', { msg: req.__('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+req.__("CHECK THE CUE")+'</b></a>' });
                 res.render(view, {
                   title: view,
@@ -788,7 +788,7 @@ dataprovider.getData = async (req, res, view) => {
                 });
               });
             } else if (req.params.sez == "events" && req.body.subject && req.body.submit=="send") {
-              router.addPartnersEventToQueque(req, res, data, () => {
+              dataprovider.addPartnersEventToQueque(req, res, data, () => {
                 req.flash('success', { msg: req.__('Messagess added to the cue.')+'<a href="/admin/mailer"><b>'+req.__("CHECK THE CUE")+'</b></a>' });
                 res.render(view, {
                   title: view,
@@ -851,16 +851,15 @@ dataprovider.addPartnersToQueque = async (req, res, data, cb) => {
   tosave.organization = req.params.id;
   if (req.params.event) tosave.event = req.params.event;
   tosave.user = req.user._id;
-  tosave.subject = req.body.subject;
+  tosave.subject = req.body.subject_add_it || req.body.subject_add_en || req.body.subject || '';
   tosave.messages_tosend = [];
   tosave.messages_sent = [];
   if (req.query.is_active=="1") data.partners = data.partners.filter(partner => partner.is_active == (req.query.is_active=="1"));
   if (req.query.is_event=="1") data.partners = data.partners.filter(partner => partner.is_event == (req.query.is_event=="1"));
   if (req.query.is_selecta=="1") data.partners = data.partners.filter(partner => partner.is_selecta == (req.query.is_selecta=="1"));
-  //-each q in req.query.categories
-  if (req.query.categories) 
+  if (req.query.categories)
     data.partners = data.partners.filter(partner => req.query.categories.some(r => partner.categories.map(item => {return item._id.toString()}).includes(r) ));
-  if (req.query.nokind) 
+  if (req.query.nokind)
     data.partners = data.partners.filter(partner => !partner.categories.length);
 
   data.partners.forEach((item, index) => {
@@ -874,12 +873,13 @@ dataprovider.addPartnersToQueque = async (req, res, data, cb) => {
       message.from_email = req.body.from_email;
       message.user_email = req.body.user_email;
       message.user_password = req.body.user_password;
-      message.subject = req.body.subject.split("[org_name]").join(item.partner.stagename);
 
       item.partner.organizationData.contacts.forEach((contact, cindex) => {
         if (contact.email && message.to_html == "") {
+          var contactLang = contact.lang == "it" ? "it" : "en";
           message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
-          message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+          message.subject = (req.body["subject_add_"+contactLang] || req.body.subject_add_it || req.body.subject || '').split("[org_name]").join(item.partner.stagename);
+          message.text = req.body["message_"+contactLang]
           message.text = message.text.split("[name]").join(contact.name);
           message.text = message.text.split("[slug]").join(item.partner.slug);
         } else if (contact.email && message.to_html != "") {
