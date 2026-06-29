@@ -352,53 +352,47 @@ router.shareOnTelegram = (req, res) => {
   })
 }
 /**/
-router.setReordered = (req, res) => {
+router.setReordered = async (req, res) => {
   logger.info(req.body);
-  Models[req.body.model]
-  .findOne({_id: req.body.id}, (err, item) => {
-    if (item) {
-      item[req.body.link] = req.body.obj;
-      logger.info(item[req.body.link]);
-      item.save(err => {
-        res.json({err: err});
-      });
-    } else {
-      res.json({err: "Item not found"});
-    }
-  });
+  try {
+    const item = await Models[req.body.model].findOne({_id: req.body.id}).exec();
+    if (!item) return res.json({err: "Item not found"});
+    item[req.body.link] = req.body.obj;
+    await item.save();
+    res.json({err: null});
+  } catch (err) {
+    logger.error("setReordered error:", err);
+    res.json({err: err});
+  }
 }
-router.setVideoCategory = (req, res) => {
+router.setVideoCategory = async (req, res) => {
   logger.info(req.body);
-  Models.Video
-  .findOne({_id: req.body.id},'_id, categories', (err, video) => {
-    if (video) {
-      video.categories = req.body.categories;
-      logger.info(video);
-      video.save(err => {
-        res.json({err: err});
-      });
-    } else {
-      res.json({err: "Video not found"});
-    }
-  });
+  try {
+    const video = await Models.Video.findOne({_id: req.body.id}).select({_id: 1, categories: 1}).exec();
+    if (!video) return res.json({err: "Video not found"});
+    video.categories = req.body.categories;
+    await video.save();
+    res.json({err: null});
+  } catch (err) {
+    logger.error("setVideoCategory error:", err);
+    res.json({err: err});
+  }
 }
-router.setVideoExclude = (req, res) => {
+router.setVideoExclude = async (req, res) => {
   logger.info(req.body);
-  Models.Video
-  .findOne({_id: req.body.id},'_id', (err, video) => {
-    if (video) {
-      video.vjtv_exclude = req.body.vjtv_exclude;
-      logger.info(video);
-      video.save(err => {
-        res.json({err: err});
-      });
-    } else {
-      res.json({err: "Video not found"});
-    }
-  });
+  try {
+    const video = await Models.Video.findOne({_id: req.body.id}).select({_id: 1}).exec();
+    if (!video) return res.json({err: "Video not found"});
+    video.vjtv_exclude = req.body.vjtv_exclude;
+    await video.save();
+    res.json({err: null});
+  } catch (err) {
+    logger.error("setVideoExclude error:", err);
+    res.json({err: err});
+  }
 }
 
-router.editSubscription = (req, res) => {
+router.editSubscription = async (req, res) => {
   logger.info(req.body);
   let populate = [
     { "path": "event", "select": "title slug schedule organizationsettings", "model": "Event", "populate":[{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]},
@@ -407,35 +401,26 @@ router.editSubscription = (req, res) => {
     { "path": "status", "select": "name", "model": "Category"},
     { "path": "reference", "select": "stagename name surname email mobile", "model": "User"}
   ];
-  Models.Program
-  .findOne({_id: req.body.id/* , members:req.user._id */})
-  .populate(populate)
-  .exec((err, sub) => {
-    logger.info(sub);
+  try {
+    const sub = await Models.Program.findOne({_id: req.body.id}).populate(populate).exec();
     let daysdays = [];
     let schedule = JSON.parse(JSON.stringify(sub.event.schedule));
-    for(let a=0;a<schedule.length;a++) {
+    for (let a = 0; a < schedule.length; a++) {
       let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
-      if (daysdays.indexOf(dayday)===-1) {
-        daysdays.push(dayday);
-      }
+      if (daysdays.indexOf(dayday) === -1) daysdays.push(dayday);
     }
-    daysdays = daysdays.sort(function(a, b) {
-      a = new Date(a);
-      b = new Date(b);
-      return a<b ? -1 : a>b ? 1 : 0;
-    });
-    daysdays.unshift(daysdays[0]-(24*60*60*1000));
-    daysdays.push(daysdays[daysdays.length-1]+(24*60*60*1000));
+    daysdays.sort((a, b) => a - b);
+    daysdays.unshift(daysdays[0] - (24*60*60*1000));
+    daysdays.push(daysdays[daysdays.length-1] + (24*60*60*1000));
     let days = [];
-    for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted: req.moment(daysdays[a]).format(config.dateFormat[req.getLocale()].weekdaydaymonthyear)});
-    
-    res.render('adminpro/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
-      logger.info(err);
-      logger.info("sub");
+    for (let a = 0; a < daysdays.length; a++) days.push({date: daysdays[a], date_formatted: req.moment(daysdays[a]).format(config.dateFormat[req.getLocale()].weekdaydaymonthyear)});
+    res.render('adminpro/events/acts-edit-sub', {call: sub, days: days}, function(err, body) {
       res.json(body);
     });
-  });
+  } catch (err) {
+    logger.error("editSubscription error:", err);
+    res.status(500).json({err: err.message});
+  }
 }
 
 router.editSubscriptionPrice = async (req, res) => {
@@ -467,93 +452,55 @@ router.editSubscriptionCost = async (req, res) => {
   }
 }
 
-router.linkPartner = (req, res) => {
+router.linkPartner = async (req, res) => {
   logger.info(req.body);
-  Models.User
-  .findOne({_id: req.body.id, is_crew: true},'_id partner_owner', (err, partner) => {
-    logger.info("eq.body");
-    logger.info(err || partner);
-    if (partner) {
-      if (!partner.partner_owner || partner.partner_owner.map(item => {return item.owner;}).indexOf(req.body.partner_owner)===-1) {
-        if (!partner.partner_owner) partner.partner_owner = [];
-        partner.partner_owner.push({owner: req.body.partner_owner, delegate: req.body.delegate});
-        partner.save(err => {
-          Models.User
-          .findOne({_id: req.body.partner_owner, is_crew: true},'_id partners', (err, owner) => {
-            if (owner) {
-              if (!owner.partners || owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)===-1) {
-                if (!owner.partners) owner.partners = [];
-                owner.partners.push({partner: req.body.id, delegate: req.body.delegate, "is_active":true, "is_selecta":true});
-                logger.info("owner.partners");
-                logger.info(owner.partners);
-                owner.save(err => {
-                  res.json({err: err});
-                });
-              } else {
-                res.status(400).json({err: "Partner already in"});
-              }
-            } else {
-              res.status(404).json({err: "Owner not found"});
-            }
-          });
-        });
-      } else {
-        Models.User
-        .findOne({_id: req.body.partner_owner, is_crew: true},'_id partners', (err, owner) => {
-          if (owner) {
-            logger.info("owner");
-            if (!owner.partners || owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)===-1) {
-              if (!owner.partners) owner.partners = [];
-              owner.partners.push({partner: req.body.id, delegate: req.body.delegate, "is_active":true, "is_selecta":true});
-              logger.info("owner.partners");
-              logger.info(owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id));
-              owner.save(err => {
-                res.json({err: err});
-              });
-            } else {
-              logger.info({err: "Partner already in"});
-              logger.info(owner.partners[owner.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id)]);
-              res.status(400).json({err: "Partner already in"});
-            }
-          } else {
-            res.status(404).json({err: "Owner not found"});
-          }
-        });
-      }
-    } else {
-      res.status(404).json({err: "Partner not found"});
+  try {
+    const partner = await Models.User.findOne({_id: req.body.id, is_crew: true}).select({_id: 1, partner_owner: 1}).exec();
+    if (!partner) return res.status(404).json({err: "Partner not found"});
+
+    if (!partner.partner_owner || partner.partner_owner.map(item => item.owner).indexOf(req.body.partner_owner) === -1) {
+      if (!partner.partner_owner) partner.partner_owner = [];
+      partner.partner_owner.push({owner: req.body.partner_owner, delegate: req.body.delegate});
+      await partner.save();
     }
-  });
+
+    const owner = await Models.User.findOne({_id: req.body.partner_owner, is_crew: true}).select({_id: 1, partners: 1}).exec();
+    if (!owner) return res.status(404).json({err: "Owner not found"});
+
+    if (!owner.partners || owner.partners.map(item => item.partner.toString()).indexOf(req.body.id) === -1) {
+      if (!owner.partners) owner.partners = [];
+      owner.partners.push({partner: req.body.id, delegate: req.body.delegate, is_active: true, is_selecta: true});
+      await owner.save();
+      res.json({err: null});
+    } else {
+      res.status(400).json({err: "Partner already in"});
+    }
+  } catch (err) {
+    logger.error("linkPartner error:", err);
+    res.status(400).send(err);
+  }
 }
 
-router.unlinkPartner = (req, res) => {
+router.unlinkPartner = async (req, res) => {
   logger.info("unlinkPartner");
   logger.info(req.body);
-  Models.User
-  .findOne({_id: req.body.owner, /* is_crew: true,  */"partners.partner": req.body.id},'_id event partners', (err, user) => {
-    logger.info(user.partners.length);
-    if (user && user.partners && user.partners.length) {
-      user.partners.splice(user.partners.map(item => {return item.partner.toString();}).indexOf(req.body.id), 1);
-      logger.info(user.partners.length);
-      user.save(err => {
-        Models.User
-        .findOne({_id: req.body.id, /* is_crew: true,  */"partner_owner.owner": req.body.owner},'_id event partner_owner', (err, partner) => {
-          logger.info(partner.partner_owner.length);
-          if (partner && partner.partner_owner && partner.partner_owner.length) {
-            partner.partner_owner.splice(partner.partner_owner.map(item => {return item.owner.toString();}).indexOf(req.body.owner), 1);
-            logger.info(partner.partner_owner.length);
-            partner.save(err => {
-              res.json({err: err});
-            });
-          } else {
-            res.json({err: "Partner not found"});
-          }
-        });
-      });
-    } else {
-      res.json({err: "Owner not found"});
+  try {
+    const user = await Models.User.findOne({_id: req.body.owner, "partners.partner": req.body.id}).select({_id: 1, partners: 1}).exec();
+    if (!user || !user.partners || !user.partners.length) return res.json({err: "Owner not found"});
+
+    user.partners.splice(user.partners.map(item => item.partner.toString()).indexOf(req.body.id), 1);
+    await user.save();
+
+    const partner = await Models.User.findOne({_id: req.body.id, "partner_owner.owner": req.body.owner}).select({_id: 1, partner_owner: 1}).exec();
+    if (partner && partner.partner_owner && partner.partner_owner.length) {
+      partner.partner_owner.splice(partner.partner_owner.map(item => item.owner.toString()).indexOf(req.body.owner), 1);
+      await partner.save();
     }
-  });
+    res.json({err: null});
+  } catch (err) {
+    logger.error("unlinkPartner error:", err);
+    res.status(400).send(err);
+  }
 }
 router.setStatus = async (req, res) => {
   logger.info('/partners/status/');

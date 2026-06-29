@@ -203,6 +203,14 @@ block content
                 !=" "
                 small=__("one per line")
               textarea#formPartnerAddSocial.form-control(name="social")
+            .form-check.mb-2
+              input.form-check-input#partnerPrivacy(type='checkbox' name='privacy' value='true' required)
+              label.form-check-label(for='partnerPrivacy')
+                !=__("I authorize the processing of my personal data for the purposes set forth in the <a href='/privacy-policy'>privacy policy</a> of this site.")
+            .form-check.mb-2
+              input.form-check-input#partnerTerms(type='checkbox' name='terms' value='true' required)
+              label.form-check-label(for='partnerTerms')
+                !=__("Terms & Conditions")
 
           .modal-footer
             button.btn.btn-secondary(type='button', data-dismiss='modal')=__("Close")

@@ -841,6 +841,8 @@ $(document).on("click", ".lock-schedule", function( event ) {
     post.is_public = false;
     post.is_crew = true;
     post.is_partner = true;
+    if (post.privacy) post.privacy = new Date();
+    if (post.terms) post.terms = new Date();
     post.organizationData = {delegate: post.delegate};
     post.partner_owner = [{owner: post.partner_owner}];
     delete post.delegate;
@@ -851,7 +853,8 @@ $(document).on("click", ".lock-schedule", function( event ) {
       data: post
     })
     .done(function(data) {
-      $( this ).find(".alert").html("SAVED!!!").removeClass("d-none").removeClass("alert-danger").addClass("alert-success");
+      $('#modalAddPartner').modal('hide');
+      location.reload();
     })
     .fail(function(err) {
       $( "#modalAddPartner form" ).find(".alert").html(err.responseJSON.message).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
