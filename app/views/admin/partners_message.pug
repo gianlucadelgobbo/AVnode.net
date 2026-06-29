@@ -66,8 +66,11 @@ block content
             label(for='user_email')="User Email"
             input(type="email",        placeholder="User Email",    name='user_email',     value=typeof(body) !== "undefined" && body.user_email ? body.user_email : 'g.delgobbo@flyer.it')#user_email.form-control
           p
-            label(for='user_password')="User Password"
-            input(type="password",  placeholder="User Password",name='user_password',value=typeof(body)!=="undefined" && body.user_password ? body.user_password : '')#user_password.form-control
+            label(for='user_password')="App Password"
+            input(type="password",  placeholder="App Password",name='user_password',value=typeof(body)!=="undefined" && body.user_password ? body.user_password : '')#user_password.form-control
+            small.text-muted
+              a(href="https://myaccount.google.com/apppasswords" target="_blank") Generate App Password from Google Account
+              ="  (requires 2FA enabled)"
         .col-sm-6
           p
             label(for='subject_add')="Subject"
