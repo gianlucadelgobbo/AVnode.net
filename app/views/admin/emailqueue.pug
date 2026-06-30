@@ -46,3 +46,5 @@ block content
                           div=msg.to_html
                 td
                   button.btn.btn-sm.btn-primary.send(type="button", data-emailqueue=item._id)!="SEND"
+                  =" "
+                  button.btn.btn-sm.btn-danger.hide-queue(type="button", data-emailqueue=item._id)!="DELETE"

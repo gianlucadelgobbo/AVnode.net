@@ -279,7 +279,7 @@ router.getEmailqueue = async (req, res) => {
   logger.info(req.params);
 
   let data;
-  var query = {$or:[{organization: {$in: ids}}, {user: req.user._id}]};
+  var query = {$or:[{organization: {$in: ids}}, {user: req.user._id}], hidden: {$ne: true}};
   if (req.params.event) query.event = req.params.event;
   var populate = [
     {path: "organization", select: {stagename:1, slug:1}, model:"UserShow"},

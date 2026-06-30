@@ -352,6 +352,15 @@ router.shareOnTelegram = (req, res) => {
   })
 }
 /**/
+router.hideEmailqueue = async (req, res) => {
+  try {
+    await Models.Emailqueue.updateOne({_id: req.body.id}, {hidden: true});
+    res.json({success: true});
+  } catch (err) {
+    res.status(500).json({error: err.message});
+  }
+}
+
 router.setReordered = async (req, res) => {
   logger.info(req.body);
   try {

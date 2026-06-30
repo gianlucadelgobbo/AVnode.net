@@ -16,6 +16,7 @@ const Emailqueueschema = new Schema({
     subject: String,
     text: String
   }],
+  hidden: { type: Boolean, default: false },
   messages_sent: [{
     date: Date,
     to_html: String,

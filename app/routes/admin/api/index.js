@@ -164,6 +164,7 @@ router.post('/partners/status/', post.setStatus);
 router.post('/partners/categories/', post.setCategories);
 router.post('/partners/contacts/add/', post.addContacts);
 router.post('/partners/contacts/delete/', post.deleteContacts);
+router.post('/emailqueue/hide', post.hideEmailqueue);
 router.post('/profile/emails/updateSendy', post.updateSendy);
 router.post('/galleries/:id/medias', upload.galleryAddImages);
 router.post('/:sez/:id/image', upload.setImage);

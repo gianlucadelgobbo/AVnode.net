@@ -755,6 +755,19 @@ $(document).on("click", ".lock-schedule", function( event ) {
   }
   
   
+  $(document).on('click', '.hide-queue', function(ev) {
+    ev.preventDefault();
+    const id = $(this).data("emailqueue");
+    const row = $(this).closest("tr");
+    $.ajax({
+      url: "/admin/api/emailqueue/hide",
+      method: "post",
+      data: {id: id}
+    }).done(function() {
+      row.fadeOut();
+    });
+  });
+
   $(".send").on('click', function(ev) {
     ev.preventDefault();
     const id = $(this).data("emailqueue");
