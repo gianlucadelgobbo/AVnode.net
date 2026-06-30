@@ -875,21 +875,37 @@ dataprovider.addPartnersToQueque = async (req, res, data, cb) => {
       message.user_password = req.body.user_password;
 
       item.partner.organizationData.contacts.forEach((contact, cindex) => {
-        if (contact.email && message.to_html == "") {
-          var contactLang = contact.lang == "it" ? "it" : "en";
-          message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
-          message.subject = (req.body["subject_add_"+contactLang] || req.body.subject_add_it || req.body.subject || '').split("[org_name]").join(item.partner.stagename);
-          message.text = req.body["message_"+contactLang]
-          message.text = message.text.split("[name]").join(contact.name);
-          message.text = message.text.split("[slug]").join(item.partner.slug);
-        } else if (contact.email && message.to_html != "") {
-          message.cc_html.push((contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">")
+        if (!contact.email) return;
+        var contactLang = contact.lang == "it" ? "it" : "en";
+        var subj = (req.body["subject_add_"+contactLang] || req.body.subject_add_it || req.body.subject || '').split("[org_name]").join(item.partner.stagename).split("[name]").join(contact.name);
+        var txt = (req.body["message_"+contactLang] || '').split("[name]").join(contact.name).split("[slug]").join(item.partner.slug);
+        var to = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">";
+
+        if (req.body.avoid_cc === "1") {
+          tosave.messages_tosend.push({
+            from_name: req.body.from_name,
+            from_email: req.body.from_email,
+            user_email: req.body.user_email,
+            user_password: req.body.user_password,
+            to_html: to,
+            cc_html: [],
+            subject: subj,
+            text: txt
+          });
+        } else {
+          if (message.to_html == "") {
+            message.to_html = to;
+            message.subject = subj;
+            message.text = txt;
+          } else {
+            message.cc_html.push(to);
+          }
         }
       });
 
-      if (message.to_html != "") {
+      if (req.body.avoid_cc !== "1" && message.to_html != "") {
         tosave.messages_tosend.push(message);
-      } else {
+      } else if (req.body.avoid_cc !== "1") {
         logger.info(item);
       }
     } else {

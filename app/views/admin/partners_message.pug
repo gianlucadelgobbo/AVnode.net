@@ -71,6 +71,10 @@ block content
             small.text-muted
               a(href="https://myaccount.google.com/apppasswords" target="_blank") Generate App Password from Google Account
               ="  (requires 2FA enabled)"
+          p
+            .form-check
+              input#avoid_cc.form-check-input(type='checkbox' name='avoid_cc' value='1' checked=typeof(body)!=="undefined" && body.avoid_cc ? "checked" : undefined)
+              label.form-check-label(for='avoid_cc')="Send individual emails (avoid CC)"
       .row
         .col-sm-6
           p
@@ -119,23 +123,34 @@ block content
             - item.to_html = ""
             - item.cc_html = []
             if item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && body && (body.exclude ? body.exclude.indexOf(item.partner._id.toString())===-1 : true)
-              each contact, cindex in item.partner.organizationData.contacts
-                - if (cindex===0)
-                  - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
-                  - item.lang = contact.lang=="it" ? "it" : "en"
-                  - item.text = body["message_"+item.lang]
-                  - item.text = item.text.split("[name]").join(contact.name);
-                  - item.text = item.text.split("[slug]").join(item.slug);
-                  - item.subject = (body["subject_add_"+item.lang] || body.subject_add_it || '').split("[org_name]").join(item.partner.stagename)
-                - else
-                  - item.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt")
-              li
-                p!="From: <b>"+body.from_name+" &lt"+body.from_email+"&gt</b>"
-                p!="To: <b>"+item.to_html+"</b>"
-                - if (item.cc_html)
-                  p!="CC: <b>"+item.cc_html.join("</b>, <b>")+"</b>"
-                p!="Subject: <b>"+(item.subject || '')+"</b>"
-                p="Message:"
-                  pre=item.text
+              if body.avoid_cc === "1"
+                each contact, cindex in item.partner.organizationData.contacts
+                  if contact.email
+                    - var clang = contact.lang=="it" ? "it" : "en"
+                    - var ctext = (body["message_"+clang] || '').split("[name]").join(contact.name).split("[slug]").join(item.slug)
+                    - var csubject = (body["subject_add_"+clang] || body.subject_add_it || '').split("[org_name]").join(item.partner.stagename).split("[name]").join(contact.name)
+                    li
+                      p!="From: <b>"+body.from_name+" &lt"+body.from_email+"&gt</b>"
+                      p!="To: <b>"+contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt</b>"
+                      p!="Subject: <b>"+csubject+"</b>"
+                      p="Message:"
+                        pre=ctext
+              else
+                each contact, cindex in item.partner.organizationData.contacts
+                  - if (cindex===0)
+                    - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
+                    - item.lang = contact.lang=="it" ? "it" : "en"
+                    - item.text = (body["message_"+item.lang] || '').split("[name]").join(contact.name).split("[slug]").join(item.slug)
+                    - item.subject = (body["subject_add_"+item.lang] || body.subject_add_it || '').split("[org_name]").join(item.partner.stagename).split("[name]").join(contact.name)
+                  - else
+                    - item.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt")
+                li
+                  p!="From: <b>"+body.from_name+" &lt"+body.from_email+"&gt</b>"
+                  p!="To: <b>"+item.to_html+"</b>"
+                  - if (item.cc_html && item.cc_html.length)
+                    p!="CC: <b>"+item.cc_html.join("</b>, <b>")+"</b>"
+                  p!="Subject: <b>"+(item.subject || '')+"</b>"
+                  p="Message:"
+                    pre=item.text
       .text-center
         button.btn.btn-success(type='submit' name='submit' value='send')="Send"
