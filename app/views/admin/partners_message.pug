@@ -118,6 +118,7 @@ block content
     if body && body.from_name
       input(type="hidden",value=0, name='send')#send
       ol
+        - var seenEmails = new Set()
         each item, index in data.partners
           if item.partner
             - item.to_html = ""
@@ -125,7 +126,8 @@ block content
             if item.partner.organizationData && item.partner.organizationData.contacts && item.partner.organizationData.contacts[0] && item.partner.organizationData.contacts[0].email && body && (body.exclude ? body.exclude.indexOf(item.partner._id.toString())===-1 : true)
               if body.avoid_cc === "1"
                 each contact, cindex in item.partner.organizationData.contacts
-                  if contact.email
+                  if contact.email && !seenEmails.has(contact.email.toLowerCase())
+                    - seenEmails.add(contact.email.toLowerCase())
                     - var clang = contact.lang=="it" ? "it" : "en"
                     - var ctext = (body["message_"+clang] || '').split("[name]").join(contact.name).split("[slug]").join(item.slug)
                     - var csubject = (body["subject_add_"+clang] || body.subject_add_it || '').split("[org_name]").join(item.partner.stagename).split("[name]").join(contact.name)
@@ -137,20 +139,24 @@ block content
                         pre=ctext
               else
                 each contact, cindex in item.partner.organizationData.contacts
-                  - if (cindex===0)
-                    - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
-                    - item.lang = contact.lang=="it" ? "it" : "en"
-                    - item.text = (body["message_"+item.lang] || '').split("[name]").join(contact.name).split("[slug]").join(item.slug)
-                    - item.subject = (body["subject_add_"+item.lang] || body.subject_add_it || '').split("[org_name]").join(item.partner.stagename).split("[name]").join(contact.name)
-                  - else
-                    - item.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt")
-                li
-                  p!="From: <b>"+body.from_name+" &lt"+body.from_email+"&gt</b>"
-                  p!="To: <b>"+item.to_html+"</b>"
-                  - if (item.cc_html && item.cc_html.length)
-                    p!="CC: <b>"+item.cc_html.join("</b>, <b>")+"</b>"
-                  p!="Subject: <b>"+(item.subject || '')+"</b>"
-                  p="Message:"
-                    pre=item.text
+                  if contact.email && !seenEmails.has(contact.email.toLowerCase())
+                    - if (item.to_html == "")
+                      - seenEmails.add(contact.email.toLowerCase())
+                      - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
+                      - item.lang = contact.lang=="it" ? "it" : "en"
+                      - item.text = (body["message_"+item.lang] || '').split("[name]").join(contact.name).split("[slug]").join(item.slug)
+                      - item.subject = (body["subject_add_"+item.lang] || body.subject_add_it || '').split("[org_name]").join(item.partner.stagename).split("[name]").join(contact.name)
+                    - else
+                      - seenEmails.add(contact.email.toLowerCase())
+                      - item.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt")
+                if item.to_html
+                  li
+                    p!="From: <b>"+body.from_name+" &lt"+body.from_email+"&gt</b>"
+                    p!="To: <b>"+item.to_html+"</b>"
+                    - if (item.cc_html && item.cc_html.length)
+                      p!="CC: <b>"+item.cc_html.join("</b>, <b>")+"</b>"
+                    p!="Subject: <b>"+(item.subject || '')+"</b>"
+                    p="Message:"
+                      pre=item.text
       .text-center
         button.btn.btn-success(type='submit' name='submit' value='send')="Send"

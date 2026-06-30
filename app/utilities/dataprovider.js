@@ -862,6 +862,7 @@ dataprovider.addPartnersToQueque = async (req, res, data, cb) => {
   if (req.query.nokind)
     data.partners = data.partners.filter(partner => !partner.categories.length);
 
+  var globalSeenEmails = new Set();
   data.partners.forEach((item, index) => {
     var message = {};
     if (!req.body.exclude) req.body.exclude = [];
@@ -876,6 +877,8 @@ dataprovider.addPartnersToQueque = async (req, res, data, cb) => {
 
       item.partner.organizationData.contacts.forEach((contact, cindex) => {
         if (!contact.email) return;
+        if (globalSeenEmails.has(contact.email.toLowerCase())) return;
+        globalSeenEmails.add(contact.email.toLowerCase());
         var contactLang = contact.lang == "it" ? "it" : "en";
         var subj = (req.body["subject_add_"+contactLang] || req.body.subject_add_it || req.body.subject || '').split("[org_name]").join(item.partner.stagename).split("[name]").join(contact.name);
         var txt = (req.body["message_"+contactLang] || '').split("[name]").join(contact.name).split("[slug]").join(item.partner.slug);
