@@ -96,8 +96,14 @@ router.putData = async (req, res, view) => {
   //logger.info(select);
   //logger.info(Object.keys(select));
 
-  if (select.privacy && !req.body.privacy) req.body.privacy = "";
-  if (select.terms && !req.body.terms) req.body.terms = "";
+  if (select.privacy) {
+    if (!req.body.privacy) req.body.privacy = null;
+    else { const d = new Date(req.body.privacy); req.body.privacy = isNaN(d.getTime()) ? new Date() : d; }
+  }
+  if (select.terms) {
+    if (!req.body.terms) req.body.terms = null;
+    else { const d = new Date(req.body.terms); req.body.terms = isNaN(d.getTime()) ? new Date() : d; }
+  }
   
   for (let key of Object.keys(select)) {
     if (req.body[key] !== undefined) {
