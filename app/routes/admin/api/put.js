@@ -248,6 +248,12 @@ router.putData = async (req, res, view) => {
       return;
     }
   }
+  if (req.params.sez === 'profile' && req.user && req.user._id.toString() === id) {
+    await new Promise((resolve, reject) => {
+      req.login(updatedData, (err) => err ? reject(err) : resolve());
+    });
+  }
+
   let send = {_id: updatedData._id};
   for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = updatedData[item];
   if (view == "json") {
