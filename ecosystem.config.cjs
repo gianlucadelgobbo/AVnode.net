@@ -20,7 +20,7 @@ module.exports = {
       },
       time: true,
       instances: 1,
-      exec_mode: "cluster",
+      exec_mode: "fork",
       autorestart: true,
       env: { NODE_ENV: "production", DEBUG: "false" },
     },
