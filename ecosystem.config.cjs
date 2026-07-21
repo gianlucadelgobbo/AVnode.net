@@ -8,6 +8,7 @@ module.exports = {
       log_file: "/sites/logs/node_admin_avnode_net-2025-combined.log",
       out_file: "/sites/logs/node_admin_avnode_net-2025-out.log",
       error_file: "/sites/logs/node_admin_avnode_net-2025-err.log",
+      watch: false,
       time: true,
       instances: 1,
       exec_mode: "fork",
