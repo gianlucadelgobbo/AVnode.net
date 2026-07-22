@@ -145,7 +145,11 @@ performanceSchema.virtual('humanDuration').get(function () {
       }
     }
     if (firstStart && lastEnd) {
-      return this.$locals.moment.duration(new Date(lastEnd) - new Date(firstStart)).humanize();
+      const s = new Date(firstStart), e = new Date(lastEnd);
+      const startDay = Date.UTC(s.getUTCFullYear(), s.getUTCMonth(), s.getUTCDate());
+      const endDay = Date.UTC(e.getUTCFullYear(), e.getUTCMonth(), e.getUTCDate());
+      const days = Math.round((endDay - startDay) / 86400000) + 1;
+      return this.$locals.moment.duration(days, 'days').humanize();
     }
   }
   if (this.duration) {
