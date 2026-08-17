@@ -1113,7 +1113,7 @@ router.bookingRequest = async (req, res) => {
   }
 }
 
-router.updateSubscription = (req, res) => {
+router.updateSubscription = async (req, res) => {
   //logger.info("updateSubscription");
 
 /*   const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
@@ -1153,42 +1153,30 @@ router.updateSubscription = (req, res) => {
     return res.send(200);
   } */
     
-  if (req.body.id && req.body.subscriber_id && req.body.wepay) {
-    Models.Program
-    .findOne({_id: req.body.id/* , members:req.user._id */})
-    //.select({schedule: 1, call: 1, event: 1})
-    //.populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
-    .exec((err, program) => {
+  try {
+    if (req.body.id && req.body.subscriber_id && req.body.wepay) {
+      const program = await Models.Program.findOne({_id: req.body.id}).exec();
+      if (!program) return res.json({error: true, msg: "Subscription not found"});
       for (var a=0;a<program.subscriptions.length;a++) {
         if (program.subscriptions[a].subscriber_id == req.body.subscriber_id) {
           program.subscriptions[a].wepay = req.body.wepay;
         }
       }
-      program.save(err => {
-        res.json({res: err ? err : true});
-      });
-    });
-  } else if (req.body.id && req.body.subscriber_id && req.body.cash) {
-    Models.Program
-    .findOne({_id: req.body.id/* , members:req.user._id */})
-    //.select({schedule: 1, call: 1, event: 1})
-    //.populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
-    .exec((err, program) => {
+      await program.save();
+      return res.json({res: true});
+    } else if (req.body.id && req.body.subscriber_id && req.body.cash) {
+      const program = await Models.Program.findOne({_id: req.body.id}).exec();
+      if (!program) return res.json({error: true, msg: "Subscription not found"});
       for (var a=0;a<program.subscriptions.length;a++) {
         if (program.subscriptions[a].subscriber_id == req.body.subscriber_id) {
           program.subscriptions[a].cash = req.body.cash;
         }
       }
-      program.save(err => {
-        res.json({res: err ? err : true});
-      });
-    });
-  } else if (req.body.id && req.body.subscriber_id && (req.body.hotel || req.body.hotel_room)) {
-    Models.Program
-    .findOne({_id: req.body.id/* , members:req.user._id */})
-    //.select({schedule: 1, call: 1, event: 1})
-    //.populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
-    .exec((err, program) => {
+      await program.save();
+      return res.json({res: true});
+    } else if (req.body.id && req.body.subscriber_id && (req.body.hotel || req.body.hotel_room)) {
+      const program = await Models.Program.findOne({_id: req.body.id}).exec();
+      if (!program) return res.json({error: true, msg: "Subscription not found"});
       for (var a=0;a<program.subscriptions.length;a++) {
         if (program.subscriptions[a].subscriber_id == req.body.subscriber_id) {
           for (var b=0;b<program.subscriptions[a].packages.length;b++) {
@@ -1199,90 +1187,70 @@ router.updateSubscription = (req, res) => {
           }
         }
       }
-      program.save(err => {
-        res.json({res: err ? err : true});
-      });
-    });
-  } else if (req.body.id && req.body.status) {
-    Models.Program
-    .findOne({_id: req.body.id/* , members:req.user._id */})
-    .select({schedule: 1, call: 1, event: 1})
-    .populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
-    .exec((err, sub) => {
-      //logger.info(sub);
-      Models.Event
-      .findOne({_id: sub.event})
-      .select({program: 1, organizationsettings: 1})
-      .exec((err, event) => {
-        /* logger.info(event.organizationsettings.call.calls[sub.call].email);
-        event.program.forEach((program, index) => {
-          logger.info(program);
-          if (program.subscription_id == req.body.id) {
-            //event.program[index].schedule.status = req.body.status;
-            program.status = req.body.status;
-          }
-          logger.info(program);
-        }); */
-        const status = {
-          "5c38c57d9d426a9522c15ba5": "to be evaluated" ,
-          "5be8708afc3961000000019e": "accepted - waiting for payment" ,
-          "5be8708afc39610000000013": "accepted" ,
-          "5be8708afc39610000000097": "to be completed" ,
-          "5be8708afc3961000000011a": "not_accepted" ,
-          "5be8708afc39610000000221": "refused from user"
+      await program.save();
+      return res.json({res: true});
+    } else if (req.body.id && req.body.status) {
+      const sub = await Models.Program
+        .findOne({_id: req.body.id})
+        .select({schedule: 1, call: 1, event: 1})
+        .populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
+        .exec();
+      if (!sub) return res.json({error: true, msg: "Subscription not found"});
+      const event = await Models.Event
+        .findOne({_id: sub.event})
+        .select({program: 1, organizationsettings: 1})
+        .exec();
+      if (!event) return res.json({error: true, msg: "Event not found"});
+
+      const status = {
+        "5c38c57d9d426a9522c15ba5": "to be evaluated" ,
+        "5be8708afc3961000000019e": "accepted - waiting for payment" ,
+        "5be8708afc39610000000013": "accepted" ,
+        "5be8708afc39610000000097": "to be completed" ,
+        "5be8708afc3961000000011a": "not_accepted" ,
+        "5be8708afc39610000000221": "refused from user"
+      };
+      const old_status_name = sub.status?.name;
+      sub.status = req.body.status;
+      await sub.save();
+
+      if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
+        const callEntry = event.organizationsettings.call.calls[sub.call];
+        const auth = {
+          user: callEntry.emailuser,
+          pass: callEntry.emailpassword
         };
-        const old_status_name = sub.status.name;
-        sub.status = req.body.status;
-        sub.save(function(err){
-          //logger.info("sub.save");
-          //logger.info(sub.call);
-          //logger.info(sub.status);
-          //event.save(function(err){
-            if(!err) {
-              if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
-                const auth = {
-                  user: event.organizationsettings.call.calls[sub.call].emailuser,
-                  pass: event.organizationsettings.call.calls[sub.call].emailpassword
-                };
-                let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals \""+event.organizationsettings.call.calls[sub.call].title+"\" with \""+sub.performance.title+"\" changed the status from \"" + old_status_name + "\" to \"" + status[req.body.status] + "\".";
-                if (req.body.status == "5be8708afc3961000000019e") {
-                  email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/subscriptions ";
-                } else {
-                  email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/subscriptions "; 
-                }
-                email+= "\n\n"+event.organizationsettings.call.calls[sub.call].text_sign;
-                const mail = {
-                  from: event.organizationsettings.call.calls[sub.call].emailname + " <"+ event.organizationsettings.call.calls[sub.call].email + ">",
-                  to: sub.reference.name + " " + sub.reference.surname + " <"+ sub.reference.email + ">",
-                  subject: req.__("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
-                  text: email
-                };
-                //logger.info("pre gMailer")
-                gMailer({auth:auth, mail:mail}, function (err, result){
-                  //logger.info("gMailer");
-                  //logger.info(err);
-                  //logger.info("gMailer");
-                  //logger.info(result);
-                  if (err) {
-                    logger.info("Email sending failure");
-                    res.json({error: true, msg: "Email sending failure", err: err});
-                  } else {
-                    logger.info("Email sending OK");
-                    res.json({error: false, msg: "Email sending success"});
-                  }
-                });
-              } else {
-                res.json({err:err});
-              }
-            } else {
-              res.json({err:err});
-            }
-          //});  
-        });  
-      });
-    });
-  } else {
-    res.json(req);
+        let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals \""+callEntry.title+"\" with \""+sub.performance.title+"\" changed the status from \"" + old_status_name + "\" to \"" + status[req.body.status] + "\".";
+        if (req.body.status == "5be8708afc3961000000019e") {
+          email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/subscriptions ";
+        } else {
+          email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/subscriptions ";
+        }
+        email+= "\n\n"+callEntry.text_sign;
+        const mail = {
+          from: callEntry.emailname + " <"+ callEntry.email + ">",
+          to: sub.reference.name + " " + sub.reference.surname + " <"+ sub.reference.email + ">",
+          subject: req.__("Submission UPDATES") + " | " + sub.performance.title + " | " + callEntry.title,
+          text: email
+        };
+        gMailer({auth:auth, mail:mail}, function (err, result){
+          if (err) {
+            logger.info("Email sending failure");
+            res.json({error: true, msg: "Email sending failure", err: err});
+          } else {
+            logger.info("Email sending OK");
+            res.json({error: false, msg: "Email sending success"});
+          }
+        });
+      } else {
+        res.json({res: true});
+      }
+    } else {
+      res.json({error: true, msg: "Invalid request"});
+    }
+  } catch (err) {
+    logger.error(`updateSubscription error: ${err.message}`);
+    res.json({error: true, msg: err.message});
   }
 }
 
