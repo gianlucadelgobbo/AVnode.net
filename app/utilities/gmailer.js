@@ -4,19 +4,24 @@ import { logger } from './logger.js';
 export const gMailer = (data, cb) => {
   logger.info('gMailer');
 
-  if (!data.auth || !data.auth.user || !data.auth.pass) {
-    const err = new Error('Gmail credentials not provided');
-    logger.error(err.message);
-    return cb(err);
-  }
+  // Google Workspace SMTP relay: authenticates by the server's public IP
+  // (allowlisted in Google Admin Console), so no App Password is required.
+  // If emailuser/emailpassword are still configured on the call, they're
+  // passed through as SMTP auth on top of the relay (works either way).
+  const transportConfig = {
+    host: 'smtp-relay.gmail.com',
+    port: 587,
+    secure: false
+  };
 
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
+  if (data.auth && data.auth.user && data.auth.pass) {
+    transportConfig.auth = {
       user: data.auth.user,
       pass: data.auth.pass
-    }
-  });
+    };
+  }
+
+  var transporter = nodemailer.createTransport(transportConfig);
 
   transporter.sendMail(data.mail, function(err, info) {
     if (err) {
