@@ -13,8 +13,6 @@ br
 !=__('Call')+": "+event.organizationsettings.call.calls[call].title
 br
 br
-- console.log("topics jade")
-- console.log(topics)
 if event.organizationsettings.call.calls[call].topics.length
   !=__('Topics')+": "+ topics.join(", ")
   br
@@ -73,27 +71,28 @@ if event.organizationsettings.call.calls[call].packages
         !=__("This person is already in with another act and already choose his packages")
       else
         each package in subscription.packages
-          - if (event.organizationsettings.call.calls[call].packages[package.id].daily)
-            - total+=event.organizationsettings.call.calls[call].packages[package.id].price*subscription.days.length
-            - subscriber_total+=event.organizationsettings.call.calls[call].packages[package.id].price*subscription.days.length
-          - else 
-            - total+=event.organizationsettings.call.calls[call].packages[package.id].price
-            - subscriber_total+=event.organizationsettings.call.calls[call].packages[package.id].price
-            !=event.organizationsettings.call.calls[call].packages[package.id].name + (event.organizationsettings.call.calls[call].packages[package.id].requested ? " ("+__("requested")+")" : "")
+          - var cpkg = (package.id != null && event.organizationsettings.call.calls[call].packages[package.id]) ? event.organizationsettings.call.calls[call].packages[package.id] : package
+          - if (cpkg.daily)
+            - total+=cpkg.price*subscription.days.length
+            - subscriber_total+=cpkg.price*subscription.days.length
+          - else
+            - total+=cpkg.price
+            - subscriber_total+=cpkg.price
+            !=cpkg.name + (cpkg.requested ? " ("+__("requested")+")" : "")
             br
-            - if (event.organizationsettings.call.calls[call].packages[package.id].allow_options)
-              !=event.organizationsettings.call.calls[call].packages[package.id].options_name+": "+package.option
+            - if (cpkg.allow_options)
+              !=cpkg.options_name+": "+package.option
               br
-            if event.organizationsettings.call.calls[call].packages[package.id].personal && event.organizationsettings.call.calls[call].packages[package.id].daily
+            if cpkg.personal && cpkg.daily
               !=__("per person/per day")
-            else if event.organizationsettings.call.calls[call].packages[package.id].personal 
+            else if cpkg.personal
               !=__("per person")
-            else if event.organizationsettings.call.calls[call].packages[package.id].daily 
+            else if cpkg.daily
               !=__("per day")
             br
-            !="€ "+event.organizationsettings.call.calls[call].packages[package.id].price
+            !="€ "+cpkg.price
             br
-          if event.organizationsettings.call.calls[call].packages[package.id].daily
+          if cpkg.daily
             if subscription.days.length = 1
               !=subscription.days.length + " " + __('day')
             else
@@ -101,7 +100,7 @@ if event.organizationsettings.call.calls[call].packages
             br
             !=__("Total")
             br
-            !="€ "+(event.organizationsettings.call.calls[call].packages[package.id].price*subscription.days.length)
+            !="€ "+(cpkg.price*subscription.days.length)
             br
       br
       !=__('Total amount for')+" "+subscription.stagename

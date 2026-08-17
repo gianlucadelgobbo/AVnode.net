@@ -255,6 +255,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Cc the org-wide notification address (organizationsettings.email, e.g. subscriptions@liveperformersmeeting.net)
+// alongside the call's own address, pulled from the DB rather than hardcoded. Avoids duplicates when they match.
+const buildCcList = (organizationsettings, callEntry) => {
+  const cc = [callEntry.title + ' <' + callEntry.email + '>'];
+  if (organizationsettings.email && organizationsettings.email !== callEntry.email) {
+    cc.push(organizationsettings.email);
+  }
+  return cc;
+};
+
 const availability = (schedule) => {
   if (!Array.isArray(schedule) || !schedule.length) {
     return null;
@@ -383,7 +393,7 @@ router.post('/', async (req, res) => {
           template: 'participate',
           message: {
             to: req.user.stagename + ' <' + req.user.email + '>',
-            cc: [callEntry.title + ' <' + callEntry.email + '>'],
+            cc: buildCcList(data.organizationsettings, callEntry),
             from: callEntry.title + ' <' + callEntry.email + '>'
           },
           email_content: {
@@ -842,7 +852,7 @@ router.post('/', async (req, res) => {
                 template: 'participate',
                 message: {
                   to: req.user.stagename+" <"+req.user.email+">",
-                  cc: [data.organizationsettings.call.calls[req.session.call.index].title+" <"+data.organizationsettings.call.calls[req.session.call.index].email+">"],
+                  cc: buildCcList(data.organizationsettings, data.organizationsettings.call.calls[req.session.call.index]),
                   from: data.organizationsettings.call.calls[req.session.call.index].title+" <"+data.organizationsettings.call.calls[req.session.call.index].email+">"
                 },
                 email_content: {
