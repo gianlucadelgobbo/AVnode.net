@@ -33,6 +33,8 @@ block content
           .form-group.mb-3
             label.labelField SMTP password
             input.form-control(type='password' name='organizationsettings[emailpassword]' value=os.emailpassword || '')
+            small.form-text.text-muted
+              a(href='https://myaccount.google.com/apppasswords' target='_blank' rel='noopener') Create Google App Password
         .col-md-12
           .form-group.mb-3
             label.labelField Email text signature
@@ -108,6 +110,8 @@ block content
                   .form-group.mb-3
                     label.labelField SMTP password
                     input.form-control(type='password' name='organizationsettings[call][calls]['+ci+'][emailpassword]' value=c.emailpassword || '')
+                    small.form-text.text-muted
+                      a(href='https://myaccount.google.com/apppasswords' target='_blank' rel='noopener') Create Google App Password
                 .col-md-4
                   .form-group.mb-3
                     label.labelField Header image URL
