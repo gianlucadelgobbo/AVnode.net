@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev)",
+      "Bash(node --check *)",
+      "Bash(npx gulp compress_css)",
+      "Bash(npx gulp compress_js)",
+      "Bash(npx gulp --tasks)",
+      "Bash(npx gulp)",
+      "Bash(npm start)"
+    ]
+  }
+}
