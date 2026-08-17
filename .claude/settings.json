@@ -7,7 +7,10 @@
       "Bash(npx gulp compress_js)",
       "Bash(npx gulp --tasks)",
       "Bash(npx gulp)",
-      "Bash(npm start)"
+      "Bash(npm start)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push*)"
     ]
   }
 }
