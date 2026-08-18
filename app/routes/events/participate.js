@@ -640,11 +640,16 @@ router.post('/', async (req, res) => {
                 //logger.info(subscriptionsfound);
               }
               for (var b=0;b<allsubscriptions.length;b++) {
+                if (!allsubscriptions[b].subscriber_id) continue;
                 for (var d=0;d<subscriptionsfound.length;d++) {
-                  if (allsubscriptions[b].subscriber_id && subscriptionsfound[d].subscriber_id.toString()===allsubscriptions[b].subscriber_id.toString()) {
+                  // Only copy from the authoritative (non-freezed) source entry, and stop at the
+                  // first match — otherwise a subscriber in multiple performances for this event
+                  // gets whichever match happens to come last, which can be a stale/frozen copy.
+                  if (!subscriptionsfound[d].freezed && subscriptionsfound[d].subscriber_id && subscriptionsfound[d].subscriber_id.toString()===allsubscriptions[b].subscriber_id.toString()) {
                     allsubscriptions[b].days = subscriptionsfound[d].days;
                     allsubscriptions[b].packages = subscriptionsfound[d].packages;
                     allsubscriptions[b].freezed = true;
+                    break;
                   }
                 }
               }
