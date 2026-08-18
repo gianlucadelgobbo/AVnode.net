@@ -1222,9 +1222,9 @@ router.updateSubscription = async (req, res) => {
         };
         let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals \""+callEntry.title+"\" with \""+sub.performance.title+"\" changed the status from \"" + old_status_name + "\" to \"" + status[req.body.status] + "\".";
         if (req.body.status == "5be8708afc3961000000019e") {
-          email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/subscriptions ";
+          email+= "\n\nPlease confirm as soon your participation from this page https://admin.avnode.net/admin/subscriptions ";
         } else {
-          email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/subscriptions ";
+          email+= "\n\nYou can follow the status of your submission from here https://admin.avnode.net/admin/subscriptions ";
         }
         email+= "\n\n"+callEntry.text_sign;
         const mail = {
