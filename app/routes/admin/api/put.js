@@ -125,6 +125,21 @@ router.putData = async (req, res, view) => {
       endtime: new Date(Date.UTC(...s.endtime.split(/[/ :]/).map((v, i) => (i === 1 ? v - 1 : v)))),
     }));
   } */
+
+  // Call end_date comes from a plain <input type="date">, which casts to midnight UTC —
+  // push it to the end of that day so the call stays open through its last day.
+  if (put.organizationsettings?.call?.calls) {
+    for (const key of Object.keys(put.organizationsettings.call.calls)) {
+      const call = put.organizationsettings.call.calls[key];
+      if (call?.end_date) {
+        const d = new Date(call.end_date);
+        if (!isNaN(d.getTime())) {
+          d.setUTCHours(23, 59, 59, 999);
+          call.end_date = d;
+        }
+      }
+    }
+  }
   logger.info('putputputputputput');
   //logger.info(put);
   logger.info('DataDataDataDataDataData');
