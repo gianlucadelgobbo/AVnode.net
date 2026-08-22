@@ -30,38 +30,45 @@ block content
 						th(data-sortable="true")=__("Schedule")
 				tbody
 					each booking in data.bookings
-						tr
-							td
-								a(href='/admin/events/'+booking.event._id+'/public')
-									img.img-fluid(src=booking.event.imageFormats.small)
-							td
-								b
+						if booking.event
+							tr
+								td
 									a(href='/admin/events/'+booking.event._id+'/public')
-										i.icon-edit
-										!=" | "  
-									a(href=booking.event.is_public ? '/events/'+booking.event.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
-										i.icon-eye
-									!=" | "  
-									!=booking.event.title 
-									div
-										i.icon-circle(class=booking.event.is_public ? "text-success" : "text-danger")
-										!=" "  
-										!=__("Public")
-									//div
-										i.icon-eye
-										!=" "  
-										!=booking.event.stats.visits
-										!=" | "  
-										i.icon-heart
-										!=" "  
-										!=booking.event.stats.likes
-							td
-								if booking.schedule.length
-									each schedule in booking.schedule
-										p
-											//!=new Date(booking.schedule.starttime).toLocaleDateString()
-											b!=schedule.venue.name
-											!=" | "  
-											!=schedule.boxDate
-								else 
-									!="TBD"
+										img.img-fluid(src=booking.event.imageFormats.small)
+								td
+									b
+										a(href='/admin/events/'+booking.event._id+'/public')
+											i.icon-edit
+											!=" | "
+										a(href=booking.event.is_public ? '/events/'+booking.event.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
+											i.icon-eye
+										!=" | "
+										!=booking.event.title
+										div
+											i.icon-circle(class=booking.event.is_public ? "text-success" : "text-danger")
+											!=" "
+											!=__("Public")
+										//div
+											i.icon-eye
+											!=" "
+											!=booking.event.stats.visits
+											!=" | "
+											i.icon-heart
+											!=" "
+											!=booking.event.stats.likes
+								td
+									if booking.schedule.length
+										each schedule in booking.schedule
+											p
+												//!=new Date(booking.schedule.starttime).toLocaleDateString()
+												b!=schedule.venue.name
+												!=" | "
+												!=schedule.boxDate
+									else
+										!="TBD"
+						else
+							tr
+								td(colspan="3")
+									i.icon-warning.text-danger
+									!=" "
+									!=__("Booking with missing event reference — this data needs cleanup.")
