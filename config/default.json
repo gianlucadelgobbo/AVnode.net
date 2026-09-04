@@ -25,6 +25,11 @@
       "_id": "5be8708afc39610000000262",
       "name": "One night",
       "slug": "one-night"
+    },
+    {
+      "_id": "6a9aaac18d3c1345963a7cdb",
+      "name": "Exhibition",
+      "slug": "exhibition"
     }
   ],
   "maxImageSize": "2000000",
