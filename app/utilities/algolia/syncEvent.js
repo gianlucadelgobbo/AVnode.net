@@ -38,6 +38,9 @@ export const syncEventToAlgolia = async (eventId, { cascade = true } = {}) => {
   if (!records || !records.length) return;
 
   if (event.is_public) {
+    // Schedule-derived objectIDs change whenever a date/venue is edited — clear any stale
+    // records for this event first, so old objectIDs don't stick around as orphans.
+    await algoliaService.deleteByFilters(ALGOLIA_INDEX_NAME, `record_group_id:"${event._id.toString()}"`);
     await pushToAlgolia(records);
     logger.info("Push To Algolia success")
   } else {
