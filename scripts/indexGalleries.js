@@ -60,6 +60,9 @@ const indexGalleries = async () => {
     console.dir(allRecords[0], { depth: null, colors: true });
 
     if (SEND_TO_ALGOLIA) {
+      console.log('🧹 Pulizia record "gallery" esistenti (rimuove orfani prima del reindex)...');
+      await algoliaService.deleteByFilters(ALGOLIA_INDEX_NAME, 'type:gallery');
+
       console.log('🚚 Invio record a Algolia in batch da 1000...');
       for (let i = 0; i < allRecords.length; i += 1000) {
         const batch = allRecords.slice(i, i + 1000);
