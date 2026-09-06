@@ -75,6 +75,19 @@ const deleteObject = async (indexName, objectID) => {
   }
 };
 
+const deleteByFilters = async (indexName, filters) => {
+  if (!filters) return;
+
+  const index = client.initIndex(indexName);
+  try {
+    const res = await index.deleteBy({ filters });
+    console.log(`🗑️ Oggetti con filtro "${filters}" eliminati`);
+    return res;
+  } catch (err) {
+    console.error(`❌ Errore eliminazione per filtro "${filters}":`, err);
+  }
+};
+
 const deleteObjects = async (indexName, ids) => {
   const valid = ids.filter(id => typeof id === 'string');
   if (!valid.length) return;
@@ -93,5 +106,6 @@ export default {
   saveObject,
   saveObjects,
   deleteObject,
-  deleteObjects
+  deleteObjects,
+  deleteByFilters
 };

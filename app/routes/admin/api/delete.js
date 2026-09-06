@@ -22,6 +22,19 @@ import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js
 import pkg from 'i18n';
 const { __ } = pkg;
 import { v4 as uuidv4 } from 'uuid';
+import algoliaService from '../../../utilities/algolia/algoliaService.js';
+import { ALGOLIA_INDEX_NAME } from '../../../utilities/algolia/constants.js';
+
+const removeFromAlgolia = (id) => {
+  algoliaService.deleteObject(ALGOLIA_INDEX_NAME, id.toString())
+    .catch((e) => logger.error('Algolia delete failed', e));
+};
+
+// Events have one Algolia record per schedule entry, grouped by record_group_id (not the raw _id)
+const removeEventFromAlgolia = (id) => {
+  algoliaService.deleteByFilters(ALGOLIA_INDEX_NAME, `record_group_id:"${id.toString()}"`)
+    .catch((e) => logger.error('Algolia event delete failed', e));
+};
 
 const setIdentifier = () => {
   return uuidv4();
@@ -104,6 +117,8 @@ async function deleteGallery(data, res) {
     res,
     true
   );
+  if (!results.Galleries) return;
+  removeFromAlgolia(data._id);
   results.Performance = await safeExecute(
     Models["Performance"].updateMany( {_id: { $in: data.performances}}, { $pullAll: {galleries: [data._id] } }),
     "Error updating Performance after Gallery delete",
@@ -139,6 +154,8 @@ async function deleteNews(data, res) {
     res,
     true
   );
+  if (!results.News) return;
+  removeFromAlgolia(data._id);
   results.User = await safeExecute(
     Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {news: [data._id] } }),
     "Error updating Users after News delete",
@@ -162,6 +179,8 @@ async function deleteVideo(data, res) {
     res,
     true
   );
+  if (!results.Videos) return;
+  removeFromAlgolia(data._id);
   results.Performance = await safeExecute(
     Models["Performance"].updateMany( {_id: { $in: data.performances}}, { $pullAll: {videos: [data._id] } }),
     "Error updating Performances after Video delete",
@@ -201,6 +220,7 @@ async function deletePerformance(data, res, req) {
       true
     );
     if (!results.Performance) return;
+    removeFromAlgolia(data._id);
     results.User = await safeExecute(
       Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {performances: [data._id] } }),
       "Error updating Users after Performance delete",
@@ -233,6 +253,8 @@ async function deleteEvent(data, res) {
       res,
       true
     );
+    if (!results.Event) return;
+    removeEventFromAlgolia(data._id);
     results.User = await safeExecute(
       Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {videos: [data._id] } }),
       "Error updating Users after Event delete",
@@ -267,6 +289,8 @@ async function deleteProfile(data, res) {
         res,
         true
       );
+      if (!results.Crew) return;
+      removeFromAlgolia(data._id);
       if (data.members && data.members.length) {
         results.User = await Models["User"].updateMany( {_id: { $in: data.members}}, { $pullAll: {crews: [data._id] } });
         results.User = await safeExecute(
@@ -291,6 +315,8 @@ async function deleteProfile(data, res) {
         res,
         true
       );
+      if (!results.User) return;
+      removeFromAlgolia(data._id);
       return results;
     }
   } else {
