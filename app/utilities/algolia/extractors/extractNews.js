@@ -17,7 +17,11 @@ export const expandNewsToRecords = (newsDoc, langs = ['en']) => {
 
   const abouts_by_lang = {};
   langs.forEach(lang => {
-    abouts_by_lang[`about_${lang}`] = extractMultilangText(news.abouts, lang);
+    let text = extractMultilangText(news.abouts, lang);
+    if (typeof text === 'string' && text.length > 2000) {
+      text = text.slice(0, 2000) + '...';
+    }
+    abouts_by_lang[`about_${lang}`] = text;
   });
 
   const record = {

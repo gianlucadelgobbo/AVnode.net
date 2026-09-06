@@ -38,7 +38,11 @@ export const expandPerformanceToRecord = (performanceDoc, langs = ['en']) => {
 
   const abouts_by_lang = {};
   langs.forEach(lang => {
-    abouts_by_lang[`about_${lang}`] = extractMultilangText(performance.abouts, lang);
+    let text = extractMultilangText(performance.abouts, lang);
+    if (typeof text === 'string' && text.length > 2000) {
+      text = text.slice(0, 2000) + '...';
+    }
+    abouts_by_lang[`about_${lang}`] = text;
   });
 
   const record = {

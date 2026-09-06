@@ -62,11 +62,15 @@ const indexUsers = async () => {
       console.log('🚚 Invio record a Algolia in batch da 1000...');
       for (let i = 0; i < allRecords.length; i += 1000) {
         const batch = allRecords.slice(i, i + 1000);
-        const res = await algoliaService.saveObjects(ALGOLIA_INDEX_NAME, batch);
-        if (res?.taskID || res?.taskIDs) {
-          console.log(`✅ Batch ${i}–${i + batch.length - 1} inviato (TaskID: ${res.taskID ?? res.taskIDs.join(', ')})`);
-        } else {
-          console.warn(`⚠️  Batch ${i}–${i + batch.length - 1} non confermato`);
+        try {
+          const res = await algoliaService.saveObjects(ALGOLIA_INDEX_NAME, batch);
+          if (res?.taskID || res?.taskIDs) {
+            console.log(`✅ Batch ${i}–${i + batch.length - 1} inviato (TaskID: ${res.taskID ?? res.taskIDs.join(', ')})`);
+          } else {
+            console.warn(`⚠️  Batch ${i}–${i + batch.length - 1} non confermato`);
+          }
+        } catch (batchErr) {
+          console.error(`❌ Batch ${i}–${i + batch.length - 1} fallito, continuo con i successivi:`, batchErr.message);
         }
       }
     } else {
