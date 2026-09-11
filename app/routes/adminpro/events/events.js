@@ -661,7 +661,7 @@ router.getPrintData = async (req, res, cb) => {
 };
 
 router.getMessageActs = (req, res) => {
-  router.getActsData(req, res, data => {
+  router.getActsData(req, res, async data => {
     req.query.sez = "acts";
     if (req.isApi) {
       res.json(data);
@@ -712,9 +712,12 @@ router.getMessageActs = (req, res) => {
         });
         if (req.body.send == "1") {
           logger.info(tosave);
-          Emailqueue.create(tosave, function (err) {
-            res.redirect("/adminpro/emailqueue/")
-          });
+          try {
+            await Emailqueue.create(tosave);
+          } catch (err) {
+            logger.error('Emailqueue.create failed', err);
+          }
+          res.redirect("/adminpro/emailqueue/")
         } else {
           res.render('adminpro/events/message', {
             title: 'Events | '+data.event.title + ': Acts message',
@@ -927,7 +930,7 @@ router.getPeoplesData = async (req, res, cb) => {
 };
 
 router.getMessagePeoples = (req, res) => {
-  router.getPeoplesData(req, res, data => {
+  router.getPeoplesData(req, res, async data => {
     console.log(data)
     req.query.sez = "peoples";
     if (req.isApi) {
@@ -973,9 +976,12 @@ router.getMessagePeoples = (req, res) => {
         });
         if (req.body.send == "1") {
           logger.info(tosave);
-          Emailqueue.create(tosave, function (err) {
-            res.redirect("/adminpro/emailqueue/")
-          });
+          try {
+            await Emailqueue.create(tosave);
+          } catch (err) {
+            logger.error('Emailqueue.create failed', err);
+          }
+          res.redirect("/adminpro/emailqueue/")
         } else {
           res.render('adminpro/events/peoples_message', {
             title: 'Events | '+data.event.title + ': Peoples message',
