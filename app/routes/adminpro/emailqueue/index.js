@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
   router.getEmailqueue(req, res);
 });
 
-router.getEmailqueue = (req, res) => {
+router.getEmailqueue = async (req, res) => {
   logger.info('/getEmailqueue/'+req.params.id);
   logger.info("req.body");
   var ids = req.user.crews.map(item => {return item._id});
@@ -29,33 +29,39 @@ router.getEmailqueue = (req, res) => {
         {path: "user", select: {stagename:1, slug:1}, model:"UserShow"},
         {path: "event", select: {title:1, slug:1}, model:"EventShow"}
       ];
-      Emailqueue.
-      find(query).
-      //sort({stagename: 1}).
-      //select({stagename: 1, createdAt: 1, crews:1}).
-      populate(populate).
-      exec((err, data) => {
-        logger.info("data");
-        logger.info(data);
-        if (req.isApi) {
-          res.json(data);
-        } else {
-          res.render('adminpro/emailqueue/send', {
-            title: 'Email queue',
-            currentUrl: req.originalUrl,
-            map: req.query.map,
-            csv: req.query.csv,
-            body: req.body,
-            event: req.params.event,
-            
-            owner: req.params.id,
-            //events: events,
-            user: req.user,
-            data: data,
-            script: false
-          });
-        }
-      });
+      let data;
+      try {
+        data = await Emailqueue.
+        find(query).
+        //sort({stagename: 1}).
+        //select({stagename: 1, createdAt: 1, crews:1}).
+        populate(populate).
+        exec();
+      } catch (err) {
+        logger.error('getEmailqueue error', err);
+        if (req.isApi) return res.status(500).json({error: true, msg: err.message});
+        return res.status(500).send({message: err.message});
+      }
+      logger.info("data");
+      logger.info(data);
+      if (req.isApi) {
+        res.json(data);
+      } else {
+        res.render('adminpro/emailqueue/send', {
+          title: 'Email queue',
+          currentUrl: req.originalUrl,
+          map: req.query.map,
+          csv: req.query.csv,
+          body: req.body,
+          event: req.params.event,
+
+          owner: req.params.id,
+          //events: events,
+          user: req.user,
+          data: data,
+          script: false
+        });
+      }
 }
 
 export default router;
