@@ -679,7 +679,7 @@ router.getMessageActs = (req, res) => {
         tosave.messages_tosend = [];
         tosave.messages_sent = [];
         data.program.forEach((item, index) => {
-          if (req.body.exclude.indexOf(item._id)===-1) {
+          if (req.body.exclude.indexOf(item._id.toString())===-1) {
             var message = {};
             message.to_html = "";
             message.cc_html = [];
