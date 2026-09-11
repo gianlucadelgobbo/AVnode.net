@@ -460,13 +460,13 @@ router.getActsData = async (req, res, cb) => {
         {value: '0', key: 'sort by sub date'}
       ];
       if (req.query['missing_img'] && req.query['missing_img']!='0') {
-        //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg'})
+        //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/placeholder/circle.svg'})
         data.program = data.program.filter(item => {
-          return item.performance.users.map(item => {return item.imageFormats.small}).indexOf('https://avnode.net/images/default-user.svg')!==-1 || item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg';
+          return item.performance.users.map(item => {return item.imageFormats.small}).indexOf('https://avnode.net/placeholder/circle.svg')!==-1 || item.performance.imageFormats.small == 'https://avnode.net/placeholder/circle.svg';
         });
       }
       if (req.query['missing_text'] && req.query['missing_text']!='0') {
-        //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg'})
+        //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/placeholder/circle.svg'})
         data.program = data.program.filter(item => {
           return item.performance.users.map(item => {console.log(item.about);return !item.about || item.about=="Text is missing"  ? "0" : "1"}).indexOf('0')!==-1 || item.performance.about == 'Text is missing';
         });
@@ -641,13 +641,13 @@ router.getPrintData = async (req, res, cb) => {
             {value: '0', key: 'sort by sub date'}
           ];
           if (req.query['missing_img'] && req.query['missing_img']!='0') {
-            //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg'})
+            //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/placeholder/circle.svg'})
             data.program = data.program.filter(item => {
-              return item.performance.users.map(item => {return item.imageFormats.small}).indexOf('https://avnode.net/images/default-user.svg')!==-1 || item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg';
+              return item.performance.users.map(item => {return item.imageFormats.small}).indexOf('https://avnode.net/images/default-user.svg')!==-1 || item.performance.imageFormats.small == 'https://avnode.net/placeholder/circle.svg';
             });
           }
           if (req.query['missing_text'] && req.query['missing_text']!='0') {
-            //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg'})
+            //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/placeholder/circle.svg'})
             data.program = data.program.filter(item => {
               return item.performance.users.map(item => {console.log(item.about);return !item.about || item.about=="Text is missing"  ? "0" : "1"}).indexOf('0')!==-1 || item.performance.about == 'Text is missing';
             });
