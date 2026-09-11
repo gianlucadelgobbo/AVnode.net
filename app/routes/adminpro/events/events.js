@@ -390,8 +390,12 @@ router.getActsData = async (req, res, cb) => {
       // Fetch and populate performances separately
       let perfById = {};
       if (perfIds.length && performancePopConf) {
+        const perfQuery = {_id: {$in: perfIds}};
+        if (req.query['performance_category'] && req.query['performance_category']!='0') {
+          perfQuery.type = req.query['not2'] ? {$ne: req.query['performance_category']} : req.query['performance_category'];
+        }
         const performances = await Performance
-          .find({_id: {$in: perfIds}})
+          .find(perfQuery)
           .select(performancePopConf.select)
           .populate(performancePopConf.populate || [])
           .exec();
