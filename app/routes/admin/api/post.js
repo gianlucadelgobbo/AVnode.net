@@ -237,6 +237,13 @@ router.cancelSubscription = async (req, res) => {
 
     await Models.Program.deleteOne({_id: req.body.id});
 
+    if (event) {
+      syncEventToAlgolia(event._id).catch((e) => logger.error('Algolia sync (cancelSubscription event) failed', e));
+    }
+    if (performance) {
+      syncPerformanceToAlgolia(performance._id).catch((e) => logger.error('Algolia sync (cancelSubscription performance) failed', e));
+    }
+
     logger.info('SUCCESSO!!!');
     res.json(true);
   } catch (err) {
