@@ -13,7 +13,7 @@ block content
           .form-group
             label.labelField(for='title')=__("Title")
             input.form-control(type='text' name='title' id='title' placeholder=__("Title") value=data.title)
-            if err && Object.keys(err.errors).indexOf('title')!==-1
+            if err && err.errors && Object.keys(err.errors).indexOf('title')!==-1
               .badge.badge-danger=err.errors.title.message
           - var slugtitle = __("Video Url")
           - var slugplaceholder = __("Video Url")

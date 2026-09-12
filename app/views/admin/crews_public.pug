@@ -15,7 +15,7 @@ block content
           .form-group
             label.labelField(for='stagename')=__("Stage Name")
             input.form-control(type='text' name='stagename' id='stagename' placeholder=__("Stage Name") value=data.stagename)
-            if err && Object.keys(err.errors).indexOf('stagename')!==-1
+            if err && err.errors && Object.keys(err.errors).indexOf('stagename')!==-1
               .badge.badge-danger=err.errors.stagename.message
           - var slugtitle = __("Profile Url")
           - var slugplaceholder = __("Profile Url")

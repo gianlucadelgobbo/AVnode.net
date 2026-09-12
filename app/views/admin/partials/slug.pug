@@ -6,5 +6,5 @@
 		input.form-control(type='text' name='slug' id='slug' autocomplete="off" aria-describedby="slugHelpInline" placeholder=slugplaceholder value=data.slug)
 	small#slugHelpInline.help=slughelptext
 	.badge.badge-danger
-		if err && Object.keys(err.errors).indexOf('slug')!==-1
+		if err && err.errors && Object.keys(err.errors).indexOf('slug')!==-1
 			!=err.errors.slug.message

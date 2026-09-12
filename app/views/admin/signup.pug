@@ -24,7 +24,7 @@ block content
               label.col-form-label.col-md-3=__("Crew Name")
               .col-md-9.mb-4
                 input.form-control(type='text' name='crewname' placeholder=__("Crew Name") value=get.crewname)
-                if err && Object.keys(err.errors).indexOf('crewname')!==-1
+                if err && err.errors && Object.keys(err.errors).indexOf('crewname')!==-1
                   .badge.badge-danger!=err.errors.crewname.message
             h4.mt-2=__("YOU AS MEMBER OF THE CREW")
             .mb-4=__("You will be able to add crew members once you confirmed your account")
@@ -32,7 +32,7 @@ block content
             label.col-form-label.col-md-3=__("Stage Name")
             .col-md-9.mb-4
               input.form-control(type='text' name='stagename' placeholder=__("Stage Name") value=get.stagename)
-              if err && Object.keys(err.errors).indexOf('stagename')!==-1
+              if err && err.errors && Object.keys(err.errors).indexOf('stagename')!==-1
                 .badge.badge-danger!=err.errors.stagename.message
           .form-group.row
             label.col-form-label.col-md-3=__("Birthday")
@@ -41,13 +41,13 @@ block content
                 - if(get.birthday) get.birthday = new Date(get.birthday)
                 input.form-control.mr-3(type='text' placeholder=__("DD/MM/YYYY") onchange='$(".birthday_real").val($(this).val().split("/")[2]+"/"+$(this).val().split("/")[1]+"/"+$(this).val().split("/")[0])' id='birthday' style='width:150px' value=get.birthday && get.birthday.getDate() ? get.birthday.getDate()+"/"+(get.birthday.getMonth()+1)+"/"+get.birthday.getFullYear() : "")
                 input.birthday_real(type='hidden' name='birthday' value=get.birthday && get.birthday.getDate() ? get.birthday.getFullYear()+"/"+(get.birthday.getMonth()+1)+"/"+get.birthday.getDate() : "")
-              if err && Object.keys(err.errors).indexOf('birthday')!==-1
+              if err && err.errors && Object.keys(err.errors).indexOf('birthday')!==-1
                 .badge.badge-danger!=err.errors.birthday.message
           .form-group.row
             label.col-form-label.col-md-3=__("Email")
             .col-md-9.mb-4
               input.form-control(type='email' name='email' placeholder=__("Email") value=get.email)
-              if err && Object.keys(err.errors).indexOf('email')!==-1
+              if err && err.errors && Object.keys(err.errors).indexOf('email')!==-1
                 .badge.badge-danger!=err.errors.email.message
           .form-group.row
             label.col-form-label.col-md-3=__("City, country")
@@ -59,19 +59,19 @@ block content
               input.locality(type='hidden' name='addresses[0][locality]' value=get.addresses[0].locality)
               input.country(type='hidden' name='addresses[0][country]' value=get.addresses[0].country)
               input.formatted_address(type='hidden' name='addresses[0][formatted_address]' value=get.addresses[0].formatted_address)
-              if err && Object.keys(err.errors).indexOf('addresses')!==-1
+              if err && err.errors && Object.keys(err.errors).indexOf('addresses')!==-1
                 .badge.badge-danger!=err.errors["addresses"].message
           .form-group.row
             label.col-form-label.col-md-3=__("Password")
             .col-md-9.mb-4
               input.form-control(type='password' name='password' autocomplete='new-password' placeholder=__("Password") value='')
-              if err && Object.keys(err.errors).indexOf('password')!==-1
+              if err && err.errors && Object.keys(err.errors).indexOf('password')!==-1
                 .badge.badge-danger!=err.errors.password.message
           .form-group.row
             label.col-form-label.col-md-3=__("Confirm Password")
             .col-md-9.mb-4
               input.form-control(type='password' name='confirmPassword' onfocus="if ($(this).parent().find('.badge').length) $(this).parent().find('.badge').remove()" autocomplete='new-password' placeholder=__("Confirm Password") value='')
-              if err && Object.keys(err.errors).indexOf('confirmPassword')!==-1
+              if err && err.errors && Object.keys(err.errors).indexOf('confirmPassword')!==-1
                 .badge.badge-danger!=err.errors.confirmPassword.message
           .form-group.row
             .col-md-9.offset-md-3.mb-2

@@ -179,6 +179,13 @@ router.putData = async (req, res, view) => {
     logger.info("✅ Document saved successfully");
   } catch (err) {
     logger.error("Error saving document", err);
+    // MongoDB duplicate-key errors (e.g. slug already taken) have no err.errors —
+    // build a fake one so the inline field-error display (partials/slug.pug etc.)
+    // gets the same shape it expects from a Mongoose ValidationError.
+    if (err.code === 11000 && !err.errors) {
+      const field = err.keyPattern ? Object.keys(err.keyPattern)[0] : 'value';
+      err.errors = { [field]: { message: `This ${field} is already in use` } };
+    }
     if (view === "json") {
       return res.status(400).send({ message: JSON.stringify(err) });
     } else {
