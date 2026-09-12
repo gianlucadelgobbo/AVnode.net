@@ -698,10 +698,11 @@ router.updateProgram = async (req, res) => {
         for (var b = 0; b < perf.bookings.length; b++) {
           if (perf.bookings[b].event && perf.bookings[b].event.toString() == req.body.event) {
             perf.bookings[b].schedule = programMap[id].schedule;
+            perf.bookings[b].subscription_id = id; // backfill for legacy bookings that never had it
             found = true;
           }
         }
-        if (!found) perf.bookings.push({event: req.body.event, schedule: programMap[id].schedule});
+        if (!found) perf.bookings.push({event: req.body.event, schedule: programMap[id].schedule, subscription_id: id});
         await Models.Performance.updateOne({_id: perf._id}, perf);
       }
     }
