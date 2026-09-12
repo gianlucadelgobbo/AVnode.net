@@ -3100,6 +3100,7 @@
           },
           {
             "path": "crews",
+            "match": {"is_public": true},
             "select": {
               "stagename": 1,
               "slug": 1,
@@ -3336,6 +3337,7 @@
           },
           {
             "path": "crews",
+            "match": {"is_public": true},
             "select": {
               "stagename": 1,
               "slug": 1,
@@ -3818,6 +3820,7 @@
         "populate": [
           {
             "path": "crews",
+            "match": {"is_public": true},
             "select": {
               "stagename": 1,
               "slug": 1,
@@ -4230,6 +4233,7 @@
           },
           {
             "path": "crews",
+            "match": {"is_public": true},
             "select": {
               "stagename": 1,
               "slug": 1,
@@ -4616,6 +4620,7 @@
         "populate": [
           {
             "path": "crews",
+            "match": {"is_public": true},
             "select": {
               "stagename": 1,
               "slug": 1,
