@@ -152,6 +152,23 @@ router.get('/:event/orders', async (req, res) => {
     });
   });  
   
+  router.get('/:event/press-release', (req, res) => {
+    router.getPressReleaseData(req, res, data => {
+      if (req.isApi) {
+        res.json(data);
+      } else {
+        req.query.sez = "acts";
+        data.event = data; // menuSuper's sidebar event submenu expects data.event._id
+        res.render('adminpro/events/press-release', {
+          title: 'Events | '+data.title + ': '+req.__('Press Release'),
+          data: data,
+          currentUrl: req.originalUrl,
+          get: req.query
+        });
+      }
+    });
+  });
+
   router.get('/:event/program-print-siae', (req, res) => {
     router.getActsData(req, res, data => {
       if (req.isApi) {
@@ -658,6 +675,76 @@ router.getPrintData = async (req, res, cb) => {
       }); */
   } catch (err) {
     res.json(err);
+  }
+};
+
+router.getPressReleaseData = async (req, res, cb) => {
+  logger.info('/events/'+req.params.event+'/getPressReleaseData');
+  try {
+    let event = await Event.
+    findOne({"_id": req.params.event}).
+    select({
+      "title": 1,
+      "slug": 1,
+      "is_freezed": 1,
+      "program_freezed": 1,
+      "schedule": 1,
+      "program": 1,
+      "organizationsettings": 1
+    }).
+    populate([
+      {
+        "path": "program.performance",
+        "select": {
+          "title": 1,
+          "users": 1,
+          "type": 1,
+          "image": 1,
+          "slug": 1
+        },
+        "model": "Performance",
+        "populate": [{
+          "path": "users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "stagename": 1,
+            "abouts": 1,
+            "social": 1,
+            "web": 1
+          },
+          "model": "UserShow"
+        }, {
+          "path": "type",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      }
+    ]).
+    exec();
+
+    if (!event) return res.status(404).render('404', {path: req.originalUrl, currentUrl: req.originalUrl, user: req.user, title: req.__("404: Page not found"), titleicon: "icon-warning"});
+
+    // Flatten program entries into one row per schedule slot, sorted chronologically by start time
+    const program = (event.program_freezed && event.program_freezed.length) ? event.program_freezed : (event.program || []);
+    const rows = [];
+    for (const item of program) {
+      if (!item.performance || !item.schedule || !item.schedule.length) continue;
+      for (const slot of item.schedule) {
+        if (!slot.starttime) continue;
+        rows.push({ performance: item.performance, schedule: slot });
+      }
+    }
+    rows.sort((a, b) => new Date(a.schedule.starttime) - new Date(b.schedule.starttime));
+
+    event.pressReleaseRows = rows;
+    cb(event);
+  } catch (err) {
+    logger.error('getPressReleaseData error:', err);
+    res.status(500).json({error: true, msg: err.message});
   }
 };
 
