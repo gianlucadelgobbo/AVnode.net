@@ -140,11 +140,12 @@ router.get('/:event/orders', async (req, res) => {
         res.json(data);
       } else {
         req.query.sez = "acts";
+        data.event = data; // menuSuper's sidebar event submenu expects data.event._id
         res.render('adminpro/events/program-print', {
           title: 'Events | '+data.title + ': '+req.__('Program Prints'),
           data: data,
           currentUrl: req.originalUrl,
-          
+
           get: req.query
         });
       }
