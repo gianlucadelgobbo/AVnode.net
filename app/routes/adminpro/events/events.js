@@ -700,6 +700,7 @@ router.getPressReleaseData = async (req, res, cb) => {
           "users": 1,
           "type": 1,
           "image": 1,
+          "abouts": 1,
           "slug": 1
         },
         "model": "Performance",

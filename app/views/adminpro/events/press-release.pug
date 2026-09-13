@@ -15,16 +15,20 @@ block content
           p.mb-2
             b=__("Tipo performance")+": "
             =row.performance.type ? row.performance.type.name : ""
-          if row.performance.imageFormats && row.performance.imageFormats.medium
-            img.img-fluid.mb-3(src=row.performance.imageFormats.medium alt=row.performance.title style="max-width:400px;")
+          if row.performance.imageFormats && row.performance.imageFormats.large
+            img.img-fluid.mb-3(src=row.performance.imageFormats.large alt=row.performance.title style="max-width:400px;")
+          if row.performance.about
+            p.mb-3!=row.performance.about
           if row.performance.users && row.performance.users.length
             h5.mb-2=__("Autori")
             each user in row.performance.users
               .mb-3
+                if user.imageFormats && user.imageFormats.large
+                  img.img-fluid.mb-2(src=user.imageFormats.large alt=user.stagename style="max-width:200px;")
                 p.mb-1
                   b=user.stagename
-                if user.about
-                  p.mb-1!=user.about
+                if user.aboutFull
+                  p.mb-1!=user.aboutFull
                 if user.social && user.social.length
                   p.mb-1
                     b=__("Social")+": "
