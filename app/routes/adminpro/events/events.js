@@ -741,6 +741,21 @@ router.getPressReleaseData = async (req, res, cb) => {
     }
     rows.sort((a, b) => new Date(a.schedule.starttime) - new Date(b.schedule.starttime));
 
+    // Group by room (venue name + room), each group internally sorted chronologically
+    // (already true since rows is pre-sorted); groups ordered by their earliest start time.
+    const roomGroups = {};
+    const roomOrder = [];
+    for (const row of rows) {
+      const venue = (row.schedule.venue && row.schedule.venue.name) || '';
+      const room = (row.schedule.venue && row.schedule.venue.room) || '';
+      const key = venue + '|' + room;
+      if (!roomGroups[key]) {
+        roomGroups[key] = { venue, room, rows: [] };
+        roomOrder.push(key);
+      }
+      roomGroups[key].rows.push(row);
+    }
+    event.pressReleaseRooms = roomOrder.map(key => roomGroups[key]);
     event.pressReleaseRows = rows;
     cb(event);
   } catch (err) {

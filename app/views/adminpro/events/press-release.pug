@@ -6,42 +6,47 @@ block content
     .col-12.mb-3.d-print-none
       h3=data.title + " — " + __("Press Release")
     .col-12
-      each row, index in data.pressReleaseRows
-        .press-release-item.mb-4.pb-4(style=index < data.pressReleaseRows.length - 1 ? "border-bottom: 1px solid #ddd;" : undefined)
-          p.mb-1
-            b=__("Programmazione")+": "
-            =row.schedule.boxDate
-          h4.mb-1=row.performance.title
-          p.mb-2
-            b=__("Tipo performance")+": "
-            =row.performance.type ? row.performance.type.name : ""
-          if row.performance.imageFormats && row.performance.imageFormats.large
-            img.img-fluid.mb-3(src=row.performance.imageFormats.large alt=row.performance.title style="max-width:400px;")
-          if row.performance.about
-            p.mb-3!=row.performance.about
-          if row.performance.users && row.performance.users.length
-            h5.mb-2=__("Autori")
-            each user in row.performance.users
-              .mb-3
-                if user.imageFormats && user.imageFormats.large
-                  img.img-fluid.mb-2(src=user.imageFormats.large alt=user.stagename style="max-width:200px;")
-                p.mb-1
-                  b=user.stagename
-                if user.aboutFull
-                  p.mb-1!=user.aboutFull
-                if user.social && user.social.length
+      each roomGroup in data.pressReleaseRooms
+        h3.mb-3.mt-4(style="border-bottom: 2px solid #333;")
+          =roomGroup.venue
+          if roomGroup.room
+            !=" — "+roomGroup.room
+        each row, index in roomGroup.rows
+          .press-release-item.mb-4.pb-4(style=index < roomGroup.rows.length - 1 ? "border-bottom: 1px solid #ddd;" : undefined)
+            p.mb-1
+              b=__("Programmazione")+": "
+              =row.schedule.boxDate
+            h4.mb-1=row.performance.title
+            p.mb-2
+              b=__("Tipo performance")+": "
+              =row.performance.type ? row.performance.type.name : ""
+            if row.performance.imageFormats && row.performance.imageFormats.large
+              img.img-fluid.mb-3(src=row.performance.imageFormats.large alt=row.performance.title style="max-width:400px;")
+            if row.performance.about
+              p.mb-3!=row.performance.about
+            if row.performance.users && row.performance.users.length
+              h5.mb-2=__("Autori")
+              each user in row.performance.users
+                .mb-3
+                  if user.imageFormats && user.imageFormats.large
+                    img.img-fluid.mb-2(src=user.imageFormats.large alt=user.stagename style="max-width:200px;")
                   p.mb-1
-                    b=__("Social")+": "
-                    each social, sindex in user.social.filter(s => s.is_public !== false && s.url)
-                      if sindex > 0
-                        !=" | "
-                      a(href=social.url target="_blank" rel="noopener")=social.label || social.url
-                if user.web && user.web.length
-                  p.mb-1
-                    b=__("Web")+": "
-                    each web, windex in user.web.filter(w => w.is_public !== false && w.url)
-                      if windex > 0
-                        !=" | "
-                      a(href=web.url target="_blank" rel="noopener")=web.label || web.url
-      if !data.pressReleaseRows || !data.pressReleaseRows.length
+                    b=user.stagename
+                  if user.aboutFull
+                    p.mb-1!=user.aboutFull
+                  if user.social && user.social.length
+                    p.mb-1
+                      b=__("Social")+": "
+                      each social, sindex in user.social.filter(s => s.is_public !== false && s.url)
+                        if sindex > 0
+                          !=" | "
+                        a(href=social.url target="_blank" rel="noopener")=social.label || social.url
+                  if user.web && user.web.length
+                    p.mb-1
+                      b=__("Web")+": "
+                      each web, windex in user.web.filter(w => w.is_public !== false && w.url)
+                        if windex > 0
+                          !=" | "
+                        a(href=web.url target="_blank" rel="noopener")=web.label || web.url
+      if !data.pressReleaseRooms || !data.pressReleaseRooms.length
         p=__("No scheduled performances found for this event.")
