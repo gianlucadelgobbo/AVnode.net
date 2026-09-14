@@ -87,8 +87,8 @@ router.putData = async (req, res, view) => {
   }
 
   let select = config.cpanel[req.params.sez].forms[req.params.form].select;
-  req.body.is_public = req.body.is_public || false;
-  if(req.params.sez) req.body.hide_members = req.body.hide_members || false;
+  if (select.is_public !== undefined) req.body.is_public = req.body.is_public || false;
+  if (req.params.sez && select.hide_members !== undefined) req.body.hide_members = req.body.hide_members || false;
   let put = {};
   logger.info('Data putData');
   //logger.info(data);
