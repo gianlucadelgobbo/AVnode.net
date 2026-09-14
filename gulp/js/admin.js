@@ -426,13 +426,15 @@ function programSortableUpdate() {
           }
         }
         if (!isLocked) {
+          var itemDuration = parseFloat(day.program[b].performance.duration);
+          if (isNaN(itemDuration)) itemDuration = 0; // performance has no duration set: schedule it as a zero-length slot instead of crashing
           if (day.room.venue.breakduration>-1 && b > 0) timing+= parseFloat(day.room.venue.breakduration)*(60*1000);
           var start = new Date (timing);
           if (day.room.venue.breakduration>-1) {
-            timing+=(parseFloat(day.program[b].performance.duration)*(60*1000));
+            timing+=(itemDuration*(60*1000));
             var end = new Date (timing);
           } else {
-            var end = new Date (timing+(parseFloat(day.program[b].performance.duration)*(60*1000)));
+            var end = new Date (timing+(itemDuration*(60*1000)));
           }
           if (day.program[b].schedule.length) day.program[b].schedule = day.program[b].schedule[0];
           day.program[b].schedule.starttime = start.toISOString();
