@@ -412,7 +412,20 @@ function programSortableUpdate() {
         day.program[b] = JSON.parse(day.program[b]);
         var scheduleItem;
         var origStart = null, origEnd = null;
-        if (!$(boxes[b]).hasClass("disabled")) {
+        var isLocked = $(boxes[b]).hasClass("disabled");
+        if (isLocked) {
+          var tmpSchedule = day.program[b].schedule;
+          if (Array.isArray(tmpSchedule) && tmpSchedule.length) tmpSchedule = tmpSchedule[0];
+          var tmpStart = (tmpSchedule && !Array.isArray(tmpSchedule)) ? new Date(tmpSchedule.starttime) : null;
+          var tmpEnd = (tmpSchedule && !Array.isArray(tmpSchedule)) ? new Date(tmpSchedule.endtime) : null;
+          if (!tmpStart || isNaN(tmpStart.getTime()) || !tmpEnd || isNaN(tmpEnd.getTime())) {
+            // locked while still unscheduled (e.g. locked in the "to be scheduled" column): nothing to preserve, fall back to auto-schedule instead of crashing
+            isLocked = false;
+            $(boxes[b]).removeClass("disabled");
+            $(boxes[b]).find(".lock-schedule i").removeClass("icon-lock").addClass("icon-lock-open");
+          }
+        }
+        if (!isLocked) {
           if (day.room.venue.breakduration>-1 && b > 0) timing+= parseFloat(day.room.venue.breakduration)*(60*1000);
           var start = new Date (timing);
           if (day.room.venue.breakduration>-1) {
