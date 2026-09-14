@@ -235,7 +235,7 @@ router.get('/:event/orders', async (req, res) => {
             let daysdays = [];
             let schedule = JSON.parse(JSON.stringify(data.event.schedule));
             for(let a=0;a<schedule.length;a++) {
-              let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
+              let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0,0,0,0)).getTime();
               if (daysdays.indexOf(dayday)===-1) {
                 daysdays.push(dayday);
               }
@@ -916,7 +916,7 @@ router.getPeoplesData = async (req, res, cb) => {
       let daysdays = [];
       let schedule = JSON.parse(JSON.stringify(data.event.schedule));
       for(let a=0;a<schedule.length;a++) {
-        let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
+        let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0,0,0,0)).getTime();
         if (daysdays.indexOf(dayday)===-1) {
           daysdays.push(dayday);
         }
@@ -1156,8 +1156,8 @@ router.get('/:event/program', async (req, res) => {
       let daysdays = [];
       let schedule = JSON.parse(JSON.stringify(data.event.schedule));
       for(let a=0;a<schedule.length;a++) {
-        let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
-        let endday = new Date(new Date(schedule[a].endtime).setUTCHours(0)).getTime();
+        let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0,0,0,0)).getTime();
+        let endday = new Date(new Date(schedule[a].endtime).setUTCHours(0,0,0,0)).getTime();
         //console.log("stocazzo464655")
         //console.log(daysdays)
         //console.log(dayday)
@@ -1343,7 +1343,7 @@ router.get('/:event/technical-riders', async (req, res) => {
         let daysdays = [];
         let schedule = JSON.parse(JSON.stringify(data.event.schedule));
         for(let a=0;a<schedule.length;a++) {
-          let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
+          let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0,0,0,0)).getTime();
           if (daysdays.indexOf(dayday)===-1) {
             daysdays.push(dayday);
           }
@@ -1484,7 +1484,7 @@ router.get('/:event/technical-riders', async (req, res) => {
           let daysdays = [];
           let schedule = JSON.parse(JSON.stringify(data.event.schedule));
           for(let a=0;a<schedule.length;a++) {
-            let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
+            let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0,0,0,0)).getTime();
             if (daysdays.indexOf(dayday)===-1) {
               daysdays.push(dayday);
             }
@@ -1621,7 +1621,7 @@ router.get('/:event/pass-sheet', async (req, res) => {
         let daysdays = [];
         let schedule = JSON.parse(JSON.stringify(data.event.schedule));
         for(let a=0;a<schedule.length;a++) {
-          let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
+          let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0,0,0,0)).getTime();
           if (daysdays.indexOf(dayday)===-1) {
             daysdays.push(dayday);
           }
@@ -1744,7 +1744,7 @@ router.get('/:event/pass', async (req, res) => {
       let daysdays = [];
       let schedule = JSON.parse(JSON.stringify(data.event.schedule));
       for(let a=0;a<schedule.length;a++) {
-        let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
+        let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0,0,0,0)).getTime();
         if (daysdays.indexOf(dayday)===-1) {
           daysdays.push(dayday);
         }
