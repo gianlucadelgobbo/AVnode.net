@@ -73,8 +73,9 @@ block content
                           .availability.text-right
                             - var daydayA = []
                             each subscription in program.subscriptions
-                              each day, i in data.days
-                                - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return item.getTime()}).indexOf(day)
+                              if !subscription.freezed
+                                each day, i in data.days
+                                  - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return item.getTime()}).indexOf(day)
                             each day, i in daydayA
                               span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
                                 !=new Date(data.days[i]).getDate()
@@ -145,8 +146,9 @@ block content
                                           .availability.text-right
                                             - var daydayA = []
                                             each subscription in program.subscriptions
-                                              each day, i in data.days
-                                                - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return new Date(item).getTime()}).indexOf(day)
+                                              if !subscription.freezed
+                                                each day, i in data.days
+                                                  - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return new Date(item).getTime()}).indexOf(day)
                                             each day, i in daydayA
                                               span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
                                                 !=new Date(data.days[i]).getDate()
