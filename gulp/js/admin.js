@@ -410,9 +410,13 @@ function programSortableUpdate() {
       var timing = new Date (day.room.starttime).getTime();
       for (var b=0;b<day.program.length;b++) {
         day.program[b] = JSON.parse(day.program[b]);
+        var originalSchedule = day.program[b].schedule;
+        if (Array.isArray(originalSchedule) && originalSchedule.length) originalSchedule = originalSchedule[0];
         var scheduleItem;
         var origStart = null, origEnd = null;
         var isLocked = $(boxes[b]).hasClass("disabled");
+        var id = day.program[b]._id;
+        try {
         if (isLocked) {
           var tmpSchedule = day.program[b].schedule;
           if (Array.isArray(tmpSchedule) && tmpSchedule.length) tmpSchedule = tmpSchedule[0];
@@ -454,12 +458,16 @@ function programSortableUpdate() {
           var roomDate = new Date(day.room.starttime);
           origStart = new Date(day.program[b].schedule.starttime);
           origEnd = new Date(day.program[b].schedule.endtime);
+          var endDateOffset = 0;
+          if (origEnd.getUTCHours() < origStart.getUTCHours() || (origEnd.getUTCHours() === origStart.getUTCHours() && origEnd.getUTCMinutes() <= origStart.getUTCMinutes())) {
+            endDateOffset = 1; // the locked time-of-day crosses midnight relative to its start
+          }
           day.program[b].schedule.starttime = new Date(Date.UTC(
             roomDate.getUTCFullYear(), roomDate.getUTCMonth(), roomDate.getUTCDate(),
             origStart.getUTCHours(), origStart.getUTCMinutes()
           )).toISOString();
           day.program[b].schedule.endtime = new Date(Date.UTC(
-            roomDate.getUTCFullYear(), roomDate.getUTCMonth(), roomDate.getUTCDate(),
+            roomDate.getUTCFullYear(), roomDate.getUTCMonth(), roomDate.getUTCDate()+endDateOffset,
             origEnd.getUTCHours(), origEnd.getUTCMinutes()
           )).toISOString();
           day.program[b].schedule.venue = day.room.venue;
@@ -477,29 +485,30 @@ function programSortableUpdate() {
           day.program[b].schedule.disableautoschedule = true;
           scheduleItem = day.program[b].schedule;
         }
-        var id = day.program[b]._id;
+        } catch (boxErr) {
+          console.error("programSortableUpdate: could not compute schedule for box", b, "_id:", id,
+            "performance:", day.program[b].performance && day.program[b].performance.title,
+            "duration:", day.program[b].performance && day.program[b].performance.duration,
+            "room:", day.room.venue.room, "originalSchedule:", originalSchedule, "error:", boxErr);
+          scheduleItem = (originalSchedule && originalSchedule.starttime && originalSchedule.endtime && originalSchedule.venue) ? originalSchedule : null;
+        }
+        var scheduleItemStartMs = scheduleItem ? new Date(scheduleItem.starttime).getTime() : NaN;
+        var scheduleItemEndMs = scheduleItem ? new Date(scheduleItem.endtime).getTime() : NaN;
+        if (!scheduleItem || !scheduleItem.venue || isNaN(scheduleItemStartMs) || isNaN(scheduleItemEndMs)) {
+          console.warn("programSortableUpdate: skipping box", b, "_id:", id, "- no usable schedule, leaving it out of this save", scheduleItem);
+          continue;
+        }
         var alreadyInMap = !!programMap[id];
         if (!programMap[id]) {
           programMap[id] = {_id: id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event};
         }
-        var schedDate = new Date(scheduleItem.starttime).toISOString().split('T')[0];
+        var schedDate = new Date(scheduleItemStartMs).toISOString().split('T')[0];
         var schedKey = schedDate + '_' + scheduleItem.venue.room;
         var isDup = programMap[id].schedule.some(function(s) {
-          return new Date(s.starttime).toISOString().split('T')[0] + '_' + s.venue.room === schedKey;
+          var sMs = new Date(s.starttime).getTime();
+          if (isNaN(sMs)) return false;
+          return new Date(sMs).toISOString().split('T')[0] + '_' + s.venue.room === schedKey;
         });
-        var roomStart = new Date(day.room.starttime);
-        var roomEnd = day.room.endtime ? new Date(day.room.endtime) : roomStart;
-        var roomStartDate = roomStart.toISOString().split('T')[0];
-        var roomEndDate = roomEnd.toISOString().split('T')[0];
-        if (roomStartDate !== roomEndDate) {
-          var schedItemStart = new Date(scheduleItem.starttime);
-          var schedItemEnd = new Date(scheduleItem.endtime);
-          scheduleItem.endtime = new Date(Date.UTC(
-            roomEnd.getUTCFullYear(), roomEnd.getUTCMonth(), roomEnd.getUTCDate(),
-            schedItemEnd.getUTCHours(), schedItemEnd.getUTCMinutes()
-          )).toISOString();
-
-        }
         if (!isDup) {
           programMap[id].schedule.push(scheduleItem);
         }
