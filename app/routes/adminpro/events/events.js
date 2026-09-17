@@ -883,7 +883,7 @@ router.getPeoplesData = async (req, res, cb) => {
     populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
     exec();
     const select = config.cpanel["events_advanced"].forms["peoples"].select;
-    const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["peoples"].populate;
+    const populate = req.query.pure ? [] : JSON.parse(JSON.stringify(config.cpanel["events_advanced"].forms["peoples"].populate));
     let query = {"event": req.params.event};
     if (req.query.call && req.query.call!='none') query.call = req.query.call;
     if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
@@ -893,14 +893,12 @@ router.getPeoplesData = async (req, res, cb) => {
       //query['subscriptions.packages.options_name'] = 'Hotels';
       query['subscriptions.packages.option'] = req.query['packages.option_selected_hotel'];
     //}
+    // Program.performance is no longer kept reliably in sync (the source of truth moved to
+    // Event.program[] alongside subscription_id, same as getActsData) - fetch it separately below.
+    const performancePopConf = populate.find(p => p && p.path === 'performance');
     for(var item in populate) {
       if (populate[item].path == "performance") {
-        if (req.query['performance_category'] && req.query['performance_category']!='0') {
-          populate[item].match = {type: req.query['not2'] ? {$ne :req.query['performance_category']} : req.query['performance_category']};
-        }
-        if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
-          populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
-        }
+        delete populate[item];
       }
     }
     logger.info("query");
@@ -911,6 +909,36 @@ router.getPeoplesData = async (req, res, cb) => {
       select(select).
       populate(populate).
       exec();
+
+      const perfBySubId = {};
+      const perfIds = [];
+      for (const ep of event.program || []) {
+        if (ep.subscription_id && ep.performance) {
+          perfBySubId[ep.subscription_id.toString()] = ep.performance.toString();
+          perfIds.push(ep.performance);
+        }
+      }
+      let perfById = {};
+      if (perfIds.length && performancePopConf) {
+        const perfQuery = {_id: {$in: perfIds}};
+        if (req.query['performance_category'] && req.query['performance_category']!='0') {
+          perfQuery.type = req.query['not2'] ? {$ne: req.query['performance_category']} : req.query['performance_category'];
+        }
+        if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
+          perfQuery['bookings.schedule.venue.room'] = req.query['bookings.schedule.venue.room'];
+        }
+        const performances = await Performance
+          .find(perfQuery)
+          .select(performancePopConf.select)
+          .populate(performancePopConf.populate || [])
+          .exec();
+        for (const p of performances) perfById[p._id.toString()] = p;
+      }
+      const getPerformance = (prog) => {
+        const perfId = perfBySubId[prog._id.toString()];
+        return perfId ? (perfById[perfId] || null) : null;
+      };
+
       data.event = event;
       data.status = config.cpanel["events_advanced"].status;
       let daysdays = [];
@@ -944,7 +972,7 @@ router.getPeoplesData = async (req, res, cb) => {
             let subscription = JSON.parse(JSON.stringify(program[a]));
             delete subscription.subscriptions;
             delete subscription.performance;
-            subscription.performances = [program[a].performance];
+            subscription.performances = [getPerformance(program[a])];
             subscription.subscription = program[a].subscriptions[b];
             data.subscriptions.push(subscription);
           } else  if (!program[a].subscriptions[b].freezed) {
@@ -959,12 +987,12 @@ router.getPeoplesData = async (req, res, cb) => {
             let subscriber_id_map = data.subscriptions.map(subscriber => {return subscriber.subscription.subscriber_id._id.toString()});
             let subscriber_id_index = subscriber_id_map.indexOf(program[a].subscriptions[b].subscriber_id._id.toString());
             if (subscriber_id_index!=-1) {
-              data.subscriptions[subscriber_id_index].performances.push(program[a].performance);
+              data.subscriptions[subscriber_id_index].performances.push(getPerformance(program[a]));
             } else {
               let subscription = JSON.parse(JSON.stringify(program[a]));
               delete subscription.subscriptions;
               delete subscription.performance;
-              subscription.performances = [program[a].performance];
+              subscription.performances = [getPerformance(program[a])];
               subscription.subscription = program[a].subscriptions[b];
               data.subscriptions.push(subscription);
             }
@@ -975,7 +1003,11 @@ router.getPeoplesData = async (req, res, cb) => {
         data.subscriptions = data.subscriptions.sort((a,b) => (a.reference.stagename > b.reference.stagename) ? 1 : ((b.reference.stagename > a.reference.stagename) ? -1 : 0));
       }
       if (req.query.sortby && req.query.sortby=='sortby_perf_name') {
-        data.subscriptions = data.subscriptions.sort((a,b) => (a.performances[0].title > b.performances[0].title) ? 1 : ((b.performances[0].title > a.performances[0].title) ? -1 : 0));
+        data.subscriptions = data.subscriptions.sort((a,b) => {
+          const at = (a.performances[0] && a.performances[0].title) || '';
+          const bt = (b.performances[0] && b.performances[0].title) || '';
+          return at > bt ? 1 : (bt > at ? -1 : 0);
+        });
       }
 
       if (req.query.sortby && req.query.sortby=='sortby_person_name') {

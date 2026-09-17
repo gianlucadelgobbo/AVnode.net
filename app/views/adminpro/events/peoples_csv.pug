@@ -60,7 +60,7 @@ table.table
               td
                 if get["hide_perf"]==1
                   .mb-1
-                    each performance in subscription.performances
+                    each performance in subscription.performances.filter(performance => performance)
                       div
                         b!=performance.title
                           !=" "

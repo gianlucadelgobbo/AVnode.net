@@ -34,7 +34,7 @@ table.table.table-fixed
                       input.form-check-input(id='status'+status._id+subscription._id, name='status'+subscription._id, type='radio', value=status.id, checked=subscription.status._id.toString()==status._id.toString() ? "checked" : undefined)
                       label.form-check-label(for='status'+status._id+subscription._id)=status.name
               td
-                - var str = '["'+(subscription.reference && subscription.reference.lang=="it" ? "it" : "en")+'","'+subscription.performances.map(performance => {return performance.title}).join(" // ")+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
+                - var str = '["'+(subscription.reference && subscription.reference.lang=="it" ? "it" : "en")+'","'+subscription.performances.filter(performance => performance).map(performance => {return performance.title}).join(" // ")+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
                 - if (!emailsbypackages.references) emailsbypackages.references = []
                 - if (emailsbypackages.references.indexOf(str)==-1) emailsbypackages.references.push(str)
                 - if (subscription.reference.email==subscription.subscription.subscriber_id.email) {
@@ -51,7 +51,7 @@ table.table.table-fixed
                 -   if (!emailsbypackages[option]) emailsbypackages[option] = []
                 -   emailsbypackages[option].push(str)
                 .mb-1
-                  each performance in subscription.performances
+                  each performance in subscription.performances.filter(performance => performance)
                     div
                       b!=performance.title
                         !=" "
