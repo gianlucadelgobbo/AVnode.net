@@ -110,9 +110,9 @@ table.table
                   !=subscription.subscription.subscriber_id.addresses.map((item)=>{return item.locality}).join(", ")
               if get['subscriptions.packages.name'] && get['subscriptions.packages.name'].indexOf("Accommodation") !== -1
                   - var option = "0";
-                  - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
+                  - for (var b=0;b<subscription.subscription.packages.length;b++) if ((subscription.subscription.packages[b].name||"").indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
                   - var option_value = "";
-                  - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name.indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option_value) option_value = subscription.subscription.packages[b].option_value
+                  - for (var b=0;b<subscription.subscription.packages.length;b++) if ((subscription.subscription.packages[b].name||"").indexOf("Accommodation") !== -1 && subscription.subscription.packages[b].option_value) option_value = subscription.subscription.packages[b].option_value
                   if data.hotels && data.hotels.length
                     td
                       !=option
