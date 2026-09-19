@@ -81,10 +81,10 @@ router.getDelete = async (req, res) => {
       results = await deletePerformance(data, res, req);
       break;
     case "events" :
-      results = await deleteEvent(data, res);
+      results = await deleteEvent(data, res, req);
       break;
     case "profile" :
-      results = await deleteProfile(data, res);
+      results = await deleteProfile(data, res, req);
       break;
     default :
     return res.status(400).send({ message: "Invalid section" });
@@ -244,7 +244,7 @@ async function deletePerformance(data, res, req) {
   }
 }
 
-async function deleteEvent(data, res) {
+async function deleteEvent(data, res, req) {
   let results = {};
   if ((!data.program || !data.program.length) && (!data.galleries || !data.galleries.length) && (!data.videos || !data.videos.length)) {
     results.Event = await safeExecute(
@@ -278,7 +278,7 @@ async function deleteEvent(data, res) {
   }
 }
 
-async function deleteProfile(data, res) {
+async function deleteProfile(data, res, req) {
   let results = {};
   if (!data.activity || data.activity === 0) {
     logger.info("getDelete 3");
