@@ -889,10 +889,9 @@ router.getPeoplesData = async (req, res, cb) => {
     if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
     if (req.query['subscriptions.packages.name'] && req.query['subscriptions.packages.name']!='0') query['subscriptions.packages.name'] = req.query['notaccommodation'] ? {$ne :req.query['subscriptions.packages.name']} : req.query['subscriptions.packages.name'];
 
-    //if (req.query['packages.option_selected_hotel'] && req.query['packages.option_selected_hotel']!='0') {
-      //query['subscriptions.packages.options_name'] = 'Hotels';
+    if (req.query['packages.option_selected_hotel'] && req.query['packages.option_selected_hotel']!='0') {
       query['subscriptions.packages.option'] = req.query['packages.option_selected_hotel'];
-    //}
+    }
     // Program.performance is no longer kept reliably in sync (the source of truth moved to
     // Event.program[] alongside subscription_id, same as getActsData) - fetch it separately below.
     const performancePopConf = populate.find(p => p && p.path === 'performance');
