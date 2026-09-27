@@ -138,7 +138,8 @@ performanceSchema.virtual('humanDuration').get(function () {
     if (this.duration > 59) {
       return this.$locals.moment.duration({"minutes": this.duration}).humanize();
     } else {
-      return this.duration + " min.";
+      const __ = (this.$locals && this.$locals.__) || ((text) => text);
+      return this.duration + " " + __("min.");
     }
   }
 });

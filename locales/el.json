@@ -640,5 +640,6 @@
 	"scheduled": "scheduled",
 	"Message this list": "Message this list",
 	"Press Release": "Δελτίο Τύπου",
-	"No scheduled performances found for this event.": "Δεν βρέθηκαν προγραμματισμένες παραστάσεις για αυτήν την εκδήλωση."
+	"No scheduled performances found for this event.": "Δεν βρέθηκαν προγραμματισμένες παραστάσεις για αυτήν την εκδήλωση.",
+	"min.": "λεπ."
 }

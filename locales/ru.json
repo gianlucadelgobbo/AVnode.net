@@ -640,5 +640,6 @@
 	"The list of Videos": " Все Последние",
 	"If you didn't make the request, just ignore this message. Otherwise, you can reset your password using this link:": "Если вы не отправляли запрос, просто проигнорируйте это сообщение. Иначе вы можете сбросить пароль по этой ссылке:",
 	"Press Release": "Пресс-релиз",
-	"No scheduled performances found for this event.": "Запланированных выступлений для этого мероприятия не найдено."
+	"No scheduled performances found for this event.": "Запланированных выступлений для этого мероприятия не найдено.",
+	"min.": "мин."
 }

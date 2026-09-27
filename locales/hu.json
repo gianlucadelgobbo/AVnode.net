@@ -640,5 +640,6 @@
 	"The list of Videos": " Összes Legújabb",
 	"If you didn't make the request, just ignore this message. Otherwise, you can reset your password using this link:": "Ha nem Ön küldte a kérést, hagyja figyelmen kívül ezt az üzenetet. Ellenkező esetben az alábbi linken állíthatja vissza jelszavát:",
 	"Press Release": "Sajtóközlemény",
-	"No scheduled performances found for this event.": "Nem található ütemezett előadás ehhez az eseményhez."
+	"No scheduled performances found for this event.": "Nem található ütemezett előadás ehhez az eseményhez.",
+	"min.": "perc"
 }

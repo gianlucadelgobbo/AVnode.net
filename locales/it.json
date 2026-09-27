@@ -640,5 +640,6 @@
 	"The list of Videos": " Tutti I più recenti",
 	"If you didn't make the request, just ignore this message. Otherwise, you can reset your password using this link:": "Se non hai effettuato la richiesta, ignora questo messaggio. Altrimenti, puoi reimpostare la password usando questo link:",
 	"Press Release": "Comunicato Stampa",
-	"No scheduled performances found for this event.": "Nessuna performance in programma trovata per questo evento."
+	"No scheduled performances found for this event.": "Nessuna performance in programma trovata per questo evento.",
+	"min.": "min."
 }
