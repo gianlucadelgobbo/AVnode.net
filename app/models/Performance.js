@@ -144,28 +144,32 @@ performanceSchema.virtual('humanDuration').get(function () {
   }
 });
 
-// Multi-day span (e.g. workshops): only set when the booked schedule spans more than 24h.
+// Multi-day span (e.g. workshops): only set when a single booking's own schedule spans more
+// than 24h. Each booking is a separate event engagement, so bookings are never mixed together
+// (a performance booked in two unrelated events must not have their dates combined into one span).
 performanceSchema.virtual('days').get(function () {
   if (!this.bookings || !this.bookings.length) return undefined;
-  let firstStart = null, lastEnd = null;
+  let maxDays = 0;
   for (const booking of this.bookings) {
-    if (booking.schedule && booking.schedule.length > 0) {
-      const _s = booking.schedule[0].starttime;
-      const _e = booking.schedule[booking.schedule.length - 1].endtime;
-      if (_s && (!firstStart || _s < firstStart)) firstStart = _s;
-      if (_e && (!lastEnd || _e > lastEnd)) lastEnd = _e;
+    if (!booking.schedule || !booking.schedule.length) continue;
+    let start = null, end = null;
+    for (const slot of booking.schedule) {
+      if (slot.starttime && (!start || slot.starttime < start)) start = slot.starttime;
+      if (slot.endtime && (!end || slot.endtime > end)) end = slot.endtime;
     }
+    if (!start || !end) continue;
+    const s = new Date(start), e = new Date(end);
+    if (e.getTime() - s.getTime() <= 24 * 60 * 60 * 1000) continue;
+    const startDay = Date.UTC(s.getUTCFullYear(), s.getUTCMonth(), s.getUTCDate());
+    const endDay = Date.UTC(e.getUTCFullYear(), e.getUTCMonth(), e.getUTCDate());
+    const daysCount = Math.round((endDay - startDay) / 86400000) + 1;
+    if (daysCount > maxDays) maxDays = daysCount;
   }
-  if (!firstStart || !lastEnd) return undefined;
-  const s = new Date(firstStart), e = new Date(lastEnd);
-  if (e.getTime() - s.getTime() <= 24 * 60 * 60 * 1000) return undefined;
-  const startDay = Date.UTC(s.getUTCFullYear(), s.getUTCMonth(), s.getUTCDate());
-  const endDay = Date.UTC(e.getUTCFullYear(), e.getUTCMonth(), e.getUTCDate());
-  const daysCount = Math.round((endDay - startDay) / 86400000) + 1;
+  if (!maxDays) return undefined;
   if (this.$locals && this.$locals.moment) {
-    return this.$locals.moment.duration(daysCount, 'days').humanize();
+    return this.$locals.moment.duration(maxDays, 'days').humanize();
   }
-  return daysCount + ' days';
+  return maxDays + ' days';
 });
 
 performanceSchema.virtual('tech_art').get(function (req) {
