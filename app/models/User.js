@@ -14,6 +14,7 @@ import OrganizationData from './shared/OrganizationData.js';
 import Citizenship from './shared/Citizenship.js';
 
 import bcrypt from 'bcrypt';
+import { syncCrewsForMember } from '../utilities/crewAddresses.js';
 
 import https from 'https';
 import querystring from 'querystring';
@@ -533,6 +534,23 @@ userSchema.pre('save', function (next) {
 userSchema.pre('save', function (next) {
   if (this.activity || this.activity_as_organization || this.activity_as_performer) {
     this.is_public = true;
+  }
+  next();
+});
+
+userSchema.pre('save', function (next) {
+  // isModified() is only reliable before save commits and clears the modified-paths tracking.
+  this.$__addressWasModified = this.isModified('addresses');
+  next();
+});
+
+userSchema.post('save', async function (doc, next) {
+  if (!doc.is_crew && doc.$__addressWasModified && doc.crews && doc.crews.length) {
+    try {
+      await syncCrewsForMember(doc);
+    } catch (err) {
+      logger.error('syncCrewsForMember failed for user ' + doc._id, err);
+    }
   }
   next();
 });

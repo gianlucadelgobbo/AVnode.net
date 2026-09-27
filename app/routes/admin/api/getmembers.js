@@ -17,6 +17,7 @@ const Models = {
   'Emailqueue': mongoose.model('Emailqueue')
 }
 import { logger, requestLogger, errorLogger } from '../../../utilities/logger.js';
+import { syncCrewAddresses } from '../../../utilities/crewAddresses.js';
 
 
 // MEMBERS GET, ADD, REMOVE
@@ -51,7 +52,7 @@ router.addMember = async (req, res) => {
     crew = await Models["User"]
     .findOne(query)
     .select({_id:1, stats:1, stagename:1, members:1})
-    .populate({ "path": "members", "select": "addresses", "model": "User"})
+    .populate({ "path": "members", "select": "_id", "model": "User"})
     .exec();
     if (!crew) {
       return res.status(404).send({
@@ -102,6 +103,7 @@ router.addMember = async (req, res) => {
     crew.stats.members = crew.members.length;
     logger.info(crew);
     await crew.save()
+    await syncCrewAddresses(req.params.id);
   } catch (err) {
     logger.info("USER_01");
     logger.info(`${JSON.stringify(err)}`);
@@ -148,7 +150,7 @@ router.removeMember = async (req, res) => {
     crew = await Models["User"]
     .findOne(query)
     .select({_id:1, stagename:1, stats:1, members:1})
-    .populate({ "path": "members", "select": "addresses", "model": "User"})
+    .populate({ "path": "members", "select": "_id", "model": "User"})
     .exec();
     if (!crew) {
       return res.status(404).send({
@@ -213,6 +215,7 @@ router.removeMember = async (req, res) => {
     logger.info(crew.members.length);
     crew.stats.members = crew.members.length;
     await crew.save()
+    await syncCrewAddresses(req.params.id);
   } catch (err) {
     logger.info(`${JSON.stringify(err)}`);
     return res.status(404).send({ message: err });
