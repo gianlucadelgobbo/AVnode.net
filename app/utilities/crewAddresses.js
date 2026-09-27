@@ -29,12 +29,17 @@ export async function syncCrewAddresses(crewId) {
 }
 
 export async function syncCrewsForMember(user) {
-  if (!user.crews || !user.crews.length) return;
-  for (const crewId of user.crews) {
+  // Don't rely on user.crews being loaded on the passed-in document - many save paths
+  // (e.g. the generic admin form save) fetch it with a restricted .select() that leaves
+  // `crews` undefined even though it's set in the database. Query from the crew side
+  // instead (members is the authoritative source of truth for membership).
+  const User = mongoose.model('User');
+  const crews = await User.find({ is_crew: true, members: user._id }).select({ _id: 1 }).exec();
+  for (const crew of crews) {
     try {
-      await syncCrewAddresses(crewId);
+      await syncCrewAddresses(crew._id);
     } catch (err) {
-      logger.error('syncCrewAddresses failed for crew ' + crewId, err);
+      logger.error('syncCrewAddresses failed for crew ' + crew._id, err);
     }
   }
 }

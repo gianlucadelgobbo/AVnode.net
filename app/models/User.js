@@ -538,14 +538,23 @@ userSchema.pre('save', function (next) {
   next();
 });
 
+// Properties named like Mongoose's internal `$__` namespace aren't safe to stash state on
+// (the document Proxy intercepts them) - track modified-state across pre/post save via a WeakMap.
+const addressWasModifiedByDoc = new WeakMap();
+
 userSchema.pre('save', function (next) {
   // isModified() is only reliable before save commits and clears the modified-paths tracking.
-  this.$__addressWasModified = this.isModified('addresses');
+  addressWasModifiedByDoc.set(this, this.isModified('addresses'));
   next();
 });
 
 userSchema.post('save', async function (doc, next) {
-  if (!doc.is_crew && doc.$__addressWasModified && doc.crews && doc.crews.length) {
+  const addressWasModified = addressWasModifiedByDoc.get(doc);
+  addressWasModifiedByDoc.delete(doc);
+  // Don't gate on doc.crews here - many save paths (e.g. the generic admin form save)
+  // fetch the document with a restricted .select() that leaves `crews` undefined even
+  // though it's set in the database. syncCrewsForMember queries membership fresh.
+  if (!doc.is_crew && addressWasModified) {
     try {
       await syncCrewsForMember(doc);
     } catch (err) {
