@@ -235,7 +235,7 @@ router.putData = async (req, res, view) => {
   } catch (e) {
     logger.error('Algolia sync (update) exception', e);
   }
-  select = Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
+  select = Object.assign({}, config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
   let populate = config.cpanel[req.params.sez].forms[req.params.form].populate;
   let updatedData
   try {
