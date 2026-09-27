@@ -143,6 +143,30 @@ performanceSchema.virtual('humanDuration').get(function () {
   }
 });
 
+// Multi-day span (e.g. workshops): only set when the booked schedule spans more than 24h.
+performanceSchema.virtual('days').get(function () {
+  if (!this.bookings || !this.bookings.length) return undefined;
+  let firstStart = null, lastEnd = null;
+  for (const booking of this.bookings) {
+    if (booking.schedule && booking.schedule.length > 0) {
+      const _s = booking.schedule[0].starttime;
+      const _e = booking.schedule[booking.schedule.length - 1].endtime;
+      if (_s && (!firstStart || _s < firstStart)) firstStart = _s;
+      if (_e && (!lastEnd || _e > lastEnd)) lastEnd = _e;
+    }
+  }
+  if (!firstStart || !lastEnd) return undefined;
+  const s = new Date(firstStart), e = new Date(lastEnd);
+  if (e.getTime() - s.getTime() <= 24 * 60 * 60 * 1000) return undefined;
+  const startDay = Date.UTC(s.getUTCFullYear(), s.getUTCMonth(), s.getUTCDate());
+  const endDay = Date.UTC(e.getUTCFullYear(), e.getUTCMonth(), e.getUTCDate());
+  const daysCount = Math.round((endDay - startDay) / 86400000) + 1;
+  if (this.$locals && this.$locals.moment) {
+    return this.$locals.moment.duration(daysCount, 'days').humanize();
+  }
+  return daysCount + ' days';
+});
+
 performanceSchema.virtual('tech_art').get(function (req) {
   let tech_art = this.$locals.__('Nothing');
   let tech_artA = [];
