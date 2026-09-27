@@ -139,7 +139,11 @@ performanceSchema.virtual('humanDuration').get(function () {
       return this.$locals.moment.duration({"minutes": this.duration}).humanize();
     } else {
       const __ = (this.$locals && this.$locals.__) || ((text) => text);
-      return this.duration + " " + __("min.");
+      const totalSeconds = Math.round(parseFloat(this.duration) * 60);
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      const label = secs ? mins + ":" + String(secs).padStart(2, "0") : this.duration;
+      return label + " " + __("min.");
     }
   }
 });
