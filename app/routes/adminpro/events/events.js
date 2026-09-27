@@ -712,7 +712,8 @@ router.getPressReleaseData = async (req, res, cb) => {
             "stagename": 1,
             "abouts": 1,
             "social": 1,
-            "web": 1
+            "web": 1,
+            "addresses": 1
           },
           "model": "UserShow"
         }, {

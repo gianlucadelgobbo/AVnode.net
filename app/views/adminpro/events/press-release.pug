@@ -32,6 +32,10 @@ block content
                     img.img-fluid.mb-2(src=user.imageFormats.large alt=user.stagename style="max-width:200px;")
                   p.mb-1
                     b=user.stagename
+                  if user.addressesFormatted && user.addressesFormatted.length
+                    p.mb-1
+                      each address in user.addressesFormatted
+                        span!=address
                   if user.aboutFull
                     p.mb-1!=user.aboutFull
                   if user.social && user.social.length
