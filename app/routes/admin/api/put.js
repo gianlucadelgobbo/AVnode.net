@@ -277,7 +277,7 @@ router.putData = async (req, res, view) => {
   }
 
   let send = {_id: updatedData._id};
-  for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = updatedData[item];
+  for (const item in select) send[item] = updatedData[item];
   if (view == "json") {
     // TODO: check if is the same file
     if (send.medias) {

@@ -764,7 +764,7 @@ dataprovider.getData = async (req, res, view) => {
       } else {
         if (helpers.editable(req, data, id)) {
           let send = {_id: data._id};
-          for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
+          for (const item in select) send[item] = data[item];
           //logger.info(send)
 
           if (view == "json") {
