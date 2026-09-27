@@ -639,9 +639,6 @@
 	"The list of Videos": " Alle Neueste",
 	"Lights Installations": "Lichtinstallationen",
 	"If you didn't make the request, just ignore this message. Otherwise, you can reset your password using this link:": "Wenn Sie die Anfrage nicht gestellt haben, ignorieren Sie diese Nachricht. Andernfalls können Sie Ihr Passwort über diesen Link zurücksetzen:",
-	"Press Release": "Press Release",
-	"Programmazione": "Programmazione",
-	"Tipo performance": "Tipo performance",
-	"Autori": "Autori",
-	"Social": "Social"
+	"Press Release": "Pressemitteilung",
+	"No scheduled performances found for this event.": "Für diese Veranstaltung wurden keine geplanten Auftritte gefunden."
 }

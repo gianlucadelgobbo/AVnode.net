@@ -639,9 +639,6 @@
 	"To be scheduled": "To be scheduled",
 	"scheduled": "scheduled",
 	"Message this list": "Message this list",
-	"Press Release": "Press Release",
-	"Programmazione": "Programmazione",
-	"Tipo performance": "Tipo performance",
-	"Autori": "Autori",
-	"Social": "Social"
+	"Press Release": "Δελτίο Τύπου",
+	"No scheduled performances found for this event.": "Δεν βρέθηκαν προγραμματισμένες παραστάσεις για αυτήν την εκδήλωση."
 }
