@@ -135,14 +135,15 @@ performanceSchema.virtual('tech_req').get(function (req) {
 
 performanceSchema.virtual('humanDuration').get(function () {
   if (this.duration) {
-    if (this.duration > 59) {
-      return this.$locals.moment.duration({"minutes": this.duration}).humanize();
+    const durationMinutes = parseFloat(String(this.duration).replace(",", "."));
+    if (durationMinutes > 59) {
+      return this.$locals.moment.duration({"minutes": durationMinutes}).humanize();
     } else {
       const __ = (this.$locals && this.$locals.__) || ((text) => text);
-      const totalSeconds = Math.round(parseFloat(this.duration) * 60);
+      const totalSeconds = Math.round(durationMinutes * 60);
       const mins = Math.floor(totalSeconds / 60);
       const secs = totalSeconds % 60;
-      const label = secs ? mins + ":" + String(secs).padStart(2, "0") : this.duration;
+      const label = secs ? mins + ":" + String(secs).padStart(2, "0") : String(mins);
       return label + " " + __("min.");
     }
   }
