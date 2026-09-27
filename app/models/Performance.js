@@ -134,24 +134,6 @@ performanceSchema.virtual('tech_req').get(function (req) {
 });
 
 performanceSchema.virtual('humanDuration').get(function () {
-  if (this.bookings && this.bookings.length > 0) {
-    let firstStart = null, lastEnd = null;
-    for (const booking of this.bookings) {
-      if (booking.schedule && booking.schedule.length > 0) {
-        const s = booking.schedule[0].starttime;
-        const e = booking.schedule[booking.schedule.length - 1].endtime;
-        if (s && (!firstStart || s < firstStart)) firstStart = s;
-        if (e && (!lastEnd || e > lastEnd)) lastEnd = e;
-      }
-    }
-    if (firstStart && lastEnd) {
-      const s = new Date(firstStart), e = new Date(lastEnd);
-      const startDay = Date.UTC(s.getUTCFullYear(), s.getUTCMonth(), s.getUTCDate());
-      const endDay = Date.UTC(e.getUTCFullYear(), e.getUTCMonth(), e.getUTCDate());
-      const days = Math.round((endDay - startDay) / 86400000) + 1;
-      return this.$locals.moment.duration(days, 'days').humanize();
-    }
-  }
   if (this.duration) {
     if (this.duration > 59) {
       return this.$locals.moment.duration({"minutes": this.duration}).humanize();
