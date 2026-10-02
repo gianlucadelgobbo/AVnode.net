@@ -1446,6 +1446,7 @@ var conta=0;
 var error=0;
 var timeout;
 var genUrl = [
+	"https://mediaartmuseum.org/?createcache=1", "https://mediaartmuseum.org/en/?createcache=1",
 	"https://gianlucadelgobbo.net/?createcache=1", "https://gianlucadelgobbo.net/it/?createcache=1",
 	"https://flyer.it/?createcache=1", "https://flyer.it/it/?createcache=1",
 	"https://linux-club.org/?createcache=1",
