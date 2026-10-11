@@ -2,7 +2,6 @@ table.table
   //table.table.table-fixed
   - var call = !get.call || get.call=="none" ? 0 : get.call
   - var sums = {wepay:0,cash:0,total:0}
-  - console.log(call)
   - function format (lang, currency, number) {return new Intl.NumberFormat(lang, { style: "currency", currency }).format(number);} 
 
   thead
@@ -39,7 +38,6 @@ table.table
           div(style="width: 60px;transform: rotate(-90deg);height: 20px;position: relative;top: -10px;left: -30px;")=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
   tbody
     - var conta = 0
-    - console.log(get)
     if data.subscriptions.length
       each subscription, index in data.subscriptions
           //pre=JSON.stringify(subscription, null, 2)
@@ -79,7 +77,6 @@ table.table
                   !=" "
                   .badge.badge-danger MISSING MOBILE
               td
-                - console.log(subscription.subscription.subscriber_id)
                 !=subscription.subscription.subscriber_id.name
               td
                 !=subscription.subscription.subscriber_id.surname
@@ -145,7 +142,6 @@ table.table
                   td(style="white-space: nowrap;")
                     !=pack.options_name
                   td(style="white-space: nowrap;")
-                    - console.log(subscription.subscription.packages[subscription.subscription.packages.map(item => {return item.name}).indexOf(pack.name)])
                     if subscription.subscription.packages[subscription.subscription.packages.map(item => {return item.name}).indexOf(pack.name)]
                       !=subscription.subscription.packages[subscription.subscription.packages.map(item => {return item.name}).indexOf(pack.name)].option
                     else

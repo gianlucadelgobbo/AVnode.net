@@ -71,7 +71,6 @@ block content
         ol
           each group in data.partners
             each item, index in group.users
-              - console.log(item)
               if item
                 - item.to_html = ""
                 - item.cc_html = []

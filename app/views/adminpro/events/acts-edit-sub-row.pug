@@ -35,7 +35,6 @@
                 label.form-check-label(for="subscription_pack"+b+"_"+c+"_"+d+"_package")
                   !=" "+pack.name
               .form-check.pack_sub(style=packs.indexOf(pack.name)==-1 ? "display:none" : undefined)
-                - console.log(pack)
                 if pack.options
                   each opt, e in pack.options.split(",")
                     div

@@ -15,7 +15,6 @@ table.table.table-fixed
           div(style="width: 60px;transform: rotate(-90deg);height: 20px;position: relative;top: -10px;left: -30px;")=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
   tbody
     - var conta = 0
-    - console.log(data.subscriptions.length)
     if data.subscriptions.length
       each subscription, index in data.subscriptions
           //-pre=JSON.stringify(subscription, null, 2)
@@ -102,7 +101,6 @@ table.table.table-fixed
                       each hotel in data.hotels
                         option(value=hotel, selected=option==hotel ? "selected" : undefined)=hotel
                     .input-group.input-group-sm.mt-1
-                      - console.log(data.hotels)
                       input.option_selected_hotel_room.form-control(type="text", placeholder="Room", aria-label="Room", value=option_value ? option_value : undefined, name='packages.option_selected_hotel_room', data-id=subscription._id, data-package_name=get['subscriptions.packages.name'], data-subscriber_id=subscription.subscription.subscriber_id._id)
                       .input-group-append
                         button.btn.btn-success(type="button")
