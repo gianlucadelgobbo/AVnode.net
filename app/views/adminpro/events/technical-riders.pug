@@ -56,24 +56,12 @@ block content
                           p
                             b!=user.stagename
                             !=" | "+uu.name+" "+uu.surname+" AKA "+uu.stagename
-                            - var daydayA = []
-                            each day, i in data.days
-                              - if (daydayA[i]!=-1) daydayA[i] = program.subscriptions[availables.indexOf(member.toString())].days.map(item => {return new Date(item).getTime()}).indexOf(day)
-                            each day, i in daydayA
-                              span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
-                                !=new Date(data.days[i]).getDate()
                             !=uu.addressesFormatted
 
                     else
                       if availables.indexOf(user._id.toString())!=-1
                         - var uu = program.subscriptions[availables.indexOf(user._id.toString())].subscriber_id
                         p!=uu.name+" "+uu.surname+" AKA "+uu.stagename
-                          - var daydayA = []
-                          each day, i in data.days
-                            - if (daydayA[i]!=-1) daydayA[i] = program.subscriptions[availables.indexOf(user._id.toString())].days.map(item => {return new Date(item).getTime()}).indexOf(day)
-                          each day, i in daydayA
-                            span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
-                              !=new Date(data.days[i]).getDate()
                           !=uu.addressesFormatted
                   .mt-2
                     b TECHNOLOGIES WITH THE ARTISTS
