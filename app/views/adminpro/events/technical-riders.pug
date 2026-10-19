@@ -21,7 +21,7 @@ block content
               if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'].indexOf(room.schedule.venue.room)>-1)
                 if room.program
                   each program,ii in room.program
-                    - var tech_reqs = program.performance.tech_req.split("- ")
+                    - var tech_reqs = (program.performance.tech_req || "").split("- ")
                     each tech_req,iii in tech_reqs
                       tr
                         td.table-firstcolumn-ID!=conta
