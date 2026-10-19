@@ -1340,18 +1340,20 @@ router.get('/:event/technical-riders', async (req, res) => {
   try {
     let event = await Event.
     findOne({"_id": req.params.event}).
-    select({title: 1, schedule: 1, organizationsettings: 1}).
+    select({title: 1, schedule: 1, program: 1, organizationsettings: 1}).
     populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
     exec();
     const select = config.cpanel["events_advanced"].forms["technical-riders"].select;
-    const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["technical-riders"].populate;
+    const nativePopulate = JSON.parse(JSON.stringify(config.cpanel["events_advanced"].forms["technical-riders"].populate));
+    const populate = req.query.pure ? [] : nativePopulate;
     let query = {"event": req.params.event, status: "5be8708afc39610000000013"};
     if (req.query.call && req.query.call!='none') query.call = req.query.call;
+    // Program.performance/schedule are no longer kept reliably in sync - the source of truth
+    // moved to Event.program[] (subscription_id -> performance/schedule), same as getActsData.
+    const performancePopConf = populate.find(p => p && p.path === 'performance');
     for(var item in populate) {
       if (populate[item].path == "performance") {
-        if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room'].length) {
-          populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
-        }
+        delete populate[item];
       }
     }
     try {
@@ -1363,7 +1365,40 @@ router.get('/:event/technical-riders', async (req, res) => {
       exec();
         data.event = event;
         //data.status = config.cpanel["events_advanced"].status;
-        data.program = program;
+
+        const perfBySubId = {};
+        const scheduleBySubId = {};
+        const perfIds = [];
+        for (const ep of event.program || []) {
+          if (ep.subscription_id) {
+            if (ep.performance) {
+              perfBySubId[ep.subscription_id.toString()] = ep.performance.toString();
+              perfIds.push(ep.performance);
+            }
+            scheduleBySubId[ep.subscription_id.toString()] = ep.schedule || [];
+          }
+        }
+        let perfById = {};
+        if (perfIds.length && performancePopConf) {
+          const performances = await Performance
+            .find({_id: {$in: perfIds}})
+            .select(performancePopConf.select)
+            .populate(performancePopConf.populate || [])
+            .exec();
+          for (const p of performances) perfById[p._id.toString()] = p;
+        }
+
+        const roomFilter = req.query['bookings.schedule.venue.room'];
+        data.program = program.map(item => {
+          const obj = item.toObject ? item.toObject({virtuals: true}) : JSON.parse(JSON.stringify(item));
+          const perfId = perfBySubId[item._id.toString()];
+          obj.performance = perfId ? (perfById[perfId] || null) : null;
+          obj.schedule = scheduleBySubId[item._id.toString()] || [];
+          return obj;
+        }).filter(item => {
+          if (!roomFilter || !roomFilter.length) return true;
+          return (item.schedule || []).some(s => s.venue && s.venue.room === roomFilter);
+        });
 /*           data.admitted = [];
         let admittedO = {};
         for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
