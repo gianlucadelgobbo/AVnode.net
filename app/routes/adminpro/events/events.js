@@ -1655,7 +1655,8 @@ router.get('/:event/pass-sheet', async (req, res) => {
     populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
     exec();
     const select = config.cpanel["events_advanced"].forms["pass-sheet"].select;
-    const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["pass-sheet"].populate;
+    const nativePopulate = JSON.parse(JSON.stringify(config.cpanel["events_advanced"].forms["pass-sheet"].populate));
+    const populate = req.query.pure ? [] : nativePopulate;
     let query = {"event": req.params.event, status: '5be8708afc39610000000013'};
     if (req.query.call && req.query.call!='none') query.call = req.query.call;
     if (req.query['packages.option_selected_hotel'] && req.query['packages.option_selected_hotel']!='0') {
@@ -1663,14 +1664,12 @@ router.get('/:event/pass-sheet', async (req, res) => {
       query['packages.option'] = req.query['packages.option_selected_hotel'];
     }
     if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['status'];
+    // Program.performance/schedule are no longer kept reliably in sync - source of truth
+    // moved to Event.program[] (subscription_id -> performance/schedule), same as getActsData.
+    const performancePopConf = populate.find(p => p && p.path === 'performance');
     for(var item in populate) {
       if (populate[item].path == "performance") {
-        if (req.query['performance_category'] && req.query['performance_category']!='0') {
-          populate[item].match = {type: req.query['performance_category']};
-        }
-        if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room'].length) {
-          populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
-        }
+        delete populate[item];
       }
     }
     logger.info(populate);
@@ -1701,20 +1700,65 @@ router.get('/:event/pass-sheet', async (req, res) => {
         //data.days.push(data.days[data.days.length-1]+(24*60*60*1000));
         data.daysN = (data.days[data.days.length-1]-data.days[0])/(24*60*60*1000);
 
-        
+
         /* data.hotels = [];
         for(let a=0;a<data.event.organizationsettings.call.calls.length;a++)
           for(let b=0; b<data.event.organizationsettings.call.calls[a].packages.length;b++)
             if (data.event.organizationsettings.call.calls[a].packages[b].options_name == "Hotels")
               data.hotels = data.event.organizationsettings.call.calls[a].packages[b].options.split(",");
           */
+
+        const perfBySubId = {};
+        const scheduleBySubId = {};
+        const perfIds = [];
+        for (const ep of event.program || []) {
+          if (ep.subscription_id) {
+            if (ep.performance) {
+              perfBySubId[ep.subscription_id.toString()] = ep.performance.toString();
+              perfIds.push(ep.performance);
+            }
+            scheduleBySubId[ep.subscription_id.toString()] = ep.schedule || [];
+          }
+        }
+        let perfById = {};
+        if (perfIds.length && performancePopConf) {
+          const perfQuery = {_id: {$in: perfIds}};
+          if (req.query['performance_category'] && req.query['performance_category']!='0') {
+            perfQuery.type = req.query['performance_category'];
+          }
+          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room'].length) {
+            const roomFilter = req.query['bookings.schedule.venue.room'];
+            const roomFilterList = Array.isArray(roomFilter) ? roomFilter : [roomFilter];
+            const matchingSubIds = Object.keys(scheduleBySubId).filter(subId =>
+              scheduleBySubId[subId].some(s => s.venue && roomFilterList.indexOf(s.venue.room) !== -1)
+            );
+            const allowedPerfIds = new Set(matchingSubIds.map(subId => perfBySubId[subId]).filter(Boolean));
+            perfQuery._id = {$in: perfIds.filter(id => allowedPerfIds.has(id.toString()))};
+          }
+          const performances = await Performance
+            .find(perfQuery)
+            .select(performancePopConf.select)
+            .populate(performancePopConf.populate || [])
+            .exec();
+          for (const p of performances) perfById[p._id.toString()] = p;
+        }
+        const getPerformanceWithSchedule = (prog) => {
+          const perfId = perfBySubId[prog._id.toString()];
+          const performance = perfId ? perfById[perfId] : null;
+          if (!performance) return null;
+          const perf = JSON.parse(JSON.stringify(performance));
+          perf.schedule = scheduleBySubId[prog._id.toString()] || [];
+          return perf;
+        };
+
         data.subscriptions = [];
         for(let a=0;a<program.length;a++) {
           for(let b=0; b<program[a].subscriptions.length;b++) {
             if (!program[a].subscriptions[b].freezed) {
+              const performance = getPerformanceWithSchedule(program[a]);
+              if (!performance) continue;
               let subscription = JSON.parse(JSON.stringify(program[a]));
-              subscription.performance.schedule = subscription.schedule;
-              subscription.performances = [subscription.performance];
+              subscription.performances = [performance];
               subscription.subscription = subscription.subscriptions[b];
               delete subscription.subscriptions;
               delete subscription.schedule;
@@ -1726,14 +1770,15 @@ router.get('/:event/pass-sheet', async (req, res) => {
         for(let a=0;a<program.length;a++) {
           for(let b=0; b<program[a].subscriptions.length;b++) {
             if (program[a].subscriptions[b].freezed) {
+              const performance = getPerformanceWithSchedule(program[a]);
+              if (!performance) continue;
               let subscriber_id_map = data.subscriptions.map(subscriber => {return subscriber.subscription.subscriber_id._id.toString()});
               let subscriber_id_index = subscriber_id_map.indexOf(program[a].subscriptions[b].subscriber_id._id.toString());
               let subscription = JSON.parse(JSON.stringify(program[a]));
-              subscription.performance.schedule = subscription.schedule;
               if (subscriber_id_index!=-1) {
-                data.subscriptions[subscriber_id_index].performances.push(subscription.performance);
+                data.subscriptions[subscriber_id_index].performances.push(performance);
               } else {
-                subscription.performances = [subscription.performance];
+                subscription.performances = [performance];
                 subscription.subscription = subscription.subscriptions[b];
                 delete subscription.subscriptions;
                 delete subscription.schedule;
