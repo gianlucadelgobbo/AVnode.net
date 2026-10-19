@@ -1681,9 +1681,7 @@ router.get('/:event/pass-sheet', async (req, res) => {
       populate(populate).
       exec();
       logger.info(program);
-      if (err) {
-        res.json(err);
-      } else {
+      {
         data.event = event;
         //data.status = config.cpanel["events_advanced"].status;
         let daysdays = [];
