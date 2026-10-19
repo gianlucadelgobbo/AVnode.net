@@ -1389,6 +1389,7 @@ router.get('/:event/technical-riders', async (req, res) => {
         }
 
         const roomFilter = req.query['bookings.schedule.venue.room'];
+        const roomFilterList = Array.isArray(roomFilter) ? roomFilter : (roomFilter ? [roomFilter] : []);
         data.program = program.map(item => {
           const obj = item.toObject ? item.toObject({virtuals: true}) : JSON.parse(JSON.stringify(item));
           const perfId = perfBySubId[item._id.toString()];
@@ -1396,8 +1397,8 @@ router.get('/:event/technical-riders', async (req, res) => {
           obj.schedule = scheduleBySubId[item._id.toString()] || [];
           return obj;
         }).filter(item => {
-          if (!roomFilter || !roomFilter.length) return true;
-          return (item.schedule || []).some(s => s.venue && s.venue.room === roomFilter);
+          if (!roomFilterList.length) return true;
+          return (item.schedule || []).some(s => s.venue && roomFilterList.indexOf(s.venue.room) !== -1);
         });
 /*           data.admitted = [];
         let admittedO = {};
