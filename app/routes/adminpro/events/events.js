@@ -1699,7 +1699,7 @@ router.get('/:event/pass-sheet', async (req, res) => {
         });
         //data.days.unshift(data.days[0]-(24*60*60*1000));
         //data.days.push(data.days[data.days.length-1]+(24*60*60*1000));
-        data.daysN = ((data.days[data.days.length-1]-data.days[0])/(24*60*60*1000))-1;
+        data.daysN = (data.days[data.days.length-1]-data.days[0])/(24*60*60*1000);
 
         
         /* data.hotels = [];
